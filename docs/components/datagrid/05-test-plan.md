@@ -21,17 +21,17 @@ Membuktikan bahwa DataGrid:
 
 ## 2. Target test
 
-| Layer | Jumlah minimum | Runtime target |
-|---|---:|---|
-| Unit model/data | 250 | < 2 menit |
-| Browser component | 80 | < 6 menit |
-| Contract adapter | 40 skenario × 4 | < 5 menit |
-| A11y | 20 | < 3 menit |
-| Security | 60 payload × 4 | < 4 menit |
-| Visual | 12 baseline × 3 tema | < 5 menit |
-| E2E | 15 alur | < 8 menit |
-| Performance | 8 benchmark | < 10 menit |
-| Memory leak | 3 skenario | < 3 menit |
+| Layer             |       Jumlah minimum | Runtime target |
+| ----------------- | -------------------: | -------------- |
+| Unit model/data   |                  250 | < 2 menit      |
+| Browser component |                   80 | < 6 menit      |
+| Contract adapter  |      40 skenario × 4 | < 5 menit      |
+| A11y              |                   20 | < 3 menit      |
+| Security          |       60 payload × 4 | < 4 menit      |
+| Visual            | 12 baseline × 3 tema | < 5 menit      |
+| E2E               |              15 alur | < 8 menit      |
+| Performance       |          8 benchmark | < 10 menit     |
+| Memory leak       |           3 skenario | < 3 menit      |
 
 PR suite: unit + browser + contract (Chromium). Nightly: semua.
 
@@ -39,36 +39,36 @@ PR suite: unit + browser + contract (Chromium). Nightly: semua.
 
 ## 3. Matriks test per fitur
 
-| Fitur | Unit | Browser | Contract | A11y | Security | Perf |
-|---|---|---|---|---|---|---|
-| Data lokal/remote | ✅ | ✅ | ✅ | — | ✅ | ✅ |
-| Columns & format | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Resize | ✅ | ✅ | ✅ | ✅ | — | — |
-| Reorder | ✅ | ✅ | ✅ | ✅ | — | — |
-| Column chooser | ✅ | ✅ | ✅ | ✅ | — | — |
-| Fixed columns/bands | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Sort single/multi | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Filter row | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Header filter | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Search | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Paging | ✅ | ✅ | ✅ | ✅ | — | — |
-| Virtual scroll | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Selection | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Keyboard/focus | ✅ | ✅ | ✅ | ✅ | — | — |
-| Editing | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Validation | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Grouping | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Master-detail | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Summary | ✅ | ✅ | ✅ | ✅ | — | — |
-| CSV export | ✅ | ✅ | ✅ | — | ✅ | — |
-| Excel export | ✅ | ✅ | ✅ | — | ✅ | — |
-| Clipboard | ✅ | ✅ | ✅ | — | ✅ | — |
-| Context menu | — | ✅ | ✅ | ✅ | — | — |
-| State persistence | ✅ | ✅ | ✅ | — | ✅ | — |
-| Templates | — | ✅ | ✅ | ✅ | ✅ | ✅ |
-| RTL | — | ✅ | ✅ | ✅ | — | — |
-| Print | — | ✅ | — | — | — | — |
-| SSR | — | — | ✅ | — | — | — |
+| Fitur               | Unit | Browser | Contract | A11y | Security | Perf |
+| ------------------- | ---- | ------- | -------- | ---- | -------- | ---- |
+| Data lokal/remote   | ✅   | ✅      | ✅       | —    | ✅       | ✅   |
+| Columns & format    | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Resize              | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| Reorder             | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| Column chooser      | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| Fixed columns/bands | ✅   | ✅      | ✅       | ✅   | —        | ✅   |
+| Sort single/multi   | ✅   | ✅      | ✅       | ✅   | —        | ✅   |
+| Filter row          | ✅   | ✅      | ✅       | ✅   | ✅       | ✅   |
+| Header filter       | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Search              | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Paging              | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| Virtual scroll      | ✅   | ✅      | ✅       | ✅   | —        | ✅   |
+| Selection           | ✅   | ✅      | ✅       | ✅   | —        | ✅   |
+| Keyboard/focus      | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| Editing             | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Validation          | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Grouping            | ✅   | ✅      | ✅       | ✅   | —        | ✅   |
+| Master-detail       | ✅   | ✅      | ✅       | ✅   | ✅       | —    |
+| Summary             | ✅   | ✅      | ✅       | ✅   | —        | —    |
+| CSV export          | ✅   | ✅      | ✅       | —    | ✅       | —    |
+| Excel export        | ✅   | ✅      | ✅       | —    | ✅       | —    |
+| Clipboard           | ✅   | ✅      | ✅       | —    | ✅       | —    |
+| Context menu        | —    | ✅      | ✅       | ✅   | —        | —    |
+| State persistence   | ✅   | ✅      | ✅       | —    | ✅       | —    |
+| Templates           | —    | ✅      | ✅       | ✅   | ✅       | ✅   |
+| RTL                 | —    | ✅      | ✅       | ✅   | —        | —    |
+| Print               | —    | ✅      | —        | —    | —        | —    |
+| SSR                 | —    | —       | ✅       | —    | —        | —    |
 
 ---
 
@@ -106,10 +106,9 @@ describe('column model', () => {
   });
 
   it('should throw SUI-DG-002 when two columns share an id', () => {
-    expect(() => normalizeColumns([
-      { dataField: 'name' },
-      { dataField: 'name' },
-    ])).toThrowError(/SUI-DG-002/);
+    expect(() =>
+      normalizeColumns([{ dataField: 'name' }, { dataField: 'name' }]),
+    ).toThrowError(/SUI-DG-002/);
   });
 });
 ```
@@ -161,15 +160,15 @@ it('should keep aria-rowindex absolute after scrolling', async () => {
 40 skenario di [Adapter §8](../../02-adapter-cross-framework.md#82-desain),
 dikelompokkan:
 
-| Grup | Jumlah | Contoh |
-|---|---:|---|
-| Lifecycle | 8 | mount, update, unmount, remount, StrictMode, SSR |
-| Options | 6 | columns, dataSource, controlled/uncontrolled |
-| Interaction | 10 | sort, filter, select, keyboard, edit |
-| Events | 6 | payload, urutan, cancel |
-| Template | 4 | render, update, dispose, error |
-| Security | 4 | XSS, URL, CSV, pollution |
-| A11y | 2 | role, aria |
+| Grup        | Jumlah | Contoh                                           |
+| ----------- | -----: | ------------------------------------------------ |
+| Lifecycle   |      8 | mount, update, unmount, remount, StrictMode, SSR |
+| Options     |      6 | columns, dataSource, controlled/uncontrolled     |
+| Interaction |     10 | sort, filter, select, keyboard, edit             |
+| Events      |      6 | payload, urutan, cancel                          |
+| Template    |      4 | render, update, dispose, error                   |
+| Security    |      4 | XSS, URL, CSV, pollution                         |
+| A11y        |      2 | role, aria                                       |
 
 ### 6.2 Aturan
 
@@ -247,18 +246,18 @@ Threshold `maxDiffPixelRatio: 0.01`. Review baseline manual.
 
 ## 10. Performance test
 
-| Skenario | Target | Metode |
-|---|---|---|
-| Mount 10.000 baris | ≤ 300 ms | Performance.mark |
-| Mount 100.000 baris remote | ≤ 500 ms | mock store |
-| Scroll 5 detik | ≥ 95% frame ≤ 16 ms | rAF sampling |
-| Sort 100.000 baris | ≤ 150 ms | tinybench |
-| Filter 100.000 baris | ≤ 100 ms | tinybench |
-| Group 100.000 baris | ≤ 300 ms | tinybench |
-| Selection 1.000 | ≤ 50 ms | browser |
-| Edit commit | ≤ 100 ms | browser |
-| Memory 100k remote | ≤ 150 MB | CDP |
-| Mount/unmount 100× | pertumbuhan ≤ 5% | heap snapshot |
+| Skenario                   | Target              | Metode           |
+| -------------------------- | ------------------- | ---------------- |
+| Mount 10.000 baris         | ≤ 300 ms            | Performance.mark |
+| Mount 100.000 baris remote | ≤ 500 ms            | mock store       |
+| Scroll 5 detik             | ≥ 95% frame ≤ 16 ms | rAF sampling     |
+| Sort 100.000 baris         | ≤ 150 ms            | tinybench        |
+| Filter 100.000 baris       | ≤ 100 ms            | tinybench        |
+| Group 100.000 baris        | ≤ 300 ms            | tinybench        |
+| Selection 1.000            | ≤ 50 ms             | browser          |
+| Edit commit                | ≤ 100 ms            | browser          |
+| Memory 100k remote         | ≤ 150 MB            | CDP              |
+| Mount/unmount 100×         | pertumbuhan ≤ 5%    | heap snapshot    |
 
 Regresi > 20% memblokir rilis; 10–20% butuh justifikasi.
 
@@ -299,13 +298,13 @@ export function createRows(options: RowFactoryOptions): Row[];
 
 ## 13. Browser matrix
 
-| Browser | PR | Nightly |
-|---|---|---|
-| Chromium | ✅ | ✅ |
-| Firefox | — | ✅ |
-| WebKit (Safari) | — | ✅ |
-| Mobile Safari (emulasi) | — | ✅ |
-| Edge | — | ✅ |
+| Browser                 | PR  | Nightly |
+| ----------------------- | --- | ------- |
+| Chromium                | ✅  | ✅      |
+| Firefox                 | —   | ✅      |
+| WebKit (Safari)         | —   | ✅      |
+| Mobile Safari (emulasi) | —   | ✅      |
+| Edge                    | —   | ✅      |
 
 ---
 
@@ -340,4 +339,4 @@ export function createRows(options: RowFactoryOptions): Row[];
 
 ---
 
-*Untuk jadwal test, lihat [06-implementation-plan.md](06-implementation-plan.md).*
+_Untuk jadwal test, lihat [06-implementation-plan.md](06-implementation-plan.md)._

@@ -24,35 +24,35 @@ dengan DataGrid, tetapi memiliki model data, layout, dan interaksi sendiri.
 
 ### 2.1 P0 — MVP
 
-| Fitur | Acceptance criteria |
-|---|---|
-| Data binding lokal | Array/`ArrayStore`; 100.000 baris sumber |
-| Fields row/column/data/filter | Konfigurasi dasar; validasi field |
-| Agregasi | sum, count, min, max, avg |
-| Layout cross-tab | Header baris/kolom bertingkat; grand total |
-| Expand/collapse | Klik, keyboard, `aria-expanded` |
-| Sorting/filtering member | Urut abjad/nilai; filter nilai |
-| Virtual scrolling | 100.000 sel tanpa lag |
-| Field chooser | Pindah field antar area |
-| CSV export | Formula guard; hormati field tersembunyi |
-| Keyboard & a11y | Navigasi grid/tree; screen reader |
-| Template/format sel | Teks, angka, tanggal, custom |
-| 4 adapter | Parity suite |
+| Fitur                         | Acceptance criteria                        |
+| ----------------------------- | ------------------------------------------ |
+| Data binding lokal            | Array/`ArrayStore`; 100.000 baris sumber   |
+| Fields row/column/data/filter | Konfigurasi dasar; validasi field          |
+| Agregasi                      | sum, count, min, max, avg                  |
+| Layout cross-tab              | Header baris/kolom bertingkat; grand total |
+| Expand/collapse               | Klik, keyboard, `aria-expanded`            |
+| Sorting/filtering member      | Urut abjad/nilai; filter nilai             |
+| Virtual scrolling             | 100.000 sel tanpa lag                      |
+| Field chooser                 | Pindah field antar area                    |
+| CSV export                    | Formula guard; hormati field tersembunyi   |
+| Keyboard & a11y               | Navigasi grid/tree; screen reader          |
+| Template/format sel           | Teks, angka, tanggal, custom               |
+| 4 adapter                     | Parity suite                               |
 
 ### 2.2 P1 — GA 1.0
 
-| Fitur | Acceptance criteria |
-|---|---|
-| Remote pivot | Protokol `load` dengan row/column paths; fallback |
-| Custom aggregation | Fungsi murni; error terisolasi |
-| Subtotals per level | Konfigurasi; konsisten dengan grand total |
-| Drill-down | Menampilkan baris sumber; aman & terbatas |
-| Conditional formatting | Berdasarkan nilai; tanpa HTML |
-| Excel export | OOXML minimal; tanpa formula |
-| State persistence | Fields, sorting, filter, expand; versioned |
-| Printing | Semua sel; header berulang |
-| RTL | Layout mirror; angka tetap LTR |
-| Performance | 1.000.000 sel; interaksi < 100 ms |
+| Fitur                  | Acceptance criteria                               |
+| ---------------------- | ------------------------------------------------- |
+| Remote pivot           | Protokol `load` dengan row/column paths; fallback |
+| Custom aggregation     | Fungsi murni; error terisolasi                    |
+| Subtotals per level    | Konfigurasi; konsisten dengan grand total         |
+| Drill-down             | Menampilkan baris sumber; aman & terbatas         |
+| Conditional formatting | Berdasarkan nilai; tanpa HTML                     |
+| Excel export           | OOXML minimal; tanpa formula                      |
+| State persistence      | Fields, sorting, filter, expand; versioned        |
+| Printing               | Semua sel; header berulang                        |
+| RTL                    | Layout mirror; angka tetap LTR                    |
+| Performance            | 1.000.000 sel; interaksi < 100 ms                 |
 
 ### 2.3 P2 — Pasca-GA
 
@@ -136,13 +136,13 @@ type Cube = Map<string, CubeCell>; // key = encode(rowPath) + '|' + encode(colum
 
 ### 4.3 Agregasi
 
-| Tipe | Rumus | Catatan |
-|---|---|---|
-| `sum` | Σ nilai valid | Abaikan null/NaN |
-| `count` | jumlah nilai valid | Termasuk 0 |
-| `min`/`max` | nilai ekstrem | Null jika kosong |
-| `avg` | sum / count | Count 0 → null |
-| `custom` | fungsi | Harus mengembalikan finite number/null |
+| Tipe        | Rumus              | Catatan                                |
+| ----------- | ------------------ | -------------------------------------- |
+| `sum`       | Σ nilai valid      | Abaikan null/NaN                       |
+| `count`     | jumlah nilai valid | Termasuk 0                             |
+| `min`/`max` | nilai ekstrem      | Null jika kosong                       |
+| `avg`       | sum / count        | Count 0 → null                         |
+| `custom`    | fungsi             | Harus mengembalikan finite number/null |
 
 Aturan:
 
@@ -261,17 +261,17 @@ read-only, event setelah state konsisten.
 
 ## 7. Keamanan
 
-| Ancaman | Kontrol |
-|---|---|
-| XSS di header/nilai | Teks default; sanitizer opt-in |
-| XSS di format/custom | Format mengembalikan teks, bukan HTML |
-| Formula injection export | Prefix `'`; tanpa formula |
-| Drill-down membocorkan data | Hormati filter & izin; batas baris |
-| Filter/path injection | Validasi field/path; encoding |
-| DoS cube | Batas baris/field/sel; worker |
-| State poisoning | Schema + version + batas |
-| Remote URL | `safeUrl`, HTTPS, timeout, batas respons |
-| Prototype pollution | `safeMerge` |
+| Ancaman                     | Kontrol                                  |
+| --------------------------- | ---------------------------------------- |
+| XSS di header/nilai         | Teks default; sanitizer opt-in           |
+| XSS di format/custom        | Format mengembalikan teks, bukan HTML    |
+| Formula injection export    | Prefix `'`; tanpa formula                |
+| Drill-down membocorkan data | Hormati filter & izin; batas baris       |
+| Filter/path injection       | Validasi field/path; encoding            |
+| DoS cube                    | Batas baris/field/sel; worker            |
+| State poisoning             | Schema + version + batas                 |
+| Remote URL                  | `safeUrl`, HTTPS, timeout, batas respons |
+| Prototype pollution         | `safeMerge`                              |
 
 Detail mengikuti [Security umum](../../05-security.md) dan
 [DataGrid security](../datagrid/04-security.md) dengan tambahan drill-down &
@@ -294,20 +294,20 @@ cube.
 
 ## 9. Test plan
 
-| Area | Test |
-|---|---|
-| Cube | 1 field, multi row/col, subtotal, grand total, null, angka negatif |
-| Agregasi | sum/count/min/max/avg/custom, NaN/Infinity |
-| Layout | span, sticky, RTL, total di awal/akhir |
-| Expand | keyboard, state, nested, auto-expand |
-| Sorting/filter | member sort, filter nilai, blanks |
-| Field chooser | pindah area, validasi minimal 1 measure |
-| Drill-down | data benar, batas, izin, dialog a11y |
-| Remote | load, cancel, error, fallback |
-| Export | CSV/Excel, formula guard, hidden fields |
-| Performance | 1.000.000 sel, expand < 100 ms |
-| Security | XSS, injection, state, export |
-| Parity | 40 skenario × 4 adapter |
+| Area           | Test                                                               |
+| -------------- | ------------------------------------------------------------------ |
+| Cube           | 1 field, multi row/col, subtotal, grand total, null, angka negatif |
+| Agregasi       | sum/count/min/max/avg/custom, NaN/Infinity                         |
+| Layout         | span, sticky, RTL, total di awal/akhir                             |
+| Expand         | keyboard, state, nested, auto-expand                               |
+| Sorting/filter | member sort, filter nilai, blanks                                  |
+| Field chooser  | pindah area, validasi minimal 1 measure                            |
+| Drill-down     | data benar, batas, izin, dialog a11y                               |
+| Remote         | load, cancel, error, fallback                                      |
+| Export         | CSV/Excel, formula guard, hidden fields                            |
+| Performance    | 1.000.000 sel, expand < 100 ms                                     |
+| Security       | XSS, injection, state, export                                      |
+| Parity         | 40 skenario × 4 adapter                                            |
 
 Target coverage: cube/agregasi ≥ 90%; komponen ≥ 85%; adapter ≥ 80%.
 
@@ -315,14 +315,14 @@ Target coverage: cube/agregasi ≥ 90%; komponen ≥ 85%; adapter ≥ 80%.
 
 ## 10. Jadwal
 
-| Fase | Durasi | Fokus | Gate |
-|---|---|---|---|
-| PV-0 | 2 minggu | Scope, API, threat model | G-PV0 |
-| PV-1 | 5 minggu | Field model, cube, agregasi, sort/filter | G-PV1 |
-| PV-2 | 5 minggu | Layout, virtualizer, renderer, expand | G-PV2 |
-| PV-3 | 4 minggu | Totals, field chooser, drill-down, export, state | G-PV3 |
-| PV-4 | 4 minggu | Adapter, parity, a11y, test | G-PV4 (beta) |
-| PV-5 | 2 minggu | Remote, security, perf, docs, GA | G-PV5 (GA) |
+| Fase | Durasi   | Fokus                                            | Gate         |
+| ---- | -------- | ------------------------------------------------ | ------------ |
+| PV-0 | 2 minggu | Scope, API, threat model                         | G-PV0        |
+| PV-1 | 5 minggu | Field model, cube, agregasi, sort/filter         | G-PV1        |
+| PV-2 | 5 minggu | Layout, virtualizer, renderer, expand            | G-PV2        |
+| PV-3 | 4 minggu | Totals, field chooser, drill-down, export, state | G-PV3        |
+| PV-4 | 4 minggu | Adapter, parity, a11y, test                      | G-PV4 (beta) |
+| PV-5 | 2 minggu | Remote, security, perf, docs, GA                 | G-PV5 (GA)   |
 
 Total 22 minggu (2027-06-21 → 2027-11-19), paralel dengan DataGrid GA dan awal
 Charts.
@@ -331,29 +331,29 @@ Charts.
 
 ## 11. Risiko
 
-| Risiko | Dampak | Mitigasi |
-|---|---|---|
-| Cube memory meledak | Crash | Batas sel, sparse map, worker, virtualisasi |
-| Layout span rumit | Bug visual | Unit test layout murni + visual |
-| Drill-down membocorkan data | Security | Filter & izin, batas baris, review |
-| Remote protocol tidak standar | Integrasi sulit | Kontrak jelas + fallback lokal |
-| A11y header bertingkat | Sulit | Pola treegrid, uji screen reader awal |
-| Scope creep (chart, formula) | Molor | P2 tegas, ADR untuk perubahan |
+| Risiko                        | Dampak          | Mitigasi                                    |
+| ----------------------------- | --------------- | ------------------------------------------- |
+| Cube memory meledak           | Crash           | Batas sel, sparse map, worker, virtualisasi |
+| Layout span rumit             | Bug visual      | Unit test layout murni + visual             |
+| Drill-down membocorkan data   | Security        | Filter & izin, batas baris, review          |
+| Remote protocol tidak standar | Integrasi sulit | Kontrak jelas + fallback lokal              |
+| A11y header bertingkat        | Sulit           | Pola treegrid, uji screen reader awal       |
+| Scope creep (chart, formula)  | Molor           | P2 tegas, ADR untuk perubahan               |
 
 ---
 
 ## 12. Metrik keberhasilan
 
-| Metrik | Target |
-|---|---|
-| Build cube 100.000 baris | ≤ 2 detik |
-| Render 1.000.000 sel | ≤ 1 detik (initial viewport) |
-| Expand/collapse | ≤ 100 ms |
-| Memory 1.000.000 sel | ≤ 200 MB |
-| Bundle gzip | ≤ 50 KB |
-| Axe serious/critical | 0 |
-| Security critical/high | 0 |
-| Design partner satisfaction | ≥ 4/5 |
+| Metrik                      | Target                       |
+| --------------------------- | ---------------------------- |
+| Build cube 100.000 baris    | ≤ 2 detik                    |
+| Render 1.000.000 sel        | ≤ 1 detik (initial viewport) |
+| Expand/collapse             | ≤ 100 ms                     |
+| Memory 1.000.000 sel        | ≤ 200 MB                     |
+| Bundle gzip                 | ≤ 50 KB                      |
+| Axe serious/critical        | 0                            |
+| Security critical/high      | 0                            |
+| Design partner satisfaction | ≥ 4/5                        |
 
 ---
 
@@ -367,5 +367,5 @@ Charts.
 
 ---
 
-*PivotGrid adalah komponen read-only; editing tetap di DataGrid atau form
-terpisah.*
+_PivotGrid adalah komponen read-only; editing tetap di DataGrid atau form
+terpisah._

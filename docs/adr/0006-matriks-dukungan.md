@@ -23,33 +23,33 @@ sempit menghalangi adopsi enterprise. Perlu matriks eksplisit yang:
 
 ### Browser
 
-| Browser | Minimum | Diuji |
-|---|---|---|
-| Chrome | 2 versi stabil terakhir | Ya |
-| Edge | 2 versi stabil terakhir | Ya |
-| Firefox | 2 versi stabil terakhir | Ya |
-| Safari | 16.4 | Ya |
-| iOS Safari | 16.4 | Ya (emulasi + perangkat) |
-| IE11 | Tidak didukung | Tidak |
+| Browser    | Minimum                 | Diuji                    |
+| ---------- | ----------------------- | ------------------------ |
+| Chrome     | 2 versi stabil terakhir | Ya                       |
+| Edge       | 2 versi stabil terakhir | Ya                       |
+| Firefox    | 2 versi stabil terakhir | Ya                       |
+| Safari     | 16.4                    | Ya                       |
+| iOS Safari | 16.4                    | Ya (emulasi + perangkat) |
+| IE11       | Tidak didukung          | Tidak                    |
 
 ### Runtime & tooling
 
-| Dimensi | Minimum | Diuji |
-|---|---|---|
-| Node.js | 24 LTS | 24, 26 |
-| TypeScript | 5.4 | minimum, terbaru |
-| Vite | 6.4 | 8.3 |
-| webpack | 5 | 5 |
-| esbuild | 0.25 | 0.28 |
-| Rollup | 4 | 4 |
+| Dimensi    | Minimum | Diuji            |
+| ---------- | ------- | ---------------- |
+| Node.js    | 24 LTS  | 24, 26           |
+| TypeScript | 5.4     | minimum, terbaru |
+| Vite       | 6.4     | 8.3              |
+| webpack    | 5       | 5                |
+| esbuild    | 0.25    | 0.28             |
+| Rollup     | 4       | 4                |
 
 ### Framework
 
-| Framework | Rentang peer | Diuji |
-|---|---|---|
-| React | `>=18` | 18, 19 |
-| Vue | `>=3.4 <4` | 3.4, 3.5+ |
-| Angular | `>=17 <23` | 17, stabil terbaru |
+| Framework | Rentang peer | Diuji              |
+| --------- | ------------ | ------------------ |
+| React     | `>=18`       | 18, 19             |
+| Vue       | `>=3.4 <4`   | 3.4, 3.5+          |
+| Angular   | `>=17 <23`   | 17, stabil terbaru |
 
 ### Kebijakan
 
@@ -68,12 +68,12 @@ sempit menghalangi adopsi enterprise. Perlu matriks eksplisit yang:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| Dukungan tanpa batas | Adopsi maksimal | CI meledak, bug lama | Tidak realistis |
-| Hanya versi terbaru | CI sederhana | Enterprise tertinggal | Terlalu ketat |
-| N/N-1 major + browser modern | Seimbang | Perlu disiplin review | **Dipilih** |
-| Termasuk IE11 | Pasar lama | Polyfill besar, arsitektur terhambat | Ditolak |
+| Alternatif                   | Kelebihan       | Kekurangan                           | Alasan tidak dipilih |
+| ---------------------------- | --------------- | ------------------------------------ | -------------------- |
+| Dukungan tanpa batas         | Adopsi maksimal | CI meledak, bug lama                 | Tidak realistis      |
+| Hanya versi terbaru          | CI sederhana    | Enterprise tertinggal                | Terlalu ketat        |
+| N/N-1 major + browser modern | Seimbang        | Perlu disiplin review                | **Dipilih**          |
+| Termasuk IE11                | Pasar lama      | Polyfill besar, arsitektur terhambat | Ditolak              |
 
 ---
 
@@ -120,13 +120,13 @@ sempit menghalangi adopsi enterprise. Perlu matriks eksplisit yang:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| CI matrix | FND-007, FND-027 |
-| Peer deps | FND-009 |
-| Docs | tabel kompatibilitas di setiap paket |
-| Review | setiap rilis minor |
-| Target | Sebelum FND-009 selesai |
+| Item      | Detail                               |
+| --------- | ------------------------------------ |
+| CI matrix | FND-007, FND-027                     |
+| Peer deps | FND-009                              |
+| Docs      | tabel kompatibilitas di setiap paket |
+| Review    | setiap rilis minor                   |
+| Target    | Sebelum FND-009 selesai              |
 
 ---
 
@@ -140,8 +140,8 @@ sempit menghalangi adopsi enterprise. Perlu matriks eksplisit yang:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | N/N-1 major |
-| 2026-11-23 | QA Lead | Setuju | Matrix diuji di nightly |
-| 2026-11-23 | Adapter Engineer | Setuju | Angular <23, Vue <4 |
+| Tanggal    | Reviewer         | Keputusan | Catatan                 |
+| ---------- | ---------------- | --------- | ----------------------- |
+| 2026-11-23 | Tech Lead        | Setuju    | N/N-1 major             |
+| 2026-11-23 | QA Lead          | Setuju    | Matrix diuji di nightly |
+| 2026-11-23 | Adapter Engineer | Setuju    | Angular <23, Vue <4     |

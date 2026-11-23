@@ -41,13 +41,13 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| MIT | Sangat sederhana, familiar | Tidak ada patent grant eksplisit | Perlindungan paten penting untuk enterprise |
-| Apache-2.0 | Permisif + patent grant + NOTICE | Sedikit lebih formal | **Dipilih** |
-| Dual MIT/Apache | Fleksibel | Dua set kewajiban, membingungkan | Tidak perlu |
-| BSL / commercial | Monetisasi | Tidak open source, adopsi terbatas | Bertentangan dengan tujuan awal |
-| GPL-3.0 | Copyleft kuat | Tidak cocok untuk embedding proprietary | Ditolak |
+| Alternatif       | Kelebihan                        | Kekurangan                              | Alasan tidak dipilih                        |
+| ---------------- | -------------------------------- | --------------------------------------- | ------------------------------------------- |
+| MIT              | Sangat sederhana, familiar       | Tidak ada patent grant eksplisit        | Perlindungan paten penting untuk enterprise |
+| Apache-2.0       | Permisif + patent grant + NOTICE | Sedikit lebih formal                    | **Dipilih**                                 |
+| Dual MIT/Apache  | Fleksibel                        | Dua set kewajiban, membingungkan        | Tidak perlu                                 |
+| BSL / commercial | Monetisasi                       | Tidak open source, adopsi terbatas      | Bertentangan dengan tujuan awal             |
+| GPL-3.0          | Copyleft kuat                    | Tidak cocok untuk embedding proprietary | Ditolak                                     |
 
 ---
 
@@ -93,13 +93,13 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| File | `LICENSE`, `NOTICE` di root dan setiap paket |
-| CI | cek lisensi + `license-checker` |
-| Kontribusi | `CONTRIBUTING.md` + DCO |
-| Task | FND-025, FND-034 |
-| Target | Sebelum FND-001 selesai |
+| Item       | Detail                                       |
+| ---------- | -------------------------------------------- |
+| File       | `LICENSE`, `NOTICE` di root dan setiap paket |
+| CI         | cek lisensi + `license-checker`              |
+| Kontribusi | `CONTRIBUTING.md` + DCO                      |
+| Task       | FND-025, FND-034                             |
+| Target     | Sebelum FND-001 selesai                      |
 
 ---
 
@@ -114,8 +114,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Rekomendasi awal |
-| 2026-11-23 | Legal Reviewer | Setuju | Patent grant dinilai penting |
-| 2026-11-23 | Stakeholder | Setuju | Tidak ada model dual-license di 1.0 |
+| Tanggal    | Reviewer       | Keputusan | Catatan                             |
+| ---------- | -------------- | --------- | ----------------------------------- |
+| 2026-11-23 | Tech Lead      | Setuju    | Rekomendasi awal                    |
+| 2026-11-23 | Legal Reviewer | Setuju    | Patent grant dinilai penting        |
+| 2026-11-23 | Stakeholder    | Setuju    | Tidak ada model dual-license di 1.0 |

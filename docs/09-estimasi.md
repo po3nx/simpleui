@@ -9,15 +9,15 @@
 
 ## 1. Jawaban langsung
 
-Pertanyaan: *berapa lama membuat "clone DevExtreme" (library komponen
-framework-agnostic) sampai bisa dipakai produksi?*
+Pertanyaan: _berapa lama membuat "clone DevExtreme" (library komponen
+framework-agnostic) sampai bisa dipakai produksi?_
 
-| Definisi "selesai" | Tim 1 orang | Tim 3 orang | Tim 5–6 orang | Tim 8–10 orang |
-|---|---|---|---|---|
-| DataGrid MVP (fitur inti, 1–2 adapter) | 16–19 bulan | 7–8 bulan | 4–5 bulan | 4 bulan |
-| DataGrid GA (4 adapter, editing, grouping, a11y, security) | 28–32 bulan | 11–13 bulan | 8–9 bulan | 6–7 bulan |
-| **Trio: DataGrid + PivotGrid + Chart GA** | 4–5 tahun | 20–23 bulan | **14–16 bulan** | 9–11 bulan |
-| Parity penuh ±100 widget | 10+ tahun | ± 5 tahun | 30–36 bulan | 22–28 bulan |
+| Definisi "selesai"                                         | Tim 1 orang | Tim 3 orang | Tim 5–6 orang   | Tim 8–10 orang |
+| ---------------------------------------------------------- | ----------- | ----------- | --------------- | -------------- |
+| DataGrid MVP (fitur inti, 1–2 adapter)                     | 16–19 bulan | 7–8 bulan   | 4–5 bulan       | 4 bulan        |
+| DataGrid GA (4 adapter, editing, grouping, a11y, security) | 28–32 bulan | 11–13 bulan | 8–9 bulan       | 6–7 bulan      |
+| **Trio: DataGrid + PivotGrid + Chart GA**                  | 4–5 tahun   | 20–23 bulan | **14–16 bulan** | 9–11 bulan     |
+| Parity penuh ±100 widget                                   | 10+ tahun   | ± 5 tahun   | 30–36 bulan     | 22–28 bulan    |
 
 Angka kalender adalah **total dari mulai proyek**, sudah termasuk fondasi,
 integrasi, QA, dokumentasi, dan buffer 15–20%. Tanpa buffer, kalender sekitar
@@ -49,25 +49,25 @@ melanjutkan ke parity atau fokus pada diferensiasi.
 
 ## 3. Effort per workstream
 
-| Workstream | Ideal day | PM | Range PM | Keyakinan |
-|---|---:|---:|---:|---|
-| Foundation & platform | 130 | 6,5 | 6–8 | Sedang |
-| **DataGrid GA** | **353** | **17,7** | **16–20** | Sedang |
-| **PivotGrid GA** | **157** | **7,9** | **8–10** | Rendah–sedang |
-| **Charts GA** | **191** | **9,6** | **10–14** | Rendah |
-| **Subtotal trio** | **831** | **41,6** | **40–52** | |
-| Editors & forms (±30 komponen) | 200 | 10,0 | 9–13 | Sedang |
-| TreeList | 90 | 4,5 | 4–6 | Sedang |
-| Scheduler | 140 | 7,0 | 6–9 | Rendah |
-| Gantt | 180 | 9,0 | 8–12 | Rendah |
-| VectorMap | 160 | 8,0 | 7–11 | Rendah |
-| Diagram | 140 | 7,0 | 6–10 | Rendah |
-| FileManager | 100 | 5,0 | 5–7 | Rendah |
-| Gauges, range selector, sparkline, bullet, treemap, funnel | 100 | 5,0 | 5–7 | Sedang |
-| **Subtotal non-flagship** | **1.110** | **55,5** | **50–65** | |
-| **Total fitur (tanpa overhead)** | **1.941** | **97,1** | **90–117** | |
-| Overhead docs/QA/security/release (25–35%) | — | **24–34** | | |
-| **Total parity penuh** | — | **121–131** | **115–150** | Rendah |
+| Workstream                                                 | Ideal day |          PM |    Range PM | Keyakinan     |
+| ---------------------------------------------------------- | --------: | ----------: | ----------: | ------------- |
+| Foundation & platform                                      |       130 |         6,5 |         6–8 | Sedang        |
+| **DataGrid GA**                                            |   **353** |    **17,7** |   **16–20** | Sedang        |
+| **PivotGrid GA**                                           |   **157** |     **7,9** |    **8–10** | Rendah–sedang |
+| **Charts GA**                                              |   **191** |     **9,6** |   **10–14** | Rendah        |
+| **Subtotal trio**                                          |   **831** |    **41,6** |   **40–52** |               |
+| Editors & forms (±30 komponen)                             |       200 |        10,0 |        9–13 | Sedang        |
+| TreeList                                                   |        90 |         4,5 |         4–6 | Sedang        |
+| Scheduler                                                  |       140 |         7,0 |         6–9 | Rendah        |
+| Gantt                                                      |       180 |         9,0 |        8–12 | Rendah        |
+| VectorMap                                                  |       160 |         8,0 |        7–11 | Rendah        |
+| Diagram                                                    |       140 |         7,0 |        6–10 | Rendah        |
+| FileManager                                                |       100 |         5,0 |         5–7 | Rendah        |
+| Gauges, range selector, sparkline, bullet, treemap, funnel |       100 |         5,0 |         5–7 | Sedang        |
+| **Subtotal non-flagship**                                  | **1.110** |    **55,5** |   **50–65** |               |
+| **Total fitur (tanpa overhead)**                           | **1.941** |    **97,1** |  **90–117** |               |
+| Overhead docs/QA/security/release (25–35%)                 |         — |   **24–34** |             |               |
+| **Total parity penuh**                                     |         — | **121–131** | **115–150** | Rendah        |
 
 Catatan:
 
@@ -99,12 +99,12 @@ parity.
 
 Effective capacity ± 2,4 FTE (memperhitungkan koordinasi, review, cuti).
 
-| Fase | Effort | Kalender (+20% buffer) |
-|---|---|---|
-| Foundation | 6,5 PM | 3,3 bulan |
-| DataGrid GA | 17,7 PM | 8,9 bulan |
-| Trio | 41,6 PM | 20,8 bulan |
-| Parity | 125 PM | 62 bulan |
+| Fase        | Effort  | Kalender (+20% buffer) |
+| ----------- | ------- | ---------------------- |
+| Foundation  | 6,5 PM  | 3,3 bulan              |
+| DataGrid GA | 17,7 PM | 8,9 bulan              |
+| Trio        | 41,6 PM | 20,8 bulan             |
+| Parity      | 125 PM  | 62 bulan               |
 
 DataGrid total ± 12,2 bulan (3,3 bulan fondasi + 8,9 bulan DataGrid). DataGrid
 bisa lebih cepat jika adapter ditunda; tetapi 4 adapter adalah syarat GA.
@@ -122,15 +122,15 @@ Komposisi:
 
 Effective capacity ± 3,8–4,2 FTE.
 
-| Fase | Effort | Kalender | Kumulatif |
-|---|---|---|---|
-| Foundation | 6,5 PM | 2 bulan | 2 bulan |
-| DataGrid GA | 17,7 PM | 6–7 bulan | 8–9 bulan |
-| PivotGrid (paralel) | 7,9 PM | 5–6 bulan | 12–13 bulan |
-| Charts (paralel) | 10–14 PM | 7–8 bulan | 14–16 bulan |
-| **Trio GA** | **41–48 PM** | **14–16 bulan** | |
-| Editors/forms | 10 PM | 4–5 bulan | 19–21 bulan |
-| Advanced suite | 55 PM | 14–18 bulan | 33–39 bulan |
+| Fase                | Effort       | Kalender        | Kumulatif   |
+| ------------------- | ------------ | --------------- | ----------- |
+| Foundation          | 6,5 PM       | 2 bulan         | 2 bulan     |
+| DataGrid GA         | 17,7 PM      | 6–7 bulan       | 8–9 bulan   |
+| PivotGrid (paralel) | 7,9 PM       | 5–6 bulan       | 12–13 bulan |
+| Charts (paralel)    | 10–14 PM     | 7–8 bulan       | 14–16 bulan |
+| **Trio GA**         | **41–48 PM** | **14–16 bulan** |             |
+| Editors/forms       | 10 PM        | 4–5 bulan       | 19–21 bulan |
+| Advanced suite      | 55 PM        | 14–18 bulan     | 33–39 bulan |
 
 ### 4.4 Tim 8–10 orang
 
@@ -142,17 +142,17 @@ paralelisasi: DataGrid critical path tidak bisa dipercepat tanpa batas; setelah
 
 ## 5. Kalender referensi (mulai 1 Desember 2026)
 
-| Milestone | Target | Durasi kumulatif |
-|---|---|---|
-| M0 Plan approved | 2026-11-28 | — |
-| M1 Foundation | 2027-01-29 | 2 bulan |
-| M2 DataGrid alpha | 2027-04-16 | 4,5 bulan |
-| M3 DataGrid beta | 2027-05-28 | 5,9 bulan |
-| M4 DataGrid GA | 2027-08-06 | 8,2 bulan |
-| M5 PivotGrid GA | 2027-11-19 | 11,7 bulan |
-| M6 Charts GA | 2028-02-11 | 14,4 bulan |
-| M7 Editors GA | 2028-05-19 | 17,6 bulan |
-| M8 Advanced suite | 2029-06-29 | 31 bulan |
+| Milestone         | Target     | Durasi kumulatif |
+| ----------------- | ---------- | ---------------- |
+| M0 Plan approved  | 2026-11-28 | —                |
+| M1 Foundation     | 2027-01-29 | 2 bulan          |
+| M2 DataGrid alpha | 2027-04-16 | 4,5 bulan        |
+| M3 DataGrid beta  | 2027-05-28 | 5,9 bulan        |
+| M4 DataGrid GA    | 2027-08-06 | 8,2 bulan        |
+| M5 PivotGrid GA   | 2027-11-19 | 11,7 bulan       |
+| M6 Charts GA      | 2028-02-11 | 14,4 bulan       |
+| M7 Editors GA     | 2028-05-19 | 17,6 bulan       |
+| M8 Advanced suite | 2029-06-29 | 31 bulan         |
 
 Dengan buffer 15%: trio GA paling lambat **Maret 2028** (± 16 bulan).
 
@@ -160,15 +160,15 @@ Dengan buffer 15%: trio GA paling lambat **Maret 2028** (± 16 bulan).
 
 ## 6. Breakdown effort DataGrid
 
-| Kelompok | Ideal day | % |
-|---|---:|---:|
-| DG-0 Kontrak & spike | 24 | 7% |
-| DG-1 Model & data | 60 | 17% |
-| DG-2 Rendering & MVP | 85 | 24% |
-| DG-3 Adapter & a11y | 55 | 16% |
-| DG-4 Fitur GA | 73 | 21% |
-| DG-5 Hardening & GA | 56 | 16% |
-| **Total** | **353** | **100%** |
+| Kelompok             | Ideal day |        % |
+| -------------------- | --------: | -------: |
+| DG-0 Kontrak & spike |        24 |       7% |
+| DG-1 Model & data    |        60 |      17% |
+| DG-2 Rendering & MVP |        85 |      24% |
+| DG-3 Adapter & a11y  |        55 |      16% |
+| DG-4 Fitur GA        |        73 |      21% |
+| DG-5 Hardening & GA  |        56 |      16% |
+| **Total**            |   **353** | **100%** |
 
 Kesimpulan:
 
@@ -202,32 +202,32 @@ yang ketat.
 
 ## 8. Faktor yang menggeser estimasi
 
-| Faktor | Dampak |
-|---|---|
-| Requirement berubah > 20% | +15–30% |
-| Tidak ada designer | +10–20% (desain sambil jalan) |
-| Hanya 1 framework adapter | −8–10% |
-| Tidak perlu Angular | −6–8% |
-| Perlu SSR hydration penuh | +10–20% |
-| Perlu dukungan mobile/touch mendalam | +10–15% |
-| Perlu ekspor Excel kompleks/PDF | +5–8% |
-| Perlu localization > 5 bahasa | +3–5% |
-| Perlu sertifikasi a11y formal (VPAT) | +5–10% |
-| Tim baru di domain grid | +20–35% |
-| Turnover engineer kunci | +15–25% |
-| Dependency kritis berubah breaking | +5–15% |
+| Faktor                               | Dampak                        |
+| ------------------------------------ | ----------------------------- |
+| Requirement berubah > 20%            | +15–30%                       |
+| Tidak ada designer                   | +10–20% (desain sambil jalan) |
+| Hanya 1 framework adapter            | −8–10%                        |
+| Tidak perlu Angular                  | −6–8%                         |
+| Perlu SSR hydration penuh            | +10–20%                       |
+| Perlu dukungan mobile/touch mendalam | +10–15%                       |
+| Perlu ekspor Excel kompleks/PDF      | +5–8%                         |
+| Perlu localization > 5 bahasa        | +3–5%                         |
+| Perlu sertifikasi a11y formal (VPAT) | +5–10%                        |
+| Tim baru di domain grid              | +20–35%                       |
+| Turnover engineer kunci              | +15–25%                       |
+| Dependency kritis berubah breaking   | +5–15%                        |
 
 ---
 
 ## 9. Build vs buy (jujur)
 
-| Opsi | Kelebihan | Kekurangan | Cocok jika |
-|---|---|---|---|
-| **Beli DevExtreme** | Parity luas, matang, support | Lisensi, lock-in, arsitektur lama, sulit dikustomisasi dalam | Butuh cepat, budget ada |
-| **AG Grid / Handsontable** | Grid sangat kuat | Fokus grid, lisensi enterprise untuk fitur tertentu | Kebutuhan utama grid |
-| **ECharts / Chart.js** | Chart matang | Bukan grid/pivot; integrasi terpisah | Kebutuhan utama chart |
-| **TanStack Table + custom UI** | Headless, fleksibel | Anda membangun UI, a11y, editing sendiri | Tim kuat, kebutuhan unik |
-| **Bangun SimpleUI** | Kontrol penuh, security/a11y/framework konsisten, IP sendiri | Mahal, multi-tahun, risiko eksekusi | Diferensiasi & jangka panjang |
+| Opsi                           | Kelebihan                                                    | Kekurangan                                                   | Cocok jika                    |
+| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------- |
+| **Beli DevExtreme**            | Parity luas, matang, support                                 | Lisensi, lock-in, arsitektur lama, sulit dikustomisasi dalam | Butuh cepat, budget ada       |
+| **AG Grid / Handsontable**     | Grid sangat kuat                                             | Fokus grid, lisensi enterprise untuk fitur tertentu          | Kebutuhan utama grid          |
+| **ECharts / Chart.js**         | Chart matang                                                 | Bukan grid/pivot; integrasi terpisah                         | Kebutuhan utama chart         |
+| **TanStack Table + custom UI** | Headless, fleksibel                                          | Anda membangun UI, a11y, editing sendiri                     | Tim kuat, kebutuhan unik      |
+| **Bangun SimpleUI**            | Kontrol penuh, security/a11y/framework konsisten, IP sendiri | Mahal, multi-tahun, risiko eksekusi                          | Diferensiasi & jangka panjang |
 
 **Decision gate di M2 (alpha):** jika DataGrid alpha sudah memenuhi 80% use case
 dan tim menilai biaya 3 komponen berikutnya terlalu tinggi, pertimbangkan
@@ -272,6 +272,6 @@ diam-diam.
 
 ---
 
-*Angka task-level ada di [DataGrid tasks](components/datagrid/07-tasks.md),
+_Angka task-level ada di [DataGrid tasks](components/datagrid/07-tasks.md),
 [PivotGrid tasks](components/pivotgrid/02-tasks.md), dan
-[Chart tasks](components/chart/02-tasks.md).*
+[Chart tasks](components/chart/02-tasks.md)._

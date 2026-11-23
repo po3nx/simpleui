@@ -46,13 +46,13 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| jsdom saja | Cepat, murah | Layout/scroll/pointer tidak nyata | Tidak cukup untuk grid |
-| Playwright component testing | Nyata | Kurang terintegrasi dengan Vitest | Duplikasi tooling |
-| Cypress | DX baik | Berat, paralelisasi mahal | Tidak dipilih |
-| Vitest browser + Playwright | Satu runner, nyata, cepat | CI membutuhkan browser | **Dipilih** |
-| Jest | Populer | ESM/TS config lebih rumit | Ditolak |
+| Alternatif                   | Kelebihan                 | Kekurangan                        | Alasan tidak dipilih   |
+| ---------------------------- | ------------------------- | --------------------------------- | ---------------------- |
+| jsdom saja                   | Cepat, murah              | Layout/scroll/pointer tidak nyata | Tidak cukup untuk grid |
+| Playwright component testing | Nyata                     | Kurang terintegrasi dengan Vitest | Duplikasi tooling      |
+| Cypress                      | DX baik                   | Berat, paralelisasi mahal         | Tidak dipilih          |
+| Vitest browser + Playwright  | Satu runner, nyata, cepat | CI membutuhkan browser            | **Dipilih**            |
+| Jest                         | Populer                   | ESM/TS config lebih rumit         | Ditolak                |
 
 ---
 
@@ -99,15 +99,15 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Vitest | FND-005 |
-| Playwright | FND-006 |
-| Harness | FND-020 |
-| A11y | FND-031 |
-| Visual | FND-032 |
-| Mutation | Nightly, setelah core stabil |
-| Target | Sebelum DG-2 |
+| Item       | Detail                       |
+| ---------- | ---------------------------- |
+| Vitest     | FND-005                      |
+| Playwright | FND-006                      |
+| Harness    | FND-020                      |
+| A11y       | FND-031                      |
+| Visual     | FND-032                      |
+| Mutation   | Nightly, setelah core stabil |
+| Target     | Sebelum DG-2                 |
 
 ---
 
@@ -121,8 +121,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | QA Lead | Setuju | Browser mode untuk komponen |
-| 2026-11-23 | Tech Lead | Setuju | Satu runner utama |
-| 2026-11-23 | Core Engineer | Setuju | Mutation untuk core kritis |
+| Tanggal    | Reviewer      | Keputusan | Catatan                     |
+| ---------- | ------------- | --------- | --------------------------- |
+| 2026-11-23 | QA Lead       | Setuju    | Browser mode untuk komponen |
+| 2026-11-23 | Tech Lead     | Setuju    | Satu runner utama           |
+| 2026-11-23 | Core Engineer | Setuju    | Mutation untuk core kritis  |

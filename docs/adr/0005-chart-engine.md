@@ -42,13 +42,13 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| Bungkus ECharts | Cepat, fitur luas | Bundle besar, API/a11y/security di luar kendali | Tidak konsisten |
-| Bungkus Chart.js | Ringan, populer | Kurang cocok untuk financial/polar kompleks | Kontrol terbatas |
-| D3 sebagai fondasi | Fleksibel | D3 bukan chart library; tetap bangun lapisan besar | Kompleksitas tersembunyi |
-| Scene graph sendiri | Kontrol penuh, kecil, a11y/security terintegrasi | Effort besar, memerlukan keahlian grafika | **Dipilih** |
-| Web Components chart | Isolasi | Styling/SSR rumit | Ditunda |
+| Alternatif           | Kelebihan                                        | Kekurangan                                         | Alasan tidak dipilih     |
+| -------------------- | ------------------------------------------------ | -------------------------------------------------- | ------------------------ |
+| Bungkus ECharts      | Cepat, fitur luas                                | Bundle besar, API/a11y/security di luar kendali    | Tidak konsisten          |
+| Bungkus Chart.js     | Ringan, populer                                  | Kurang cocok untuk financial/polar kompleks        | Kontrol terbatas         |
+| D3 sebagai fondasi   | Fleksibel                                        | D3 bukan chart library; tetap bangun lapisan besar | Kompleksitas tersembunyi |
+| Scene graph sendiri  | Kontrol penuh, kecil, a11y/security terintegrasi | Effort besar, memerlukan keahlian grafika          | **Dipilih**              |
+| Web Components chart | Isolasi                                          | Styling/SSR rumit                                  | Ditunda                  |
 
 ---
 
@@ -98,15 +98,15 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Scene graph | CH-004 |
-| SVG/Canvas | CH-005, CH-006 |
-| Scale/axis/layout | CH-007…CH-009 |
-| Series | CH-011…CH-018 |
-| A11y | CH-024 |
-| Perf | CH-029 |
-| Target | CH-1 gate; GA M6 |
+| Item              | Detail           |
+| ----------------- | ---------------- |
+| Scene graph       | CH-004           |
+| SVG/Canvas        | CH-005, CH-006   |
+| Scale/axis/layout | CH-007…CH-009    |
+| Series            | CH-011…CH-018    |
+| A11y              | CH-024           |
+| Perf              | CH-029           |
+| Target            | CH-1 gate; GA M6 |
 
 ---
 
@@ -120,8 +120,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Scene graph sendiri |
-| 2026-11-23 | Chart Squad | Setuju dengan risiko | Butuh spike performa awal |
-| 2026-11-23 | Security Reviewer | Setuju | Tanpa HTML/eval |
+| Tanggal    | Reviewer          | Keputusan            | Catatan                   |
+| ---------- | ----------------- | -------------------- | ------------------------- |
+| 2026-11-23 | Tech Lead         | Setuju               | Scene graph sendiri       |
+| 2026-11-23 | Chart Squad       | Setuju dengan risiko | Butuh spike performa awal |
+| 2026-11-23 | Security Reviewer | Setuju               | Tanpa HTML/eval           |

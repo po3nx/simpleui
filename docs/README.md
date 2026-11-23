@@ -18,15 +18,15 @@ Asumsi: tim inti **5–6 orang** (3 core engineer, 1 framework/adapter engineer,
 1 QA/UX engineer, 0,5 technical writer), satu orang senior sebagai tech lead,
 dan komponen dibangun dari nol (bukan fork DevExtreme).
 
-| Tonggak | Perkiraan kalender | Catatan |
-|---|---|---|
-| Fondasi platform (repo, core runtime, CI, tokens, test harness) | **2 bulan** | Phase 0 |
-| DataGrid MVP (vanilla + React, fitur inti) | **4–5 bulan** | Termasuk fondasi |
-| DataGrid GA (4 adapter, editing, grouping, a11y, security, 1.0) | **8–9 bulan** | Termasuk fondasi 2 bulan |
-| PivotGrid GA | **10–12 bulan** | Kumulatif, sebagian paralel |
-| Chart suite GA (cartesian, financial, pie/polar, sparkline) | **12–15 bulan** | Kumulatif, squad terpisah |
-| **Trio DataGrid + PivotGrid + Chart GA** | **14–16 bulan** | Target realistis dengan buffer |
-| Parity penuh DevExtreme (±100 widget) | **30–36 bulan** | Tim 5–6 orang |
+| Tonggak                                                         | Perkiraan kalender | Catatan                        |
+| --------------------------------------------------------------- | ------------------ | ------------------------------ |
+| Fondasi platform (repo, core runtime, CI, tokens, test harness) | **2 bulan**        | Phase 0                        |
+| DataGrid MVP (vanilla + React, fitur inti)                      | **4–5 bulan**      | Termasuk fondasi               |
+| DataGrid GA (4 adapter, editing, grouping, a11y, security, 1.0) | **8–9 bulan**      | Termasuk fondasi 2 bulan       |
+| PivotGrid GA                                                    | **10–12 bulan**    | Kumulatif, sebagian paralel    |
+| Chart suite GA (cartesian, financial, pie/polar, sparkline)     | **12–15 bulan**    | Kumulatif, squad terpisah      |
+| **Trio DataGrid + PivotGrid + Chart GA**                        | **14–16 bulan**    | Target realistis dengan buffer |
+| Parity penuh DevExtreme (±100 widget)                           | **30–36 bulan**    | Tim 5–6 orang                  |
 
 Angka di atas adalah **rough order of magnitude**, bukan komitmen. Rincian
 perhitungan, skenario tim, dan confidence level ada di
@@ -47,37 +47,37 @@ Jika hanya **1 orang senior full-time**: DataGrid MVP ± 16–19 bulan, trio
 
 ### Aturan & arsitektur
 
-| Dokumen | Isi | Wajib dibaca oleh |
-|---|---|---|
-| [00 — Rule Umum](00-rule-umum.md) | **Kontrak rekayasa utama**: clean code, security, testing, API, performance, a11y, DoD | Semua kontributor |
-| [01 — Arsitektur](01-arsitektur.md) | Layering, package, runtime, rendering, virtualisasi, keputusan arsitektur | Core & component engineer |
-| [02 — Adapter Cross-Framework](02-adapter-cross-framework.md) | Desain adapter JS/TS/React/Vue/Angular, template bridge, parity suite, SSR | Adapter engineer, reviewer |
-| [03 — Data Layer](03-data-layer.md) | Store, DataSource, query pipeline, caching, remote pushdown, CRUD | Core & DataGrid engineer |
-| [04 — Testing Strategy](04-testing-strategy.md) | Piramida test, tooling, coverage gate, visual/perf/security test | Semua kontributor |
-| [05 — Security](05-security.md) | Threat model, kontrol per permukaan, secure default, supply chain | Semua kontributor |
-| [06 — Theming, A11y, i18n](06-theming-a11y-i18n.md) | Design token, CSS layer, WCAG 2.2 AA, lokalisasi, RTL | UI engineer, designer |
-| [07 — Build & Release](07-build-release.md) | Build, exports, API report, CI/CD, rilis, provenance | Release manager, tech lead |
+| Dokumen                                                       | Isi                                                                                    | Wajib dibaca oleh          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------- |
+| [00 — Rule Umum](00-rule-umum.md)                             | **Kontrak rekayasa utama**: clean code, security, testing, API, performance, a11y, DoD | Semua kontributor          |
+| [01 — Arsitektur](01-arsitektur.md)                           | Layering, package, runtime, rendering, virtualisasi, keputusan arsitektur              | Core & component engineer  |
+| [02 — Adapter Cross-Framework](02-adapter-cross-framework.md) | Desain adapter JS/TS/React/Vue/Angular, template bridge, parity suite, SSR             | Adapter engineer, reviewer |
+| [03 — Data Layer](03-data-layer.md)                           | Store, DataSource, query pipeline, caching, remote pushdown, CRUD                      | Core & DataGrid engineer   |
+| [04 — Testing Strategy](04-testing-strategy.md)               | Piramida test, tooling, coverage gate, visual/perf/security test                       | Semua kontributor          |
+| [05 — Security](05-security.md)                               | Threat model, kontrol per permukaan, secure default, supply chain                      | Semua kontributor          |
+| [06 — Theming, A11y, i18n](06-theming-a11y-i18n.md)           | Design token, CSS layer, WCAG 2.2 AA, lokalisasi, RTL                                  | UI engineer, designer      |
+| [07 — Build & Release](07-build-release.md)                   | Build, exports, API report, CI/CD, rilis, provenance                                   | Release manager, tech lead |
 
 ### Perencanaan & eksekusi
 
-| Dokumen | Isi |
-|---|---|
-| [08 — Roadmap Bertahap](08-roadmap.md) | Phase 0–7, milestone, gate, urutan komponen |
-| [09 — Estimasi & Skenario Tim](09-estimasi.md) | Effort per komponen, skenario tim, kalender, risiko |
-| [components/README](components/README.md) | Katalog komponen, tier prioritas, status maturity |
-| [10-tracking/README](10-tracking/README.md) | Cara tracking task, status, progress, dan aturan update |
-| [10-tracking/master-backlog](10-tracking/master-backlog.md) | Epic lintas fase dan dependency graph |
-| [10-tracking/progress](10-tracking/progress.md) | Dashboard progress (di-generate dari task list) |
-| [adr/README](adr/README.md) | Indeks Architecture Decision Records |
-| [11-templates](11-templates/komponen-plan-template.md) | Template plan komponen, ADR, dan PR checklist |
+| Dokumen                                                     | Isi                                                     |
+| ----------------------------------------------------------- | ------------------------------------------------------- |
+| [08 — Roadmap Bertahap](08-roadmap.md)                      | Phase 0–7, milestone, gate, urutan komponen             |
+| [09 — Estimasi & Skenario Tim](09-estimasi.md)              | Effort per komponen, skenario tim, kalender, risiko     |
+| [components/README](components/README.md)                   | Katalog komponen, tier prioritas, status maturity       |
+| [10-tracking/README](10-tracking/README.md)                 | Cara tracking task, status, progress, dan aturan update |
+| [10-tracking/master-backlog](10-tracking/master-backlog.md) | Epic lintas fase dan dependency graph                   |
+| [10-tracking/progress](10-tracking/progress.md)             | Dashboard progress (di-generate dari task list)         |
+| [adr/README](adr/README.md)                                 | Indeks Architecture Decision Records                    |
+| [11-templates](11-templates/komponen-plan-template.md)      | Template plan komponen, ADR, dan PR checklist           |
 
 ### Rencana per komponen
 
-| Komponen | Plan | Task list | Target |
-|---|---|---|---|
-| **DataGrid** (prioritas #1) | [README](components/datagrid/README.md) · [Scope](components/datagrid/01-scope.md) · [Arsitektur](components/datagrid/02-arsitektur.md) · [API](components/datagrid/03-api.md) · [Security](components/datagrid/04-security.md) · [Test](components/datagrid/05-test-plan.md) · [Implementasi](components/datagrid/06-implementation-plan.md) | [07-tasks](components/datagrid/07-tasks.md) | DataGrid 1.0 |
-| **PivotGrid** | [README](components/pivotgrid/README.md) | [02-tasks](components/pivotgrid/02-tasks.md) | PivotGrid 1.0 |
-| **Chart** | [README](components/chart/README.md) | [02-tasks](components/chart/02-tasks.md) | Chart suite 1.0 |
+| Komponen                    | Plan                                                                                                                                                                                                                                                                                                                                          | Task list                                    | Target          |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | --------------- |
+| **DataGrid** (prioritas #1) | [README](components/datagrid/README.md) · [Scope](components/datagrid/01-scope.md) · [Arsitektur](components/datagrid/02-arsitektur.md) · [API](components/datagrid/03-api.md) · [Security](components/datagrid/04-security.md) · [Test](components/datagrid/05-test-plan.md) · [Implementasi](components/datagrid/06-implementation-plan.md) | [07-tasks](components/datagrid/07-tasks.md)  | DataGrid 1.0    |
+| **PivotGrid**               | [README](components/pivotgrid/README.md)                                                                                                                                                                                                                                                                                                      | [02-tasks](components/pivotgrid/02-tasks.md) | PivotGrid 1.0   |
+| **Chart**                   | [README](components/chart/README.md)                                                                                                                                                                                                                                                                                                          | [02-tasks](components/chart/02-tasks.md)     | Chart suite 1.0 |
 
 ---
 
@@ -165,17 +165,17 @@ Struktur detail dan aturan dependency ada di
 
 ## 6. Status saat ini
 
-| Area | Status | Keterangan |
-|---|---|---|
-| Perencanaan produk & arsitektur | ✅ Selesai (draft v1.0) | Dokumen ini |
-| Keputusan arsitektur | ✅ 11 ADR Accepted | [adr/README](adr/README.md) |
-| Dependency security | ✅ 0 known vulnerability | `pnpm audit` + workflow `security.yml` + Dependabot |
-| Lisensi | ✅ Apache-2.0 | [ADR-0001](adr/0001-lisensi-apache-2.0.md) |
-| Nama & scope npm | ✅ Nama diputuskan; verifikasi scope | `@simpleui/*`; cek registry (ADR-0002) |
-| Fondasi repo | 🔄 Scaffold selesai; CI/lint/test belum | FND-001…FND-003 selesai |
-| DataGrid | ⬜ Belum mulai | DG-001…DG-090 |
-| PivotGrid | ⬜ Belum mulai | PV-001…PV-029 |
-| Chart | ⬜ Belum mulai | CH-001…CH-033 |
+| Area                            | Status                                  | Keterangan                                          |
+| ------------------------------- | --------------------------------------- | --------------------------------------------------- |
+| Perencanaan produk & arsitektur | ✅ Selesai (draft v1.0)                 | Dokumen ini                                         |
+| Keputusan arsitektur            | ✅ 11 ADR Accepted                      | [adr/README](adr/README.md)                         |
+| Dependency security             | ✅ 0 known vulnerability                | `pnpm audit` + workflow `security.yml` + Dependabot |
+| Lisensi                         | ✅ Apache-2.0                           | [ADR-0001](adr/0001-lisensi-apache-2.0.md)          |
+| Nama & scope npm                | ✅ Nama diputuskan; verifikasi scope    | `@simpleui/*`; cek registry (ADR-0002)              |
+| Fondasi repo                    | 🔄 Scaffold selesai; CI/lint/test belum | FND-001…FND-003 selesai                             |
+| DataGrid                        | ⬜ Belum mulai                          | DG-001…DG-090                                       |
+| PivotGrid                       | ⬜ Belum mulai                          | PV-001…PV-029                                       |
+| Chart                           | ⬜ Belum mulai                          | CH-001…CH-033                                       |
 
 Legenda status: ✅ selesai · 🔄 berjalan · ⏳ menunggu keputusan · ⬜ belum mulai ·
 ⛔ blocked.
@@ -188,19 +188,19 @@ Seluruh keputusan baseline sudah diputuskan pada **2026-11-23**. Detail,
 alternatif, dan konsekuensi ada di masing-masing ADR. Perubahan keputusan wajib
 melalui ADR baru yang menandai ADR lama sebagai `Superseded`.
 
-| ID | Keputusan | Status | ADR |
-|---|---|---|---|
-| ADR-0001 | Lisensi Apache-2.0 + DCO | Accepted | [Buka](adr/0001-lisensi-apache-2.0.md) |
-| ADR-0002 | Nama `SimpleUI`, scope `@simpleui/*` | Accepted | [Buka](adr/0002-nama-dan-scope-npm.md) |
-| ADR-0003 | jQuery bridge opsional, core tanpa jQuery | Accepted | [Buka](adr/0003-dukungan-jquery.md) |
-| ADR-0004 | DOM engine bersama + adapter tipis | Accepted | [Buka](adr/0004-rendering-engine.md) |
-| ADR-0005 | Chart scene graph sendiri, SVG + Canvas | Accepted | [Buka](adr/0005-chart-engine.md) |
-| ADR-0006 | Matriks dukungan N/N-1 major | Accepted | [Buka](adr/0006-matriks-dukungan.md) |
-| ADR-0007 | Validator ringan internal | Accepted | [Buka](adr/0007-runtime-validation.md) |
-| ADR-0008 | Fixed version group | Accepted | [Buka](adr/0008-strategi-rilis.md) |
-| ADR-0009 | Vitest browser + Playwright | Accepted | [Buka](adr/0009-infrastruktur-test.md) |
-| ADR-0010 | CSS layer + custom properties | Accepted | [Buka](adr/0010-strategi-css.md) |
-| ADR-0011 | ESM-first + UMD untuk CDN | Accepted | [Buka](adr/0011-format-build.md) |
+| ID       | Keputusan                                 | Status   | ADR                                    |
+| -------- | ----------------------------------------- | -------- | -------------------------------------- |
+| ADR-0001 | Lisensi Apache-2.0 + DCO                  | Accepted | [Buka](adr/0001-lisensi-apache-2.0.md) |
+| ADR-0002 | Nama `SimpleUI`, scope `@simpleui/*`      | Accepted | [Buka](adr/0002-nama-dan-scope-npm.md) |
+| ADR-0003 | jQuery bridge opsional, core tanpa jQuery | Accepted | [Buka](adr/0003-dukungan-jquery.md)    |
+| ADR-0004 | DOM engine bersama + adapter tipis        | Accepted | [Buka](adr/0004-rendering-engine.md)   |
+| ADR-0005 | Chart scene graph sendiri, SVG + Canvas   | Accepted | [Buka](adr/0005-chart-engine.md)       |
+| ADR-0006 | Matriks dukungan N/N-1 major              | Accepted | [Buka](adr/0006-matriks-dukungan.md)   |
+| ADR-0007 | Validator ringan internal                 | Accepted | [Buka](adr/0007-runtime-validation.md) |
+| ADR-0008 | Fixed version group                       | Accepted | [Buka](adr/0008-strategi-rilis.md)     |
+| ADR-0009 | Vitest browser + Playwright               | Accepted | [Buka](adr/0009-infrastruktur-test.md) |
+| ADR-0010 | CSS layer + custom properties             | Accepted | [Buka](adr/0010-strategi-css.md)       |
+| ADR-0011 | ESM-first + UMD untuk CDN                 | Accepted | [Buka](adr/0011-format-build.md)       |
 
 **Verifikasi yang masih tersisa (bukan keputusan terbuka):**
 
@@ -216,15 +216,15 @@ diperlukan.
 
 ## 8. Matriks kompatibilitas target
 
-| Dimensi | Target minimum | Diuji di CI | Kebijakan |
-|---|---|---|---|
-| Browser | Chrome/Edge 2 versi terakhir, Firefox 2 versi terakhir, Safari 16.4+, iOS Safari 16.4+ | Matriks Playwright | Tidak ada IE |
-| Node.js (tooling/SSR) | Node 24 LTS | Node 24 & 26 | Node 22 EOL April 2027 |
-| TypeScript | 5.4+ | Versi minimum & terbaru | `strict` wajib |
-| React | 18+ | 18 & 19 | Peer dependency longgar |
-| Vue | 3.4+ | 3.4 & 3.5+ | Vue 2 tidak didukung |
-| Angular | 17+ | 17 & versi stabil terbaru | Standalone component |
-| Bundler | Vite 6.4+, webpack 5, esbuild 0.25+, Rollup 4 | Contoh integrasi | ESM-first |
+| Dimensi               | Target minimum                                                                         | Diuji di CI               | Kebijakan               |
+| --------------------- | -------------------------------------------------------------------------------------- | ------------------------- | ----------------------- |
+| Browser               | Chrome/Edge 2 versi terakhir, Firefox 2 versi terakhir, Safari 16.4+, iOS Safari 16.4+ | Matriks Playwright        | Tidak ada IE            |
+| Node.js (tooling/SSR) | Node 24 LTS                                                                            | Node 24 & 26              | Node 22 EOL April 2027  |
+| TypeScript            | 5.4+                                                                                   | Versi minimum & terbaru   | `strict` wajib          |
+| React                 | 18+                                                                                    | 18 & 19                   | Peer dependency longgar |
+| Vue                   | 3.4+                                                                                   | 3.4 & 3.5+                | Vue 2 tidak didukung    |
+| Angular               | 17+                                                                                    | 17 & versi stabil terbaru | Standalone component    |
+| Bundler               | Vite 6.4+, webpack 5, esbuild 0.25+, Rollup 4                                          | Contoh integrasi          | ESM-first               |
 
 Matriks ini ditinjau setiap rilis minor. Kenaikan minimum version = breaking
 change untuk paket yang terdampak dan wajib ADR.
@@ -262,18 +262,18 @@ change untuk paket yang terdampak dan wajib ADR.
 
 ## 11. Next actions
 
-| # | Aksi | Owner | Tenggat | Status |
-|---|---|---|---|---|
-| 1 | Review & setujui plan v1.0 | Tech lead + stakeholder | 2026-11-28 | ⏳ |
-| 2 | 11 ADR baseline | Tech lead | 2026-11-23 | ✅ |
-| 3 | Verifikasi scope npm & trademark | Release Manager | 2026-12-05 | ⬜ |
-| 4 | Scaffold monorepo + TypeScript references (FND-001…003) | Core engineer | 2026-11-23 | ✅ |
-| 5 | Lint, Vitest, Playwright, CI (FND-004…FND-007) | Core engineer + QA | 2026-12-12 | ⬜ |
-| 6 | Spike virtualizer & adapter bridge (DG-004, DG-005) | Core + adapter engineer | 2027-01-08 | ⬜ |
-| 7 | Kickoff DataGrid DG-0 | Seluruh tim | 2027-01-11 | ⬜ |
+| #   | Aksi                                                    | Owner                   | Tenggat    | Status |
+| --- | ------------------------------------------------------- | ----------------------- | ---------- | ------ |
+| 1   | Review & setujui plan v1.0                              | Tech lead + stakeholder | 2026-11-28 | ⏳     |
+| 2   | 11 ADR baseline                                         | Tech lead               | 2026-11-23 | ✅     |
+| 3   | Verifikasi scope npm & trademark                        | Release Manager         | 2026-12-05 | ⬜     |
+| 4   | Scaffold monorepo + TypeScript references (FND-001…003) | Core engineer           | 2026-11-23 | ✅     |
+| 5   | Lint, Vitest, Playwright, CI (FND-004…FND-007)          | Core engineer + QA      | 2026-12-12 | ⬜     |
+| 6   | Spike virtualizer & adapter bridge (DG-004, DG-005)     | Core + adapter engineer | 2027-01-08 | ⬜     |
+| 7   | Kickoff DataGrid DG-0                                   | Seluruh tim             | 2027-01-11 | ⬜     |
 
 ---
 
-*Dokumen ini hidup. Jika ada konflik antara dokumen ini dengan dokumen lain,
+_Dokumen ini hidup. Jika ada konflik antara dokumen ini dengan dokumen lain,
 [00 — Rule Umum](00-rule-umum.md) menang untuk urusan aturan rekayasa, dan
-[01 — Arsitektur](01-arsitektur.md) menang untuk urusan arsitektur.*
+[01 — Arsitektur](01-arsitektur.md) menang untuk urusan arsitektur._

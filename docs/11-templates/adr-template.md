@@ -30,10 +30,10 @@ Detail:
 ## 3. Alternatif yang dipertimbangkan
 
 | Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| A | | | |
-| B | | | |
-| C | | | |
+| ---------- | --------- | ---------- | -------------------- |
+| A          |           |            |                      |
+| B          |           |            |                      |
+| C          |           |            |                      |
 
 ## 4. Konsekuensi
 
@@ -78,6 +78,6 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| | | Setuju / Tolak / Revisi | |
+| Tanggal | Reviewer | Keputusan               | Catatan |
+| ------- | -------- | ----------------------- | ------- |
+|         |          | Setuju / Tolak / Revisi |         |

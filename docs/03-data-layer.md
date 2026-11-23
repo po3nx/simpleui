@@ -30,10 +30,21 @@ export interface SortDescriptor {
 }
 
 export type FilterOperator =
-  | 'eq' | 'neq' | 'lt' | 'lte' | 'gt' | 'gte'
-  | 'contains' | 'notContains' | 'startsWith' | 'endsWith'
-  | 'in' | 'notIn' | 'between'
-  | 'isNull' | 'isNotNull';
+  | 'eq'
+  | 'neq'
+  | 'lt'
+  | 'lte'
+  | 'gt'
+  | 'gte'
+  | 'contains'
+  | 'notContains'
+  | 'startsWith'
+  | 'endsWith'
+  | 'in'
+  | 'notIn'
+  | 'between'
+  | 'isNull'
+  | 'isNotNull';
 
 export type FilterExpression =
   | readonly [field: string, operator: FilterOperator, value?: unknown]
@@ -98,13 +109,13 @@ Aturan:
 
 ## 3. Store bawaan
 
-| Store | Kapan dipakai | Catatan |
-|---|---|---|
-| `ArrayStore<T>` | Data sudah di memori | Pipeline lokal penuh, mendukung CRUD |
+| Store            | Kapan dipakai          | Catatan                                                |
+| ---------------- | ---------------------- | ------------------------------------------------------ |
+| `ArrayStore<T>`  | Data sudah di memori   | Pipeline lokal penuh, mendukung CRUD                   |
 | `CustomStore<T>` | Integrasi API arbitrer | Callback `load`, `byKey`, `insert`, `update`, `remove` |
-| `ODataStore<T>` | OData v4 | Pushdown filter/sort/page/group, encoding aman |
-| `RestStore<T>` | REST generik | Kontrak endpoint dapat dikonfigurasi |
-| `CachedStore<T>` | Membungkus store lain | TTL, LRU, dedupe, invalidasi |
+| `ODataStore<T>`  | OData v4               | Pushdown filter/sort/page/group, encoding aman         |
+| `RestStore<T>`   | REST generik           | Kontrak endpoint dapat dikonfigurasi                   |
+| `CachedStore<T>` | Membungkus store lain  | TTL, LRU, dedupe, invalidasi                           |
 
 ### 3.1 ArrayStore
 
@@ -120,12 +131,22 @@ Aturan:
 const store = new CustomStore<Order>({
   key: 'id',
   load: async (options) => {
-    const response = await api.list(toQuery(options), { signal: options.signal });
+    const response = await api.list(toQuery(options), {
+      signal: options.signal,
+    });
     return { data: response.items, totalCount: response.total };
   },
   byKey: (key, signal) => api.get(key, { signal }),
   update: (key, values) => api.patch(key, values),
-  capabilities: { remote: true, sort: true, filter: true, group: false, summary: false, paging: true, crud: true },
+  capabilities: {
+    remote: true,
+    sort: true,
+    filter: true,
+    group: false,
+    summary: false,
+    paging: true,
+    crud: true,
+  },
 });
 ```
 
@@ -265,12 +286,12 @@ Aturan:
 
 ### 7.1 Mode editing
 
-| Mode | Perilaku |
-|---|---|
-| `row` | Satu baris diedit, commit per baris |
-| `cell` | Satu sel, commit per sel |
-| `batch` | Banyak perubahan dikumpulkan, commit sekali |
-| `popup`/`form` | Edit di dialog, commit saat simpan |
+| Mode           | Perilaku                                    |
+| -------------- | ------------------------------------------- |
+| `row`          | Satu baris diedit, commit per baris         |
+| `cell`         | Satu sel, commit per sel                    |
+| `batch`        | Banyak perubahan dikumpulkan, commit sekali |
+| `popup`/`form` | Edit di dialog, commit saat simpan          |
 
 ### 7.2 Alur simpan
 
@@ -318,18 +339,18 @@ validasi lokal → onSaving (dapat dibatalkan) → store.update/insert/remove
 
 ## 9. Error codes
 
-| Code | Arti |
-|---|---|
-| `SUI-DATA-001` | Load options tidak valid |
-| `SUI-DATA-002` | Bentuk respons store tidak valid |
-| `SUI-DATA-003` | Duplicate key |
-| `SUI-DATA-004` | Timeout |
-| `SUI-DATA-005` | Request dibatalkan |
-| `SUI-DATA-006` | Melebihi batas group/rows |
+| Code           | Arti                               |
+| -------------- | ---------------------------------- |
+| `SUI-DATA-001` | Load options tidak valid           |
+| `SUI-DATA-002` | Bentuk respons store tidak valid   |
+| `SUI-DATA-003` | Duplicate key                      |
+| `SUI-DATA-004` | Timeout                            |
+| `SUI-DATA-005` | Request dibatalkan                 |
+| `SUI-DATA-006` | Melebihi batas group/rows          |
 | `SUI-DATA-007` | Filter tidak valid / terlalu dalam |
-| `SUI-DATA-008` | Operasi CRUD tidak didukung store |
-| `SUI-DATA-009` | Konflik versi (409) |
-| `SUI-DATA-010` | Response terlalu besar |
+| `SUI-DATA-008` | Operasi CRUD tidak didukung store  |
+| `SUI-DATA-009` | Konflik versi (409)                |
+| `SUI-DATA-010` | Response terlalu besar             |
 
 Error membawa `context` yang sudah disanitasi (tanpa token/PII) dan
 `retryable: boolean`.
@@ -338,17 +359,17 @@ Error membawa `context` yang sudah disanitasi (tanpa token/PII) dan
 
 ## 10. Keamanan data layer
 
-| Risiko | Kontrol |
-|---|---|
-| Injeksi filter/OData | AST tertutup + encoding + validasi field |
-| SSRF/URL berbahaya | `safeUrl`, protokol allowlist, blokir IP internal? (dokumentasikan sebagai tanggung jawab server) |
-| Kebocoran token | Tidak log header/body; `withCredentials` opt-in; header tidak disimpan di state |
-| Data besar / DoS | Batas `take`, ukuran respons, jumlah group, kedalaman filter |
-| Prototype pollution | Sanitasi respons sebelum merge; `safeMerge` |
-| Cache poisoning | Key deterministik, invalidasi, tidak cache error |
-| XSS dari respons | Data dirender sebagai teks; sanitizer hanya jika opt-in |
-| CSRF | Token provider, header eksplisit, credentials opt-in |
-| Kesalahan otorisasi | Server-side enforcement; UI bukan boundary |
+| Risiko               | Kontrol                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| Injeksi filter/OData | AST tertutup + encoding + validasi field                                                          |
+| SSRF/URL berbahaya   | `safeUrl`, protokol allowlist, blokir IP internal? (dokumentasikan sebagai tanggung jawab server) |
+| Kebocoran token      | Tidak log header/body; `withCredentials` opt-in; header tidak disimpan di state                   |
+| Data besar / DoS     | Batas `take`, ukuran respons, jumlah group, kedalaman filter                                      |
+| Prototype pollution  | Sanitasi respons sebelum merge; `safeMerge`                                                       |
+| Cache poisoning      | Key deterministik, invalidasi, tidak cache error                                                  |
+| XSS dari respons     | Data dirender sebagai teks; sanitizer hanya jika opt-in                                           |
+| CSRF                 | Token provider, header eksplisit, credentials opt-in                                              |
+| Kesalahan otorisasi  | Server-side enforcement; UI bukan boundary                                                        |
 
 Detail di [05 — Security](05-security.md).
 
@@ -356,18 +377,18 @@ Detail di [05 — Security](05-security.md).
 
 ## 11. Test plan data layer
 
-| Area | Test |
-|---|---|
-| Filter | setiap operator, null, tipe campuran, Unicode, batas kedalaman |
-| Sort | stable, multi, null ordering, collator locale |
-| Group | multi-level, expand/collapse, group count limit |
-| Summary | sum/avg/min/max/count, custom, NaN/Infinity |
-| Paging | skip/take, total count, page terakhir |
-| Remote | pushdown, fallback, dedupe, cancel, retry, timeout |
-| CRUD | insert/update/remove, konflik 409, rollback batch |
-| Cache | hit/miss, invalidasi, TTL, LRU |
-| Security | payload filter, OData encoding, prototype pollution, response besar |
-| Performance | 100.000 baris filter/sort/group di bawah budget |
+| Area        | Test                                                                |
+| ----------- | ------------------------------------------------------------------- |
+| Filter      | setiap operator, null, tipe campuran, Unicode, batas kedalaman      |
+| Sort        | stable, multi, null ordering, collator locale                       |
+| Group       | multi-level, expand/collapse, group count limit                     |
+| Summary     | sum/avg/min/max/count, custom, NaN/Infinity                         |
+| Paging      | skip/take, total count, page terakhir                               |
+| Remote      | pushdown, fallback, dedupe, cancel, retry, timeout                  |
+| CRUD        | insert/update/remove, konflik 409, rollback batch                   |
+| Cache       | hit/miss, invalidasi, TTL, LRU                                      |
+| Security    | payload filter, OData encoding, prototype pollution, response besar |
+| Performance | 100.000 baris filter/sort/group di bawah budget                     |
 
 Target coverage: **≥ 90% lines/branches** untuk `src/data/`.
 
@@ -375,17 +396,17 @@ Target coverage: **≥ 90% lines/branches** untuk `src/data/`.
 
 ## 12. Benchmark
 
-| Skenario | Target |
-|---|---|
-| Filter 100.000 baris (1 kondisi) | ≤ 50 ms |
-| Sort 100.000 baris | ≤ 150 ms |
-| Group 100.000 baris, 3 level | ≤ 300 ms |
-| Summary 100.000 baris | ≤ 30 ms |
-| Pipeline lengkap 10.000 baris | ≤ 100 ms |
+| Skenario                         | Target   |
+| -------------------------------- | -------- |
+| Filter 100.000 baris (1 kondisi) | ≤ 50 ms  |
+| Sort 100.000 baris               | ≤ 150 ms |
+| Group 100.000 baris, 3 level     | ≤ 300 ms |
+| Summary 100.000 baris            | ≤ 30 ms  |
+| Pipeline lengkap 10.000 baris    | ≤ 100 ms |
 
 Benchmark dijalankan di CI nightly; regresi > 20% memblokir rilis.
 
 ---
 
-*Untuk cara data ditampilkan dan di-virtualisasi, lihat
-[DataGrid arsitektur](components/datagrid/02-arsitektur.md).*
+_Untuk cara data ditampilkan dan di-virtualisasi, lihat
+[DataGrid arsitektur](components/datagrid/02-arsitektur.md)._

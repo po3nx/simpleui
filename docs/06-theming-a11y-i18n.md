@@ -51,19 +51,19 @@ Format nama:
 
 Kategori:
 
-| Kategori | Contoh |
-|---|---|
-| `color` | `--sui-color-bg-surface`, `--sui-color-text-primary`, `--sui-color-accent-default` |
-| `space` | `--sui-space-1` … `--sui-space-12` (skala 4px) |
-| `font` | `--sui-font-family-base`, `--sui-font-size-md`, `--sui-font-weight-semibold` |
-| `line` | `--sui-line-height-tight`, `--sui-line-height-normal` |
-| `radius` | `--sui-radius-sm`, `--sui-radius-md`, `--sui-radius-full` |
-| `shadow` | `--sui-shadow-sm`, `--sui-shadow-overlay` |
-| `border` | `--sui-border-width`, `--sui-border-color` |
-| `focus` | `--sui-focus-ring-color`, `--sui-focus-ring-width`, `--sui-focus-ring-offset` |
-| `z` | `--sui-z-dropdown`, `--sui-z-modal`, `--sui-z-toast` |
-| `motion` | `--sui-motion-duration-fast`, `--sui-motion-ease-standard` |
-| `density` | `--sui-density-row-height`, `--sui-density-cell-padding` |
+| Kategori  | Contoh                                                                             |
+| --------- | ---------------------------------------------------------------------------------- |
+| `color`   | `--sui-color-bg-surface`, `--sui-color-text-primary`, `--sui-color-accent-default` |
+| `space`   | `--sui-space-1` … `--sui-space-12` (skala 4px)                                     |
+| `font`    | `--sui-font-family-base`, `--sui-font-size-md`, `--sui-font-weight-semibold`       |
+| `line`    | `--sui-line-height-tight`, `--sui-line-height-normal`                              |
+| `radius`  | `--sui-radius-sm`, `--sui-radius-md`, `--sui-radius-full`                          |
+| `shadow`  | `--sui-shadow-sm`, `--sui-shadow-overlay`                                          |
+| `border`  | `--sui-border-width`, `--sui-border-color`                                         |
+| `focus`   | `--sui-focus-ring-color`, `--sui-focus-ring-width`, `--sui-focus-ring-offset`      |
+| `z`       | `--sui-z-dropdown`, `--sui-z-modal`, `--sui-z-toast`                               |
+| `motion`  | `--sui-motion-duration-fast`, `--sui-motion-ease-standard`                         |
+| `density` | `--sui-density-row-height`, `--sui-density-cell-padding`                           |
 
 Contoh definisi:
 
@@ -105,11 +105,11 @@ Contoh definisi:
 
 ### 1.5 Density
 
-| Density | Row height | Padding | Penggunaan |
-|---|---|---|---|
-| `comfortable` | 40px | 10px 12px | Default desktop |
-| `compact` | 28px | 4px 8px | Data-heavy |
-| `spacious` | 48px | 14px 16px | Touch/mobile |
+| Density       | Row height | Padding   | Penggunaan      |
+| ------------- | ---------- | --------- | --------------- |
+| `comfortable` | 40px       | 10px 12px | Default desktop |
+| `compact`     | 28px       | 4px 8px   | Data-heavy      |
+| `spacious`    | 48px       | 14px 16px | Touch/mobile    |
 
 Density diterapkan lewat token, bukan class per sel.
 
@@ -152,50 +152,50 @@ Target: **WCAG 2.2 Level AA**, dengan beberapa elemen AAA bila murah
 
 ### 2.1 Fondasi
 
-| Kebutuhan | Implementasi |
-|---|---|
-| Keyboard | Semua fungsi; roving tabindex untuk grid; focus trap untuk dialog |
-| Fokus | `:focus-visible` dengan ring 3:1; fokus dipulihkan setelah dialog |
-| Nama | `aria-label`/`aria-labelledby`; caption tabel |
-| Peran | `role="grid"`, `row`, `columnheader`, `gridcell`, `dialog`, `menu` |
-| State | `aria-selected`, `aria-sort`, `aria-expanded`, `aria-disabled`, `aria-busy` |
-| Live region | Perubahan sort/filter/page/selection diumumkan (throttle 500 ms) |
-| Kontras | Teks 4.5:1; UI 3:1; fokus 3:1 |
-| Target | Minimum 24×24 px; ideal 44×44 px untuk touch |
-| Motion | `prefers-reduced-motion` |
-| Zoom | 200% tanpa kehilangan konten; reflow 320px |
+| Kebutuhan   | Implementasi                                                                |
+| ----------- | --------------------------------------------------------------------------- |
+| Keyboard    | Semua fungsi; roving tabindex untuk grid; focus trap untuk dialog           |
+| Fokus       | `:focus-visible` dengan ring 3:1; fokus dipulihkan setelah dialog           |
+| Nama        | `aria-label`/`aria-labelledby`; caption tabel                               |
+| Peran       | `role="grid"`, `row`, `columnheader`, `gridcell`, `dialog`, `menu`          |
+| State       | `aria-selected`, `aria-sort`, `aria-expanded`, `aria-disabled`, `aria-busy` |
+| Live region | Perubahan sort/filter/page/selection diumumkan (throttle 500 ms)            |
+| Kontras     | Teks 4.5:1; UI 3:1; fokus 3:1                                               |
+| Target      | Minimum 24×24 px; ideal 44×44 px untuk touch                                |
+| Motion      | `prefers-reduced-motion`                                                    |
+| Zoom        | 200% tanpa kehilangan konten; reflow 320px                                  |
 
 ### 2.2 Pola per komponen
 
-| Komponen | Pola ARIA | Catatan |
-|---|---|---|
-| DataGrid | WAI-ARIA Grid | `aria-rowcount`, `aria-colcount`, `aria-rowindex`, `aria-colindex` absolut |
-| PivotGrid | Grid + tree | Header bertingkat, `aria-expanded` untuk expand/collapse |
-| Chart | `figure` + data table alternatif | Navigasi titik data dengan keyboard, ringkasan teks |
-| Dialog/Popup | `role="dialog"` + `aria-modal` | Focus trap, `Esc`, restore focus |
-| Menu/Context menu | `role="menu"`/`menuitem` | Arrow keys, type-ahead, `Esc` |
-| Tooltip | `role="tooltip"` + `aria-describedby` | Muncul pada hover dan focus; dapat ditutup `Esc` |
-| Tabs | `role="tablist"` | Arrow keys, `aria-selected`, panel `aria-labelledby` |
-| Tree | `role="tree"` | Arrow keys, `aria-expanded`, `aria-level` |
-| Form editor | Label + `aria-invalid` + error message | Error diumumkan via live region |
+| Komponen          | Pola ARIA                              | Catatan                                                                    |
+| ----------------- | -------------------------------------- | -------------------------------------------------------------------------- |
+| DataGrid          | WAI-ARIA Grid                          | `aria-rowcount`, `aria-colcount`, `aria-rowindex`, `aria-colindex` absolut |
+| PivotGrid         | Grid + tree                            | Header bertingkat, `aria-expanded` untuk expand/collapse                   |
+| Chart             | `figure` + data table alternatif       | Navigasi titik data dengan keyboard, ringkasan teks                        |
+| Dialog/Popup      | `role="dialog"` + `aria-modal`         | Focus trap, `Esc`, restore focus                                           |
+| Menu/Context menu | `role="menu"`/`menuitem`               | Arrow keys, type-ahead, `Esc`                                              |
+| Tooltip           | `role="tooltip"` + `aria-describedby`  | Muncul pada hover dan focus; dapat ditutup `Esc`                           |
+| Tabs              | `role="tablist"`                       | Arrow keys, `aria-selected`, panel `aria-labelledby`                       |
+| Tree              | `role="tree"`                          | Arrow keys, `aria-expanded`, `aria-level`                                  |
+| Form editor       | Label + `aria-invalid` + error message | Error diumumkan via live region                                            |
 
 ### 2.3 Keyboard map DataGrid (ringkas)
 
-| Tombol | Aksi |
-|---|---|
-| `Tab` / `Shift+Tab` | Masuk/keluar grid |
-| `Arrow` | Pindah sel |
-| `Home` / `End` | Awal/akhir baris |
-| `Ctrl+Home` / `Ctrl+End` | Awal/akhir grid |
-| `PageUp` / `PageDown` | Halaman atas/bawah |
-| `Space` | Pilih baris (selection mode) |
-| `Shift+Space` | Pilih baris (range) |
-| `Enter` | Mulai edit / commit |
-| `F2` | Mulai edit |
-| `Esc` | Batal edit / tutup overlay |
-| `Ctrl+A` | Pilih semua (jika diizinkan) |
-| `Ctrl+C` | Copy sel terpilih |
-| `Alt+ArrowDown` | Buka header filter |
+| Tombol                   | Aksi                         |
+| ------------------------ | ---------------------------- |
+| `Tab` / `Shift+Tab`      | Masuk/keluar grid            |
+| `Arrow`                  | Pindah sel                   |
+| `Home` / `End`           | Awal/akhir baris             |
+| `Ctrl+Home` / `Ctrl+End` | Awal/akhir grid              |
+| `PageUp` / `PageDown`    | Halaman atas/bawah           |
+| `Space`                  | Pilih baris (selection mode) |
+| `Shift+Space`            | Pilih baris (range)          |
+| `Enter`                  | Mulai edit / commit          |
+| `F2`                     | Mulai edit                   |
+| `Esc`                    | Batal edit / tutup overlay   |
+| `Ctrl+A`                 | Pilih semua (jika diizinkan) |
+| `Ctrl+C`                 | Copy sel terpilih            |
+| `Alt+ArrowDown`          | Buka header filter           |
 
 Peta lengkap ada di [DataGrid API §8](components/datagrid/03-api.md#8-keyboard-map).
 
@@ -231,11 +231,11 @@ Peta lengkap ada di [DataGrid API §8](components/datagrid/03-api.md#8-keyboard-
 
 ```ts
 interface LocaleOptions {
-  locale?: string;            // default: 'en'
-  fallbackLocale?: string;    // default: 'en'
+  locale?: string; // default: 'en'
+  fallbackLocale?: string; // default: 'en'
   messages?: Record<string, string>; // override per key
-  timeZone?: string;          // default: undefined (pakai locale)
-  currency?: string;          // default: 'USD'
+  timeZone?: string; // default: undefined (pakai locale)
+  currency?: string; // default: 'USD'
 }
 ```
 
@@ -282,13 +282,13 @@ sui.common.validation.required
 
 ### 3.6 Format
 
-| Tipe | Default | Opsi |
-|---|---|---|
-| Number | `Intl.NumberFormat(locale)` | `format: { type:'number', precision, useGrouping }` |
-| Currency | `Intl.NumberFormat(locale,{style:'currency'})` | `currency` wajib |
-| Date | `Intl.DateTimeFormat(locale)` | `dateStyle`, `timeStyle`, `timeZone` |
-| Percent | `style:'percent'` | `precision` |
-| Custom | fungsi murni | `(value, context) => string` |
+| Tipe     | Default                                        | Opsi                                                |
+| -------- | ---------------------------------------------- | --------------------------------------------------- |
+| Number   | `Intl.NumberFormat(locale)`                    | `format: { type:'number', precision, useGrouping }` |
+| Currency | `Intl.NumberFormat(locale,{style:'currency'})` | `currency` wajib                                    |
+| Date     | `Intl.DateTimeFormat(locale)`                  | `dateStyle`, `timeStyle`, `timeZone`                |
+| Percent  | `style:'percent'`                              | `precision`                                         |
+| Custom   | fungsi murni                                   | `(value, context) => string`                        |
 
 Aturan:
 
@@ -341,5 +341,5 @@ Token khusus grid (contoh):
 
 ---
 
-*Untuk peta keyboard dan event DataGrid, lihat
-[DataGrid API](components/datagrid/03-api.md).*
+_Untuk peta keyboard dan event DataGrid, lihat
+[DataGrid API](components/datagrid/03-api.md)._

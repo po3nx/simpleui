@@ -44,12 +44,12 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| Core berbasis jQuery | Familiar untuk aplikasi lama | Berat, XSS-prone, mengikat arsitektur | Ditolak |
-| Tanpa jQuery sama sekali | Core bersih | Aplikasi legacy sulit migrasi | Terlalu kaku |
-| Bridge opsional | Migrasi bertahap, core tetap bersih | Satu paket tambahan | **Dipilih** |
-| Plugin jQuery penuh | Integrasi maksimal | Duplikasi perilaku | Ditolak |
+| Alternatif               | Kelebihan                           | Kekurangan                            | Alasan tidak dipilih |
+| ------------------------ | ----------------------------------- | ------------------------------------- | -------------------- |
+| Core berbasis jQuery     | Familiar untuk aplikasi lama        | Berat, XSS-prone, mengikat arsitektur | Ditolak              |
+| Tanpa jQuery sama sekali | Core bersih                         | Aplikasi legacy sulit migrasi         | Terlalu kaku         |
+| Bridge opsional          | Migrasi bertahap, core tetap bersih | Satu paket tambahan                   | **Dipilih**          |
+| Plugin jQuery penuh      | Integrasi maksimal                  | Duplikasi perilaku                    | Ditolak              |
 
 ---
 
@@ -98,13 +98,13 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Paket | `@simpleui/vanilla` (subpath `jquery`) |
-| Depends | DG-053 (vanilla UMD), adapter parity |
-| Test | mount/update/dispose, event, XSS payload, no `.html()` |
-| Docs | contoh migrasi jQuery → vanilla |
-| Target | Pasca DataGrid GA, sebelum 1.1 |
+| Item    | Detail                                                 |
+| ------- | ------------------------------------------------------ |
+| Paket   | `@simpleui/vanilla` (subpath `jquery`)                 |
+| Depends | DG-053 (vanilla UMD), adapter parity                   |
+| Test    | mount/update/dispose, event, XSS payload, no `.html()` |
+| Docs    | contoh migrasi jQuery → vanilla                        |
+| Target  | Pasca DataGrid GA, sebelum 1.1                         |
 
 ---
 
@@ -118,8 +118,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Bridge terpisah, bukan core |
-| 2026-11-23 | Security Reviewer | Setuju | Larangan `.html()` eksplisit |
-| 2026-11-23 | Adapter Engineer | Setuju | Ditunda sampai vanilla stabil |
+| Tanggal    | Reviewer          | Keputusan | Catatan                       |
+| ---------- | ----------------- | --------- | ----------------------------- |
+| 2026-11-23 | Tech Lead         | Setuju    | Bridge terpisah, bukan core   |
+| 2026-11-23 | Security Reviewer | Setuju    | Larangan `.html()` eksplisit  |
+| 2026-11-23 | Adapter Engineer  | Setuju    | Ditunda sampai vanilla stabil |

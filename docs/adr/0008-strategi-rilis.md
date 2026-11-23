@@ -36,12 +36,12 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| Independent versions | Rilis komponen cepat | Matriks versi rumit, mismatch | Tidak cocok untuk library terintegrasi |
-| Fixed group | Sederhana, terjamin cocok | Patch kecil menaikkan semua | **Dipilih** |
-| Lockstep manual | Kontrol penuh | Human error | Ditolak |
-| Satu paket monolitik | Paling sederhana | Bundle besar, tree-shaking sulit | Ditolak |
+| Alternatif           | Kelebihan                 | Kekurangan                       | Alasan tidak dipilih                   |
+| -------------------- | ------------------------- | -------------------------------- | -------------------------------------- |
+| Independent versions | Rilis komponen cepat      | Matriks versi rumit, mismatch    | Tidak cocok untuk library terintegrasi |
+| Fixed group          | Sederhana, terjamin cocok | Patch kecil menaikkan semua      | **Dipilih**                            |
+| Lockstep manual      | Kontrol penuh             | Human error                      | Ditolak                                |
+| Satu paket monolitik | Paling sederhana          | Bundle besar, tree-shaking sulit | Ditolak                                |
 
 ---
 
@@ -88,13 +88,13 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Tool | Changesets `fixed` group |
-| CI | `changeset status` + version PR |
+| Item    | Detail                                       |
+| ------- | -------------------------------------------- |
+| Tool    | Changesets `fixed` group                     |
+| CI      | `changeset status` + version PR              |
 | Publish | urut core → theme/icons → komponen → adapter |
-| SBOM | per rilis |
-| Target | FND-008, FND-033 |
+| SBOM    | per rilis                                    |
+| Target  | FND-008, FND-033                             |
 
 ---
 
@@ -108,8 +108,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Fixed group |
-| 2026-11-23 | Release Manager | Setuju | Changesets + provenance |
-| 2026-11-23 | Adapter Engineer | Setuju | Peer range sama |
+| Tanggal    | Reviewer         | Keputusan | Catatan                 |
+| ---------- | ---------------- | --------- | ----------------------- |
+| 2026-11-23 | Tech Lead        | Setuju    | Fixed group             |
+| 2026-11-23 | Release Manager  | Setuju    | Changesets + provenance |
+| 2026-11-23 | Adapter Engineer | Setuju    | Peer range sama         |

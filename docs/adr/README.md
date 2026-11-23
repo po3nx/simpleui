@@ -27,31 +27,31 @@ perubahan dokumentasi biasa.
 
 ## 2. Status ADR
 
-| Status | Arti |
-|---|---|
-| `Proposed` | Sedang dibahas, belum berlaku |
-| `Accepted` | Disetujui dan berlaku |
-| `Superseded` | Digantikan ADR lain |
-| `Deprecated` | Tidak lagi relevan |
-| `Rejected` | Ditolak, alasan dicatat |
+| Status       | Arti                          |
+| ------------ | ----------------------------- |
+| `Proposed`   | Sedang dibahas, belum berlaku |
+| `Accepted`   | Disetujui dan berlaku         |
+| `Superseded` | Digantikan ADR lain           |
+| `Deprecated` | Tidak lagi relevan            |
+| `Rejected`   | Ditolak, alasan dicatat       |
 
 ---
 
 ## 3. Daftar ADR
 
-| ID | Judul | Keputusan | Status | Tanggal |
-|---|---|---|---|---|
-| [ADR-0001](0001-lisensi-apache-2.0.md) | Lisensi proyek | Apache-2.0 + DCO | Accepted | 2026-11-23 |
-| [ADR-0002](0002-nama-dan-scope-npm.md) | Nama & scope npm | `SimpleUI`, `@simpleui/*` | Accepted | 2026-11-23 |
-| [ADR-0003](0003-dukungan-jquery.md) | Dukungan jQuery | Bridge opsional, core tanpa jQuery | Accepted | 2026-11-23 |
-| [ADR-0004](0004-rendering-engine.md) | Rendering engine | DOM bersama + adapter tipis | Accepted | 2026-11-23 |
-| [ADR-0005](0005-chart-engine.md) | Chart engine | Scene graph sendiri, SVG + Canvas | Accepted | 2026-11-23 |
-| [ADR-0006](0006-matriks-dukungan.md) | Matriks dukungan | N/N-1 major, browser modern | Accepted | 2026-11-23 |
-| [ADR-0007](0007-runtime-validation.md) | Runtime validation | Validator ringan internal | Accepted | 2026-11-23 |
-| [ADR-0008](0008-strategi-rilis.md) | Strategi rilis | Fixed version group | Accepted | 2026-11-23 |
-| [ADR-0009](0009-infrastruktur-test.md) | Infrastruktur test | Vitest browser + Playwright | Accepted | 2026-11-23 |
-| [ADR-0010](0010-strategi-css.md) | Strategi CSS | Layer + custom properties | Accepted | 2026-11-23 |
-| [ADR-0011](0011-format-build.md) | Format build | ESM-first + UMD untuk CDN | Accepted | 2026-11-23 |
+| ID                                     | Judul              | Keputusan                          | Status   | Tanggal    |
+| -------------------------------------- | ------------------ | ---------------------------------- | -------- | ---------- |
+| [ADR-0001](0001-lisensi-apache-2.0.md) | Lisensi proyek     | Apache-2.0 + DCO                   | Accepted | 2026-11-23 |
+| [ADR-0002](0002-nama-dan-scope-npm.md) | Nama & scope npm   | `SimpleUI`, `@simpleui/*`          | Accepted | 2026-11-23 |
+| [ADR-0003](0003-dukungan-jquery.md)    | Dukungan jQuery    | Bridge opsional, core tanpa jQuery | Accepted | 2026-11-23 |
+| [ADR-0004](0004-rendering-engine.md)   | Rendering engine   | DOM bersama + adapter tipis        | Accepted | 2026-11-23 |
+| [ADR-0005](0005-chart-engine.md)       | Chart engine       | Scene graph sendiri, SVG + Canvas  | Accepted | 2026-11-23 |
+| [ADR-0006](0006-matriks-dukungan.md)   | Matriks dukungan   | N/N-1 major, browser modern        | Accepted | 2026-11-23 |
+| [ADR-0007](0007-runtime-validation.md) | Runtime validation | Validator ringan internal          | Accepted | 2026-11-23 |
+| [ADR-0008](0008-strategi-rilis.md)     | Strategi rilis     | Fixed version group                | Accepted | 2026-11-23 |
+| [ADR-0009](0009-infrastruktur-test.md) | Infrastruktur test | Vitest browser + Playwright        | Accepted | 2026-11-23 |
+| [ADR-0010](0010-strategi-css.md)       | Strategi CSS       | Layer + custom properties          | Accepted | 2026-11-23 |
+| [ADR-0011](0011-format-build.md)       | Format build       | ESM-first + UMD untuk CDN          | Accepted | 2026-11-23 |
 
 Semua ADR di atas berstatus **Accepted** dan menjadi baseline implementasi.
 Perubahan keputusan wajib melalui ADR baru yang menandai ADR lama sebagai
@@ -63,16 +63,16 @@ kepemilikan tetap menjadi gate FND-009 sebelum publikasi.
 
 ### Ringkasan dampak
 
-| Area | Keputusan utama |
-|---|---|
-| Lisensi & distribusi | Apache-2.0, DCO, NOTICE |
-| Identitas paket | `@simpleui/*`, subpath per komponen |
-| Arsitektur | Core DOM bersama; adapter tipis; template bridge |
-| Visualisasi | Scene graph internal; SVG default; Canvas untuk data besar |
-| Kompatibilitas | React 18+, Vue 3.4+, Angular 17+, browser modern |
-| Kualitas | Validator internal; Vitest browser; Playwright; axe; Stryker |
-| Tampilan | CSS layer; token; tanpa CSS-in-JS |
-| Build | ESM-first; UMD hanya vanilla; ng-packagr untuk Angular |
+| Area                 | Keputusan utama                                              |
+| -------------------- | ------------------------------------------------------------ |
+| Lisensi & distribusi | Apache-2.0, DCO, NOTICE                                      |
+| Identitas paket      | `@simpleui/*`, subpath per komponen                          |
+| Arsitektur           | Core DOM bersama; adapter tipis; template bridge             |
+| Visualisasi          | Scene graph internal; SVG default; Canvas untuk data besar   |
+| Kompatibilitas       | React 18+, Vue 3.4+, Angular 17+, browser modern             |
+| Kualitas             | Validator internal; Vitest browser; Playwright; axe; Stryker |
+| Tampilan             | CSS layer; token; tanpa CSS-in-JS                            |
+| Build                | ESM-first; UMD hanya vanilla; ng-packagr untuk Angular       |
 
 ---
 
@@ -111,5 +111,5 @@ Aturan penamaan: `NNNN-kebab-case.md`, nomor tidak dipakai ulang.
 
 ---
 
-*ADR adalah jejak keputusan, bukan dokumentasi desain lengkap. Untuk detail
-teknis, tautkan ke dokumen arsitektur/komponen.*
+_ADR adalah jejak keputusan, bukan dokumentasi desain lengkap. Untuk detail
+teknis, tautkan ke dokumen arsitektur/komponen._

@@ -144,10 +144,11 @@ Normalisasi menghasilkan `ColumnState`:
 
 ```ts
 interface ColumnState {
-  readonly id: string;             // stabil, tidak berubah saat reorder
+  readonly id: string; // stabil, tidak berubah saat reorder
   readonly dataField?: string;
   readonly caption: string;
-  readonly dataType: 'string' | 'number' | 'date' | 'datetime' | 'boolean' | 'object';
+  readonly dataType:
+    'string' | 'number' | 'date' | 'datetime' | 'boolean' | 'object';
   readonly width: number | 'auto';
   readonly minWidth: number;
   readonly maxWidth?: number;
@@ -290,9 +291,18 @@ Aturan:
 ### 6.3 Virtualizer
 
 ```ts
-function visibleRange(scrollTop: number, viewportHeight: number, rowHeight: number, overscan: number, count: number) {
+function visibleRange(
+  scrollTop: number,
+  viewportHeight: number,
+  rowHeight: number,
+  overscan: number,
+  count: number,
+) {
   const start = Math.max(0, Math.floor(scrollTop / rowHeight) - overscan);
-  const end = Math.min(count, Math.ceil((scrollTop + viewportHeight) / rowHeight) + overscan);
+  const end = Math.min(
+    count,
+    Math.ceil((scrollTop + viewportHeight) / rowHeight) + overscan,
+  );
   return { start, end };
 }
 ```
@@ -401,32 +411,32 @@ Aturan:
 
 ## 10. Events
 
-| Event | Kapan | Payload | Cancelable |
-|---|---|---|---|
-| `contentReady` | Render pertama selesai | `{ element }` | tidak |
-| `dataLoading` | Sebelum load | `{ loadOptions }` | tidak |
-| `dataLoaded` | Setelah load | `{ data, totalCount }` | tidak |
-| `dataError` | Load gagal | `{ error }` | tidak |
-| `optionChanged` | Opsi berubah | `{ name, value, previousValue }` | tidak |
-| `sortingChanged` | Sorting berubah | `{ sortBy }` | tidak |
-| `filterChanged` | Filter berubah | `{ filterValue }` | tidak |
-| `pageChanged` | Halaman berubah | `{ pageIndex, pageSize }` | tidak |
-| `selectionChanged` | Selection berubah | `{ selectedRowKeys, added, removed }` | tidak |
-| `focusedCellChanged` | Fokus pindah | `{ rowKey, columnId }` | tidak |
-| `rowClick` / `cellClick` | Klik | `{ rowKey, columnId, data, event }` | ya |
-| `cellDblClick` | Double click | sama | ya |
-| `contextMenu` | Klik kanan | `{ rowKey, columnId, event }` | ya |
-| `editingStart` | Mulai edit | `{ rowKey, columnId }` | ya |
-| `editingCanceled` | Batal edit | `{ rowKey }` | tidak |
-| `rowUpdating` | Sebelum simpan | `{ key, values }` | ya |
-| `rowUpdated` | Setelah simpan | `{ key, data }` | tidak |
-| `saving` | Sebelum request | `{ changes }` | ya |
-| `saved` | Setelah sukses | `{ changes }` | tidak |
-| `saveFailed` | Gagal | `{ error, changes }` | tidak |
-| `exporting` | Sebelum export | `{ format }` | ya |
-| `exported` | Setelah export | `{ format, fileName }` | tidak |
-| `stateChanged` | State persist berubah | `{ state }` | tidak |
-| `disposing` | Sebelum dispose | `{ }` | tidak |
+| Event                    | Kapan                  | Payload                               | Cancelable |
+| ------------------------ | ---------------------- | ------------------------------------- | ---------- |
+| `contentReady`           | Render pertama selesai | `{ element }`                         | tidak      |
+| `dataLoading`            | Sebelum load           | `{ loadOptions }`                     | tidak      |
+| `dataLoaded`             | Setelah load           | `{ data, totalCount }`                | tidak      |
+| `dataError`              | Load gagal             | `{ error }`                           | tidak      |
+| `optionChanged`          | Opsi berubah           | `{ name, value, previousValue }`      | tidak      |
+| `sortingChanged`         | Sorting berubah        | `{ sortBy }`                          | tidak      |
+| `filterChanged`          | Filter berubah         | `{ filterValue }`                     | tidak      |
+| `pageChanged`            | Halaman berubah        | `{ pageIndex, pageSize }`             | tidak      |
+| `selectionChanged`       | Selection berubah      | `{ selectedRowKeys, added, removed }` | tidak      |
+| `focusedCellChanged`     | Fokus pindah           | `{ rowKey, columnId }`                | tidak      |
+| `rowClick` / `cellClick` | Klik                   | `{ rowKey, columnId, data, event }`   | ya         |
+| `cellDblClick`           | Double click           | sama                                  | ya         |
+| `contextMenu`            | Klik kanan             | `{ rowKey, columnId, event }`         | ya         |
+| `editingStart`           | Mulai edit             | `{ rowKey, columnId }`                | ya         |
+| `editingCanceled`        | Batal edit             | `{ rowKey }`                          | tidak      |
+| `rowUpdating`            | Sebelum simpan         | `{ key, values }`                     | ya         |
+| `rowUpdated`             | Setelah simpan         | `{ key, data }`                       | tidak      |
+| `saving`                 | Sebelum request        | `{ changes }`                         | ya         |
+| `saved`                  | Setelah sukses         | `{ changes }`                         | tidak      |
+| `saveFailed`             | Gagal                  | `{ error, changes }`                  | tidak      |
+| `exporting`              | Sebelum export         | `{ format }`                          | ya         |
+| `exported`               | Setelah export         | `{ format, fileName }`                | tidak      |
+| `stateChanged`           | State persist berubah  | `{ state }`                           | tidak      |
+| `disposing`              | Sebelum dispose        | `{ }`                                 | tidak      |
 
 Urutan event adalah kontrak; diuji di parity suite.
 
@@ -470,17 +480,17 @@ class DataGrid<T> {
 
 ## 12. Performance
 
-| Teknik | Detail |
-|---|---|
-| Row recycling | Pool node, update minimal |
-| Column virtualization | Prefix sum + binary search |
-| Batching | Satu render per frame |
-| Targeted update | Selection/focus via class |
-| Passive scroll | `{ passive: true }` |
-| Memoized selectors | Berdasarkan referensi slice |
-| Avoid layout thrash | Batch read/write |
-| Worker (opsional) | Filter/sort/group besar di worker |
-| Cancel | Abort request lama |
+| Teknik                | Detail                            |
+| --------------------- | --------------------------------- |
+| Row recycling         | Pool node, update minimal         |
+| Column virtualization | Prefix sum + binary search        |
+| Batching              | Satu render per frame             |
+| Targeted update       | Selection/focus via class         |
+| Passive scroll        | `{ passive: true }`               |
+| Memoized selectors    | Berdasarkan referensi slice       |
+| Avoid layout thrash   | Batch read/write                  |
+| Worker (opsional)     | Filter/sort/group besar di worker |
+| Cancel                | Abort request lama                |
 
 Benchmark wajib:
 
@@ -505,14 +515,14 @@ Benchmark wajib:
 
 ## 14. Error handling
 
-| Skenario | Perilaku |
-|---|---|
-| Store error | State error + retry; data lama tetap tampil jika ada |
-| Invalid option | Error development; fallback default di production |
-| Duplicate key | Error `SUI-DG-002`; baris duplikat ditandai |
-| Template error | Sel menampilkan fallback; error dilaporkan |
-| Edit conflict | Dialog konflik; tidak menimpa |
-| Dispose saat load | Hasil diabaikan; tidak ada state update |
+| Skenario          | Perilaku                                             |
+| ----------------- | ---------------------------------------------------- |
+| Store error       | State error + retry; data lama tetap tampil jika ada |
+| Invalid option    | Error development; fallback default di production    |
+| Duplicate key     | Error `SUI-DG-002`; baris duplikat ditandai          |
+| Template error    | Sel menampilkan fallback; error dilaporkan           |
+| Edit conflict     | Dialog konflik; tidak menimpa                        |
+| Dispose saat load | Hasil diabaikan; tidak ada state update              |
 
 ---
 
@@ -574,4 +584,4 @@ src/
 
 ---
 
-*Untuk API publik, lihat [03-api.md](03-api.md).*
+_Untuk API publik, lihat [03-api.md](03-api.md)._

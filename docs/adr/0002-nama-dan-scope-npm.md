@@ -30,19 +30,19 @@ Detail:
   workspace dan tidak dipublikasikan.
 - Nama paket mengikuti pola yang sudah ditetapkan:
 
-| Paket | Nama |
-|---|---|
-| Core | `@simpleui/core` |
-| Tema | `@simpleui/theme` |
-| Ikon | `@simpleui/icons` |
-| DataGrid | `@simpleui/datagrid` |
-| PivotGrid | `@simpleui/pivotgrid` |
-| Charts | `@simpleui/charts` |
-| React | `@simpleui/react` |
-| Vue | `@simpleui/vue` |
-| Angular | `@simpleui/angular` |
-| Vanilla/jQuery | `@simpleui/vanilla` |
-| Testing | `@simpleui/testing` |
+| Paket          | Nama                  |
+| -------------- | --------------------- |
+| Core           | `@simpleui/core`      |
+| Tema           | `@simpleui/theme`     |
+| Ikon           | `@simpleui/icons`     |
+| DataGrid       | `@simpleui/datagrid`  |
+| PivotGrid      | `@simpleui/pivotgrid` |
+| Charts         | `@simpleui/charts`    |
+| React          | `@simpleui/react`     |
+| Vue            | `@simpleui/vue`       |
+| Angular        | `@simpleui/angular`   |
+| Vanilla/jQuery | `@simpleui/vanilla`   |
+| Testing        | `@simpleui/testing`   |
 
 - Nama `simpleui` (unscoped) **tidak** dipakai untuk paket publik utama;
   jika tersedia, hanya sebagai paket meta opsional.
@@ -65,12 +65,12 @@ kepemilikan tetap dilakukan saat akun/org npm tersedia (FND-009).
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| `simpleui` unscoped | Mudah diingat | Kemungkinan sudah dipakai; sulit multi-paket | Scope lebih aman |
-| `@simpleui/*` | Rapi, sesuai produk | Perlu verifikasi kepemilikan | **Dipilih** |
-| `@simpleui-ui/*` | Cadangan jika scope utama tidak tersedia | Kurang elegan | Hanya fallback darurat |
-| Nama netral (`@acme/ui`) | Fleksibel | Tidak ada identitas produk | Ditunda |
+| Alternatif               | Kelebihan                                | Kekurangan                                   | Alasan tidak dipilih   |
+| ------------------------ | ---------------------------------------- | -------------------------------------------- | ---------------------- |
+| `simpleui` unscoped      | Mudah diingat                            | Kemungkinan sudah dipakai; sulit multi-paket | Scope lebih aman       |
+| `@simpleui/*`            | Rapi, sesuai produk                      | Perlu verifikasi kepemilikan                 | **Dipilih**            |
+| `@simpleui-ui/*`         | Cadangan jika scope utama tidak tersedia | Kurang elegan                                | Hanya fallback darurat |
+| Nama netral (`@acme/ui`) | Fleksibel                                | Tidak ada identitas produk                   | Ditunda                |
 
 ---
 
@@ -118,12 +118,12 @@ kepemilikan tetap dilakukan saat akun/org npm tersedia (FND-009).
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Cek npm | `npm view @simpleui/core` → E404 pada 2026-11-23 (belum ada paket) |
-| Cek trademark | Database trademark + pencarian publik |
-| Task | FND-001, FND-009, FND-024, FND-025 |
-| Target | Verifikasi kepemilikan sebelum 2026-12-19; publikasi 1.0 |
+| Item          | Detail                                                             |
+| ------------- | ------------------------------------------------------------------ |
+| Cek npm       | `npm view @simpleui/core` → E404 pada 2026-11-23 (belum ada paket) |
+| Cek trademark | Database trademark + pencarian publik                              |
+| Task          | FND-001, FND-009, FND-024, FND-025                                 |
+| Target        | Verifikasi kepemilikan sebelum 2026-12-19; publikasi 1.0           |
 
 ---
 
@@ -137,8 +137,8 @@ kepemilikan tetap dilakukan saat akun/org npm tersedia (FND-009).
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Nama kerja `SimpleUI` |
-| 2026-11-23 | Release Manager | Setuju dengan syarat | Verifikasi scope sebelum publish |
-| 2026-11-23 | Stakeholder | Setuju | Fallback hanya lewat amandemen ADR |
+| Tanggal    | Reviewer        | Keputusan            | Catatan                            |
+| ---------- | --------------- | -------------------- | ---------------------------------- |
+| 2026-11-23 | Tech Lead       | Setuju               | Nama kerja `SimpleUI`              |
+| 2026-11-23 | Release Manager | Setuju dengan syarat | Verifikasi scope sebelum publish   |
+| 2026-11-23 | Stakeholder     | Setuju               | Fallback hanya lewat amandemen ADR |

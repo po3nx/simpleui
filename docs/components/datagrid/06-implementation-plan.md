@@ -9,14 +9,14 @@
 
 ## 1. Ringkasan jadwal
 
-| Fase | Durasi | Mulai | Selesai | Fokus | Gate |
-|---|---|---|---|---|---|
-| DG-0 | 4 minggu | 2027-01-11 | 2027-02-05 | Kontrak, spike, desain | G-DG0 |
-| DG-1 | 5 minggu | 2027-02-08 | 2027-03-12 | Model & data | G-DG1 |
-| DG-2 | 5 minggu | 2027-03-15 | 2027-04-16 | Rendering & MVP | G-DG2 (alpha) |
-| DG-3 | 6 minggu | 2027-04-19 | 2027-05-28 | Adapter & a11y | G-DG3 |
-| DG-4 | 5 minggu | 2027-05-31 | 2027-07-02 | Fitur GA | G-DG4 |
-| DG-5 | 5 minggu | 2027-07-05 | 2027-08-06 | Hardening & GA | G-DG5 (GA) |
+| Fase | Durasi   | Mulai      | Selesai    | Fokus                  | Gate          |
+| ---- | -------- | ---------- | ---------- | ---------------------- | ------------- |
+| DG-0 | 4 minggu | 2027-01-11 | 2027-02-05 | Kontrak, spike, desain | G-DG0         |
+| DG-1 | 5 minggu | 2027-02-08 | 2027-03-12 | Model & data           | G-DG1         |
+| DG-2 | 5 minggu | 2027-03-15 | 2027-04-16 | Rendering & MVP        | G-DG2 (alpha) |
+| DG-3 | 6 minggu | 2027-04-19 | 2027-05-28 | Adapter & a11y         | G-DG3         |
+| DG-4 | 5 minggu | 2027-05-31 | 2027-07-02 | Fitur GA               | G-DG4         |
+| DG-5 | 5 minggu | 2027-07-05 | 2027-08-06 | Hardening & GA         | G-DG5 (GA)    |
 
 Total 30 minggu fase (Januari–Agustus 2027). Sebagian pekerjaan berjalan
 paralel (adapter, docs, visual test), sehingga beberapa task tidak menambah
@@ -60,15 +60,15 @@ Menghilangkan risiko terbesar sebelum menulis banyak kode:
 
 ### Deliverable
 
-| Task | Deliverable |
-|---|---|
-| DG-001 | Scope & acceptance criteria final |
-| DG-002 | API surface + tipe final (review) |
-| DG-003 | Visual spec + token grid |
-| DG-004 | Spike virtualizer + benchmark 100k |
+| Task   | Deliverable                            |
+| ------ | -------------------------------------- |
+| DG-001 | Scope & acceptance criteria final      |
+| DG-002 | API surface + tipe final (review)      |
+| DG-003 | Visual spec + token grid               |
+| DG-004 | Spike virtualizer + benchmark 100k     |
 | DG-005 | Spike adapter bridge React/Vue/Angular |
-| DG-006 | Threat model + payload corpus |
-| DG-007 | Test harness + fixture generator |
+| DG-006 | Threat model + payload corpus          |
+| DG-007 | Test harness + fixture generator       |
 
 ### Gate G-DG0
 
@@ -206,14 +206,14 @@ implementasi.
 
 ## 8. Alokasi tim per fase
 
-| Fase | Core 1 | Core 2 | Adapter | QA | Designer | Security |
-|---|---|---|---|---|---|---|
-| DG-0 | 100% | 60% | 80% | 40% | 50% | 20% |
-| DG-1 | 100% | 100% | 20% | 30% | 10% | 10% |
-| DG-2 | 100% | 100% | 60% | 60% | 30% | 10% |
-| DG-3 | 70% | 60% | 100% | 100% | 20% | 20% |
-| DG-4 | 100% | 100% | 40% | 80% | 20% | 20% |
-| DG-5 | 60% | 60% | 40% | 100% | 20% | 40% |
+| Fase | Core 1 | Core 2 | Adapter | QA   | Designer | Security |
+| ---- | ------ | ------ | ------- | ---- | -------- | -------- |
+| DG-0 | 100%   | 60%    | 80%     | 40%  | 50%      | 20%      |
+| DG-1 | 100%   | 100%   | 20%     | 30%  | 10%      | 10%      |
+| DG-2 | 100%   | 100%   | 60%     | 60%  | 30%      | 10%      |
+| DG-3 | 70%    | 60%    | 100%    | 100% | 20%      | 20%      |
+| DG-4 | 100%   | 100%   | 40%     | 80%  | 20%      | 20%      |
+| DG-5 | 60%    | 60%    | 40%     | 100% | 20%      | 40%      |
 
 Tech lead 30% sepanjang fase untuk review & keputusan.
 
@@ -238,30 +238,30 @@ persetujuan tech lead dan risikonya dicatat.
 
 ## 10. Risiko dan mitigasi
 
-| Risiko | Prob. | Dampak | Mitigasi |
-|---|---|---|---|
-| Virtualizer gagal mencapai 60 fps | Sedang | Tinggi | Spike DG-004; fallback fixed height; worker |
-| Template bridge terlalu kompleks | Sedang | Tinggi | Spike DG-005; kontrak kecil; batasi template |
-| Angular Zone.js menyebabkan loop | Sedang | Sedang | `runOutsideAngular`, OnPush, test khusus |
-| Editing edge case meledak | Tinggi | Sedang | Scope ketat; test matrix; tunda fitur non-esensial |
-| A11y ditemukan terlambat | Sedang | Tinggi | A11y mulai DG-1; axe di CI; manual di DG-3 |
-| Security review terlambat | Sedang | Tinggi | Threat model DG-0; review per fitur |
-| Scope creep | Tinggi | Tinggi | Change control; P2 ditunda |
-| Dependency core berubah | Rendah | Tinggi | Version pin; integrasi harian |
-| Key person sick/leave | Sedang | Sedang | Pairing; dokumentasi; tidak ada silo |
-| Design berubah | Sedang | Sedang | Token & visual spec di DG-0; freeze di DG-2 |
+| Risiko                            | Prob.  | Dampak | Mitigasi                                           |
+| --------------------------------- | ------ | ------ | -------------------------------------------------- |
+| Virtualizer gagal mencapai 60 fps | Sedang | Tinggi | Spike DG-004; fallback fixed height; worker        |
+| Template bridge terlalu kompleks  | Sedang | Tinggi | Spike DG-005; kontrak kecil; batasi template       |
+| Angular Zone.js menyebabkan loop  | Sedang | Sedang | `runOutsideAngular`, OnPush, test khusus           |
+| Editing edge case meledak         | Tinggi | Sedang | Scope ketat; test matrix; tunda fitur non-esensial |
+| A11y ditemukan terlambat          | Sedang | Tinggi | A11y mulai DG-1; axe di CI; manual di DG-3         |
+| Security review terlambat         | Sedang | Tinggi | Threat model DG-0; review per fitur                |
+| Scope creep                       | Tinggi | Tinggi | Change control; P2 ditunda                         |
+| Dependency core berubah           | Rendah | Tinggi | Version pin; integrasi harian                      |
+| Key person sick/leave             | Sedang | Sedang | Pairing; dokumentasi; tidak ada silo               |
+| Design berubah                    | Sedang | Sedang | Token & visual spec di DG-0; freeze di DG-2        |
 
 ---
 
 ## 11. Rollout
 
-| Tahap | Audiens | Kriteria | Umpan balik |
-|---|---|---|---|
-| Internal alpha | Tim internal | G-DG2 | Bug + perf |
-| Design partner beta | 3–5 partner | G-DG3 | Use case nyata |
-| Release candidate | Partner + internal | G-DG4 | Regression |
-| GA 1.0 | Publik | G-DG5 | Issue tracker |
-| 1.0.x | Publik | — | Bugfix |
+| Tahap               | Audiens            | Kriteria | Umpan balik    |
+| ------------------- | ------------------ | -------- | -------------- |
+| Internal alpha      | Tim internal       | G-DG2    | Bug + perf     |
+| Design partner beta | 3–5 partner        | G-DG3    | Use case nyata |
+| Release candidate   | Partner + internal | G-DG4    | Regression     |
+| GA 1.0              | Publik             | G-DG5    | Issue tracker  |
+| 1.0.x               | Publik             | —        | Bugfix         |
 
 Aturan:
 
@@ -273,13 +273,13 @@ Aturan:
 
 ## 12. Komunikasi dan ritme
 
-| Ritme | Isi |
-|---|---|
+| Ritme                  | Isi                           |
+| ---------------------- | ----------------------------- |
 | Daily standup 15 menit | Progress, blocker, dependency |
-| Weekly demo | Demo fitur ke stakeholder |
-| Weekly risk review | Update risiko & mitigasi |
-| Bi-weekly gate check | Cek exit criteria |
-| Retrospective per fase | Apa yang berjalan/berubah |
+| Weekly demo            | Demo fitur ke stakeholder     |
+| Weekly risk review     | Update risiko & mitigasi      |
+| Bi-weekly gate check   | Cek exit criteria             |
+| Retrospective per fase | Apa yang berjalan/berubah     |
 
 Artefak:
 
@@ -312,4 +312,4 @@ Artefak:
 
 ---
 
-*Task detail ada di [07-tasks.md](07-tasks.md).*
+_Task detail ada di [07-tasks.md](07-tasks.md)._

@@ -9,16 +9,16 @@
 
 ## 1. Aset dan trust boundary
 
-| Aset | Contoh | Dampak |
-|---|---|---|
-| Data baris | Nama customer, nomor rekening | Kebocoran PII |
-| Data kolom | Caption, format, template | XSS |
-| URL | Link column, store endpoint | XSS/SSRF |
-| Export | CSV/Excel berisi formula | Formula injection |
-| Clipboard | Copy sel | Kebocoran data |
-| State | LocalStorage | Manipulasi UI/kebocoran |
-| Network | Header/token | Account takeover |
-| DOM | id, class, atribut | Clobbering/XSS |
+| Aset       | Contoh                        | Dampak                  |
+| ---------- | ----------------------------- | ----------------------- |
+| Data baris | Nama customer, nomor rekening | Kebocoran PII           |
+| Data kolom | Caption, format, template     | XSS                     |
+| URL        | Link column, store endpoint   | XSS/SSRF                |
+| Export     | CSV/Excel berisi formula      | Formula injection       |
+| Clipboard  | Copy sel                      | Kebocoran data          |
+| State      | LocalStorage                  | Manipulasi UI/kebocoran |
+| Network    | Header/token                  | Account takeover        |
+| DOM        | id, class, atribut            | Clobbering/XSS          |
 
 **Trusted:** kode SimpleUI, konfigurasi developer.
 **Untrusted:** semua nilai data, termasuk caption/tooltip/summary yang berasal
@@ -28,28 +28,28 @@ dari API; URL; state storage; clipboard; template string.
 
 ## 2. Threat model
 
-| # | Ancaman | Vektor | Dampak | Kontrol | Test |
-|---|---|---|---|---|---|
-| DG-S1 | Stored XSS di sel | Nilai string berisi `<img onerror>` | Eksekusi script | `textContent` default | XSS corpus |
-| DG-S2 | XSS di caption/header | API mengirim caption berbahaya | Eksekusi script | Caption sebagai teks | Payload caption |
-| DG-S3 | XSS via template string | `cellTemplate` string | Eksekusi script | Sanitizer + `allowHtml` opt-in | Bypass corpus |
-| DG-S4 | XSS via tooltip | Nilai tooltip HTML | Eksekusi script | Teks; HTML opt-in + sanitasi | Payload tooltip |
-| DG-S5 | XSS via summary text | Custom summary mengembalikan HTML | Eksekusi script | Summary sebagai teks | Payload summary |
-| DG-S6 | `javascript:` URL | Link column | Eksekusi saat klik | `safeUrl` allowlist | URL corpus |
-| DG-S7 | CSS injection | Width/color/style dari data | UI spoofing, exfiltration | Validasi + CSSOM | Payload style |
-| DG-S8 | Prototype pollution | Opsi `__proto__` | RCE/logic bypass | `safeMerge` | Pollution corpus |
-| DG-S9 | CSV formula injection | Sel `=cmd\|...` | Eksekusi saat buka Excel | Prefix `'` | Export corpus |
-| DG-S10 | Excel formula injection | Sama, via XLSX | Sama | Semua sel string/number | Export corpus |
-| DG-S11 | Filter/OData injection | Nilai filter | Query manipulation | AST + encoding | Injection corpus |
-| DG-S12 | ReDoS | Filter regex | CPU hang | Tanpa regex pengguna | Payload regex |
-| DG-S13 | DoS data besar | 1 juta baris/kolom | Browser crash | Batas + virtualisasi | Stress test |
-| DG-S14 | Kebocoran token | Log request | Account takeover | Tanpa log header/body | Log capture |
-| DG-S15 | State poisoning | localStorage dimanipulasi | UI salah/kebocoran | Validasi skema + ukuran | Corrupt state |
-| DG-S16 | Export melebihi hak | Kolom tersembunyi ikut | Kebocoran data | Hormati visibility | Export test |
-| DG-S17 | Clipboard sensitif | Copy otomatis | Kebocoran | Opt-in + batas | Copy test |
-| DG-S18 | Clickjacking | Grid di iframe | UI redress | Docs header; consumer bertanggung jawab | Header test |
-| DG-S19 | Dependency compromised | Supply chain | Kompromi | Lockfile, audit, provenance | CI audit |
-| DG-S20 | Error leakage | Stack/PII di UI | Informasi | Pesan generik + kode | Error test |
+| #      | Ancaman                 | Vektor                              | Dampak                    | Kontrol                                 | Test             |
+| ------ | ----------------------- | ----------------------------------- | ------------------------- | --------------------------------------- | ---------------- |
+| DG-S1  | Stored XSS di sel       | Nilai string berisi `<img onerror>` | Eksekusi script           | `textContent` default                   | XSS corpus       |
+| DG-S2  | XSS di caption/header   | API mengirim caption berbahaya      | Eksekusi script           | Caption sebagai teks                    | Payload caption  |
+| DG-S3  | XSS via template string | `cellTemplate` string               | Eksekusi script           | Sanitizer + `allowHtml` opt-in          | Bypass corpus    |
+| DG-S4  | XSS via tooltip         | Nilai tooltip HTML                  | Eksekusi script           | Teks; HTML opt-in + sanitasi            | Payload tooltip  |
+| DG-S5  | XSS via summary text    | Custom summary mengembalikan HTML   | Eksekusi script           | Summary sebagai teks                    | Payload summary  |
+| DG-S6  | `javascript:` URL       | Link column                         | Eksekusi saat klik        | `safeUrl` allowlist                     | URL corpus       |
+| DG-S7  | CSS injection           | Width/color/style dari data         | UI spoofing, exfiltration | Validasi + CSSOM                        | Payload style    |
+| DG-S8  | Prototype pollution     | Opsi `__proto__`                    | RCE/logic bypass          | `safeMerge`                             | Pollution corpus |
+| DG-S9  | CSV formula injection   | Sel `=cmd\|...`                     | Eksekusi saat buka Excel  | Prefix `'`                              | Export corpus    |
+| DG-S10 | Excel formula injection | Sama, via XLSX                      | Sama                      | Semua sel string/number                 | Export corpus    |
+| DG-S11 | Filter/OData injection  | Nilai filter                        | Query manipulation        | AST + encoding                          | Injection corpus |
+| DG-S12 | ReDoS                   | Filter regex                        | CPU hang                  | Tanpa regex pengguna                    | Payload regex    |
+| DG-S13 | DoS data besar          | 1 juta baris/kolom                  | Browser crash             | Batas + virtualisasi                    | Stress test      |
+| DG-S14 | Kebocoran token         | Log request                         | Account takeover          | Tanpa log header/body                   | Log capture      |
+| DG-S15 | State poisoning         | localStorage dimanipulasi           | UI salah/kebocoran        | Validasi skema + ukuran                 | Corrupt state    |
+| DG-S16 | Export melebihi hak     | Kolom tersembunyi ikut              | Kebocoran data            | Hormati visibility                      | Export test      |
+| DG-S17 | Clipboard sensitif      | Copy otomatis                       | Kebocoran                 | Opt-in + batas                          | Copy test        |
+| DG-S18 | Clickjacking            | Grid di iframe                      | UI redress                | Docs header; consumer bertanggung jawab | Header test      |
+| DG-S19 | Dependency compromised  | Supply chain                        | Kompromi                  | Lockfile, audit, provenance             | CI audit         |
+| DG-S20 | Error leakage           | Stack/PII di UI                     | Informasi                 | Pesan generik + kode                    | Error test       |
 
 ---
 
@@ -61,7 +61,11 @@ dari API; URL; state storage; clipboard; template string.
 
 ```ts
 // core/cell-renderer.ts
-function setCellContent(cell: HTMLElement, value: unknown, column: ColumnState): void {
+function setCellContent(
+  cell: HTMLElement,
+  value: unknown,
+  column: ColumnState,
+): void {
   if (column.allowHtml && typeof value === 'string') {
     cell.replaceChildren(sanitizeHtml(value)); // hanya jika opt-in
     return;
@@ -157,18 +161,18 @@ Excel:
 
 ### 3.9 DoS
 
-| Batas | Default |
-|---|---|
-| Baris lokal | 1.000.000 |
-| Baris per halaman | 10.000 |
-| Kolom | 500 |
-| Nilai `in` | 1.000 |
-| Kedalaman filter | 10 |
-| Node filter | 200 |
-| Panjang sel | 32 KB |
-| Ukuran state | 100 KB |
-| Ukuran respons | 10 MB |
-| Request paralel | 4 |
+| Batas             | Default   |
+| ----------------- | --------- |
+| Baris lokal       | 1.000.000 |
+| Baris per halaman | 10.000    |
+| Kolom             | 500       |
+| Nilai `in`        | 1.000     |
+| Kedalaman filter  | 10        |
+| Node filter       | 200       |
+| Panjang sel       | 32 KB     |
+| Ukuran state      | 100 KB    |
+| Ukuran respons    | 10 MB     |
+| Request paralel   | 4         |
 
 Pelanggaran → error terklasifikasi; UI tetap responsif.
 
@@ -176,18 +180,18 @@ Pelanggaran → error terklasifikasi; UI tetap responsif.
 
 ## 4. Secure defaults
 
-| Opsi | Default aman | Jika diubah |
-|---|---|---|
-| `allowHtml` | `false` | Wajib sanitizer; dokumentasikan risiko |
-| `export.csv.sanitizeFormulas` | `true` | Hanya untuk data non-spreadsheet |
-| `export.exportHiddenColumns` | `false` | Risiko kebocoran |
-| `stateStoring.enabled` | `false` | Validasi + batas |
-| `withCredentials` | `false` | Wajib HTTPS |
-| `selection.selectAllMode` | `'page'` | `'allPages'` butuh server |
-| `editing.allowUpdating` | `false` | Server tetap wajib cek izin |
-| `remoteOperations` | `'auto'` | Pastikan server memvalidasi |
-| `cacheEnabled` | `true` | Jangan cache data sensitif |
-| `showCheckBoxes` | `false` | — |
+| Opsi                          | Default aman | Jika diubah                            |
+| ----------------------------- | ------------ | -------------------------------------- |
+| `allowHtml`                   | `false`      | Wajib sanitizer; dokumentasikan risiko |
+| `export.csv.sanitizeFormulas` | `true`       | Hanya untuk data non-spreadsheet       |
+| `export.exportHiddenColumns`  | `false`      | Risiko kebocoran                       |
+| `stateStoring.enabled`        | `false`      | Validasi + batas                       |
+| `withCredentials`             | `false`      | Wajib HTTPS                            |
+| `selection.selectAllMode`     | `'page'`     | `'allPages'` butuh server              |
+| `editing.allowUpdating`       | `false`      | Server tetap wajib cek izin            |
+| `remoteOperations`            | `'auto'`     | Pastikan server memvalidasi            |
+| `cacheEnabled`                | `true`       | Jangan cache data sensitif             |
+| `showCheckBoxes`              | `false`      | —                                      |
 
 ---
 
@@ -305,4 +309,4 @@ Sign-off meliputi:
 
 ---
 
-*Untuk kebijakan umum, lihat [05 — Security](../../05-security.md).*
+_Untuk kebijakan umum, lihat [05 — Security](../../05-security.md)._

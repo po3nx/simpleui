@@ -7,20 +7,20 @@
 
 ## 1. Toolchain
 
-| Kebutuhan | Pilihan | Catatan |
-|---|---|---|
-| Package manager | **pnpm** via Corepack | Workspace, lockfile ketat |
-| Monorepo orchestration | **Turborepo** | Cache remote opsional |
-| Bahasa | **TypeScript 5.x** strict | Project references |
-| Bundler library | **Vite** (library mode) + Rollup | ESM + UMD |
-| Angular library | **ng-packagr** | Partial Ivy |
-| CSS | **Lightning CSS** + PostCSS minimal | `@layer`, nesting |
-| Test | Vitest + Playwright | Lihat [04](04-testing-strategy.md) |
-| Lint | ESLint flat config + Prettier | `typescript-eslint` strict |
-| API report | **API Extractor** | `.api.md` |
-| Release | **Changesets** | Fixed group |
-| Size | **size-limit** | Budget per paket |
-| SBOM | CycloneDX | Setiap rilis |
+| Kebutuhan              | Pilihan                             | Catatan                            |
+| ---------------------- | ----------------------------------- | ---------------------------------- |
+| Package manager        | **pnpm** via Corepack               | Workspace, lockfile ketat          |
+| Monorepo orchestration | **Turborepo**                       | Cache remote opsional              |
+| Bahasa                 | **TypeScript 5.x** strict           | Project references                 |
+| Bundler library        | **Vite** (library mode) + Rollup    | ESM + UMD                          |
+| Angular library        | **ng-packagr**                      | Partial Ivy                        |
+| CSS                    | **Lightning CSS** + PostCSS minimal | `@layer`, nesting                  |
+| Test                   | Vitest + Playwright                 | Lihat [04](04-testing-strategy.md) |
+| Lint                   | ESLint flat config + Prettier       | `typescript-eslint` strict         |
+| API report             | **API Extractor**                   | `.api.md`                          |
+| Release                | **Changesets**                      | Fixed group                        |
+| Size                   | **size-limit**                      | Budget per paket                   |
+| SBOM                   | CycloneDX                           | Setiap rilis                       |
 
 Versi Node dan pnpm dikunci di `package.json` (`engines`, `packageManager`) dan
 `.nvmrc`. CI memakai versi yang sama.
@@ -203,14 +203,14 @@ pnpm install --frozen-lockfile
 
 ### 5.1 GitHub Actions
 
-| Workflow | Trigger | Isi |
-|---|---|---|
-| `ci.yml` | PR, push ke main | lint, typecheck, unit, browser (chromium), contract, a11y, security, build, size, api, license |
-| `security.yml` | PR, push, mingguan | `pnpm audit` high/critical, audit produksi, artifact laporan |
-| `nightly.yml` | jadwal harian | e2e 3 browser, visual semua tema, perf, mutation, SSR, audit |
-| `release.yml` | tag `v*` | build, test penuh, publish npm + provenance, SBOM, docs deploy, CDN |
-| `codeql.yml` | PR + jadwal | analisis keamanan statis |
-| `dependency-review.yml` | PR | review dependency baru |
+| Workflow                | Trigger            | Isi                                                                                            |
+| ----------------------- | ------------------ | ---------------------------------------------------------------------------------------------- |
+| `ci.yml`                | PR, push ke main   | lint, typecheck, unit, browser (chromium), contract, a11y, security, build, size, api, license |
+| `security.yml`          | PR, push, mingguan | `pnpm audit` high/critical, audit produksi, artifact laporan                                   |
+| `nightly.yml`           | jadwal harian      | e2e 3 browser, visual semua tema, perf, mutation, SSR, audit                                   |
+| `release.yml`           | tag `v*`           | build, test penuh, publish npm + provenance, SBOM, docs deploy, CDN                            |
+| `codeql.yml`            | PR + jadwal        | analisis keamanan statis                                                                       |
+| `dependency-review.yml` | PR                 | review dependency baru                                                                         |
 
 Aturan:
 
@@ -224,15 +224,15 @@ Aturan:
 
 ### 5.2 Matrix
 
-| Dimensi | Nilai |
-|---|---|
-| OS | Ubuntu, Windows (smoke) |
-| Node | 22, 24 |
-| Browser | Chromium (PR), + Firefox, WebKit (nightly) |
-| React | 18, 19 |
-| Vue | 3.4, 3.5+ |
-| Angular | 17, versi stabil terbaru |
-| TypeScript | minimum, terbaru |
+| Dimensi    | Nilai                                      |
+| ---------- | ------------------------------------------ |
+| OS         | Ubuntu, Windows (smoke)                    |
+| Node       | 22, 24                                     |
+| Browser    | Chromium (PR), + Firefox, WebKit (nightly) |
+| React      | 18, 19                                     |
+| Vue        | 3.4, 3.5+                                  |
+| Angular    | 17, versi stabil terbaru                   |
+| TypeScript | minimum, terbaru                           |
 
 Matrix penuh di nightly; PR memakai subset cepat.
 
@@ -285,13 +285,13 @@ PR dengan changeset → merge ke main
 
 ### 7.1 Artefak
 
-| Artefak | Isi |
-|---|---|
+| Artefak     | Isi                                         |
+| ----------- | ------------------------------------------- |
 | npm tarball | `dist`, `README`, `LICENSE`, `package.json` |
-| SBOM | CycloneDX JSON |
-| API report | `.api.md` per paket |
-| Source map | Untuk debugging, tanpa source sensitif |
-| Checksum | SHA-256 untuk CDN |
+| SBOM        | CycloneDX JSON                              |
+| API report  | `.api.md` per paket                         |
+| Source map  | Untuk debugging, tanpa source sensitif      |
+| Checksum    | SHA-256 untuk CDN                           |
 
 ### 7.2 Rollback
 
@@ -305,14 +305,14 @@ PR dengan changeset → merge ke main
 
 ## 8. Dukungan versi
 
-| Aspek | Kebijakan |
-|---|---|
-| Major terbaru | Didukung penuh |
+| Aspek            | Kebijakan                                        |
+| ---------------- | ------------------------------------------------ |
+| Major terbaru    | Didukung penuh                                   |
 | Major sebelumnya | Patch keamanan selama 6 bulan setelah major baru |
-| Major lebih lama | Tidak didukung |
-| Framework | N dan N-1 major yang didukung framework |
-| Browser | 2 versi terakhir + Safari 16.4+ |
-| Node (tooling) | 24 LTS dan 26 |
+| Major lebih lama | Tidak didukung                                   |
+| Framework        | N dan N-1 major yang didukung framework          |
+| Browser          | 2 versi terakhir + Safari 16.4+                  |
+| Node (tooling)   | 24 LTS dan 26                                    |
 
 ---
 
@@ -357,4 +357,4 @@ PR dengan changeset → merge ke main
 
 ---
 
-*Untuk jadwal dan dependency rilis, lihat [08 — Roadmap](08-roadmap.md).*
+_Untuk jadwal dan dependency rilis, lihat [08 — Roadmap](08-roadmap.md)._

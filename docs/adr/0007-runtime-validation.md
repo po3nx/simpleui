@@ -48,12 +48,12 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| zod | DX bagus, ekosistem | Bundle lebih besar, dependency | Berat untuk core |
-| valibot | Kecil, tree-shakeable | Tetap dependency; API asing | Tidak perlu |
-| Custom validator | Kendali penuh, kecil | Perlu pemeliharaan | **Dipilih** |
-| Tanpa validasi | Paling kecil | Error membingungkan, risiko security | Ditolak |
+| Alternatif       | Kelebihan             | Kekurangan                           | Alasan tidak dipilih |
+| ---------------- | --------------------- | ------------------------------------ | -------------------- |
+| zod              | DX bagus, ekosistem   | Bundle lebih besar, dependency       | Berat untuk core     |
+| valibot          | Kecil, tree-shakeable | Tetap dependency; API asing          | Tidak perlu          |
+| Custom validator | Kendali penuh, kecil  | Perlu pemeliharaan                   | **Dipilih**          |
+| Tanpa validasi   | Paling kecil          | Error membingungkan, risiko security | Ditolak              |
 
 ---
 
@@ -101,14 +101,14 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Core validator | FND-011, FND-022 |
-| Options | DG-010 |
-| Filter | DG-014 |
-| State | DG-022 |
-| Test | table-driven + fuzz |
-| Target | Sebelum DG-1 |
+| Item           | Detail              |
+| -------------- | ------------------- |
+| Core validator | FND-011, FND-022    |
+| Options        | DG-010              |
+| Filter         | DG-014              |
+| State          | DG-022              |
+| Test           | table-driven + fuzz |
+| Target         | Sebelum DG-1        |
 
 ---
 
@@ -122,8 +122,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Tanpa zod/valibot |
-| 2026-11-23 | Security Reviewer | Setuju | Validasi keamanan selalu aktif |
-| 2026-11-23 | Core Engineer | Setuju | Error code + Result |
+| Tanggal    | Reviewer          | Keputusan | Catatan                        |
+| ---------- | ----------------- | --------- | ------------------------------ |
+| 2026-11-23 | Tech Lead         | Setuju    | Tanpa zod/valibot              |
+| 2026-11-23 | Security Reviewer | Setuju    | Validasi keamanan selalu aktif |
+| 2026-11-23 | Core Engineer     | Setuju    | Error code + Result            |

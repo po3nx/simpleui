@@ -128,10 +128,14 @@ function parseTables(text, file) {
     };
 
     if (!Number.isFinite(estimate) || estimate <= 0) {
-      errors.push(`${id}: estimasi tidak valid "${estimateRaw}" (${task.file}:${lineNumber})`);
+      errors.push(
+        `${id}: estimasi tidak valid "${estimateRaw}" (${task.file}:${lineNumber})`,
+      );
     }
     if (!STATUSES.has(status)) {
-      errors.push(`${id}: status tidak valid "${status}" (${task.file}:${lineNumber})`);
+      errors.push(
+        `${id}: status tidak valid "${status}" (${task.file}:${lineNumber})`,
+      );
     }
     if (!task.phase || task.phase === '—') {
       errors.push(`${id}: fase kosong (${task.file}:${lineNumber})`);
@@ -196,11 +200,15 @@ function validate(tasks, parseErrors) {
 }
 
 function pct(part, total) {
-  return total === 0 ? '0,0%' : `${((part / total) * 100).toFixed(1).replace('.', ',')}%`;
+  return total === 0
+    ? '0,0%'
+    : `${((part / total) * 100).toFixed(1).replace('.', ',')}%`;
 }
 
 function fmtDays(value) {
-  return Number.isInteger(value) ? String(value) : value.toFixed(1).replace('.', ',');
+  return Number.isInteger(value)
+    ? String(value)
+    : value.toFixed(1).replace('.', ',');
 }
 
 function renderDashboard(tasks, errors) {
@@ -225,7 +233,9 @@ function renderDashboard(tasks, errors) {
     (a, b) => {
       const ai = preferredComponents.indexOf(a);
       const bi = preferredComponents.indexOf(b);
-      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi) || a.localeCompare(b);
+      return (
+        (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi) || a.localeCompare(b)
+      );
     },
   );
   const componentRows = componentNames.map((name) => {
@@ -257,15 +267,25 @@ function renderDashboard(tasks, errors) {
     return 90;
   };
   const phaseNames = [...new Set(tasks.map((task) => task.phase))].sort(
-    (a, b) => phaseRank(a) - phaseRank(b) || a.localeCompare(b, undefined, { numeric: true }),
+    (a, b) =>
+      phaseRank(a) - phaseRank(b) ||
+      a.localeCompare(b, undefined, { numeric: true }),
   );
   const phaseRows = phaseNames.map((phase) => {
-    const scoped = tasks.filter((task) => task.phase === phase && task.status !== 'CUT');
+    const scoped = tasks.filter(
+      (task) => task.phase === phase && task.status !== 'CUT',
+    );
     const total = scoped.reduce((sum, task) => sum + task.estimate, 0);
     const done = scoped
       .filter((task) => task.status === 'DONE')
       .reduce((sum, task) => sum + task.estimate, 0);
-    return { phase, count: scoped.length, total, done, progress: pct(done, total) };
+    return {
+      phase,
+      count: scoped.length,
+      total,
+      done,
+      progress: pct(done, total),
+    };
   });
 
   const byId = new Map(tasks.map((task) => [task.id, task]));
@@ -308,7 +328,9 @@ function renderDashboard(tasks, errors) {
 
   lines.push('### Progress per komponen');
   lines.push('');
-  lines.push('| Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |');
+  lines.push(
+    '| Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |',
+  );
   lines.push('|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|');
   for (const row of componentRows) {
     lines.push(
@@ -334,7 +356,9 @@ function renderDashboard(tasks, errors) {
   lines.push('Task `TODO` yang seluruh dependency-nya sudah `DONE`.');
   lines.push('');
   if (ready.length === 0) {
-    lines.push('_Tidak ada task yang siap dikerjakan (atau semua dependency belum selesai)._');
+    lines.push(
+      '_Tidak ada task yang siap dikerjakan (atau semua dependency belum selesai)._',
+    );
   } else {
     lines.push('| ID | Task | Komponen | Est (d) | Owner |');
     lines.push('|---|---|---|---:|---|');
@@ -364,7 +388,9 @@ function renderDashboard(tasks, errors) {
   lines.push('### Validasi');
   lines.push('');
   if (errors.length === 0) {
-    lines.push(`✅ Tidak ada error. ${tasks.length} task terbaca dari ${new Set(tasks.map((t) => t.file)).size} file.`);
+    lines.push(
+      `✅ Tidak ada error. ${tasks.length} task terbaca dari ${new Set(tasks.map((t) => t.file)).size} file.`,
+    );
   } else {
     lines.push(`❌ ${errors.length} error:`);
     lines.push('');
@@ -376,7 +402,14 @@ function renderDashboard(tasks, errors) {
       'Jangan mengedit bagian di antara marker secara manual._',
   );
 
-  return { markdown: lines.join('\n'), errors, totalEstimate, doneEstimate, counted, excluded };
+  return {
+    markdown: lines.join('\n'),
+    errors,
+    totalEstimate,
+    doneEstimate,
+    counted,
+    excluded,
+  };
 }
 
 async function main() {
@@ -429,7 +462,9 @@ async function main() {
     const startIndex = current.indexOf(start);
     const endIndex = current.indexOf(end);
     if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
-      throw new Error(`Marker ${start} / ${end} tidak ditemukan di ${PROGRESS_FILE}`);
+      throw new Error(
+        `Marker ${start} / ${end} tidak ditemukan di ${PROGRESS_FILE}`,
+      );
     }
     const next =
       current.slice(0, startIndex + start.length) +
@@ -438,7 +473,9 @@ async function main() {
       '\n' +
       current.slice(endIndex);
     await writeFile(PROGRESS_FILE, next, 'utf8');
-    console.log(`progress.md diperbarui: ${pct(dashboard.doneEstimate, dashboard.totalEstimate)} selesai.`);
+    console.log(
+      `progress.md diperbarui: ${pct(dashboard.doneEstimate, dashboard.totalEstimate)} selesai.`,
+    );
     return;
   }
 

@@ -38,8 +38,8 @@ pnpm test:contract
 ## Screenshot / rekaman (untuk UI)
 
 | Sebelum | Sesudah |
-|---|---|
-| | |
+| ------- | ------- |
+|         |         |
 
 ## Checklist umum
 

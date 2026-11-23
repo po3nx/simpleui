@@ -17,16 +17,16 @@ Kata kunci: **WAJIB** (mandatory), **DILARANG** (forbidden), **SEBAIKNYA**
 
 ## 1. Ruang lingkup dan definisi
 
-| Istilah | Definisi |
-|---|---|
-| **Core** | `@simpleui/core` — runtime framework-agnostic: lifecycle, state, DOM, data, i18n, security util |
-| **Komponen** | Paket fitur (`datagrid`, `pivotgrid`, `charts`, dst.) yang dibangun di atas core |
-| **Adapter** | Paket tipis per framework (`@simpleui/react`, `@simpleui/vue`, `@simpleui/angular`, `@simpleui/vanilla`) |
-| **Consumer** | Aplikasi yang memakai SimpleUI |
-| **Public API** | Simbol yang diekspor dari entry point paket dan tercatat di `.api.md` |
-| **Internal** | Simbol dengan tag `@internal`, tidak diekspor, boleh berubah kapan saja |
-| **Ideal day** | 1 hari kerja fokus seorang engineer, tanpa meeting/overhead |
-| **DoD** | Definition of Done (§13) |
+| Istilah        | Definisi                                                                                                 |
+| -------------- | -------------------------------------------------------------------------------------------------------- |
+| **Core**       | `@simpleui/core` — runtime framework-agnostic: lifecycle, state, DOM, data, i18n, security util          |
+| **Komponen**   | Paket fitur (`datagrid`, `pivotgrid`, `charts`, dst.) yang dibangun di atas core                         |
+| **Adapter**    | Paket tipis per framework (`@simpleui/react`, `@simpleui/vue`, `@simpleui/angular`, `@simpleui/vanilla`) |
+| **Consumer**   | Aplikasi yang memakai SimpleUI                                                                           |
+| **Public API** | Simbol yang diekspor dari entry point paket dan tercatat di `.api.md`                                    |
+| **Internal**   | Simbol dengan tag `@internal`, tidak diekspor, boleh berubah kapan saja                                  |
+| **Ideal day**  | 1 hari kerja fokus seorang engineer, tanpa meeting/overhead                                              |
+| **DoD**        | Definition of Done (§13)                                                                                 |
 
 Aturan ini berlaku untuk seluruh kode di repo, termasuk `apps/`, `examples/`,
 `tools/`, dan dokumentasi yang dapat dieksekusi.
@@ -162,14 +162,14 @@ Aturan:
 
 Setiap paket komponen **WAJIB** memisahkan:
 
-| Folder | Tanggung jawab | Boleh bergantung pada |
-|---|---|---|
-| `src/model/` | state, tipe, state machine, selector murni | `core` |
-| `src/data/` | LoadOptions, pipeline, cache | `core`, `model` |
-| `src/view/` | renderer DOM, virtualizer, layout | `model`, `core` |
-| `src/interaction/` | keyboard, pointer, selection, editing | `model`, `view`, `core` |
-| `src/api/` | public class, opsi, event, export | semua di atas |
-| `src/index.ts` | barrel publik saja | `api` |
+| Folder             | Tanggung jawab                             | Boleh bergantung pada   |
+| ------------------ | ------------------------------------------ | ----------------------- |
+| `src/model/`       | state, tipe, state machine, selector murni | `core`                  |
+| `src/data/`        | LoadOptions, pipeline, cache               | `core`, `model`         |
+| `src/view/`        | renderer DOM, virtualizer, layout          | `model`, `core`         |
+| `src/interaction/` | keyboard, pointer, selection, editing      | `model`, `view`, `core` |
+| `src/api/`         | public class, opsi, event, export          | semua di atas           |
+| `src/index.ts`     | barrel publik saja                         | `api`                   |
 
 `R-ARC-11` **DILARANG**: `model` mengimpor `view` atau `interaction`.
 `R-ARC-12` **DILARANG**: renderer mengakses data source secara langsung; semua
@@ -177,14 +177,14 @@ lewat controller/model.
 
 ### 3.3 Enforcement
 
-| Aturan | Alat | Gate |
-|---|---|---|
-| Dependency & cycle | `dependency-cruiser` | CI `lint:arch` |
-| Framework leak | ESLint `no-restricted-imports` per paket | CI `lint` |
-| Deep import | `exports` map + `publint` + `arethetypeswrong` | CI `build` |
-| Public API berubah | API Extractor `.api.md` | CI `api:check` |
-| Bundle size | `size-limit` | CI `size` |
-| Lisensi dependency | `license-checker` + allowlist | CI `license` |
+| Aturan             | Alat                                           | Gate           |
+| ------------------ | ---------------------------------------------- | -------------- |
+| Dependency & cycle | `dependency-cruiser`                           | CI `lint:arch` |
+| Framework leak     | ESLint `no-restricted-imports` per paket       | CI `lint`      |
+| Deep import        | `exports` map + `publint` + `arethetypeswrong` | CI `build`     |
+| Public API berubah | API Extractor `.api.md`                        | CI `api:check` |
+| Bundle size        | `size-limit`                                   | CI `size`      |
+| Lisensi dependency | `license-checker` + allowlist                  | CI `license`   |
 
 ---
 
@@ -192,35 +192,35 @@ lewat controller/model.
 
 ### 4.1 Batas ukuran
 
-| Elemen | Batas lunak | Batas keras | Catatan |
-|---|---|---|---|
-| File | 300 LOC | 500 LOC | Pindahkan ke modul terpisah |
-| Fungsi/method | 40 LOC | 60 LOC | Ekstrak helper murni |
-| Parameter fungsi | 3 | 4 | Lebih dari itu pakai options object |
-| Cyclomatic complexity | 8 | 12 | Pecah percabangan |
-| Kedalaman nesting | 3 | 4 | Early return |
-| Baris di dalam komponen | 250 | 400 | Komposisi |
+| Elemen                  | Batas lunak | Batas keras | Catatan                             |
+| ----------------------- | ----------- | ----------- | ----------------------------------- |
+| File                    | 300 LOC     | 500 LOC     | Pindahkan ke modul terpisah         |
+| Fungsi/method           | 40 LOC      | 60 LOC      | Ekstrak helper murni                |
+| Parameter fungsi        | 3           | 4           | Lebih dari itu pakai options object |
+| Cyclomatic complexity   | 8           | 12          | Pecah percabangan                   |
+| Kedalaman nesting       | 3           | 4           | Early return                        |
+| Baris di dalam komponen | 250         | 400         | Komposisi                           |
 
 Batas keras **WAJIB** ditegakkan lewat ESLint, bukan sekadar review.
 
 ### 4.2 Penamaan
 
-| Jenis | Konvensi | Contoh |
-|---|---|---|
-| File | `kebab-case.ts` | `column-model.ts` |
-| Tipe/interface/class | `PascalCase` | `DataGridOptions` |
-| Fungsi/variabel | `camelCase` | `normalizeColumns()` |
-| Konstanta | `UPPER_SNAKE_CASE` | `MAX_FILTER_DEPTH` |
-| Event | `pastTense` / `noun + Changed` | `selectionChanged`, `rowUpdated` |
-| Opsi publik | `camelCase` | `showColumnLines` |
-| CSS class | `sui-<komponen>-<elemen>--<state>` | `sui-grid-cell--focused` |
-| CSS token | `--sui-<kategori>-<nama>-<varian>` | `--sui-color-accent-default` |
-| Test | `should <behavior> when <condition>` | `should keep selection when data reloads` |
+| Jenis                | Konvensi                             | Contoh                                    |
+| -------------------- | ------------------------------------ | ----------------------------------------- |
+| File                 | `kebab-case.ts`                      | `column-model.ts`                         |
+| Tipe/interface/class | `PascalCase`                         | `DataGridOptions`                         |
+| Fungsi/variabel      | `camelCase`                          | `normalizeColumns()`                      |
+| Konstanta            | `UPPER_SNAKE_CASE`                   | `MAX_FILTER_DEPTH`                        |
+| Event                | `pastTense` / `noun + Changed`       | `selectionChanged`, `rowUpdated`          |
+| Opsi publik          | `camelCase`                          | `showColumnLines`                         |
+| CSS class            | `sui-<komponen>-<elemen>--<state>`   | `sui-grid-cell--focused`                  |
+| CSS token            | `--sui-<kategori>-<nama>-<varian>`   | `--sui-color-accent-default`              |
+| Test                 | `should <behavior> when <condition>` | `should keep selection when data reloads` |
 
 `R-CODE-01` **DILARANG**: singkatan yang tidak lazim (`usr`, `mgr`, `cfg`).
 `R-CODE-02` **DILARANG**: boolean flag parameter tanpa nama
 (`render(true, false)`); gunakan options object.
-`R-CODE-03` **WAJIB**: nama menjelaskan *mengapa/tujuan*, bukan tipe
+`R-CODE-03` **WAJIB**: nama menjelaskan _mengapa/tujuan_, bukan tipe
 (`rows` lebih baik dari `dataArray`).
 
 ### 4.3 Konfigurasi TypeScript wajib
@@ -240,8 +240,8 @@ Batas keras **WAJIB** ditegakkan lewat ESLint, bukan sekadar review.
     "isolatedModules": true,
     "moduleResolution": "bundler",
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
-  }
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+  },
 }
 ```
 
@@ -321,18 +321,18 @@ export class SimpleUIError extends Error {
 
 ### 4.8 Anti-pattern yang dilarang
 
-| Anti-pattern | Alasan | Alternatif |
-|---|---|---|
-| `innerHTML` dengan data | XSS | `textContent` / sanitizer |
-| `eval`, `new Function` | CSP & injection | parser ekspresi aman |
-| Deep merge tanpa guard | prototype pollution | `safeMerge` |
-| `setTimeout` untuk sinkronisasi UI | flaky & boros | scheduler/`requestAnimationFrame` |
-| Global event listener per instance | memory leak | delegated listener + dispose |
-| `JSON.parse` langsung dipercaya | data korup | validasi skema |
-| `Array.prototype.sort` pada state | mutasi tak terduga | salin dulu |
-| `any` di boundary | kehilangan type safety | schema validation |
-| Loki/Imperative DOM di adapter | duplikasi perilaku | template bridge |
-| Snapshot test untuk logika | rapuh | assertion perilaku |
+| Anti-pattern                       | Alasan                 | Alternatif                        |
+| ---------------------------------- | ---------------------- | --------------------------------- |
+| `innerHTML` dengan data            | XSS                    | `textContent` / sanitizer         |
+| `eval`, `new Function`             | CSP & injection        | parser ekspresi aman              |
+| Deep merge tanpa guard             | prototype pollution    | `safeMerge`                       |
+| `setTimeout` untuk sinkronisasi UI | flaky & boros          | scheduler/`requestAnimationFrame` |
+| Global event listener per instance | memory leak            | delegated listener + dispose      |
+| `JSON.parse` langsung dipercaya    | data korup             | validasi skema                    |
+| `Array.prototype.sort` pada state  | mutasi tak terduga     | salin dulu                        |
+| `any` di boundary                  | kehilangan type safety | schema validation                 |
+| Loki/Imperative DOM di adapter     | duplikasi perilaku     | template bridge                   |
+| Snapshot test untuk logika         | rapuh                  | assertion perilaku                |
 
 ---
 
@@ -354,14 +354,14 @@ export class SimpleUIError extends Error {
 
 ### 5.2 Pemetaan lintas framework
 
-| Konsep | JavaScript/TS | React | Vue | Angular |
-|---|---|---|---|---|
-| Opsi | `options` object | props | props | `@Input()` |
-| Event | `instance.on('cellClick')` | `onCellClick` | `@cell-click` | `(cellClick)` |
-| Two-way | `option('value', v)` | `value` + `onValueChange` | `v-model` | `[(value)]` |
-| Template | function | render prop | slot | `ng-template` |
-| Instance | return constructor | `ref` | `defineExpose` | `@ViewChild` |
-| Dispose | `dispose()` | unmount | unmount | `ngOnDestroy` |
+| Konsep   | JavaScript/TS              | React                     | Vue            | Angular       |
+| -------- | -------------------------- | ------------------------- | -------------- | ------------- |
+| Opsi     | `options` object           | props                     | props          | `@Input()`    |
+| Event    | `instance.on('cellClick')` | `onCellClick`             | `@cell-click`  | `(cellClick)` |
+| Two-way  | `option('value', v)`       | `value` + `onValueChange` | `v-model`      | `[(value)]`   |
+| Template | function                   | render prop               | slot           | `ng-template` |
+| Instance | return constructor         | `ref`                     | `defineExpose` | `@ViewChild`  |
+| Dispose  | `dispose()`                | unmount                   | unmount        | `ngOnDestroy` |
 
 ### 5.3 Semver dan deprecation
 
@@ -389,26 +389,26 @@ export class SimpleUIError extends Error {
 Threat model lengkap dan kontrol per permukaan ada di
 [05 — Security](05-security.md). Aturan berikut **WAJIB** dipatuhi di setiap PR.
 
-| ID | Aturan |
-|---|---|
-| `R-SEC-01` | Semua data dari luar (API, props, URL, storage, clipboard) tidak tepercaya. |
-| `R-SEC-02` | Render teks dengan `textContent`/text node. `innerHTML` **DILARANG** kecuali lewat sanitizer resmi dan `allowHtml: true`. |
-| `R-SEC-03` | Sanitizer memakai allowlist tag/atribut, memblokir event handler, `script`, `style`, dan protokol berbahaya; integrasikan Trusted Types bila tersedia. |
-| `R-SEC-04` | **DILARANG** `eval`, `new Function`, `setTimeout(string)`, atau parser ekspresi yang mengeksekusi kode. |
-| `R-SEC-05` | Merge opsi memakai `safeMerge`: tolak `__proto__`, `constructor`, `prototype`; gunakan object tanpa prototype untuk dictionary. |
+| ID         | Aturan                                                                                                                                                         |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `R-SEC-01` | Semua data dari luar (API, props, URL, storage, clipboard) tidak tepercaya.                                                                                    |
+| `R-SEC-02` | Render teks dengan `textContent`/text node. `innerHTML` **DILARANG** kecuali lewat sanitizer resmi dan `allowHtml: true`.                                      |
+| `R-SEC-03` | Sanitizer memakai allowlist tag/atribut, memblokir event handler, `script`, `style`, dan protokol berbahaya; integrasikan Trusted Types bila tersedia.         |
+| `R-SEC-04` | **DILARANG** `eval`, `new Function`, `setTimeout(string)`, atau parser ekspresi yang mengeksekusi kode.                                                        |
+| `R-SEC-05` | Merge opsi memakai `safeMerge`: tolak `__proto__`, `constructor`, `prototype`; gunakan object tanpa prototype untuk dictionary.                                |
 | `R-SEC-06` | URL divalidasi terhadap allowlist protokol (`https:`, `http:`, `mailto:`, `tel:`); blokir `javascript:`, `data:`, `vbscript:`; normalisasi spasi/control char. |
-| `R-SEC-07` | Export CSV/Excel meng-escape formula (`=`, `+`, `-`, `@`, TAB, CR) secara default. |
-| `R-SEC-08` | **DILARANG** inline event handler (`onclick=`) dan `<style>` yang di-inject dari data. Stylet via CSSOM/class, bukan string HTML. |
-| `R-SEC-09` | Tidak ada telemetry, cookie, atau request pihak ketiga secara default. |
-| `R-SEC-10` | State persistence opt-in, divalidasi skema, dibatasi ukuran, dan tidak menyimpan data sensitif secara default. |
-| `R-SEC-11` | Network: HTTPS default, timeout, batas ukuran respons, `AbortSignal`, CSRF token provider, credentials opt-in. |
-| `R-SEC-12` | Batas DoS: jumlah baris/kolom, kedalaman filter/group, panjang ekspresi, ukuran sel, jumlah request paralel. |
-| `R-SEC-13` | Dependency baru melalui checklist §6.4; lockfile committed; `ignore-scripts=true`. |
-| `R-SEC-14` | Setiap fitur yang menyentuh HTML/URL/export/storage wajib punya security test. |
-| `R-SEC-15` | Otorisasi adalah tanggung jawab server. UI hanya menyembunyikan, bukan melindungi. Dokumentasikan eksplisit. |
-| `R-SEC-16` | Export dan clipboard menghormati kolom tersembunyi dan hak akses yang dikonfigurasi. |
-| `R-SEC-17` | Pesan error production tidak memuat stack, path, token, atau detail internal. |
-| `R-SEC-18` | `postMessage` (jika dipakai) wajib cek `origin` dan `source`, serta validasi payload. |
+| `R-SEC-07` | Export CSV/Excel meng-escape formula (`=`, `+`, `-`, `@`, TAB, CR) secara default.                                                                             |
+| `R-SEC-08` | **DILARANG** inline event handler (`onclick=`) dan `<style>` yang di-inject dari data. Stylet via CSSOM/class, bukan string HTML.                              |
+| `R-SEC-09` | Tidak ada telemetry, cookie, atau request pihak ketiga secara default.                                                                                         |
+| `R-SEC-10` | State persistence opt-in, divalidasi skema, dibatasi ukuran, dan tidak menyimpan data sensitif secara default.                                                 |
+| `R-SEC-11` | Network: HTTPS default, timeout, batas ukuran respons, `AbortSignal`, CSRF token provider, credentials opt-in.                                                 |
+| `R-SEC-12` | Batas DoS: jumlah baris/kolom, kedalaman filter/group, panjang ekspresi, ukuran sel, jumlah request paralel.                                                   |
+| `R-SEC-13` | Dependency baru melalui checklist §6.4; lockfile committed; `ignore-scripts=true`.                                                                             |
+| `R-SEC-14` | Setiap fitur yang menyentuh HTML/URL/export/storage wajib punya security test.                                                                                 |
+| `R-SEC-15` | Otorisasi adalah tanggung jawab server. UI hanya menyembunyikan, bukan melindungi. Dokumentasikan eksplisit.                                                   |
+| `R-SEC-16` | Export dan clipboard menghormati kolom tersembunyi dan hak akses yang dikonfigurasi.                                                                           |
+| `R-SEC-17` | Pesan error production tidak memuat stack, path, token, atau detail internal.                                                                                  |
+| `R-SEC-18` | `postMessage` (jika dipakai) wajib cek `origin` dan `source`, serta validasi payload.                                                                          |
 
 ### 6.1 Contoh: render sel yang aman
 
@@ -478,21 +478,21 @@ Detail tooling dan matriks ada di [04 — Testing](04-testing-strategy.md).
 
 ### 7.1 Piramida
 
-| Layer | Proporsi | Tool | Contoh |
-|---|---|---|---|
-| Unit (murni) | 60% | Vitest | sorting, filter, agregasi, virtual math |
-| Component/DOM | 25% | Vitest browser mode / Testing Library | render, keyboard, selection |
-| Integration/contract | 10% | Vitest + per-framework harness | adapter parity |
-| E2E/visual/a11y/perf | 5% | Playwright + axe | alur nyata, screenshot, audit |
+| Layer                | Proporsi | Tool                                  | Contoh                                  |
+| -------------------- | -------- | ------------------------------------- | --------------------------------------- |
+| Unit (murni)         | 60%      | Vitest                                | sorting, filter, agregasi, virtual math |
+| Component/DOM        | 25%      | Vitest browser mode / Testing Library | render, keyboard, selection             |
+| Integration/contract | 10%      | Vitest + per-framework harness        | adapter parity                          |
+| E2E/visual/a11y/perf | 5%       | Playwright + axe                      | alur nyata, screenshot, audit           |
 
 ### 7.2 Coverage gate
 
-| Paket | Lines | Branches | Catatan |
-|---|---|---|---|
-| `core` | ≥ 90% | ≥ 85% | Mutation score ≥ 70% untuk modul kritis |
-| Komponen | ≥ 85% | ≥ 80% | Data pipeline & state machine wajib ≥ 90% |
-| Adapter | ≥ 80% | ≥ 75% | Termasuk cleanup & remount |
-| Keseluruhan | ≥ 85% | ≥ 80% | Tidak boleh turun > 1% per PR |
+| Paket       | Lines | Branches | Catatan                                   |
+| ----------- | ----- | -------- | ----------------------------------------- |
+| `core`      | ≥ 90% | ≥ 85%    | Mutation score ≥ 70% untuk modul kritis   |
+| Komponen    | ≥ 85% | ≥ 80%    | Data pipeline & state machine wajib ≥ 90% |
+| Adapter     | ≥ 80% | ≥ 75%    | Termasuk cleanup & remount                |
+| Keseluruhan | ≥ 85% | ≥ 80%    | Tidak boleh turun > 1% per PR             |
 
 Coverage bukan tujuan, tetapi **regresi coverage menggagalkan CI**.
 
@@ -533,27 +533,27 @@ Sebuah task hanya boleh `DONE` jika:
 
 ### 8.1 Budget bundle (gzip, tree-shaken)
 
-| Paket | Budget | Catatan |
-|---|---|---|
-| `@simpleui/core` | ≤ 25 KB | Tanpa komponen |
-| `@simpleui/datagrid` | ≤ 70 KB | Fitur MVP |
-| `@simpleui/pivotgrid` | ≤ 50 KB | |
+| Paket                          | Budget  | Catatan             |
+| ------------------------------ | ------- | ------------------- |
+| `@simpleui/core`               | ≤ 25 KB | Tanpa komponen      |
+| `@simpleui/datagrid`           | ≤ 70 KB | Fitur MVP           |
+| `@simpleui/pivotgrid`          | ≤ 50 KB |                     |
 | `@simpleui/charts` (cartesian) | ≤ 90 KB | Tanpa seri tambahan |
-| Adapter (masing-masing) | ≤ 5 KB | Thin wrapper |
-| CSS tema | ≤ 30 KB | Termasuk dark/HC |
+| Adapter (masing-masing)        | ≤ 5 KB  | Thin wrapper        |
+| CSS tema                       | ≤ 30 KB | Termasuk dark/HC    |
 
 ### 8.2 Target runtime (reference device: laptop mid-range, Chrome stable)
 
-| Skenario | Target |
-|---|---|
-| Mount DataGrid 10.000 baris lokal | ≤ 300 ms |
-| Scroll frame (virtualized) | ≤ 16 ms (60 fps) |
-| Sorting 100.000 baris lokal | ≤ 150 ms |
-| Filter 100.000 baris | ≤ 100 ms |
-| Update satu sel | ≤ 5 ms |
-| Memory 100.000 baris remote | ≤ 150 MB |
-| Chart render 10.000 titik | ≤ 500 ms |
-| Chart update 60 fps | ≤ 16 ms/frame |
+| Skenario                          | Target           |
+| --------------------------------- | ---------------- |
+| Mount DataGrid 10.000 baris lokal | ≤ 300 ms         |
+| Scroll frame (virtualized)        | ≤ 16 ms (60 fps) |
+| Sorting 100.000 baris lokal       | ≤ 150 ms         |
+| Filter 100.000 baris              | ≤ 100 ms         |
+| Update satu sel                   | ≤ 5 ms           |
+| Memory 100.000 baris remote       | ≤ 150 MB         |
+| Chart render 10.000 titik         | ≤ 500 ms         |
+| Chart update 60 fps               | ≤ 16 ms/frame    |
 
 ### 8.3 Aturan implementasi
 
@@ -734,5 +734,5 @@ Tanpa ADR, pelanggaran **WAJIB** ditolak di review.
 
 ---
 
-*Dokumen ini ditinjau setiap akhir phase. Perubahan aturan wajib melalui PR
-dengan 2 reviewer dan catatan di changelog dokumentasi.*
+_Dokumen ini ditinjau setiap akhir phase. Perubahan aturan wajib melalui PR
+dengan 2 reviewer dan catatan di changelog dokumentasi._

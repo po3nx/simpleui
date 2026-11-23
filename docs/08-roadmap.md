@@ -35,13 +35,13 @@ Fondasi → DataGrid → (PivotGrid ∥ Chart) → Editors/Forms
 
 ## 2. Tier komponen
 
-| Tier | Komponen | Alasan prioritas |
-|---|---|---|
-| **Tier 0** | Core, theme, icons, testing | Prasyarat semua |
-| **Tier 1** | **DataGrid**, **PivotGrid**, **Chart** | Nilai enterprise tertinggi, pembeda |
-| **Tier 2** | TreeList, Editor set (TextBox, NumberBox, SelectBox, DateBox, CheckBox, Switch, RadioGroup, TagBox, Autocomplete, Lookup, Validator), Layout (Tabs, Accordion, Toolbar, Drawer, Popup, ScrollView), Navigation (TreeView, Menu, Pagination), Feedback (LoadIndicator, ProgressBar, Toast, Skeleton) | Melengkapi use case CRUD & form |
-| **Tier 3** | Scheduler, Gantt, FileManager, Diagram, VectorMap, RangeSelector, Bullet, Sparkline, Polar/Pie, TreeMap, Funnel, Gauges | Vertikal & visualisasi lanjutan |
-| **Tier 4** | Fitur niche, integrasi pihak ketiga, AI assistant | Setelah 1.0 stabil |
+| Tier       | Komponen                                                                                                                                                                                                                                                                                            | Alasan prioritas                    |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| **Tier 0** | Core, theme, icons, testing                                                                                                                                                                                                                                                                         | Prasyarat semua                     |
+| **Tier 1** | **DataGrid**, **PivotGrid**, **Chart**                                                                                                                                                                                                                                                              | Nilai enterprise tertinggi, pembeda |
+| **Tier 2** | TreeList, Editor set (TextBox, NumberBox, SelectBox, DateBox, CheckBox, Switch, RadioGroup, TagBox, Autocomplete, Lookup, Validator), Layout (Tabs, Accordion, Toolbar, Drawer, Popup, ScrollView), Navigation (TreeView, Menu, Pagination), Feedback (LoadIndicator, ProgressBar, Toast, Skeleton) | Melengkapi use case CRUD & form     |
+| **Tier 3** | Scheduler, Gantt, FileManager, Diagram, VectorMap, RangeSelector, Bullet, Sparkline, Polar/Pie, TreeMap, Funnel, Gauges                                                                                                                                                                             | Vertikal & visualisasi lanjutan     |
+| **Tier 4** | Fitur niche, integrasi pihak ketiga, AI assistant                                                                                                                                                                                                                                                   | Setelah 1.0 stabil                  |
 
 Detail katalog: [components/README](components/README.md).
 
@@ -51,16 +51,16 @@ Detail katalog: [components/README](components/README.md).
 
 ### Ringkasan
 
-| Phase | Nama | Durasi | Mulai | Selesai | Milestone |
-|---|---|---|---|---|---|
-| P0 | Foundation | 8 minggu | 2026-12-01 | 2027-01-29 | M1 |
-| P1 | DataGrid Core & MVP | 11 minggu | 2027-02-01 | 2027-04-16 | M2 |
-| P2 | DataGrid Beta & Adapters | 6 minggu | 2027-04-19 | 2027-05-28 | M3 |
-| P3 | DataGrid GA | 10 minggu | 2027-05-31 | 2027-08-06 | M4 |
-| P4 | PivotGrid | 22 minggu | 2027-06-21 | 2027-11-19 | M5 |
-| P5 | Charts | 32 minggu | 2027-07-05 | 2028-02-11 | M6 |
-| P6 | Editors & Forms | 26 minggu | 2027-11-22 | 2028-05-19 | M7 |
-| P7 | Advanced Suite | 72 minggu | 2028-02-14 | 2029-06-29 | M8 |
+| Phase | Nama                     | Durasi    | Mulai      | Selesai    | Milestone |
+| ----- | ------------------------ | --------- | ---------- | ---------- | --------- |
+| P0    | Foundation               | 8 minggu  | 2026-12-01 | 2027-01-29 | M1        |
+| P1    | DataGrid Core & MVP      | 11 minggu | 2027-02-01 | 2027-04-16 | M2        |
+| P2    | DataGrid Beta & Adapters | 6 minggu  | 2027-04-19 | 2027-05-28 | M3        |
+| P3    | DataGrid GA              | 10 minggu | 2027-05-31 | 2027-08-06 | M4        |
+| P4    | PivotGrid                | 22 minggu | 2027-06-21 | 2027-11-19 | M5        |
+| P5    | Charts                   | 32 minggu | 2027-07-05 | 2028-02-11 | M6        |
+| P6    | Editors & Forms          | 26 minggu | 2027-11-22 | 2028-05-19 | M7        |
+| P7    | Advanced Suite           | 72 minggu | 2028-02-14 | 2029-06-29 | M8        |
 
 P4 dan P5 berjalan paralel dengan P3 setelah DataGrid core stabil. P6 mulai
 setelah PivotGrid GA; P7 setelah Charts GA.
@@ -225,42 +225,42 @@ implementasi → GA). Estimasi per komponen di
 
 ## 4. Milestone dan gate
 
-| Milestone | Tanggal target | Definisi |
-|---|---|---|
-| **M0** | 2026-11-28 | Plan v1.0 disetujui; 11 ADR Accepted (2026-11-23) |
-| **M1** | 2027-01-29 | Foundation siap (G1) |
-| **M2** | 2027-04-16 | DataGrid alpha (G2) |
-| **M3** | 2027-05-28 | DataGrid beta 4 adapter (G3) |
-| **M4** | 2027-08-06 | DataGrid 1.0 GA (G4) |
-| **M5** | 2027-11-19 | PivotGrid 1.0 GA (G5) |
-| **M6** | 2028-02-11 | Charts 1.0 GA (G5) |
-| **M7** | 2028-05-19 | Editors & Forms GA (G5) |
-| **M8** | 2029-06-29 | Advanced suite lengkap |
+| Milestone | Tanggal target | Definisi                                          |
+| --------- | -------------- | ------------------------------------------------- |
+| **M0**    | 2026-11-28     | Plan v1.0 disetujui; 11 ADR Accepted (2026-11-23) |
+| **M1**    | 2027-01-29     | Foundation siap (G1)                              |
+| **M2**    | 2027-04-16     | DataGrid alpha (G2)                               |
+| **M3**    | 2027-05-28     | DataGrid beta 4 adapter (G3)                      |
+| **M4**    | 2027-08-06     | DataGrid 1.0 GA (G4)                              |
+| **M5**    | 2027-11-19     | PivotGrid 1.0 GA (G5)                             |
+| **M6**    | 2028-02-11     | Charts 1.0 GA (G5)                                |
+| **M7**    | 2028-05-19     | Editors & Forms GA (G5)                           |
+| **M8**    | 2029-06-29     | Advanced suite lengkap                            |
 
 Gate G0–G5:
 
-| Gate | Fokus | Keputusan |
-|---|---|---|
-| G0 | Plan & ADR | Go/no-go implementasi |
-| G1 | Foundation | Siap membangun komponen |
-| G2 | Alpha | Siap beta internal |
-| G3 | Beta | Siap design partner |
-| G4 | GA DataGrid | Siap rilis publik |
-| G5 | GA komponen berikutnya | Siap rilis publik |
+| Gate | Fokus                  | Keputusan               |
+| ---- | ---------------------- | ----------------------- |
+| G0   | Plan & ADR             | Go/no-go implementasi   |
+| G1   | Foundation             | Siap membangun komponen |
+| G2   | Alpha                  | Siap beta internal      |
+| G3   | Beta                   | Siap design partner     |
+| G4   | GA DataGrid            | Siap rilis publik       |
+| G5   | GA komponen berikutnya | Siap rilis publik       |
 
 ---
 
 ## 5. Jalur paralel
 
-| Track | Isi | Owner |
-|---|---|---|
-| Core platform | kernel, data, security, a11y service | Core engineer |
-| DataGrid | komponen + fitur | Grid squad |
-| Framework adapters | React/Vue/Angular/vanilla, parity | Adapter engineer |
-| Design system | token, tema, ikon, visual spec | Designer + UI engineer |
-| Quality | test harness, CI, visual, perf, security | QA |
-| Docs & DX | docs site, demo, tutorial, API reference | Tech writer + engineer |
-| Release | build, changesets, publish, SBOM | Release manager |
+| Track              | Isi                                      | Owner                  |
+| ------------------ | ---------------------------------------- | ---------------------- |
+| Core platform      | kernel, data, security, a11y service     | Core engineer          |
+| DataGrid           | komponen + fitur                         | Grid squad             |
+| Framework adapters | React/Vue/Angular/vanilla, parity        | Adapter engineer       |
+| Design system      | token, tema, ikon, visual spec           | Designer + UI engineer |
+| Quality            | test harness, CI, visual, perf, security | QA                     |
+| Docs & DX          | docs site, demo, tutorial, API reference | Tech writer + engineer |
+| Release            | build, changesets, publish, SBOM         | Release manager        |
 
 Aturan: track tidak boleh mengubah arsitektur tanpa ADR; perubahan lintas track
 dikoordinasikan di weekly sync.
@@ -309,20 +309,20 @@ Selain DoD per task ([00 §12](00-rule-umum.md#12-definition-of-done-dod)):
 
 ## 9. Metrik keberhasilan
 
-| Metrik | Target 1.0 |
-|---|---|
-| Time to first grid (dari docs) | ≤ 10 menit |
-| Bundle DataGrid (gzip) | ≤ 70 KB |
-| Mount 10.000 baris | ≤ 300 ms |
-| Scroll 60 fps | ≥ 95% frame |
-| Axe serious/critical | 0 |
-| Security critical/high terbuka | 0 |
-| Coverage core | ≥ 90% |
-| API breaking tanpa major | 0 |
-| Bug kritis per rilis | 0 |
-| Design partner satisfaction | ≥ 4/5 |
+| Metrik                         | Target 1.0  |
+| ------------------------------ | ----------- |
+| Time to first grid (dari docs) | ≤ 10 menit  |
+| Bundle DataGrid (gzip)         | ≤ 70 KB     |
+| Mount 10.000 baris             | ≤ 300 ms    |
+| Scroll 60 fps                  | ≥ 95% frame |
+| Axe serious/critical           | 0           |
+| Security critical/high terbuka | 0           |
+| Coverage core                  | ≥ 90%       |
+| API breaking tanpa major       | 0           |
+| Bug kritis per rilis           | 0           |
+| Design partner satisfaction    | ≥ 4/5       |
 
 ---
 
-*Untuk perhitungan effort dan skenario tim, lihat
-[09 — Estimasi](09-estimasi.md).*
+_Untuk perhitungan effort dan skenario tim, lihat
+[09 — Estimasi](09-estimasi.md)._

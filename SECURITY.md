@@ -6,10 +6,10 @@ SimpleUI is pre-1.0. Security fixes are applied to the latest published
 `0.x` line until `1.0` is released. After `1.0`, the latest major and the
 previous major receive security patches for six months.
 
-| Version | Supported |
-|---|---|
-| `0.x` (latest) | Yes |
-| older `0.x` | No |
+| Version        | Supported |
+| -------------- | --------- |
+| `0.x` (latest) | Yes       |
+| older `0.x`    | No        |
 
 ## Reporting a vulnerability
 

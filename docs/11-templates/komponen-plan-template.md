@@ -25,15 +25,15 @@
 
 ### 2.1 P0 — MVP
 
-| Fitur | Acceptance criteria |
-|---|---|
-| <fitur> | <kriteria terukur> |
+| Fitur   | Acceptance criteria |
+| ------- | ------------------- |
+| <fitur> | <kriteria terukur>  |
 
 ### 2.2 P1 — GA 1.0
 
-| Fitur | Acceptance criteria |
-|---|---|
-| <fitur> | <kriteria terukur> |
+| Fitur   | Acceptance criteria |
+| ------- | ------------------- |
+| <fitur> | <kriteria terukur>  |
 
 ### 2.3 P2 — Pasca-GA
 
@@ -57,9 +57,10 @@
 ## 5. API ringkas
 
 ```ts
-interface <Nama>Options<T> {
-  // ...
-}
+((interface < Nama) > Options < T) >
+  {
+    // ...
+  };
 ```
 
 - Method:
@@ -69,12 +70,12 @@ interface <Nama>Options<T> {
 
 ## 6. Keamanan
 
-| Ancaman | Kontrol |
-|---|---|
-| XSS | Teks default; sanitizer opt-in |
-| Injection | <kontrol> |
-| DoS | <batas> |
-| Supply chain | <kontrol> |
+| Ancaman      | Kontrol                        |
+| ------------ | ------------------------------ |
+| XSS          | Teks default; sanitizer opt-in |
+| Injection    | <kontrol>                      |
+| DoS          | <batas>                        |
+| Supply chain | <kontrol>                      |
 
 ## 7. Aksesibilitas
 
@@ -86,46 +87,46 @@ interface <Nama>Options<T> {
 
 ## 8. Test plan
 
-| Area | Test |
-|---|---|
-| Model | <unit> |
-| DOM | <browser> |
-| Adapter | <parity> |
-| A11y | <axe + manual> |
-| Security | <payload> |
-| Performance | <budget> |
+| Area        | Test           |
+| ----------- | -------------- |
+| Model       | <unit>         |
+| DOM         | <browser>      |
+| Adapter     | <parity>       |
+| A11y        | <axe + manual> |
+| Security    | <payload>      |
+| Performance | <budget>       |
 
 ## 9. Implementasi
 
-| Fase | Durasi | Fokus | Gate |
-|---|---|---|---|
+| Fase  | Durasi     | Fokus           | Gate   |
+| ----- | ---------- | --------------- | ------ |
 | <X-0> | <2 minggu> | Kontrak & spike | <gate> |
-| <X-1> | <…> | Model/data | <gate> |
-| <X-2> | <…> | Rendering | <gate> |
-| <X-3> | <…> | Fitur | <gate> |
-| <X-4> | <…> | Adapter & a11y | <gate> |
-| <X-5> | <…> | Hardening & GA | <gate> |
+| <X-1> | <…>        | Model/data      | <gate> |
+| <X-2> | <…>        | Rendering       | <gate> |
+| <X-3> | <…>        | Fitur           | <gate> |
+| <X-4> | <…>        | Adapter & a11y  | <gate> |
+| <X-5> | <…>        | Hardening & GA  | <gate> |
 
 ## 10. Risiko
 
-| Risiko | Dampak | Mitigasi |
-|---|---|---|
+| Risiko   | Dampak   | Mitigasi   |
+| -------- | -------- | ---------- |
 | <risiko> | <dampak> | <mitigasi> |
 
 ## 11. Metrik keberhasilan
 
-| Metrik | Target |
-|---|---|
-| Time to first use | <…> |
-| Bundle gzip | <…> |
-| Performance | <…> |
-| Axe serious | 0 |
-| Security critical | 0 |
+| Metrik            | Target |
+| ----------------- | ------ |
+| Time to first use | <…>    |
+| Bundle gzip       | <…>    |
+| Performance       | <…>    |
+| Axe serious       | 0      |
+| Security critical | 0      |
 
 ## 12. Dependensi
 
-| Dependensi | Status | Dampak |
-|---|---|---|
+| Dependensi   | Status   | Dampak   |
+| ------------ | -------- | -------- |
 | <paket/task> | <status> | <dampak> |
 
 ## 13. Dokumen

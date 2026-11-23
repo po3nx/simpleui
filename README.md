@@ -17,6 +17,7 @@ npm install -g pnpm@12.21.0
 pnpm install
 pnpm build
 pnpm typecheck
+pnpm lint
 pnpm test
 pnpm audit
 ```
@@ -81,7 +82,6 @@ pnpm install
 
 Persetujuan dicatat di `pnpm-workspace.yaml` sebagai `allowBuilds`.
 
-
 ## Dokumentasi
 
 Seluruh plan, aturan rekayasa, arsitektur, dan tracking ada di
@@ -98,12 +98,12 @@ Mulai dari:
 
 ## Ringkasan estimasi
 
-| Tonggak | Tim 5–6 orang |
-|---|---|
-| DataGrid MVP | 4–5 bulan |
-| DataGrid GA | 8–9 bulan |
-| DataGrid + PivotGrid + Charts GA | 14–16 bulan |
-| Parity penuh ±100 widget | 30–36 bulan |
+| Tonggak                          | Tim 5–6 orang |
+| -------------------------------- | ------------- |
+| DataGrid MVP                     | 4–5 bulan     |
+| DataGrid GA                      | 8–9 bulan     |
+| DataGrid + PivotGrid + Charts GA | 14–16 bulan   |
+| Parity penuh ±100 widget         | 30–36 bulan   |
 
 Angka adalah rough order of magnitude, bukan komitmen. Detail asumsi ada di
 [estimasi](docs/09-estimasi.md).

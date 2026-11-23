@@ -41,13 +41,13 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| CSS-in-JS runtime | Colokasi, theme dinamis | CSP, runtime cost, bundle | Ditolak |
-| Tailwind | Cepat | Utility class bocor ke consumer, semantic sulit | Ditolak |
-| SCSS modules | Familiar | Build tambahan, token tidak runtime | Tidak perlu |
-| CSS layer + custom properties | CSP-friendly, murah, mudah override | Perlu disiplin token | **Dipilih** |
-| Shadow DOM | Isolasi | Theming & a11y lebih rumit | Ditunda |
+| Alternatif                    | Kelebihan                           | Kekurangan                                      | Alasan tidak dipilih |
+| ----------------------------- | ----------------------------------- | ----------------------------------------------- | -------------------- |
+| CSS-in-JS runtime             | Colokasi, theme dinamis             | CSP, runtime cost, bundle                       | Ditolak              |
+| Tailwind                      | Cepat                               | Utility class bocor ke consumer, semantic sulit | Ditolak              |
+| SCSS modules                  | Familiar                            | Build tambahan, token tidak runtime             | Tidak perlu          |
+| CSS layer + custom properties | CSP-friendly, murah, mudah override | Perlu disiplin token                            | **Dipilih**          |
+| Shadow DOM                    | Isolasi                             | Theming & a11y lebih rumit                      | Ditunda              |
 
 ---
 
@@ -95,13 +95,13 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Token | FND-010 |
-| Build | Lightning CSS |
-| Tema | `@simpleui/theme` |
-| Test | visual per tema/RTL/density |
-| Target | Sebelum DG-2 |
+| Item   | Detail                      |
+| ------ | --------------------------- |
+| Token  | FND-010                     |
+| Build  | Lightning CSS               |
+| Tema   | `@simpleui/theme`           |
+| Test   | visual per tema/RTL/density |
+| Target | Sebelum DG-2                |
 
 ---
 
@@ -115,8 +115,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Design System Lead | Setuju | Token-first |
-| 2026-11-23 | Security Reviewer | Setuju | Tanpa runtime style injection |
-| 2026-11-23 | Tech Lead | Setuju | CSS layer |
+| Tanggal    | Reviewer           | Keputusan | Catatan                       |
+| ---------- | ------------------ | --------- | ----------------------------- |
+| 2026-11-23 | Design System Lead | Setuju    | Token-first                   |
+| 2026-11-23 | Security Reviewer  | Setuju    | Tanpa runtime style injection |
+| 2026-11-23 | Tech Lead          | Setuju    | CSS layer                     |

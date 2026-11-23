@@ -31,46 +31,46 @@ Untrusted: data dari API, nilai sel, URL dari data, localStorage, clipboard,
 
 ### 2.1 Aset
 
-| Aset | Dampak jika bocor/dirusak |
-|---|---|
-| Data baris yang ditampilkan | Kebocoran PII/data bisnis |
-| Token/session di header | Account takeover |
-| Integritas DOM | XSS, phishing, defacement |
-| State persistence | Kebocoran data, manipulasi UI |
-| Supply chain | Kompromi seluruh consumer |
-| Kepercayaan pengguna | Reputasi produk |
+| Aset                        | Dampak jika bocor/dirusak     |
+| --------------------------- | ----------------------------- |
+| Data baris yang ditampilkan | Kebocoran PII/data bisnis     |
+| Token/session di header     | Account takeover              |
+| Integritas DOM              | XSS, phishing, defacement     |
+| State persistence           | Kebocoran data, manipulasi UI |
+| Supply chain                | Kompromi seluruh consumer     |
+| Kepercayaan pengguna        | Reputasi produk               |
 
 ### 2.2 Aktor dan vektor
 
-| Aktor | Vektor |
-|---|---|
+| Aktor                   | Vektor                                 |
+| ----------------------- | -------------------------------------- |
 | Data berbahaya dari API | XSS via sel, caption, tooltip, summary |
-| Developer keliru | `allowHtml` tanpa sanitasi, URL mentah |
-| Dependency terkompromi | Supply chain, postinstall script |
-| Penyerang jaringan | MITM, respons besar, redirect |
-| Pengguna lokal | Manipulasi localStorage, clipboard |
-| Insider | Mengubah konfigurasi export/visibility |
+| Developer keliru        | `allowHtml` tanpa sanitasi, URL mentah |
+| Dependency terkompromi  | Supply chain, postinstall script       |
+| Penyerang jaringan      | MITM, respons besar, redirect          |
+| Pengguna lokal          | Manipulasi localStorage, clipboard     |
+| Insider                 | Mengubah konfigurasi export/visibility |
 
 ### 2.3 Tabel ancaman → kontrol → test
 
-| # | Ancaman | Kontrol | Test |
-|---|---|---|---|
-| T1 | Stored XSS di sel | `textContent` default; sanitizer opt-in | XSS corpus di 4 adapter |
-| T2 | XSS di caption/header/tooltip | Semua teks via text node | Payload di caption & tooltip |
-| T3 | XSS via template string | Sanitizer allowlist; `allowHtml` eksplisit | Bypass corpus |
-| T4 | `javascript:` URL | `safeUrl` allowlist protokol | Payload URL di link column |
-| T5 | CSS injection | Style via CSSOM, validasi nilai | Payload `background-image` |
-| T6 | Prototype pollution | `safeMerge`, null-prototype dict | Payload `__proto__` di options |
-| T7 | CSV/Excel formula injection | Escape `= + - @ TAB CR` | Export payload |
-| T8 | Filter/OData injection | AST tertutup + encoding | Payload field/value |
-| T9 | ReDoS | Tanpa regex pengguna; batas panjang | Payload regex jahat |
-| T10 | DoS data besar | Batas rows/cols/group/response | Dataset ekstrem |
-| T11 | Kebocoran token | Tanpa log header/body; credentials opt-in | Log capture |
-| T12 | State poisoning | Validasi skema + ukuran | JSON korup di storage |
-| T13 | Supply chain | Lockfile, audit, provenance, no scripts | CI audit |
-| T14 | Clickjacking docs | Header `frame-ancestors` | Header check |
-| T15 | Kebocoran via export | Hormati visibility/permission | Export test |
-| T16 | Clipboard sensitif | Opt-in, konfirmasi, batas | Test copy tersembunyi |
+| #   | Ancaman                       | Kontrol                                    | Test                           |
+| --- | ----------------------------- | ------------------------------------------ | ------------------------------ |
+| T1  | Stored XSS di sel             | `textContent` default; sanitizer opt-in    | XSS corpus di 4 adapter        |
+| T2  | XSS di caption/header/tooltip | Semua teks via text node                   | Payload di caption & tooltip   |
+| T3  | XSS via template string       | Sanitizer allowlist; `allowHtml` eksplisit | Bypass corpus                  |
+| T4  | `javascript:` URL             | `safeUrl` allowlist protokol               | Payload URL di link column     |
+| T5  | CSS injection                 | Style via CSSOM, validasi nilai            | Payload `background-image`     |
+| T6  | Prototype pollution           | `safeMerge`, null-prototype dict           | Payload `__proto__` di options |
+| T7  | CSV/Excel formula injection   | Escape `= + - @ TAB CR`                    | Export payload                 |
+| T8  | Filter/OData injection        | AST tertutup + encoding                    | Payload field/value            |
+| T9  | ReDoS                         | Tanpa regex pengguna; batas panjang        | Payload regex jahat            |
+| T10 | DoS data besar                | Batas rows/cols/group/response             | Dataset ekstrem                |
+| T11 | Kebocoran token               | Tanpa log header/body; credentials opt-in  | Log capture                    |
+| T12 | State poisoning               | Validasi skema + ukuran                    | JSON korup di storage          |
+| T13 | Supply chain                  | Lockfile, audit, provenance, no scripts    | CI audit                       |
+| T14 | Clickjacking docs             | Header `frame-ancestors`                   | Header check                   |
+| T15 | Kebocoran via export          | Hormati visibility/permission              | Export test                    |
+| T16 | Clipboard sensitif            | Opt-in, konfirmasi, batas                  | Test copy tersembunyi          |
 
 ---
 
@@ -109,12 +109,12 @@ Untrusted: data dari API, nilai sel, URL dari data, localStorage, clipboard,
 
 ### 3.4 Template
 
-| Jenis | Perlakuan |
-|---|---|
+| Jenis                                 | Perlakuan                                      |
+| ------------------------------------- | ---------------------------------------------- |
 | Template function (React/Vue/Angular) | Dianggap kode tepercaya; framework meng-escape |
-| String template (vanilla) | Disanitasi; default `allowHtml: false` |
-| Nama kolom/caption | Teks; tidak pernah HTML |
-| Tooltip | Teks; HTML hanya opt-in + sanitasi |
+| String template (vanilla)             | Disanitasi; default `allowHtml: false`         |
+| Nama kolom/caption                    | Teks; tidak pernah HTML                        |
+| Tooltip                               | Teks; HTML hanya opt-in + sanitasi             |
 
 ---
 
@@ -248,18 +248,18 @@ export function safeUrl(value: string, base?: string): string | null {
 
 ## 8. Network
 
-| Kontrol | Default |
-|---|---|
-| Protokol | HTTPS; HTTP hanya localhost/dev |
-| Timeout | 30 detik |
-| Batas ukuran respons | 10 MB (dapat dikonfigurasi) |
-| Redirect | maksimum 3; cross-origin redirect ditolak untuk credentialed request |
-| Credentials | `withCredentials: false` |
-| CSRF | token provider opt-in; header eksplisit |
-| Retry | hanya GET/load, maksimum 2, backoff |
-| CORS | tanggung jawab server; error CORS dinormalisasi |
-| Cache | tidak menyimpan response sensitif secara default |
-| Logging | tidak ada body/header di log |
+| Kontrol              | Default                                                              |
+| -------------------- | -------------------------------------------------------------------- |
+| Protokol             | HTTPS; HTTP hanya localhost/dev                                      |
+| Timeout              | 30 detik                                                             |
+| Batas ukuran respons | 10 MB (dapat dikonfigurasi)                                          |
+| Redirect             | maksimum 3; cross-origin redirect ditolak untuk credentialed request |
+| Credentials          | `withCredentials: false`                                             |
+| CSRF                 | token provider opt-in; header eksplisit                              |
+| Retry                | hanya GET/load, maksimum 2, backoff                                  |
+| CORS                 | tanggung jawab server; error CORS dinormalisasi                      |
+| Cache                | tidak menyimpan response sensitif secara default                     |
+| Logging              | tidak ada body/header di log                                         |
 
 - URL dasar store divalidasi dengan `safeUrl`.
 - **DILARANG** mengirim token di query string secara default.
@@ -269,20 +269,20 @@ export function safeUrl(value: string, base?: string): string | null {
 
 ## 9. Batas DoS
 
-| Parameter | Default | Maksimum |
-|---|---|---|
-| Baris lokal | — | 1.000.000 |
-| Baris per halaman | 100 | 10.000 |
-| Kolom | — | 500 |
-| Level group | 3 | 10 |
-| Kedalaman filter | 5 | 10 |
-| Node filter | 100 | 200 |
-| Nilai `in` | 100 | 1.000 |
-| Panjang sel | 32 KB | 1 MB |
-| Panjang ekspresi format | 500 | 1.000 |
-| Ukuran respons | 10 MB | 50 MB |
-| Request paralel | 4 | 8 |
-| Cache entri | 20 | 100 |
+| Parameter               | Default | Maksimum  |
+| ----------------------- | ------- | --------- |
+| Baris lokal             | —       | 1.000.000 |
+| Baris per halaman       | 100     | 10.000    |
+| Kolom                   | —       | 500       |
+| Level group             | 3       | 10        |
+| Kedalaman filter        | 5       | 10        |
+| Node filter             | 100     | 200       |
+| Nilai `in`              | 100     | 1.000     |
+| Panjang sel             | 32 KB   | 1 MB      |
+| Panjang ekspresi format | 500     | 1.000     |
+| Ukuran respons          | 10 MB   | 50 MB     |
+| Request paralel         | 4       | 8         |
+| Cache entri             | 20      | 100       |
 
 Pelanggaran menghasilkan error terklasifikasi, bukan crash.
 
@@ -296,7 +296,7 @@ Pelanggaran menghasilkan error terklasifikasi, bukan crash.
   (saat ini `esbuild`).
 - Dependency allowlist lisensi: MIT, Apache-2.0, BSD-2/3, ISC, 0BSD.
 - Audit: `pnpm audit --audit-level high` (semua), `pnpm audit --prod
-  --audit-level high` (produksi), laporan lengkap di
+--audit-level high` (produksi), laporan lengkap di
   `.github/workflows/security.yml`; jadwal mingguan.
 - Dependabot aktif untuk npm dan GitHub Actions (mingguan).
 - OSV-Scanner direncanakan sebagai lapisan tambahan.
@@ -362,5 +362,5 @@ Pelanggaran menghasilkan error terklasifikasi, bukan crash.
 
 ---
 
-*Untuk ancaman spesifik grid, lihat
-[DataGrid Security](components/datagrid/04-security.md).*
+_Untuk ancaman spesifik grid, lihat
+[DataGrid Security](components/datagrid/04-security.md)._

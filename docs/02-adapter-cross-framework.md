@@ -72,8 +72,16 @@ export interface AdapterContract<TOptions, TInstance> {
   mount(host: HTMLElement, options: TOptions): TInstance;
   update(instance: TInstance, patch: Partial<TOptions>): void;
   unmount(instance: TInstance): void;
-  on(instance: TInstance, event: string, handler: (payload: unknown) => void): () => void;
-  setTemplate(instance: TInstance, name: string, renderer: TemplateRenderer): void;
+  on(
+    instance: TInstance,
+    event: string,
+    handler: (payload: unknown) => void,
+  ): () => void;
+  setTemplate(
+    instance: TInstance,
+    name: string,
+    renderer: TemplateRenderer,
+  ): void;
 }
 ```
 
@@ -111,12 +119,12 @@ biarkan core yang melakukan normalisasi/memoization.
 
 ### 3.3 Controlled vs uncontrolled
 
-| Framework | Uncontrolled | Controlled | Catatan |
-|---|---|---|---|
-| React | `defaultValue` | `value` + `onValueChange` | Tanpa `value`, state internal |
-| Vue | `default-value` | `v-model` | `modelValue` + `update:modelValue` |
-| Angular | `defaultValue` | `[(value)]` | `valueChange` output |
-| Vanilla | opsi awal | `option('value', v)` | Event `valueChanged` |
+| Framework | Uncontrolled    | Controlled                | Catatan                            |
+| --------- | --------------- | ------------------------- | ---------------------------------- |
+| React     | `defaultValue`  | `value` + `onValueChange` | Tanpa `value`, state internal      |
+| Vue       | `default-value` | `v-model`                 | `modelValue` + `update:modelValue` |
+| Angular   | `defaultValue`  | `[(value)]`               | `valueChange` output               |
+| Vanilla   | opsi awal       | `option('value', v)`      | Event `valueChanged`               |
 
 Aturan:
 
@@ -134,12 +142,12 @@ Aturan:
 
 ### 4.1 Penamaan
 
-| Core event | React | Vue (template) | Angular | Vanilla |
-|---|---|---|---|---|
-| `cellClick` | `onCellClick` | `@cell-click` | `(cellClick)` | `on('cellClick')` |
+| Core event         | React                | Vue (template)       | Angular              | Vanilla                  |
+| ------------------ | -------------------- | -------------------- | -------------------- | ------------------------ |
+| `cellClick`        | `onCellClick`        | `@cell-click`        | `(cellClick)`        | `on('cellClick')`        |
 | `selectionChanged` | `onSelectionChanged` | `@selection-changed` | `(selectionChanged)` | `on('selectionChanged')` |
-| `rowUpdated` | `onRowUpdated` | `@row-updated` | `(rowUpdated)` | `on('rowUpdated')` |
-| `optionChanged` | `onOptionChanged` | `@option-changed` | `(optionChanged)` | `on('optionChanged')` |
+| `rowUpdated`       | `onRowUpdated`       | `@row-updated`       | `(rowUpdated)`       | `on('rowUpdated')`       |
+| `optionChanged`    | `onOptionChanged`    | `@option-changed`    | `(optionChanged)`    | `on('optionChanged')`    |
 
 Payload event **WAJIB** sama di semua adapter, termasuk nama field. Adapter
 tidak boleh menambah/mengurangi field.
@@ -214,7 +222,9 @@ function createReactTemplate(node: ReactNode): TemplateRenderer {
   return (container, context) => {
     const root = createRoot(container);
     const render = (ctx: TemplateContext<unknown>) =>
-      root.render(<TemplateContextProvider value={ctx}>{node}</TemplateContextProvider>);
+      root.render(
+        <TemplateContextProvider value={ctx}>{node}</TemplateContextProvider>,
+      );
     render(context);
     return {
       update: render,
@@ -244,7 +254,9 @@ function createVueTemplate(slot: Slot): TemplateRenderer {
     });
     app.mount(container);
     return {
-      update: (ctx) => { /* reaktif via provide/props */ },
+      update: (ctx) => {
+        /* reaktif via provide/props */
+      },
       dispose: () => app.unmount(),
     };
   };
@@ -287,12 +299,14 @@ Catatan:
 
 ```ts
 const grid = new SimpleUI.DataGrid(element, {
-  columns: [{
-    dataField: 'name',
-    cellTemplate: (container, { data }) => {
-      container.textContent = data.name;
+  columns: [
+    {
+      dataField: 'name',
+      cellTemplate: (container, { data }) => {
+        container.textContent = data.name;
+      },
     },
-  }],
+  ],
 });
 ```
 
@@ -371,7 +385,9 @@ const selected = ref<Key[]>([]);
     v-model:selected-row-keys="selected"
   >
     <template #cell="{ data, column }">
-      <strong v-if="column.id === 'total'">{{ formatMoney(data.total) }}</strong>
+      <strong v-if="column.id === 'total'">{{
+        formatMoney(data.total)
+      }}</strong>
       <span v-else>{{ data[column.dataField] }}</span>
     </template>
   </DataGrid>
@@ -414,7 +430,9 @@ export class OrdersComponent {
   readonly rows = signal<Order[]>([]);
   readonly columns: Column<Order>[] = [];
   selected: Key[] = [];
-  onCellClick(event: CellClickEvent<Order>): void { /* ... */ }
+  onCellClick(event: CellClickEvent<Order>): void {
+    /* ... */
+  }
 }
 ```
 
@@ -467,13 +485,13 @@ $('#grid').simpleUIDataGrid({ dataSource: rows, keyExpr: 'id' });
 
 ## 7. SSR dan framework meta-framework
 
-| Framework | Strategi |
-|---|---|
-| Next.js (React) | Komponen `'use client'`, mount di `useEffect`; jangan akses `window` saat import |
-| Nuxt (Vue) | `<ClientOnly>` atau `onMounted`; plugin client-only |
-| Angular Universal | `isPlatformBrowser`, `afterNextRender`, hindari `document` di constructor |
-| SvelteKit (vanilla) | `onMount` |
-| Astro | island client-only |
+| Framework           | Strategi                                                                         |
+| ------------------- | -------------------------------------------------------------------------------- |
+| Next.js (React)     | Komponen `'use client'`, mount di `useEffect`; jangan akses `window` saat import |
+| Nuxt (Vue)          | `<ClientOnly>` atau `onMounted`; plugin client-only                              |
+| Angular Universal   | `isPlatformBrowser`, `afterNextRender`, hindari `document` di constructor        |
+| SvelteKit (vanilla) | `onMount`                                                                        |
+| Astro               | island client-only                                                               |
 
 Aturan:
 
@@ -557,15 +575,15 @@ Suite berisi ± 40 skenario:
 
 ## 9. Performa adapter
 
-| Aturan | Detail |
-|---|---|
-| `R-ADP-01` | Jangan re-mount core saat props berubah; update via `option()`. |
-| `R-ADP-02` | Batching: beberapa perubahan props dalam satu tick → satu update. |
+| Aturan     | Detail                                                               |
+| ---------- | -------------------------------------------------------------------- |
+| `R-ADP-01` | Jangan re-mount core saat props berubah; update via `option()`.      |
+| `R-ADP-02` | Batching: beberapa perubahan props dalam satu tick → satu update.    |
 | `R-ADP-03` | Callback disimpan di ref/closure stabil; jangan memicu effect ulang. |
-| `R-ADP-04` | Template di-cache per tipe; jangan membuat root React per render. |
-| `R-ADP-05` | Jangan memakai deep equality mahal pada setiap render. |
-| `R-ADP-06` | Ukuran adapter ≤ 5 KB gzip per komponen. |
-| `R-ADP-07` | Unmount harus < 50 ms untuk grid 1.000 baris. |
+| `R-ADP-04` | Template di-cache per tipe; jangan membuat root React per render.    |
+| `R-ADP-05` | Jangan memakai deep equality mahal pada setiap render.               |
+| `R-ADP-06` | Ukuran adapter ≤ 5 KB gzip per komponen.                             |
+| `R-ADP-07` | Unmount harus < 50 ms untuk grid 1.000 baris.                        |
 
 ---
 
@@ -600,5 +618,5 @@ Suite berisi ± 40 skenario:
 
 ---
 
-*Kontrak detail tiap event dan opsi ada di
-[DataGrid API](components/datagrid/03-api.md).*
+_Kontrak detail tiap event dan opsi ada di
+[DataGrid API](components/datagrid/03-api.md)._

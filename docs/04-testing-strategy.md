@@ -24,12 +24,12 @@ dekat ke browser nyata, semakin sedikit tetapi semakin bernilai.
 
 ## 2. Piramida dan portofolio test
 
-| Layer | Jumlah target | Runtime | Tool | Contoh |
-|---|---|---|---|---|
-| Unit murni | ~60% | < 2 menit | Vitest (node) | filter, sort, group, virtual math, validator |
-| Component DOM | ~25% | < 5 menit | Vitest browser mode (Playwright) | render, keyboard, selection |
-| Contract/integration | ~10% | < 5 menit | Vitest + harness framework | adapter parity, data source |
-| E2E/visual/a11y/perf | ~5% | < 15 menit | Playwright, axe, Lighthouse | alur pengguna, screenshot, audit |
+| Layer                | Jumlah target | Runtime    | Tool                             | Contoh                                       |
+| -------------------- | ------------- | ---------- | -------------------------------- | -------------------------------------------- |
+| Unit murni           | ~60%          | < 2 menit  | Vitest (node)                    | filter, sort, group, virtual math, validator |
+| Component DOM        | ~25%          | < 5 menit  | Vitest browser mode (Playwright) | render, keyboard, selection                  |
+| Contract/integration | ~10%          | < 5 menit  | Vitest + harness framework       | adapter parity, data source                  |
+| E2E/visual/a11y/perf | ~5%           | < 15 menit | Playwright, axe, Lighthouse      | alur pengguna, screenshot, audit             |
 
 Untuk PR: jalankan unit + component + contract (cepat). Nightly: E2E penuh,
 visual regression semua browser, a11y, performa, mutation test.
@@ -38,19 +38,19 @@ visual regression semua browser, a11y, performa, mutation test.
 
 ## 3. Tooling
 
-| Kebutuhan | Tool | Catatan |
-|---|---|---|
-| Test runner | **Vitest** | Workspace mode, coverage v8 |
-| Browser mode | **Vitest Browser Mode** + Playwright provider | Layout/scroll nyata |
-| E2E | **Playwright** | Chromium, Firefox, WebKit |
-| A11y | **axe-core** / `@axe-core/playwright` | Otomatis + manual |
-| Visual | Playwright screenshot + `pixelmatch` | Baseline per theme/RTL |
-| Mutation | **Stryker** | Core & data pipeline |
-| Benchmark | **tinybench** + Playwright metrics | Regresi performa |
-| Bundle size | **size-limit** | Budget per paket |
-| API surface | **API Extractor** | `.api.md` |
-| Type compatibility | **arethetypeswrong** + `tsd` | Resolusi modul & tipe |
-| Lint | ESLint + Prettier + dependency-cruiser | CI gate |
+| Kebutuhan          | Tool                                          | Catatan                     |
+| ------------------ | --------------------------------------------- | --------------------------- |
+| Test runner        | **Vitest**                                    | Workspace mode, coverage v8 |
+| Browser mode       | **Vitest Browser Mode** + Playwright provider | Layout/scroll nyata         |
+| E2E                | **Playwright**                                | Chromium, Firefox, WebKit   |
+| A11y               | **axe-core** / `@axe-core/playwright`         | Otomatis + manual           |
+| Visual             | Playwright screenshot + `pixelmatch`          | Baseline per theme/RTL      |
+| Mutation           | **Stryker**                                   | Core & data pipeline        |
+| Benchmark          | **tinybench** + Playwright metrics            | Regresi performa            |
+| Bundle size        | **size-limit**                                | Budget per paket            |
+| API surface        | **API Extractor**                             | `.api.md`                   |
+| Type compatibility | **arethetypeswrong** + `tsd`                  | Resolusi modul & tipe       |
+| Lint               | ESLint + Prettier + dependency-cruiser        | CI gate                     |
 
 ---
 
@@ -97,17 +97,17 @@ Aturan:
 
 Setiap fitur wajib memiliki kombinasi berikut:
 
-| Tipe fitur | Unit | Component | Contract | A11y | Security | Perf |
-|---|---|---|---|---|---|---|
-| Logika murni (sort/filter/group) | ✅ | — | — | — | — | ✅ jika hot path |
-| Rendering sel/header | ✅ | ✅ | ✅ | ✅ | ✅ (XSS) | — |
-| Keyboard/focus | — | ✅ | ✅ | ✅ | — | — |
-| Selection/editing | ✅ | ✅ | ✅ | ✅ | ✅ (CSRF/URL) | — |
-| Remote data | ✅ | ✅ | ✅ | — | ✅ (URL/response) | ✅ |
-| Export | ✅ | ✅ | ✅ | — | ✅ (CSV injection) | — |
-| State persistence | ✅ | ✅ | ✅ | — | ✅ (storage) | — |
-| Template | — | ✅ | ✅ | ✅ | ✅ (HTML) | ✅ jika mahal |
-| Virtualisasi | ✅ | ✅ | ✅ | ✅ | — | ✅ |
+| Tipe fitur                       | Unit | Component | Contract | A11y | Security           | Perf             |
+| -------------------------------- | ---- | --------- | -------- | ---- | ------------------ | ---------------- |
+| Logika murni (sort/filter/group) | ✅   | —         | —        | —    | —                  | ✅ jika hot path |
+| Rendering sel/header             | ✅   | ✅        | ✅       | ✅   | ✅ (XSS)           | —                |
+| Keyboard/focus                   | —    | ✅        | ✅       | ✅   | —                  | —                |
+| Selection/editing                | ✅   | ✅        | ✅       | ✅   | ✅ (CSRF/URL)      | —                |
+| Remote data                      | ✅   | ✅        | ✅       | —    | ✅ (URL/response)  | ✅               |
+| Export                           | ✅   | ✅        | ✅       | —    | ✅ (CSV injection) | —                |
+| State persistence                | ✅   | ✅        | ✅       | —    | ✅ (storage)       | —                |
+| Template                         | —    | ✅        | ✅       | ✅   | ✅ (HTML)          | ✅ jika mahal    |
+| Virtualisasi                     | ✅   | ✅        | ✅       | ✅   | —                  | ✅               |
 
 ---
 
@@ -118,7 +118,11 @@ Setiap fitur wajib memiliki kombinasi berikut:
 ```ts
 describe('filter', () => {
   it('should treat null and undefined as equal when using isNull', () => {
-    const rows = [{ id: 1, name: null }, { id: 2, name: undefined }, { id: 3, name: 'x' }];
+    const rows = [
+      { id: 1, name: null },
+      { id: 2, name: undefined },
+      { id: 3, name: 'x' },
+    ];
     const result = applyFilter(rows, ['name', 'isNull']);
     expect(result.map((r) => r.id)).toEqual([1, 2]);
   });
@@ -150,7 +154,9 @@ describeAdapterContract('DataGrid', {
   async run({ mount, update, unmount, on }) {
     const events: string[] = [];
     const instance = await mount({ dataSource: rows, keyExpr: 'id' });
-    on(instance, 'selectionChanged', (e) => events.push(e.selectedRowKeys.join(',')));
+    on(instance, 'selectionChanged', (e) =>
+      events.push(e.selectedRowKeys.join(',')),
+    );
 
     await instance.selectRows([1, 2]);
     expect(events).toEqual(['1,2']);
@@ -189,7 +195,11 @@ it('should have no serious axe violations', async () => {
   const results = await axe.run(container, {
     rules: { 'color-contrast': { enabled: true } },
   });
-  expect(results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([]);
+  expect(
+    results.violations.filter(
+      (v) => v.impact === 'serious' || v.impact === 'critical',
+    ),
+  ).toEqual([]);
 });
 ```
 
@@ -197,32 +207,32 @@ it('should have no serious axe violations', async () => {
 
 ## 7. Anti-pattern test
 
-| Anti-pattern | Mengapa buruk | Ganti dengan |
-|---|---|---|
-| Snapshot seluruh DOM | Rapuh, sulit dibaca | Assertion role/teks/atribut |
-| `await sleep(500)` | Flaky | `waitFor`/`expect.poll` |
-| Test urutan internal | Mengunci implementasi | Test perilaku |
-| Satu test 20 assertion | Sulit dilokalisasi | Pecah per perilaku |
-| Mock semua hal | Test tidak bernilai | Mock hanya boundary |
-| Data acak tanpa seed | Tidak reproducible | Seeded factory |
-| Mengandalkan timezone mesin | Gagal di CI | Set timezone eksplisit |
-| `test.skip` permanen | Regresi tak terlihat | Perbaiki atau hapus |
+| Anti-pattern                | Mengapa buruk         | Ganti dengan                |
+| --------------------------- | --------------------- | --------------------------- |
+| Snapshot seluruh DOM        | Rapuh, sulit dibaca   | Assertion role/teks/atribut |
+| `await sleep(500)`          | Flaky                 | `waitFor`/`expect.poll`     |
+| Test urutan internal        | Mengunci implementasi | Test perilaku               |
+| Satu test 20 assertion      | Sulit dilokalisasi    | Pecah per perilaku          |
+| Mock semua hal              | Test tidak bernilai   | Mock hanya boundary         |
+| Data acak tanpa seed        | Tidak reproducible    | Seeded factory              |
+| Mengandalkan timezone mesin | Gagal di CI           | Set timezone eksplisit      |
+| `test.skip` permanen        | Regresi tak terlihat  | Perbaiki atau hapus         |
 
 ---
 
 ## 8. Coverage dan quality gate
 
-| Gate | Ambang | Aksi jika gagal |
-|---|---|---|
-| Coverage `core` | 90% line / 85% branch | Blokir merge |
-| Coverage komponen | 85% / 80% | Blokir merge |
-| Coverage adapter | 80% / 75% | Blokir merge |
-| Coverage keseluruhan | 85% / 80% | Blokir merge |
-| Mutation score (core kritis) | ≥ 70% | Blokir rilis |
-| axe serious/critical | 0 | Blokir merge |
-| Security payload | 0 lolos | Blokir merge |
-| Bundle size | ≤ budget | Blokir merge |
-| Performance regression | ≤ 20% | Blokir rilis |
+| Gate                         | Ambang                | Aksi jika gagal |
+| ---------------------------- | --------------------- | --------------- |
+| Coverage `core`              | 90% line / 85% branch | Blokir merge    |
+| Coverage komponen            | 85% / 80%             | Blokir merge    |
+| Coverage adapter             | 80% / 75%             | Blokir merge    |
+| Coverage keseluruhan         | 85% / 80%             | Blokir merge    |
+| Mutation score (core kritis) | ≥ 70%                 | Blokir rilis    |
+| axe serious/critical         | 0                     | Blokir merge    |
+| Security payload             | 0 lolos               | Blokir merge    |
+| Bundle size                  | ≤ budget              | Blokir merge    |
+| Performance regression       | ≤ 20%                 | Blokir rilis    |
 
 Coverage diukur dengan `@vitest/coverage-v8`; laporan diunggah ke CI. Coverage
 tidak boleh turun lebih dari 1% per PR tanpa persetujuan.
@@ -348,15 +358,15 @@ Target durasi PR: **≤ 15 menit** (dengan cache dan sharding). Nightly ≤ 60 m
 
 ## 15. Exit criteria per milestone
 
-| Milestone | Kriteria test |
-|---|---|
-| DataGrid alpha | Unit + component core lulus; 1 adapter; tidak ada axe critical |
-| DataGrid beta | 4 adapter parity lulus; security payload lulus; visual baseline 12 skenario |
-| DataGrid GA | Coverage gate; mutation core ≥ 70%; perf budget; manual a11y; 0 flaky |
-| PivotGrid GA | Sama + test cube 1.000.000 sel |
-| Chart GA | Sama + visual 20 skenario + perf 100.000 titik |
+| Milestone      | Kriteria test                                                               |
+| -------------- | --------------------------------------------------------------------------- |
+| DataGrid alpha | Unit + component core lulus; 1 adapter; tidak ada axe critical              |
+| DataGrid beta  | 4 adapter parity lulus; security payload lulus; visual baseline 12 skenario |
+| DataGrid GA    | Coverage gate; mutation core ≥ 70%; perf budget; manual a11y; 0 flaky       |
+| PivotGrid GA   | Sama + test cube 1.000.000 sel                                              |
+| Chart GA       | Sama + visual 20 skenario + perf 100.000 titik                              |
 
 ---
 
-*Untuk daftar test per fitur DataGrid, lihat
-[05 — DataGrid Test Plan](components/datagrid/05-test-plan.md).*
+_Untuk daftar test per fitur DataGrid, lihat
+[05 — DataGrid Test Plan](components/datagrid/05-test-plan.md)._

@@ -9,14 +9,14 @@
 
 ## 1. Ringkasan eksekutif
 
-| Metrik | Nilai |
-|---|---:|
-| Epic aktif (sudah dipecah) | 4 |
-| Task aktif | 174 |
-| Estimasi aktif | 831 ideal day (± 41,6 PM) |
-| Progress | 1,2% (scaffold + ADR) |
-| Milestone terdekat | M1 Foundation (2027-01-29) |
-| Komponen pertama | DataGrid |
+| Metrik                     |                      Nilai |
+| -------------------------- | -------------------------: |
+| Epic aktif (sudah dipecah) |                          4 |
+| Task aktif                 |                        174 |
+| Estimasi aktif             |  831 ideal day (± 41,6 PM) |
+| Progress                   |      1,2% (scaffold + ADR) |
+| Milestone terdekat         | M1 Foundation (2027-01-29) |
+| Komponen pertama           |                   DataGrid |
 
 Angka 831 ideal day **belum** termasuk overhead dokumentasi/QA/security/release
 (25–35%) dan komponen Tier 2–4. Lihat [estimasi](../09-estimasi.md).
@@ -25,13 +25,13 @@ Angka 831 ideal day **belum** termasuk overhead dokumentasi/QA/security/release
 
 ## 2. Epic yang sudah dipecah
 
-| ID | Epic | Komponen | Task | Est (d) | Milestone | Status | Task list |
-|---|---|---|---:|---:|---|---|---|
-| E0 | Foundation & platform | FND | 35 | 130 | M1 | Active | [foundation-tasks](foundation-tasks.md) |
-| E1 | DataGrid | DG | 77 | 353 | M2–M4 | Planned | [DG tasks](../components/datagrid/07-tasks.md) |
-| E2 | PivotGrid | PV | 29 | 157 | M5 | Planned | [PV tasks](../components/pivotgrid/02-tasks.md) |
-| E3 | Charts | CH | 33 | 191 | M6 | Planned | [CH tasks](../components/chart/02-tasks.md) |
-| | **Total** | | **174** | **831** | | | |
+| ID  | Epic                  | Komponen |    Task | Est (d) | Milestone | Status  | Task list                                       |
+| --- | --------------------- | -------- | ------: | ------: | --------- | ------- | ----------------------------------------------- |
+| E0  | Foundation & platform | FND      |      35 |     130 | M1        | Active  | [foundation-tasks](foundation-tasks.md)         |
+| E1  | DataGrid              | DG       |      77 |     353 | M2–M4     | Planned | [DG tasks](../components/datagrid/07-tasks.md)  |
+| E2  | PivotGrid             | PV       |      29 |     157 | M5        | Planned | [PV tasks](../components/pivotgrid/02-tasks.md) |
+| E3  | Charts                | CH       |      33 |     191 | M6        | Planned | [CH tasks](../components/chart/02-tasks.md)     |
+|     | **Total**             |          | **174** | **831** |           |         |                                                 |
 
 Status epic:
 
@@ -44,13 +44,13 @@ Status epic:
 
 ## 3. Epic yang belum dipecah (Tier 2–4)
 
-| ID | Epic | Estimasi (PM) | Target | Prasyarat | Catatan |
-|---|---|---:|---|---|---|
-| E4 | Editors & forms (±30 komponen) | 10 | M7 | Core + DG editing | TextBox, SelectBox, DateBox, Validator, Form, layout |
-| E5 | TreeList + Scheduler | 11,5 | M7–M8 | DataGrid, core | TreeList butuh model tree; Scheduler butuh timezone/recurrence |
-| E6 | Gantt + VectorMap + Diagram + FileManager | 29 | M8+ | Scheduler, Charts, core | Paling mahal; perlu keahlian khusus |
-| E7 | Gauges, range selector, sparkline, bullet, treemap, funnel | 5 | M8 | Charts | Sebagian sudah tercakup Charts |
-| E8 | Docs site, contoh, komunitas | 2–3 (ongoing) | Semua | — | Tidak boleh dianggap "gratis" |
+| ID  | Epic                                                       | Estimasi (PM) | Target | Prasyarat               | Catatan                                                        |
+| --- | ---------------------------------------------------------- | ------------: | ------ | ----------------------- | -------------------------------------------------------------- |
+| E4  | Editors & forms (±30 komponen)                             |            10 | M7     | Core + DG editing       | TextBox, SelectBox, DateBox, Validator, Form, layout           |
+| E5  | TreeList + Scheduler                                       |          11,5 | M7–M8  | DataGrid, core          | TreeList butuh model tree; Scheduler butuh timezone/recurrence |
+| E6  | Gantt + VectorMap + Diagram + FileManager                  |            29 | M8+    | Scheduler, Charts, core | Paling mahal; perlu keahlian khusus                            |
+| E7  | Gauges, range selector, sparkline, bullet, treemap, funnel |             5 | M8     | Charts                  | Sebagian sudah tercakup Charts                                 |
+| E8  | Docs site, contoh, komunitas                               | 2–3 (ongoing) | Semua  | —                       | Tidak boleh dianggap "gratis"                                  |
 
 Estimasi di atas adalah order-of-magnitude; akan dipecah saat komponen dimulai
 dengan [template plan](../11-templates/komponen-plan-template.md).
@@ -110,15 +110,15 @@ Mitigasi ada di [DataGrid implementation plan](../components/datagrid/06-impleme
 
 ## 6. Alokasi kapasitas (baseline)
 
-| Track | FTE | Fokus |
-|---|---:|---|
-| Core platform | 2 | FND, data layer, security |
-| Grid | 2 | DG-1…DG-5 |
-| Adapter | 1 | DG-3, lalu PV/CH |
-| QA/UX | 1 | test, a11y, visual |
-| Design | 0,3 | token, visual spec |
-| Security | 0,2 | threat model, review |
-| Tech writer | 0,3 | docs, demo |
+| Track         | FTE | Fokus                     |
+| ------------- | --: | ------------------------- |
+| Core platform |   2 | FND, data layer, security |
+| Grid          |   2 | DG-1…DG-5                 |
+| Adapter       |   1 | DG-3, lalu PV/CH          |
+| QA/UX         |   1 | test, a11y, visual        |
+| Design        | 0,3 | token, visual spec        |
+| Security      | 0,2 | threat model, review      |
+| Tech writer   | 0,3 | docs, demo                |
 
 Total ± 6,8 FTE nominal; effective ± 4 FTE setelah overhead. Lihat
 [estimasi §4](../09-estimasi.md#4-skenario-tim-dan-kalender).
@@ -127,15 +127,15 @@ Total ± 6,8 FTE nominal; effective ± 4 FTE setelah overhead. Lihat
 
 ## 7. Baseline per milestone
 
-| Milestone | Epic | Task `DONE` | Est `DONE` | Gate |
-|---|---|---:|---:|---|
-| M1 | E0 | 35 | 130 | G1 |
-| M2 | E1 (alpha) | ± 41 | ± 169 | G2 |
-| M3 | E1 (beta) | ± 67 | ± 297 | G3 |
-| M4 | E1 (GA) | 77 | 353 | G4 |
-| M5 | E2 | 29 | 157 | G5 |
-| M6 | E3 | 33 | 191 | G5 |
-| M7 | E4 | — | — | G5 |
+| Milestone | Epic       | Task `DONE` | Est `DONE` | Gate |
+| --------- | ---------- | ----------: | ---------: | ---- |
+| M1        | E0         |          35 |        130 | G1   |
+| M2        | E1 (alpha) |        ± 41 |      ± 169 | G2   |
+| M3        | E1 (beta)  |        ± 67 |      ± 297 | G3   |
+| M4        | E1 (GA)    |          77 |        353 | G4   |
+| M5        | E2         |          29 |        157 | G5   |
+| M6        | E3         |          33 |        191 | G5   |
+| M7        | E4         |           — |          — | G5   |
 
 Angka `DONE` kumulatif adalah target, bukan hasil. Gunakan dashboard aktual.
 
@@ -163,12 +163,12 @@ Angka `DONE` kumulatif adalah target, bukan hasil. Gunakan dashboard aktual.
 
 ## 10. Riwayat perubahan
 
-| Tanggal | Perubahan | Oleh |
-|---|---|---|
-| 2026-11-23 | Baseline: 4 epic, 174 task, 831 ideal day | Tech Lead |
-| 2026-11-23 | 11 ADR Accepted; FND-024 selesai (2 ideal day) | Tech Lead |
+| Tanggal    | Perubahan                                               | Oleh      |
+| ---------- | ------------------------------------------------------- | --------- |
+| 2026-11-23 | Baseline: 4 epic, 174 task, 831 ideal day               | Tech Lead |
+| 2026-11-23 | 11 ADR Accepted; FND-024 selesai (2 ideal day)          | Tech Lead |
 | 2026-11-23 | Scaffold monorepo FND-001/002/003 selesai (8 ideal day) | Tech Lead |
 
 ---
 
-*Dashboard: [progress.md](progress.md) · Aturan: [README](README.md)*
+_Dashboard: [progress.md](progress.md) · Aturan: [README](README.md)_

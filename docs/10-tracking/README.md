@@ -21,15 +21,15 @@
 
 ## 2. File
 
-| File | Isi |
-|---|---|
-| [foundation-tasks.md](foundation-tasks.md) | Task FND (Phase 0) |
-| [../components/datagrid/07-tasks.md](../components/datagrid/07-tasks.md) | Task DG |
-| [../components/pivotgrid/02-tasks.md](../components/pivotgrid/02-tasks.md) | Task PV |
-| [../components/chart/02-tasks.md](../components/chart/02-tasks.md) | Task CH |
-| [master-backlog.md](master-backlog.md) | Epic & dependency lintas komponen |
-| [progress.md](progress.md) | Dashboard (generated) |
-| [tools/progress.mjs](tools/progress.mjs) | Script validasi & generate |
+| File                                                                       | Isi                               |
+| -------------------------------------------------------------------------- | --------------------------------- |
+| [foundation-tasks.md](foundation-tasks.md)                                 | Task FND (Phase 0)                |
+| [../components/datagrid/07-tasks.md](../components/datagrid/07-tasks.md)   | Task DG                           |
+| [../components/pivotgrid/02-tasks.md](../components/pivotgrid/02-tasks.md) | Task PV                           |
+| [../components/chart/02-tasks.md](../components/chart/02-tasks.md)         | Task CH                           |
+| [master-backlog.md](master-backlog.md)                                     | Epic & dependency lintas komponen |
+| [progress.md](progress.md)                                                 | Dashboard (generated)             |
+| [tools/progress.mjs](tools/progress.mjs)                                   | Script validasi & generate        |
 
 ---
 
@@ -40,8 +40,8 @@
 Setiap task memakai tabel dengan header:
 
 ```markdown
-| ID | Fase | Task | Area | Pri | Est (d) | Depends | Status | Owner | PR |
-|---|---|---|---|---|---:|---|---|---|---|
+| ID  | Fase | Task | Area | Pri | Est (d) | Depends | Status | Owner | PR  |
+| --- | ---- | ---- | ---- | --- | ------: | ------- | ------ | ----- | --- |
 ```
 
 Aturan:
@@ -105,24 +105,24 @@ progress (%) = Σ estimasi task DONE / Σ estimasi task (semua kecuali CUT) × 1
 
 ### 4.2 Contoh
 
-| Task | Est | Status |
-|---|---:|---|
-| DG-001 | 2 | DONE |
-| DG-002 | 3 | DONE |
-| DG-003 | 3 | WIP |
-| DG-004 | 4 | TODO |
+| Task   | Est | Status |
+| ------ | --: | ------ |
+| DG-001 |   2 | DONE   |
+| DG-002 |   3 | DONE   |
+| DG-003 |   3 | WIP    |
+| DG-004 |   4 | TODO   |
 
 Progress = (2 + 3) / (2 + 3 + 3 + 4) = 5/12 = **41,7%**.
 
 ### 4.3 Interpretasi
 
-| Progress | Arti |
-|---|---|
-| 0–10% | Fondasi, belum ada fitur |
-| 10–40% | Fitur inti berjalan, banyak edge case |
-| 40–70% | Beta, integrasi & a11y |
-| 70–90% | Hardening, docs, security |
-| 90–100% | Release candidate; **hati-hati**: 90% terakhir sering paling lama |
+| Progress | Arti                                                              |
+| -------- | ----------------------------------------------------------------- |
+| 0–10%    | Fondasi, belum ada fitur                                          |
+| 10–40%   | Fitur inti berjalan, banyak edge case                             |
+| 40–70%   | Beta, integrasi & a11y                                            |
+| 70–90%   | Hardening, docs, security                                         |
+| 90–100%  | Release candidate; **hati-hati**: 90% terakhir sering paling lama |
 
 Progress bukan pengganti milestone gate; gunakan keduanya.
 
@@ -174,13 +174,13 @@ Workflow `docs-check.yml` menjalankan `--check` pada setiap PR yang menyentuh
 
 ## 6. Ritme pelaporan
 
-| Waktu | Laporan | Audiens |
-|---|---|---|
-| Harian | Standup: WIP, blocker, dependency | Tim |
-| Senin | Progress + rencana minggu | Tim |
-| Kamis | Progress + risiko | Tech lead |
-| Akhir fase | Gate review + retro + re-baseline | Stakeholder |
-| Bulanan | Ringkasan eksekutif (progress, risiko, biaya) | Sponsor |
+| Waktu      | Laporan                                       | Audiens     |
+| ---------- | --------------------------------------------- | ----------- |
+| Harian     | Standup: WIP, blocker, dependency             | Tim         |
+| Senin      | Progress + rencana minggu                     | Tim         |
+| Kamis      | Progress + risiko                             | Tech lead   |
+| Akhir fase | Gate review + retro + re-baseline             | Stakeholder |
+| Bulanan    | Ringkasan eksekutif (progress, risiko, biaya) | Sponsor     |
 
 Template ringkasan mingguan:
 
@@ -228,15 +228,15 @@ Jika salah satu belum, status tetap `WIP`.
 
 ## 9. Metrik tim
 
-| Metrik | Rumus | Target |
-|---|---|---|
-| Velocity | ideal day DONE / minggu | Stabil setelah 4 minggu |
-| Throughput | jumlah task DONE / minggu | Naik bertahap |
-| WIP | jumlah task WIP | ≤ jumlah engineer |
-| Cycle time | waktu WIP → DONE | ≤ 5 hari |
-| Blocked time | hari task BLOCKED | ≤ 2 hari |
-| Estimate accuracy | actual / estimate | 0,8–1,25 |
-| Rework | task dibuka kembali / total | < 10% |
+| Metrik            | Rumus                       | Target                  |
+| ----------------- | --------------------------- | ----------------------- |
+| Velocity          | ideal day DONE / minggu     | Stabil setelah 4 minggu |
+| Throughput        | jumlah task DONE / minggu   | Naik bertahap           |
+| WIP               | jumlah task WIP             | ≤ jumlah engineer       |
+| Cycle time        | waktu WIP → DONE            | ≤ 5 hari                |
+| Blocked time      | hari task BLOCKED           | ≤ 2 hari                |
+| Estimate accuracy | actual / estimate           | 0,8–1,25                |
+| Rework            | task dibuka kembali / total | < 10%                   |
 
 Gunakan untuk memperbaiki estimasi, bukan menghukum tim.
 
@@ -251,4 +251,4 @@ Gunakan untuk memperbaiki estimasi, bukan menghukum tim.
 
 ---
 
-*Dashboard: [progress.md](progress.md) · Epic: [master-backlog.md](master-backlog.md)*
+_Dashboard: [progress.md](progress.md) · Epic: [master-backlog.md](master-backlog.md)_

@@ -47,13 +47,13 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| Headless core + renderer per framework | Integrasi paling native | Perilaku/a11y diduplikasi 4×; bug tidak konsisten | Biaya QA terlalu tinggi |
-| Web Components saja | Standar, framework-agnostic | Styling/SSR/forms/Angular integration rumit | Ditunda |
-| DOM bersama + adapter tipis | Satu perilaku, konsisten | Template bridge kompleks | **Dipilih** |
-| Lit sebagai engine internal | Templating ringan | Menambah dependency & model mental | Tidak perlu untuk grid |
-| Fork library lain | Cepat awalnya | Lisensi, kontrol, technical debt | Ditolak |
+| Alternatif                             | Kelebihan                   | Kekurangan                                        | Alasan tidak dipilih    |
+| -------------------------------------- | --------------------------- | ------------------------------------------------- | ----------------------- |
+| Headless core + renderer per framework | Integrasi paling native     | Perilaku/a11y diduplikasi 4×; bug tidak konsisten | Biaya QA terlalu tinggi |
+| Web Components saja                    | Standar, framework-agnostic | Styling/SSR/forms/Angular integration rumit       | Ditunda                 |
+| DOM bersama + adapter tipis            | Satu perilaku, konsisten    | Template bridge kompleks                          | **Dipilih**             |
+| Lit sebagai engine internal            | Templating ringan           | Menambah dependency & model mental                | Tidak perlu untuk grid  |
+| Fork library lain                      | Cepat awalnya               | Lisensi, kontrol, technical debt                  | Ditolak                 |
 
 ---
 
@@ -102,14 +102,14 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Core kernel | FND-011, FND-012, FND-013 |
-| Template bridge | FND-017, DG-005 |
-| Renderer grid | DG-030…DG-035 |
-| Adapter | DG-050…DG-053 |
-| Parity | DG-054 |
-| Target | Diputuskan sebelum DG-1 dimulai |
+| Item            | Detail                          |
+| --------------- | ------------------------------- |
+| Core kernel     | FND-011, FND-012, FND-013       |
+| Template bridge | FND-017, DG-005                 |
+| Renderer grid   | DG-030…DG-035                   |
+| Adapter         | DG-050…DG-053                   |
+| Parity          | DG-054                          |
+| Target          | Diputuskan sebelum DG-1 dimulai |
 
 ---
 
@@ -123,8 +123,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | Opsi C dipilih |
-| 2026-11-23 | Core Engineer | Setuju | Row recycling, bukan VDOM |
-| 2026-11-23 | Adapter Engineer | Setuju | Template bridge jadi risiko utama |
+| Tanggal    | Reviewer         | Keputusan | Catatan                           |
+| ---------- | ---------------- | --------- | --------------------------------- |
+| 2026-11-23 | Tech Lead        | Setuju    | Opsi C dipilih                    |
+| 2026-11-23 | Core Engineer    | Setuju    | Row recycling, bukan VDOM         |
+| 2026-11-23 | Adapter Engineer | Setuju    | Template bridge jadi risiko utama |

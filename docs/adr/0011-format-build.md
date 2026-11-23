@@ -43,12 +43,12 @@ Detail:
 
 ## 3. Alternatif yang dipertimbangkan
 
-| Alternatif | Kelebihan | Kekurangan | Alasan tidak dipilih |
-|---|---|---|---|
-| CJS-first | Kompatibel Node lama | Menghambat tree-shaking, warisan | Ditolak |
-| Dual ESM + CJS | Kompatibilitas maksimal | Dua build, risiko dual-package hazard | Ditunda |
-| ESM + UMD (vanilla) | Modern + CDN | Tidak ada `require()` | **Dipilih** |
-| Bundle semua jadi satu | Mudah | Tidak tree-shakeable, besar | Ditolak |
+| Alternatif             | Kelebihan               | Kekurangan                            | Alasan tidak dipilih |
+| ---------------------- | ----------------------- | ------------------------------------- | -------------------- |
+| CJS-first              | Kompatibel Node lama    | Menghambat tree-shaking, warisan      | Ditolak              |
+| Dual ESM + CJS         | Kompatibilitas maksimal | Dua build, risiko dual-package hazard | Ditunda              |
+| ESM + UMD (vanilla)    | Modern + CDN            | Tidak ada `require()`                 | **Dipilih**          |
+| Bundle semua jadi satu | Mudah                   | Tidak tree-shakeable, besar           | Ditolak              |
 
 ---
 
@@ -97,14 +97,14 @@ Detail:
 
 ## 7. Implementasi
 
-| Item | Detail |
-|---|---|
-| Vite library mode | FND-009 |
-| UMD | adapter vanilla, DG-053 |
-| ng-packagr | adapter Angular, DG-052 |
-| API report | FND-029 |
-| Publint/ATTW | FND-009 |
-| Target | Sebelum DG-2 |
+| Item              | Detail                  |
+| ----------------- | ----------------------- |
+| Vite library mode | FND-009                 |
+| UMD               | adapter vanilla, DG-053 |
+| ng-packagr        | adapter Angular, DG-052 |
+| API report        | FND-029                 |
+| Publint/ATTW      | FND-009                 |
+| Target            | Sebelum DG-2            |
 
 ---
 
@@ -118,8 +118,8 @@ Detail:
 
 ## Catatan review
 
-| Tanggal | Reviewer | Keputusan | Catatan |
-|---|---|---|---|
-| 2026-11-23 | Tech Lead | Setuju | ESM-first |
-| 2026-11-23 | Release Manager | Setuju | CJS ditunda |
-| 2026-11-23 | Core Engineer | Setuju | UMD hanya vanilla |
+| Tanggal    | Reviewer        | Keputusan | Catatan           |
+| ---------- | --------------- | --------- | ----------------- |
+| 2026-11-23 | Tech Lead       | Setuju    | ESM-first         |
+| 2026-11-23 | Release Manager | Setuju    | CJS ditunda       |
+| 2026-11-23 | Core Engineer   | Setuju    | UMD hanya vanilla |

@@ -115,177 +115,177 @@ Aturan tipe:
 
 ### 3.1 Data
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `dataSource` | `T[] \| Store<T> \| DataSource<T>` | `[]` | Array disalin dangkal; store dipakai apa adanya |
-| `keyExpr` | `keyof T \| string[] \| (row)=>Key` | `'id'` bila ada | Wajib unik |
-| `cacheEnabled` | `boolean` | `true` | Cache load remote |
-| `remoteOperations` | `boolean \| object` | `'auto'` | Pushdown filter/sort/group |
-| `onDataError` | callback | — | Error tidak boleh ditelan |
+| Opsi               | Tipe                                | Default         | Catatan                                         |
+| ------------------ | ----------------------------------- | --------------- | ----------------------------------------------- |
+| `dataSource`       | `T[] \| Store<T> \| DataSource<T>`  | `[]`            | Array disalin dangkal; store dipakai apa adanya |
+| `keyExpr`          | `keyof T \| string[] \| (row)=>Key` | `'id'` bila ada | Wajib unik                                      |
+| `cacheEnabled`     | `boolean`                           | `true`          | Cache load remote                               |
+| `remoteOperations` | `boolean \| object`                 | `'auto'`        | Pushdown filter/sort/group                      |
+| `onDataError`      | callback                            | —               | Error tidak boleh ditelan                       |
 
 ### 3.2 Kolom
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `dataField` | `string` | — | Wajib untuk kolom data |
-| `caption` | `string` | dari field | Teks, bukan HTML |
-| `dataType` | `'string'\|'number'\|'date'\|'datetime'\|'boolean'\|'object'` | `'string'` | Menentukan filter/format |
-| `width` | `number \| 'auto'` | `'auto'` | Min 40px |
-| `minWidth` / `maxWidth` | `number` | 40 / — | |
-| `fixed` | `'start'\|'end'` | — | Butuh `columnFixing.enabled` |
-| `visible` | `boolean` | `true` | |
-| `allowSorting` | `boolean` | `true` | |
-| `allowFiltering` | `boolean` | `true` | |
-| `allowEditing` | `boolean` | `true` | |
-| `allowResizing` | `boolean` | `true` | |
-| `allowReordering` | `boolean` | `true` | |
-| `format` | `FormatSpec` | sesuai tipe | Number/date/currency |
-| `cellTemplate` | `TemplateSpec<T>` | — | Render function |
-| `headerCellTemplate` | `TemplateSpec<T>` | — | |
-| `editorTemplate` | `TemplateSpec<T>` | editor bawaan | Mode editing |
-| `calculateCellValue` | `(row: T) => unknown` | — | Computed column |
-| `calculateDisplayValue` | `(row: T) => string` | — | Untuk lookup |
-| `columns` | `ColumnOptions<T>[]` | — | Band/group |
+| Opsi                    | Tipe                                                          | Default       | Catatan                      |
+| ----------------------- | ------------------------------------------------------------- | ------------- | ---------------------------- |
+| `dataField`             | `string`                                                      | —             | Wajib untuk kolom data       |
+| `caption`               | `string`                                                      | dari field    | Teks, bukan HTML             |
+| `dataType`              | `'string'\|'number'\|'date'\|'datetime'\|'boolean'\|'object'` | `'string'`    | Menentukan filter/format     |
+| `width`                 | `number \| 'auto'`                                            | `'auto'`      | Min 40px                     |
+| `minWidth` / `maxWidth` | `number`                                                      | 40 / —        |                              |
+| `fixed`                 | `'start'\|'end'`                                              | —             | Butuh `columnFixing.enabled` |
+| `visible`               | `boolean`                                                     | `true`        |                              |
+| `allowSorting`          | `boolean`                                                     | `true`        |                              |
+| `allowFiltering`        | `boolean`                                                     | `true`        |                              |
+| `allowEditing`          | `boolean`                                                     | `true`        |                              |
+| `allowResizing`         | `boolean`                                                     | `true`        |                              |
+| `allowReordering`       | `boolean`                                                     | `true`        |                              |
+| `format`                | `FormatSpec`                                                  | sesuai tipe   | Number/date/currency         |
+| `cellTemplate`          | `TemplateSpec<T>`                                             | —             | Render function              |
+| `headerCellTemplate`    | `TemplateSpec<T>`                                             | —             |                              |
+| `editorTemplate`        | `TemplateSpec<T>`                                             | editor bawaan | Mode editing                 |
+| `calculateCellValue`    | `(row: T) => unknown`                                         | —             | Computed column              |
+| `calculateDisplayValue` | `(row: T) => string`                                          | —             | Untuk lookup                 |
+| `columns`               | `ColumnOptions<T>[]`                                          | —             | Band/group                   |
 
 ### 3.3 Sorting & filtering
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `sorting.mode` | `'none'\|'single'\|'multiple'` | `'single'` | |
-| `sorting.sortBy` | `SortDescriptor[]` | `[]` | Controlled |
-| `sorting.ascendingText` / `descendingText` | `string` | i18n | |
-| `filtering.enabled` | `boolean` | `true` | |
-| `filtering.filterRow` | `boolean \| object` | `false` | |
-| `filtering.headerFilter` | `boolean \| object` | `true` | |
-| `filtering.searchPanel` | `boolean \| object` | `false` | |
-| `filtering.filterValue` | `FilterExpression` | `null` | Controlled |
-| `filtering.applyFilter` | `'auto'\|'onClick'` | `'auto'` | |
-| `searchPanel.placeholder` | `string` | i18n | |
-| `searchPanel.searchVisibleColumnsOnly` | `boolean` | `false` | |
+| Opsi                                       | Tipe                           | Default    | Catatan    |
+| ------------------------------------------ | ------------------------------ | ---------- | ---------- |
+| `sorting.mode`                             | `'none'\|'single'\|'multiple'` | `'single'` |            |
+| `sorting.sortBy`                           | `SortDescriptor[]`             | `[]`       | Controlled |
+| `sorting.ascendingText` / `descendingText` | `string`                       | i18n       |            |
+| `filtering.enabled`                        | `boolean`                      | `true`     |            |
+| `filtering.filterRow`                      | `boolean \| object`            | `false`    |            |
+| `filtering.headerFilter`                   | `boolean \| object`            | `true`     |            |
+| `filtering.searchPanel`                    | `boolean \| object`            | `false`    |            |
+| `filtering.filterValue`                    | `FilterExpression`             | `null`     | Controlled |
+| `filtering.applyFilter`                    | `'auto'\|'onClick'`            | `'auto'`   |            |
+| `searchPanel.placeholder`                  | `string`                       | i18n       |            |
+| `searchPanel.searchVisibleColumnsOnly`     | `boolean`                      | `false`    |            |
 
 ### 3.4 Paging & scrolling
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `paging.enabled` | `boolean` | `true` | |
-| `paging.pageSize` | `number` | `20` | 1–10.000 |
-| `paging.pageIndex` | `number` | `0` | |
-| `paging.pageSizes` | `number[]` | `[10,20,50,100]` | |
-| `scrolling.mode` | `'standard'\|'virtual'\|'infinite'` | `'virtual'` | |
-| `scrolling.rowHeight` | `number` | `40` | |
-| `scrolling.overscan` | `number` | `5` | |
-| `scrolling.columnRenderingMode` | `'standard'\|'virtual'` | `'virtual'` | |
+| Opsi                            | Tipe                                | Default          | Catatan  |
+| ------------------------------- | ----------------------------------- | ---------------- | -------- |
+| `paging.enabled`                | `boolean`                           | `true`           |          |
+| `paging.pageSize`               | `number`                            | `20`             | 1–10.000 |
+| `paging.pageIndex`              | `number`                            | `0`              |          |
+| `paging.pageSizes`              | `number[]`                          | `[10,20,50,100]` |          |
+| `scrolling.mode`                | `'standard'\|'virtual'\|'infinite'` | `'virtual'`      |          |
+| `scrolling.rowHeight`           | `number`                            | `40`             |          |
+| `scrolling.overscan`            | `number`                            | `5`              |          |
+| `scrolling.columnRenderingMode` | `'standard'\|'virtual'`             | `'virtual'`      |          |
 
 ### 3.5 Selection
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `selection.mode` | `'none'\|'single'\|'multiple'` | `'none'` | |
-| `selection.showCheckBoxes` | `boolean` | `false` | |
-| `selection.selectAllMode` | `'page'\|'allPages'` | `'page'` | `allPages` butuh server |
-| `selection.selectedRowKeys` | `Key[]` | `[]` | Controlled |
-| `selection.allowSelectAll` | `boolean` | `true` | |
+| Opsi                        | Tipe                           | Default  | Catatan                 |
+| --------------------------- | ------------------------------ | -------- | ----------------------- |
+| `selection.mode`            | `'none'\|'single'\|'multiple'` | `'none'` |                         |
+| `selection.showCheckBoxes`  | `boolean`                      | `false`  |                         |
+| `selection.selectAllMode`   | `'page'\|'allPages'`           | `'page'` | `allPages` butuh server |
+| `selection.selectedRowKeys` | `Key[]`                        | `[]`     | Controlled              |
+| `selection.allowSelectAll`  | `boolean`                      | `true`   |                         |
 
 ### 3.6 Editing
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `editing.mode` | `'row'\|'cell'\|'batch'\|'popup'` | `'row'` | |
-| `editing.allowUpdating` | `boolean` | `false` | |
-| `editing.allowAdding` | `boolean` | `false` | |
-| `editing.allowDeleting` | `boolean` | `false` | |
-| `editing.confirmDelete` | `boolean` | `true` | |
-| `editing.commitOnBlur` | `boolean` | `false` | |
-| `editing.selectTextOnEditStart` | `boolean` | `true` | |
-| `editing.useForm` | `boolean` | `false` | Popup/form |
-| `editing.popup` | `object` | — | Width/height/title |
+| Opsi                            | Tipe                              | Default | Catatan            |
+| ------------------------------- | --------------------------------- | ------- | ------------------ |
+| `editing.mode`                  | `'row'\|'cell'\|'batch'\|'popup'` | `'row'` |                    |
+| `editing.allowUpdating`         | `boolean`                         | `false` |                    |
+| `editing.allowAdding`           | `boolean`                         | `false` |                    |
+| `editing.allowDeleting`         | `boolean`                         | `false` |                    |
+| `editing.confirmDelete`         | `boolean`                         | `true`  |                    |
+| `editing.commitOnBlur`          | `boolean`                         | `false` |                    |
+| `editing.selectTextOnEditStart` | `boolean`                         | `true`  |                    |
+| `editing.useForm`               | `boolean`                         | `false` | Popup/form         |
+| `editing.popup`                 | `object`                          | —       | Width/height/title |
 
 ### 3.7 Grouping & summary
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `grouping.autoExpandAll` | `boolean` | `true` | |
-| `grouping.expandMode` | `'buttonClick'\|'rowClick'` | `'buttonClick'` | |
-| `groupPanel.visible` | `boolean` | `false` | |
-| `groupPanel.emptyPanelText` | `string` | i18n | |
-| `summary.totalItems` | `SummaryItem[]` | `[]` | |
-| `summary.groupItems` | `SummaryItem[]` | `[]` | |
-| `summary.calculateCustomSummary` | `(options) => void` | — | Fungsi murni |
+| Opsi                             | Tipe                        | Default         | Catatan      |
+| -------------------------------- | --------------------------- | --------------- | ------------ |
+| `grouping.autoExpandAll`         | `boolean`                   | `true`          |              |
+| `grouping.expandMode`            | `'buttonClick'\|'rowClick'` | `'buttonClick'` |              |
+| `groupPanel.visible`             | `boolean`                   | `false`         |              |
+| `groupPanel.emptyPanelText`      | `string`                    | i18n            |              |
+| `summary.totalItems`             | `SummaryItem[]`             | `[]`            |              |
+| `summary.groupItems`             | `SummaryItem[]`             | `[]`            |              |
+| `summary.calculateCustomSummary` | `(options) => void`         | —               | Fungsi murni |
 
 ### 3.8 Tampilan & state
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `width` / `height` | `number \| string` | `'100%'` | |
-| `rtlEnabled` | `boolean` | `false` | |
-| `hoverStateEnabled` | `boolean` | `true` | |
-| `showBorders` | `boolean` | `true` | |
-| `showRowLines` | `boolean` | `false` | |
-| `showColumnLines` | `boolean` | `true` | |
-| `rowAlternationEnabled` | `boolean` | `false` | |
-| `wordWrapEnabled` | `boolean` | `false` | |
-| `focusedRowEnabled` | `boolean` | `false` | |
-| `allowColumnResizing` | `boolean` | `true` | |
-| `allowColumnReordering` | `boolean` | `true` | |
-| `noDataText` | `string` | i18n | |
-| `stateStoring.enabled` | `boolean` | `false` | |
-| `stateStoring.type` | `'memory'\|'session'\|'local'\|'custom'` | `'memory'` | |
-| `stateStoring.storageKey` | `string` | `sui-datagrid` | |
-| `stateStoring.savingTimeout` | `number` | `500` | ms |
+| Opsi                         | Tipe                                     | Default        | Catatan |
+| ---------------------------- | ---------------------------------------- | -------------- | ------- |
+| `width` / `height`           | `number \| string`                       | `'100%'`       |         |
+| `rtlEnabled`                 | `boolean`                                | `false`        |         |
+| `hoverStateEnabled`          | `boolean`                                | `true`         |         |
+| `showBorders`                | `boolean`                                | `true`         |         |
+| `showRowLines`               | `boolean`                                | `false`        |         |
+| `showColumnLines`            | `boolean`                                | `true`         |         |
+| `rowAlternationEnabled`      | `boolean`                                | `false`        |         |
+| `wordWrapEnabled`            | `boolean`                                | `false`        |         |
+| `focusedRowEnabled`          | `boolean`                                | `false`        |         |
+| `allowColumnResizing`        | `boolean`                                | `true`         |         |
+| `allowColumnReordering`      | `boolean`                                | `true`         |         |
+| `noDataText`                 | `string`                                 | i18n           |         |
+| `stateStoring.enabled`       | `boolean`                                | `false`        |         |
+| `stateStoring.type`          | `'memory'\|'session'\|'local'\|'custom'` | `'memory'`     |         |
+| `stateStoring.storageKey`    | `string`                                 | `sui-datagrid` |         |
+| `stateStoring.savingTimeout` | `number`                                 | `500`          | ms      |
 
 ### 3.9 Export
 
-| Opsi | Tipe | Default | Catatan |
-|---|---|---|---|
-| `export.enabled` | `boolean` | `false` | |
-| `export.formats` | `('csv'\|'xlsx')[]` | `['csv']` | |
-| `export.fileName` | `string` | `export` | Disanitasi |
-| `export.exportSelectedRows` | `boolean` | `false` | |
-| `export.exportHiddenColumns` | `boolean` | `false` | |
-| `export.csv.delimiter` | `string` | `','` | |
-| `export.csv.encoding` | `string` | `'utf-8'` | |
-| `export.csv.sanitizeFormulas` | `boolean` | `true` | **Jangan dimatikan tanpa alasan** |
+| Opsi                          | Tipe                | Default   | Catatan                           |
+| ----------------------------- | ------------------- | --------- | --------------------------------- |
+| `export.enabled`              | `boolean`           | `false`   |                                   |
+| `export.formats`              | `('csv'\|'xlsx')[]` | `['csv']` |                                   |
+| `export.fileName`             | `string`            | `export`  | Disanitasi                        |
+| `export.exportSelectedRows`   | `boolean`           | `false`   |                                   |
+| `export.exportHiddenColumns`  | `boolean`           | `false`   |                                   |
+| `export.csv.delimiter`        | `string`            | `','`     |                                   |
+| `export.csv.encoding`         | `string`            | `'utf-8'` |                                   |
+| `export.csv.sanitizeFormulas` | `boolean`           | `true`    | **Jangan dimatikan tanpa alasan** |
 
 ---
 
 ## 4. Method
 
-| Method | Signature | Catatan |
-|---|---|---|
-| `option` | `option(name)`, `option(name, value)`, `option(patch)` | Get/set; batch via transaksi |
-| `beginUpdate` | `(): void` | Nested-safe |
-| `endUpdate` | `(): void` | Render sekali |
-| `repaint` | `(): void` | Render ulang tanpa reload |
-| `refresh` | `(): Promise<void>` | Reload data |
-| `dispose` | `(): void` | Idempoten |
-| `getDataSource` | `(): DataSource<T>` | Objek publik |
-| `getSelectedRowKeys` | `(): Key[]` | Salinan |
-| `selectRows` | `(keys: Key[], preserve?: boolean): void` | |
-| `deselectRows` | `(keys: Key[]): void` | |
-| `clearSelection` | `(): void` | |
-| `selectAll` | `(scope?: 'page'\|'all'): void` | |
-| `getVisibleRows` | `(): readonly VisibleRow<T>[]` | Snapshot |
-| `getRowByKey` | `(key: Key): T \| undefined` | |
-| `getKeyByRowIndex` | `(index: number): Key \| undefined` | |
-| `focusCell` | `(rowKey: Key, columnId: string): void` | |
-| `getFocusedCell` | `(): { rowKey: Key; columnId: string } \| null` | |
-| `editRow` | `(key: Key): void` | |
-| `editCell` | `(key: Key, columnId: string): void` | |
-| `saveEdit` | `(): Promise<void>` | |
-| `cancelEdit` | `(): void` | |
-| `addRow` | `(values?: Partial<T>): Promise<void>` | |
-| `deleteRow` | `(key: Key): Promise<void>` | |
-| `expandRow` / `collapseRow` | `(key: Key): void` | |
-| `expandAll` / `collapseAll` | `(groupPath?: string): void` | |
-| `columnOption` | `(id: string, name: string, value?: unknown)` | |
-| `clearFilter` | `(): void` | |
-| `clearSorting` | `(): void` | |
-| `getState` | `(): DataGridStateSnapshot` | Serializable |
-| `state` | `(state?: DataGridStateSnapshot)` | Get/set |
-| `resetState` | `(): void` | |
-| `exportToCsv` | `(options?: CsvExportOptions): Promise<void>` | |
-| `exportToExcel` | `(options?: ExcelExportOptions): Promise<void>` | |
-| `on` / `off` / `once` | `(event, handler)` | Untuk vanilla |
+| Method                      | Signature                                              | Catatan                      |
+| --------------------------- | ------------------------------------------------------ | ---------------------------- |
+| `option`                    | `option(name)`, `option(name, value)`, `option(patch)` | Get/set; batch via transaksi |
+| `beginUpdate`               | `(): void`                                             | Nested-safe                  |
+| `endUpdate`                 | `(): void`                                             | Render sekali                |
+| `repaint`                   | `(): void`                                             | Render ulang tanpa reload    |
+| `refresh`                   | `(): Promise<void>`                                    | Reload data                  |
+| `dispose`                   | `(): void`                                             | Idempoten                    |
+| `getDataSource`             | `(): DataSource<T>`                                    | Objek publik                 |
+| `getSelectedRowKeys`        | `(): Key[]`                                            | Salinan                      |
+| `selectRows`                | `(keys: Key[], preserve?: boolean): void`              |                              |
+| `deselectRows`              | `(keys: Key[]): void`                                  |                              |
+| `clearSelection`            | `(): void`                                             |                              |
+| `selectAll`                 | `(scope?: 'page'\|'all'): void`                        |                              |
+| `getVisibleRows`            | `(): readonly VisibleRow<T>[]`                         | Snapshot                     |
+| `getRowByKey`               | `(key: Key): T \| undefined`                           |                              |
+| `getKeyByRowIndex`          | `(index: number): Key \| undefined`                    |                              |
+| `focusCell`                 | `(rowKey: Key, columnId: string): void`                |                              |
+| `getFocusedCell`            | `(): { rowKey: Key; columnId: string } \| null`        |                              |
+| `editRow`                   | `(key: Key): void`                                     |                              |
+| `editCell`                  | `(key: Key, columnId: string): void`                   |                              |
+| `saveEdit`                  | `(): Promise<void>`                                    |                              |
+| `cancelEdit`                | `(): void`                                             |                              |
+| `addRow`                    | `(values?: Partial<T>): Promise<void>`                 |                              |
+| `deleteRow`                 | `(key: Key): Promise<void>`                            |                              |
+| `expandRow` / `collapseRow` | `(key: Key): void`                                     |                              |
+| `expandAll` / `collapseAll` | `(groupPath?: string): void`                           |                              |
+| `columnOption`              | `(id: string, name: string, value?: unknown)`          |                              |
+| `clearFilter`               | `(): void`                                             |                              |
+| `clearSorting`              | `(): void`                                             |                              |
+| `getState`                  | `(): DataGridStateSnapshot`                            | Serializable                 |
+| `state`                     | `(state?: DataGridStateSnapshot)`                      | Get/set                      |
+| `resetState`                | `(): void`                                             |                              |
+| `exportToCsv`               | `(options?: CsvExportOptions): Promise<void>`          |                              |
+| `exportToExcel`             | `(options?: ExcelExportOptions): Promise<void>`        |                              |
+| `on` / `off` / `once`       | `(event, handler)`                                     | Untuk vanilla                |
 
 Aturan:
 
@@ -299,32 +299,32 @@ Aturan:
 
 ## 5. Event
 
-| Event | Payload | Cancelable |
-|---|---|---|
-| `contentReady` | `{ element }` | tidak |
-| `dataLoading` | `{ loadOptions }` | tidak |
-| `dataLoaded` | `{ data, totalCount }` | tidak |
-| `dataError` | `{ error }` | tidak |
-| `optionChanged` | `{ name, value, previousValue }` | tidak |
-| `sortingChanged` | `{ sortBy }` | tidak |
-| `filterChanged` | `{ filterValue }` | tidak |
-| `pageChanged` | `{ pageIndex, pageSize }` | tidak |
-| `selectionChanged` | `{ selectedRowKeys, added, removed }` | tidak |
-| `focusedCellChanged` | `{ rowKey, columnId }` | tidak |
-| `rowClick` / `cellClick` | `{ rowKey, columnId, data, event }` | ya |
-| `cellDblClick` | sama | ya |
-| `contextMenu` | `{ rowKey, columnId, event }` | ya |
-| `editingStart` | `{ rowKey, columnId }` | ya |
-| `editingCanceled` | `{ rowKey }` | tidak |
-| `rowUpdating` | `{ key, values }` | ya |
-| `rowUpdated` | `{ key, data }` | tidak |
-| `saving` | `{ changes }` | ya |
-| `saved` | `{ changes }` | tidak |
-| `saveFailed` | `{ error, changes }` | tidak |
-| `exporting` | `{ format }` | ya |
-| `exported` | `{ format, fileName }` | tidak |
-| `stateChanged` | `{ state }` | tidak |
-| `disposing` | `{}` | tidak |
+| Event                    | Payload                               | Cancelable |
+| ------------------------ | ------------------------------------- | ---------- |
+| `contentReady`           | `{ element }`                         | tidak      |
+| `dataLoading`            | `{ loadOptions }`                     | tidak      |
+| `dataLoaded`             | `{ data, totalCount }`                | tidak      |
+| `dataError`              | `{ error }`                           | tidak      |
+| `optionChanged`          | `{ name, value, previousValue }`      | tidak      |
+| `sortingChanged`         | `{ sortBy }`                          | tidak      |
+| `filterChanged`          | `{ filterValue }`                     | tidak      |
+| `pageChanged`            | `{ pageIndex, pageSize }`             | tidak      |
+| `selectionChanged`       | `{ selectedRowKeys, added, removed }` | tidak      |
+| `focusedCellChanged`     | `{ rowKey, columnId }`                | tidak      |
+| `rowClick` / `cellClick` | `{ rowKey, columnId, data, event }`   | ya         |
+| `cellDblClick`           | sama                                  | ya         |
+| `contextMenu`            | `{ rowKey, columnId, event }`         | ya         |
+| `editingStart`           | `{ rowKey, columnId }`                | ya         |
+| `editingCanceled`        | `{ rowKey }`                          | tidak      |
+| `rowUpdating`            | `{ key, values }`                     | ya         |
+| `rowUpdated`             | `{ key, data }`                       | tidak      |
+| `saving`                 | `{ changes }`                         | ya         |
+| `saved`                  | `{ changes }`                         | tidak      |
+| `saveFailed`             | `{ error, changes }`                  | tidak      |
+| `exporting`              | `{ format }`                          | ya         |
+| `exported`               | `{ format, fileName }`                | tidak      |
+| `stateChanged`           | `{ state }`                           | tidak      |
+| `disposing`              | `{}`                                  | tidak      |
 
 Aturan payload:
 
@@ -337,15 +337,15 @@ Aturan payload:
 
 ## 6. Template
 
-| Template | Context | Framework |
-|---|---|---|
-| `cellTemplate` | `{ data, value, column, rowIndex, component }` | React node/render prop; Vue slot `#cell`; Angular `*suiCellTemplate`; vanilla function |
-| `headerCellTemplate` | `{ column, component }` | sama |
-| `rowTemplate` | `{ data, rowIndex, columns }` | sama |
-| `detailTemplate` | `{ data, rowIndex }` | sama |
-| `editorTemplate` | `{ data, column, value, setValue, error }` | sama |
-| `groupRowTemplate` | `{ group, value, count }` | sama |
-| `noDataTemplate` | `{}` | sama |
+| Template             | Context                                        | Framework                                                                              |
+| -------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `cellTemplate`       | `{ data, value, column, rowIndex, component }` | React node/render prop; Vue slot `#cell`; Angular `*suiCellTemplate`; vanilla function |
+| `headerCellTemplate` | `{ column, component }`                        | sama                                                                                   |
+| `rowTemplate`        | `{ data, rowIndex, columns }`                  | sama                                                                                   |
+| `detailTemplate`     | `{ data, rowIndex }`                           | sama                                                                                   |
+| `editorTemplate`     | `{ data, column, value, setValue, error }`     | sama                                                                                   |
+| `groupRowTemplate`   | `{ group, value, count }`                      | sama                                                                                   |
+| `noDataTemplate`     | `{}`                                           | sama                                                                                   |
 
 Aturan:
 
@@ -367,7 +367,12 @@ const grid = new SimpleUI.DataGrid(document.getElementById('grid'), {
   columns: [
     { dataField: 'number', caption: 'No.', width: 120 },
     { dataField: 'customer', caption: 'Customer' },
-    { dataField: 'total', caption: 'Total', dataType: 'number', format: 'currency' },
+    {
+      dataField: 'total',
+      caption: 'Total',
+      dataType: 'number',
+      format: 'currency',
+    },
   ],
   sorting: { mode: 'multiple' },
   selection: { mode: 'multiple', showCheckBoxes: true },
@@ -445,23 +450,23 @@ const grid = new DataGrid<Order>(element, {
 
 ## 8. Keyboard map
 
-| Tombol | Aksi |
-|---|---|
-| `Tab` / `Shift+Tab` | Masuk/keluar grid |
-| `ArrowUp/Down/Left/Right` | Pindah sel |
-| `Home` / `End` | Awal/akhir baris |
-| `Ctrl+Home` / `Ctrl+End` | Awal/akhir grid |
-| `PageUp` / `PageDown` | Halaman atas/bawah |
-| `Space` | Toggle selection baris |
-| `Shift+Space` | Pilih range baris |
-| `Enter` | Edit / commit |
-| `F2` | Mulai edit |
-| `Esc` | Batal edit / tutup overlay |
-| `Ctrl+A` | Pilih semua (jika diizinkan) |
-| `Ctrl+C` | Copy sel/baris |
-| `Alt+ArrowDown` | Buka header filter |
-| `Shift+Click` header | Multi-sort |
-| `Shift+Click` baris | Range selection |
+| Tombol                    | Aksi                         |
+| ------------------------- | ---------------------------- |
+| `Tab` / `Shift+Tab`       | Masuk/keluar grid            |
+| `ArrowUp/Down/Left/Right` | Pindah sel                   |
+| `Home` / `End`            | Awal/akhir baris             |
+| `Ctrl+Home` / `Ctrl+End`  | Awal/akhir grid              |
+| `PageUp` / `PageDown`     | Halaman atas/bawah           |
+| `Space`                   | Toggle selection baris       |
+| `Shift+Space`             | Pilih range baris            |
+| `Enter`                   | Edit / commit                |
+| `F2`                      | Mulai edit                   |
+| `Esc`                     | Batal edit / tutup overlay   |
+| `Ctrl+A`                  | Pilih semua (jika diizinkan) |
+| `Ctrl+C`                  | Copy sel/baris               |
+| `Alt+ArrowDown`           | Buka header filter           |
+| `Shift+Click` header      | Multi-sort                   |
+| `Shift+Click` baris       | Range selection              |
 
 Aturan:
 
@@ -475,18 +480,18 @@ Aturan:
 
 ## 9. Error codes
 
-| Code | Arti | Perilaku |
-|---|---|---|
-| `SUI-DG-001` | Opsi tidak valid | Dev: throw; prod: fallback + warning |
-| `SUI-DG-002` | Duplicate column id / key | Error state |
-| `SUI-DG-003` | `keyExpr` tidak ditemukan | Error state |
-| `SUI-DG-004` | Load data gagal | State error + retry |
-| `SUI-DG-005` | Edit conflict | Dialog konflik |
-| `SUI-DG-006` | Template error | Fallback per sel |
-| `SUI-DG-007` | Export gagal | Toast/error |
-| `SUI-DG-008` | State tidak valid | Abaikan + warning |
-| `SUI-DG-009` | Operasi tidak didukung | Error terklasifikasi |
-| `SUI-DG-010` | Instance sudah disposed | Dev: throw; prod: no-op |
+| Code         | Arti                      | Perilaku                             |
+| ------------ | ------------------------- | ------------------------------------ |
+| `SUI-DG-001` | Opsi tidak valid          | Dev: throw; prod: fallback + warning |
+| `SUI-DG-002` | Duplicate column id / key | Error state                          |
+| `SUI-DG-003` | `keyExpr` tidak ditemukan | Error state                          |
+| `SUI-DG-004` | Load data gagal           | State error + retry                  |
+| `SUI-DG-005` | Edit conflict             | Dialog konflik                       |
+| `SUI-DG-006` | Template error            | Fallback per sel                     |
+| `SUI-DG-007` | Export gagal              | Toast/error                          |
+| `SUI-DG-008` | State tidak valid         | Abaikan + warning                    |
+| `SUI-DG-009` | Operasi tidak didukung    | Error terklasifikasi                 |
+| `SUI-DG-010` | Instance sudah disposed   | Dev: throw; prod: no-op              |
 
 ---
 
@@ -495,13 +500,13 @@ Aturan:
 Suatu state dianggap **controlled** jika callback perubahannya disediakan;
 tanpa callback, core menyimpan state internal.
 
-| State | Uncontrolled | Controlled |
-|---|---|---|
-| Sorting | `sorting.sortBy` awal | `sorting.sortBy` + `onSortingChanged` |
-| Filter | `filtering.filterValue` awal | `filtering.filterValue` + `onFilterChanged` |
+| State     | Uncontrolled                     | Controlled                                         |
+| --------- | -------------------------------- | -------------------------------------------------- |
+| Sorting   | `sorting.sortBy` awal            | `sorting.sortBy` + `onSortingChanged`              |
+| Filter    | `filtering.filterValue` awal     | `filtering.filterValue` + `onFilterChanged`        |
 | Selection | `selection.selectedRowKeys` awal | `selection.selectedRowKeys` + `onSelectionChanged` |
-| Paging | `paging.pageIndex` awal | `paging.pageIndex` + `onPageChanged` |
-| Editing | internal (tidak dikontrol) | — |
+| Paging    | `paging.pageIndex` awal          | `paging.pageIndex` + `onPageChanged`               |
+| Editing   | internal (tidak dikontrol)       | —                                                  |
 
 Aturan:
 
@@ -516,12 +521,12 @@ Aturan:
 Adapter boleh menyediakan alias top-level untuk state yang sering dipakai,
 tanpa mengubah opsi core:
 
-| Opsi core | React/Angular prop | Vue |
-|---|---|---|
-| `selection.selectedRowKeys` | `selectedRowKeys` | `v-model:selected-row-keys` |
-| `sorting.sortBy` | `sortBy` | `v-model:sort-by` |
-| `filtering.filterValue` | `filterValue` | `v-model:filter-value` |
-| `paging.pageIndex` | `pageIndex` | `v-model:page-index` |
+| Opsi core                   | React/Angular prop | Vue                         |
+| --------------------------- | ------------------ | --------------------------- |
+| `selection.selectedRowKeys` | `selectedRowKeys`  | `v-model:selected-row-keys` |
+| `sorting.sortBy`            | `sortBy`           | `v-model:sort-by`           |
+| `filtering.filterValue`     | `filterValue`      | `v-model:filter-value`      |
+| `paging.pageIndex`          | `pageIndex`        | `v-model:page-index`        |
 
 Aturan:
 
@@ -561,4 +566,4 @@ Aturan:
 
 ---
 
-*Untuk ancaman keamanan spesifik, lihat [04-security.md](04-security.md).*
+_Untuk ancaman keamanan spesifik, lihat [04-security.md](04-security.md)._

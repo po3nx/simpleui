@@ -22,15 +22,15 @@ Kebutuhan non-fungsional: keamanan, aksesibilitas WCAG 2.2 AA, performa pada
 
 ### 1.1 Quality attributes dan taktik
 
-| Atribut | Taktik utama |
-|---|---|
-| Konsistensi lintas framework | Satu core DOM + adapter tipis + parity test suite |
-| Maintainability | Layering ketat, dependency rule, file kecil, TSDoc |
-| Security | Default aman, sanitizer terpusat, tanpa `eval`, dependency minimal |
-| Performance | Virtualisasi, row recycling, batch render, budget di CI |
-| Accessibility | Pola ARIA standar, roving tabindex, live region, axe + manual test |
-| Testability | Fungsi murni, dependency injection, contract test |
-| Portability | ESM-first, import-safe SSR, tanpa asumsi bundler |
+| Atribut                      | Taktik utama                                                       |
+| ---------------------------- | ------------------------------------------------------------------ |
+| Konsistensi lintas framework | Satu core DOM + adapter tipis + parity test suite                  |
+| Maintainability              | Layering ketat, dependency rule, file kecil, TSDoc                 |
+| Security                     | Default aman, sanitizer terpusat, tanpa `eval`, dependency minimal |
+| Performance                  | Virtualisasi, row recycling, batch render, budget di CI            |
+| Accessibility                | Pola ARIA standar, roving tabindex, live region, axe + manual test |
+| Testability                  | Fungsi murni, dependency injection, contract test                  |
+| Portability                  | ESM-first, import-safe SSR, tanpa asumsi bundler                   |
 
 ---
 
@@ -75,12 +75,12 @@ Tidak ada panah balik dari core ke adapter/komponen.
 
 Alternatif yang dipertimbangkan:
 
-| Opsi | Kelebihan | Kekurangan | Keputusan |
-|---|---|---|---|
-| **A. Headless core + renderer per framework** | Integrasi paling native | Perilaku & a11y diduplikasi 4×; bug tidak konsisten; biaya QA meledak | Ditolak |
-| **B. Web Components saja** | Standar, framework-agnostic | Styling/SSR/forms/Angular integration rumit; portal & template framework sulit | Ditolak untuk v1, dipertimbangkan sebagai output tambahan |
-| **C. DOM engine bersama + adapter tipis** | Satu perilaku, konsisten, biaya adaptasi rendah | Butuh template bridge & manajemen lifecycle yang disiplin | **Dipilih** |
-| D. Fork library lain | Cepat di awal | Lisensi, kontrol, technical debt, ketergantungan | Ditolak |
+| Opsi                                          | Kelebihan                                       | Kekurangan                                                                     | Keputusan                                                 |
+| --------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| **A. Headless core + renderer per framework** | Integrasi paling native                         | Perilaku & a11y diduplikasi 4×; bug tidak konsisten; biaya QA meledak          | Ditolak                                                   |
+| **B. Web Components saja**                    | Standar, framework-agnostic                     | Styling/SSR/forms/Angular integration rumit; portal & template framework sulit | Ditolak untuk v1, dipertimbangkan sebagai output tambahan |
+| **C. DOM engine bersama + adapter tipis**     | Satu perilaku, konsisten, biaya adaptasi rendah | Butuh template bridge & manajemen lifecycle yang disiplin                      | **Dipilih**                                               |
+| D. Fork library lain                          | Cepat di awal                                   | Lisensi, kontrol, technical debt, ketergantungan                               | Ditolak                                                   |
 
 Keputusan resmi: **ADR-0004** (lihat §11).
 
@@ -123,19 +123,19 @@ packages/
 
 ### 4.1 Matriks dependensi
 
-| Paket | Boleh bergantung pada | Dilarang |
-|---|---|---|
-| `core` | platform | React, Vue, Angular, komponen |
-| `theme` | — | semua paket JS |
-| `icons` | — | core, framework |
-| `datagrid` | `core`, `theme` (peer/opsional) | `charts`, `pivotgrid`, adapter |
-| `pivotgrid` | `core`, `theme` | `datagrid`, `charts`, adapter |
-| `charts` | `core`, `theme` | `datagrid`, `pivotgrid`, adapter |
-| `adapter-react` | `core`, `datagrid`, `pivotgrid`, `charts`, `react` (peer) | adapter lain |
-| `adapter-vue` | `core`, komponen, `vue` (peer) | adapter lain |
-| `adapter-angular` | `core`, komponen, `@angular/*` (peer) | adapter lain |
-| `adapter-vanilla` | `core`, komponen | adapter lain |
-| `testing` | public API semua paket | internal package |
+| Paket             | Boleh bergantung pada                                     | Dilarang                         |
+| ----------------- | --------------------------------------------------------- | -------------------------------- |
+| `core`            | platform                                                  | React, Vue, Angular, komponen    |
+| `theme`           | —                                                         | semua paket JS                   |
+| `icons`           | —                                                         | core, framework                  |
+| `datagrid`        | `core`, `theme` (peer/opsional)                           | `charts`, `pivotgrid`, adapter   |
+| `pivotgrid`       | `core`, `theme`                                           | `datagrid`, `charts`, adapter    |
+| `charts`          | `core`, `theme`                                           | `datagrid`, `pivotgrid`, adapter |
+| `adapter-react`   | `core`, `datagrid`, `pivotgrid`, `charts`, `react` (peer) | adapter lain                     |
+| `adapter-vue`     | `core`, komponen, `vue` (peer)                            | adapter lain                     |
+| `adapter-angular` | `core`, komponen, `@angular/*` (peer)                     | adapter lain                     |
+| `adapter-vanilla` | `core`, komponen                                          | adapter lain                     |
+| `testing`         | public API semua paket                                    | internal package                 |
 
 ### 4.2 Struktur internal komponen
 
@@ -219,9 +219,13 @@ Aturan:
 ```ts
 export interface Store<TState> {
   getState(): Readonly<TState>;
-  setState(patch: Partial<TState> | ((state: Readonly<TState>) => Partial<TState>)): void;
+  setState(
+    patch: Partial<TState> | ((state: Readonly<TState>) => Partial<TState>),
+  ): void;
   transaction(fn: () => void): void;
-  subscribe(listener: (state: Readonly<TState>, prev: Readonly<TState>) => void): () => void;
+  subscribe(
+    listener: (state: Readonly<TState>, prev: Readonly<TState>) => void,
+  ): () => void;
 }
 ```
 
@@ -262,18 +266,18 @@ element.style.setProperty('--sui-grid-col-width', `${width}px`);
 
 Service dibuat per instance (bukan singleton global):
 
-| Service | Tanggung jawab | Dapat diganti untuk test |
-|---|---|---|
-| `DomAdapter` | create element, measure, scroll | ya |
-| `Clock` | now, timeout | ya |
-| `IdGenerator` | ID unik | ya |
-| `LocaleService` | format angka/tanggal, arah teks | ya |
-| `NetworkClient` | fetch, timeout, abort, retry | ya |
-| `Announcer` | live region a11y | ya |
-| `FocusManager` | roving tabindex, focus trap | ya |
-| `ResizeService` | ResizeObserver | ya |
-| `StorageService` | state persistence | ya |
-| `Sanitizer` | sanitasi HTML | ya |
+| Service          | Tanggung jawab                  | Dapat diganti untuk test |
+| ---------------- | ------------------------------- | ------------------------ |
+| `DomAdapter`     | create element, measure, scroll | ya                       |
+| `Clock`          | now, timeout                    | ya                       |
+| `IdGenerator`    | ID unik                         | ya                       |
+| `LocaleService`  | format angka/tanggal, arah teks | ya                       |
+| `NetworkClient`  | fetch, timeout, abort, retry    | ya                       |
+| `Announcer`      | live region a11y                | ya                       |
+| `FocusManager`   | roving tabindex, focus trap     | ya                       |
+| `ResizeService`  | ResizeObserver                  | ya                       |
+| `StorageService` | state persistence               | ya                       |
+| `Sanitizer`      | sanitasi HTML                   | ya                       |
 
 Service di-inject lewat `CoreServices` saat membuat instance. Tidak ada
 `window` global yang diakses langsung dari model.
@@ -345,12 +349,12 @@ Prinsip:
 
 ### 7.3 Anggaran render
 
-| Operasi | Budget |
-|---|---|
-| Render frame scroll | ≤ 16 ms |
-| Update satu baris | ≤ 2 ms |
+| Operasi                    | Budget  |
+| -------------------------- | ------- |
+| Render frame scroll        | ≤ 16 ms |
+| Update satu baris          | ≤ 2 ms  |
 | Update seleksi 1.000 baris | ≤ 50 ms |
-| Rebuild kolom | ≤ 30 ms |
+| Rebuild kolom              | ≤ 30 ms |
 
 Benchmark wajib ada di `apps/benchmarks` sebelum optimasi.
 
@@ -373,17 +377,17 @@ Benchmark wajib ada di `apps/benchmarks` sebelum optimasi.
 
 Dirancang sejak awal agar tidak perlu memodifikasi core:
 
-| Extension | Mekanisme |
-|---|---|
-| Custom store | implementasi interface `Store<T>` |
-| Custom column editor | `editorTemplate` + `createEditor()` |
-| Custom formatter | `format` menerima fungsi/objek |
-| Custom filter operator | registry operator dengan validator & matcher murni |
-| Custom summary | fungsi agregasi murni |
-| Custom theme | override CSS custom properties |
-| Custom locale | `messages` + `locale` |
+| Extension               | Mekanisme                                            |
+| ----------------------- | ---------------------------------------------------- |
+| Custom store            | implementasi interface `Store<T>`                    |
+| Custom column editor    | `editorTemplate` + `createEditor()`                  |
+| Custom formatter        | `format` menerima fungsi/objek                       |
+| Custom filter operator  | registry operator dengan validator & matcher murni   |
+| Custom summary          | fungsi agregasi murni                                |
+| Custom theme            | override CSS custom properties                       |
+| Custom locale           | `messages` + `locale`                                |
 | Custom renderer (chart) | renderer interface (`SvgRenderer`, `CanvasRenderer`) |
-| Plugin lifecycle | `use(plugin)` pada kernel (dibatasi, opt-in) |
+| Plugin lifecycle        | `use(plugin)` pada kernel (dibatasi, opt-in)         |
 
 Semua extension **WAJIB** melalui kontrak publik dan tidak boleh mengakses
 internal.
@@ -394,19 +398,19 @@ internal.
 
 Semua keputusan berstatus **Accepted** per 2026-11-23.
 
-| ID | Keputusan | Alternatif | Konsekuensi |
-|---|---|---|---|
-| [ADR-0001](adr/0001-lisensi-apache-2.0.md) | Apache-2.0 + DCO | MIT, dual | Perlu NOTICE & patent grant |
-| [ADR-0002](adr/0002-nama-dan-scope-npm.md) | Nama `SimpleUI`, scope `@simpleui/*` | nama lain | Perlu verifikasi npm/trademark |
-| [ADR-0003](adr/0003-dukungan-jquery.md) | jQuery bridge opsional, bukan core | core jQuery | Paket terpisah, ukuran core kecil |
-| [ADR-0004](adr/0004-rendering-engine.md) | DOM engine bersama + adapter tipis | headless, web components | Butuh template bridge & parity suite |
-| [ADR-0005](adr/0005-chart-engine.md) | Chart scene graph sendiri | D3, ECharts | Kontrol penuh, effort besar |
-| [ADR-0006](adr/0006-matriks-dukungan.md) | Matriks dukungan N/N-1 major | dukungan tanpa batas | Matriks diuji; versi EOL tidak didukung |
-| [ADR-0007](adr/0007-runtime-validation.md) | Validator ringan internal | zod/valibot | Tanpa dependency, perlu pemeliharaan |
-| [ADR-0008](adr/0008-strategi-rilis.md) | Fixed version group | independent | Rilis sederhana, semua paket sinkron |
-| [ADR-0009](adr/0009-infrastruktur-test.md) | Vitest browser mode + Playwright | jsdom saja | Test lebih nyata, CI lebih berat |
-| [ADR-0010](adr/0010-strategi-css.md) | CSS layer + custom properties | CSS-in-JS | CSP-friendly, tanpa runtime style |
-| [ADR-0011](adr/0011-format-build.md) | ESM-first, UMD untuk CDN | CJS-first | Tooling modern, perlu UMD build |
+| ID                                         | Keputusan                            | Alternatif               | Konsekuensi                             |
+| ------------------------------------------ | ------------------------------------ | ------------------------ | --------------------------------------- |
+| [ADR-0001](adr/0001-lisensi-apache-2.0.md) | Apache-2.0 + DCO                     | MIT, dual                | Perlu NOTICE & patent grant             |
+| [ADR-0002](adr/0002-nama-dan-scope-npm.md) | Nama `SimpleUI`, scope `@simpleui/*` | nama lain                | Perlu verifikasi npm/trademark          |
+| [ADR-0003](adr/0003-dukungan-jquery.md)    | jQuery bridge opsional, bukan core   | core jQuery              | Paket terpisah, ukuran core kecil       |
+| [ADR-0004](adr/0004-rendering-engine.md)   | DOM engine bersama + adapter tipis   | headless, web components | Butuh template bridge & parity suite    |
+| [ADR-0005](adr/0005-chart-engine.md)       | Chart scene graph sendiri            | D3, ECharts              | Kontrol penuh, effort besar             |
+| [ADR-0006](adr/0006-matriks-dukungan.md)   | Matriks dukungan N/N-1 major         | dukungan tanpa batas     | Matriks diuji; versi EOL tidak didukung |
+| [ADR-0007](adr/0007-runtime-validation.md) | Validator ringan internal            | zod/valibot              | Tanpa dependency, perlu pemeliharaan    |
+| [ADR-0008](adr/0008-strategi-rilis.md)     | Fixed version group                  | independent              | Rilis sederhana, semua paket sinkron    |
+| [ADR-0009](adr/0009-infrastruktur-test.md) | Vitest browser mode + Playwright     | jsdom saja               | Test lebih nyata, CI lebih berat        |
+| [ADR-0010](adr/0010-strategi-css.md)       | CSS layer + custom properties        | CSS-in-JS                | CSP-friendly, tanpa runtime style       |
+| [ADR-0011](adr/0011-format-build.md)       | ESM-first, UMD untuk CDN             | CJS-first                | Tooling modern, perlu UMD build         |
 
 ADR lengkap dan catatan review ada di [index ADR](adr/README.md).
 
@@ -414,15 +418,15 @@ ADR lengkap dan catatan review ada di [index ADR](adr/README.md).
 
 ## 11. Risiko arsitektur
 
-| Risiko | Dampak | Mitigasi |
-|---|---|---|
-| Template bridge terlalu kompleks | Adapter rapuh, bug lintas framework | Spike DG-005, kontrak kecil, parity test |
-| Virtualizer variable height | Scroll jump, perf buruk | Mulai fixed height; ukur hanya saat diperlukan |
-| Chart scene graph terlalu ambisius | Jadwal molor | Scope per jenis chart, renderer SVG dulu |
-| Angular Zone.js interaction | Change detection loop | `runOutsideAngular`, OnPush, test khusus |
-| SSR hydration mismatch | Error di Next/Nuxt/Universal | Host kosong, mount client-only, test SSR |
-| Dependency creep | Bundle & security | Budget, checklist §6.4, review ketat |
-| API terlalu besar di awal | Beban maintenance | Public API minimal, experimental flag |
+| Risiko                             | Dampak                              | Mitigasi                                       |
+| ---------------------------------- | ----------------------------------- | ---------------------------------------------- |
+| Template bridge terlalu kompleks   | Adapter rapuh, bug lintas framework | Spike DG-005, kontrak kecil, parity test       |
+| Virtualizer variable height        | Scroll jump, perf buruk             | Mulai fixed height; ukur hanya saat diperlukan |
+| Chart scene graph terlalu ambisius | Jadwal molor                        | Scope per jenis chart, renderer SVG dulu       |
+| Angular Zone.js interaction        | Change detection loop               | `runOutsideAngular`, OnPush, test khusus       |
+| SSR hydration mismatch             | Error di Next/Nuxt/Universal        | Host kosong, mount client-only, test SSR       |
+| Dependency creep                   | Bundle & security                   | Budget, checklist §6.4, review ketat           |
+| API terlalu besar di awal          | Beban maintenance                   | Public API minimal, experimental flag          |
 
 ---
 
@@ -441,5 +445,5 @@ Sebelum DataGrid DG-1 dimulai, wajib terpenuhi:
 
 ---
 
-*Lihat [02 — Adapter](02-adapter-cross-framework.md) untuk detail mekanisme
-lintas framework, dan [03 — Data Layer](03-data-layer.md) untuk pipeline data.*
+_Lihat [02 — Adapter](02-adapter-cross-framework.md) untuk detail mekanisme
+lintas framework, dan [03 — Data Layer](03-data-layer.md) untuk pipeline data._
