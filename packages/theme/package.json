@@ -1,0 +1,26 @@
+{
+  "name": "@simpleui/theme",
+  "version": "0.0.0",
+  "description": "Design tokens and CSS themes for SimpleUI",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "exports": {
+    ".": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./styles.css": "./dist/index.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tools/build-theme.mjs",
+    "clean": "node ../../tools/clean.mjs ."
+  }
+}
