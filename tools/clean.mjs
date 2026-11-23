@@ -49,7 +49,9 @@ async function workspaceDirs(base) {
   const resolved = path.join(ROOT, base);
   if (!(await exists(resolved))) return [];
   const entries = await readdir(resolved, { withFileTypes: true });
-  return entries.filter((entry) => entry.isDirectory()).map((entry) => path.join(resolved, entry.name));
+  return entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(resolved, entry.name));
 }
 
 async function main() {
