@@ -1,0 +1,59 @@
+@layer simpleui.tokens {
+  :root,
+  .sui-theme {
+    --sui-color-bg-surface: #ffffff;
+    --sui-color-bg-subtle: #f5f6f8;
+    --sui-color-bg-hover: #eef1f6;
+    --sui-color-text-primary: #1a1a1a;
+    --sui-color-text-secondary: #5c6370;
+    --sui-color-border-subtle: #d9dde5;
+    --sui-color-accent-default: #0b5fff;
+    --sui-color-accent-subtle: #e6efff;
+
+    --sui-space-1: 4px;
+    --sui-space-2: 8px;
+    --sui-space-3: 12px;
+    --sui-space-4: 16px;
+
+    --sui-font-family-base: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sui-font-size-md: 14px;
+    --sui-line-height-normal: 1.5;
+
+    --sui-radius-sm: 4px;
+    --sui-radius-md: 6px;
+    --sui-radius-full: 9999px;
+
+    --sui-border-width: 1px;
+    --sui-focus-ring-color: #0b5fff;
+    --sui-focus-ring-width: 2px;
+    --sui-focus-ring-offset: 2px;
+
+    --sui-density-row-height: 40px;
+    --sui-density-cell-padding: 10px 12px;
+
+    --sui-motion-duration-fast: 120ms;
+    --sui-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .sui-theme[data-theme='dark'] {
+    --sui-color-bg-surface: #16181d;
+    --sui-color-bg-subtle: #1e2129;
+    --sui-color-bg-hover: #252a34;
+    --sui-color-text-primary: #f2f4f8;
+    --sui-color-text-secondary: #a7b0c0;
+    --sui-color-border-subtle: #343a46;
+    --sui-color-accent-default: #7aa7ff;
+    --sui-color-accent-subtle: #1d2b45;
+    --sui-focus-ring-color: #7aa7ff;
+  }
+
+  .sui-theme[data-density='compact'] {
+    --sui-density-row-height: 28px;
+    --sui-density-cell-padding: 4px 8px;
+  }
+
+  .sui-theme[data-density='spacious'] {
+    --sui-density-row-height: 48px;
+    --sui-density-cell-padding: 14px 16px;
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@simpleui/vanilla",
+  "version": "0.0.0",
+  "description": "Vanilla JavaScript/UMD adapter for SimpleUI",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "clean": "node ../../tools/clean.mjs ."
+  },
+  "dependencies": {
+    "@simpleui/core": "workspace:*",
+    "@simpleui/datagrid": "workspace:*"
+  },
+  "peerDependencies": {
+    "jquery": ">=3.7 <5"
+  },
+  "peerDependenciesMeta": {
+    "jquery": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

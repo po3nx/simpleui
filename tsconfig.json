@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/icons" },
+    { "path": "./packages/datagrid" },
+    { "path": "./packages/pivotgrid" },
+    { "path": "./packages/charts" },
+    { "path": "./packages/adapter-react" },
+    { "path": "./packages/adapter-vue" },
+    { "path": "./packages/adapter-angular" },
+    { "path": "./packages/adapter-vanilla" },
+    { "path": "./packages/testing" }
+  ]
+}

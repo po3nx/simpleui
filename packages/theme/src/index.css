@@ -1,0 +1,25 @@
+@import './tokens.css';
+
+@layer simpleui.reset, simpleui.tokens, simpleui.base, simpleui.component, simpleui.utilities;
+
+@layer simpleui.base {
+  .sui-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sui-theme {
+    font-family: var(--sui-font-family-base);
+    font-size: var(--sui-font-size-md);
+    line-height: var(--sui-line-height-normal);
+    color: var(--sui-color-text-primary);
+    background: var(--sui-color-bg-surface);
+  }
+}
