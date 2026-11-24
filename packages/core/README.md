@@ -198,6 +198,39 @@ layout.dispose(); // putus semua observer (R-ARC-08)
 - Tanpa `ResizeObserver` (SSR/test) layanan tetap memberi satu pengukuran.
 - `dispose()` memutus observer dan membersihkan seluruh listener.
 
+## Internasionalisasi
+
+```ts
+import { createLocaleService } from '@simpleui/core';
+
+const locale = createLocaleService({
+  locale: 'id-ID',
+  timeZone: 'Asia/Jakarta',
+  messages: { 'sui.common.pager.pageOf': 'Halaman {page} dari {pages}' },
+});
+
+locale.t('sui.common.pager.pageOf', { page: 2, pages: 7 }); // "Halaman 2 dari 7"
+locale.t('sui.common.selection.selected', { count: 1 }); // plural via Intl.PluralRules
+locale.formatNumber(1234.5); // "1.234,5"
+locale.formatDate(Date.now(), { dateStyle: 'medium' });
+locale.direction; // 'ltr' | 'rtl'
+```
+
+- Katalog bawaan berbahasa Inggris; opsi `messages` hanya menambah atau
+  menimpa key, tidak menghapus default.
+- Key mengikuti `sui.<komponen>.<area>.<key>`; placeholder `{nama}` disisipkan
+  sebagai teks biasa (tidak dievaluasi sebagai kode, tidak menghasilkan HTML).
+- Pesan plural memakai `Intl.PluralRules`; bentuk `zero` dipakai eksplisit saat
+  `count: 0`.
+- Locale fallback: `locale` → `fallbackLocale` → `en`. Timezone dan mata uang
+  dapat ditetapkan eksplisit agar hasil tidak bergantung mesin.
+- Formatter `Intl` di-cache sehingga memformat ribuan baris tidak membuat
+  instance baru.
+- Pseudo-locale `en-XA` memberi aksen dan memperpanjang teks ±30% untuk visual
+  regression; `isRtlLocale`/`getDirection` menentukan arah layout.
+- Locale, timezone, atau mata uang yang tidak valid dilempar sebagai
+  `SUI-I18N-001`.
+
 ## Event
 
 ```ts
