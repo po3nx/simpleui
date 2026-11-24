@@ -171,9 +171,10 @@ update dependency setiap Senin.
 
 ## Langkah berikutnya
 
-1. Review plan v1.0 dan 11 ADR (sudah Accepted per 2026-11-23).
-2. Verifikasi scope npm `@simpleui` dan trademark.
-3. Jalankan `FND-001` (scaffold monorepo).
+1. Review plan v1.0 dan 12 ADR (status per 2026-11-24).
+2. Verifikasi scope npm `@simpleui` dan trademark sebelum publikasi.
+3. Fondasi repo & tooling selesai (FND-001…FND-009); lanjut fondasi produk:
+   FND-025 (LICENSE/NOTICE) lalu FND-010 (design token) dan FND-011 (kernel).
 4. Spike `DG-004` (virtualizer) dan `DG-005` (adapter bridge).
 
 Progress: `node docs/10-tracking/tools/progress.mjs`.

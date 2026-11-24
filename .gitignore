@@ -23,3 +23,6 @@ Thumbs.db
 npm-debug.log*
 pnpm-debug.log*
 audit-report.json
+
+# Cache npm sementara untuk verifikasi lokal
+.npm-tmp/
