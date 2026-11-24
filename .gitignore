@@ -29,3 +29,6 @@ audit-report.json
 
 # Dokumen internal (plan, ADR, handbook) dipelihara di repo privat terpisah
 docs/
+
+# Artefak SBOM yang di-generate
+sbom.json
