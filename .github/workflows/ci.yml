@@ -52,6 +52,8 @@ jobs:
         run: pnpm typecheck
       - name: Build
         run: pnpm build
+      - name: Anggaran ukuran bundle
+        run: pnpm size
       - name: Validasi paket (publint + arethetypeswrong)
         run: pnpm check:package
       - name: Validasi lisensi dependency

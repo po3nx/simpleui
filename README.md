@@ -21,6 +21,7 @@ pnpm build
 pnpm typecheck
 pnpm lint
 pnpm test
+pnpm size
 pnpm audit
 ```
 
@@ -34,6 +35,7 @@ Scaffold saat ini berisi:
 - `packages/adapter-react|vue|angular|vanilla` — placeholder adapter.
 - `packages/testing` — placeholder harness.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
+- Budget ukuran bundle dijaga `size-limit` (`.size-limit.mjs`).
 - `tools/clean.mjs`, `tools/build-theme.mjs`.
 - Turborepo, TypeScript project references, dan pnpm workspace.
 - Vitest workspace: unit di Node, test DOM di Chromium nyata (browser mode).
