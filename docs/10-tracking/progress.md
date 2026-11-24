@@ -18,14 +18,14 @@
 
 ## Ringkasan Progress
 
-**3,4%** dari total estimasi **831 ideal day** selesai (28 day). Task: 174 aktif, 0 dibatalkan.
+**3,6%** dari total estimasi **831 ideal day** selesai (30 day). Task: 174 aktif, 0 dibatalkan.
 
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
-| DONE | 10 | 28 |
+| DONE | 11 | 30 |
 | WIP | 0 | 0 |
 | BLOCKED | 0 | 0 |
-| TODO | 164 | 803 |
+| TODO | 163 | 801 |
 | CUT | 0 | 0 |
 
 Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
@@ -34,7 +34,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 10 | 0 | 0 | 25 | 0 | 130 | 28 | 21,5% |
+| Foundation | 35 | 11 | 0 | 0 | 24 | 0 | 130 | 30 | 23,1% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -43,7 +43,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Fase | Task | Est (d) | Est DONE | Progress |
 |---|---:|---:|---:|---:|
-| P0 | 35 | 130 | 28 | 21,5% |
+| P0 | 35 | 130 | 30 | 23,1% |
 | DG-0 | 7 | 24 | 0 | 0,0% |
 | DG-1 | 14 | 60 | 0 | 0,0% |
 | DG-2 | 20 | 85 | 0 | 0,0% |
@@ -75,11 +75,11 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 | FND-020 | Testing harness adapter + fixture factory + seeded random | Foundation | 5 | — |
 | FND-021 | Docs site skeleton + navigasi + contoh | Foundation | 5 | — |
 | FND-023 | Benchmark harness + baseline + reporting | Foundation | 3 | — |
-| FND-025 | License/IP review + NOTICE + dependency allowlist | Foundation | 2 | — |
 | FND-026 | Supply chain: lockfile, audit, SBOM, provenance | Foundation | 2 | — |
 | FND-027 | Browser/framework support matrix + CI matrix | Foundation | 2 | — |
 | FND-029 | API Extractor + `.api.md` + perubahan gate | Foundation | 2 | — |
 | FND-030 | Size-limit + performance budget per paket | Foundation | 2 | — |
+| FND-031 | Setup axe + keyboard E2E + a11y checklist | Foundation | 3 | — |
 
 ### Blocked
 

@@ -13,6 +13,9 @@
   "scripts": {
     "build": "turbo run build",
     "check:package": "node tools/check-packaging.mjs",
+    "check:license": "node tools/check-licenses.mjs",
+    "check:license-files": "node tools/sync-license.mjs --check",
+    "license:sync": "node tools/sync-license.mjs",
     "dev": "turbo run dev --parallel",
     "typecheck": "turbo run typecheck",
     "lint": "eslint .",
