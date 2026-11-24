@@ -369,3 +369,40 @@ export interface DataGridApi<T = unknown> {
   resetState(): void;
   exportToCsv(options?: ExportOptions): Promise<void>;
 }
+
+export interface NormalizedFiltering extends Required<FilteringOptions> {
+  readonly search: Required<SearchOptions>;
+}
+
+export interface NormalizedDataGridOptions<T = unknown> {
+  readonly dataSource: DataSourceInput<T>;
+  readonly keyExpr: KeyExpr<T> | undefined;
+  readonly columns: readonly ColumnOptions<T>[];
+  readonly sorting: Required<SortingOptions>;
+  readonly filtering: NormalizedFiltering;
+  readonly paging: Required<PagingOptions>;
+  readonly scrolling: Required<ScrollingOptions>;
+  readonly selection: Required<SelectionOptions>;
+  readonly editing: Required<EditingOptions>;
+  readonly grouping: Required<GroupingOptions>;
+  readonly summary: Required<SummaryOptions<T>>;
+  readonly stateStoring: Required<StateStoringOptions>;
+  readonly export: Required<ExportOptions>;
+  readonly display: {
+    readonly width: number | string;
+    readonly height: number | string;
+    readonly rtlEnabled: boolean;
+    readonly showBorders: boolean;
+    readonly showRowLines: boolean;
+    readonly showColumnLines: boolean;
+    readonly rowAlternationEnabled: boolean;
+    readonly wordWrapEnabled: boolean;
+    readonly focusedRowEnabled: boolean;
+    readonly allowColumnResizing: boolean;
+    readonly allowColumnReordering: boolean;
+    readonly noDataText: string;
+    readonly locale: string | undefined;
+    readonly messages: Readonly<Record<string, string>>;
+  };
+  readonly events: Readonly<Record<string, unknown>>;
+}

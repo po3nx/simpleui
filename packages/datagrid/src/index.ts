@@ -3,6 +3,13 @@
  */
 export const DATAGRID_VERSION = '0.0.0';
 
+export { DataGridError, isDataGridError } from './errors.js';
+export {
+  normalizeDataGridOptions,
+  type NormalizeContext,
+  type ValidationIssue,
+} from './model/options.js';
+
 export type {
   CellEvent,
   ColumnAlignment,
@@ -50,5 +57,7 @@ export type {
   SummaryItem,
   SummaryOptions,
   SummaryType,
+  NormalizedDataGridOptions,
+  NormalizedFiltering,
   VisibleRow,
 } from './api/types.js';
