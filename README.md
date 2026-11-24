@@ -3,9 +3,11 @@
 Library komponen UI enterprise yang framework-agnostic: **JavaScript,
 TypeScript, React, Vue, dan Angular**.
 
-> **Status:** fondasi — 13 dari 35 task P0 selesai (FND-001…FND-011,
-> FND-024, FND-025). Tooling, CI, design token, dan kernel core sudah ada;
-> komponen pertama (DataGrid) belum dimulai.
+> **Status:** fondasi — 32 dari 35 task selesai; 1 WIP (adapter Angular dan
+> playground), 1 BLOCKED (API Extractor, menunggu TypeScript 7.1), 1 TODO
+> (support matrix CI). Runtime inti, tema, keamanan, data layer, virtualizer,
+> harness test, situs dokumentasi, dan benchmark sudah berjalan; komponen
+> pertama (DataGrid) belum dimulai.
 > **Mulai implementasi:** Phase 0 dimulai 2026-11-23 — lebih awal dari target
 > roadmap 2026-12-01.
 > **Komponen pertama:** DataGrid.
@@ -25,19 +27,27 @@ pnpm size
 pnpm audit
 ```
 
-Scaffold saat ini berisi:
+Isi repositori saat ini:
 
-- `packages/core` — seed runtime: `VERSION`, `isBrowser()`, `assertBrowser()`.
+- `packages/core` — runtime: kernel lifecycle, state/selector/scheduler, DOM
+  utils, a11y (focus, roving tabindex, announcer), layout service, i18n,
+  template bridge, data layer (`ArrayStore`, `CustomStore`, `CachedStore`,
+  query pipeline), virtualizer, dan utilitas keamanan (`safeMerge`, `safeUrl`,
+  `sanitizeHtml`, CSV guard).
 - `packages/theme` — design token lengkap, tema light/dark/high-contrast,
   density comfortable/compact/spacious, RTL via properti logis, dibangun
   dengan Lightning CSS.
+- `packages/adapter-react|vue|vanilla` — bridge lifecycle `mount`/`update`/
+  `unmount` tahap spike (kontrak adapter diuji di Chromium).
+- `packages/adapter-angular` — placeholder; spike Angular belum selesai.
+- `packages/testing` — fixture deterministik (seeded random) dan kontrak
+  adapter untuk parity test.
 - `packages/icons`, `datagrid`, `pivotgrid`, `charts` — placeholder.
-- `packages/adapter-react|vue|angular|vanilla` — placeholder adapter.
-- `packages/testing` — placeholder harness.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
-- Budget ukuran bundle dijaga `size-limit` (`.size-limit.mjs`).
 - `apps/benchmarks` — harness benchmark + baseline per lingkungan (`pnpm bench`).
-- `tools/clean.mjs`, `tools/build-theme.mjs`.
+- Budget ukuran bundle dijaga `size-limit` (`.size-limit.mjs`).
+- `tools/` — build tema, validasi paket/lisensi, SBOM, release smoke, DCO,
+  server docs, dan utilitas workspace.
 - Turborepo, TypeScript project references, dan pnpm workspace.
 - Vitest workspace: unit di Node, test DOM di Chromium nyata (browser mode).
 - Changesets dengan fixed version group untuk seluruh paket library
@@ -85,6 +95,19 @@ simpleUI/
 ├─ examples/      # integrasi per framework
 └─ tools/         # generator, rilis, codemod
 ```
+
+## Dukungan
+
+| Area       | Status                                                                          |
+| ---------- | ------------------------------------------------------------------------------- |
+| Browser    | Chromium, Firefox, WebKit — E2E nightly di ketiganya                            |
+| Node.js    | 24 dan 26 (build + test)                                                        |
+| Framework  | vanilla, React 19, Vue 3.5 (bridge lifecycle tahap spike); Angular direncanakan |
+| OS         | Linux (CI utama), macOS dan Windows (smoke nightly)                             |
+| TypeScript | build paket memakai TypeScript 7; typescript-eslint sementara memakai 5.9       |
+
+Matriks ini diperbarui saat cakupan uji berubah; klaim tanpa test tidak
+dicantumkan.
 
 ## Prinsip
 
