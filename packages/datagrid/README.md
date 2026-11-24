@@ -18,6 +18,11 @@ const options = normalizeDataGridOptions({
   menolak opsi tak dikenal (`SUI-DG-001`).
 - Mode dev melempar error; mode produksi memakai fallback dan melaporkan lewat
   `onValidationError`.
+- `normalizeColumnModel` membentuk pohon kolom dengan **id stabil** (default
+  `dataField`, atau `col-<index>`), band, visibility, dan resolusi lebar
+  (`auto`, min/max). Id duplikat menghasilkan `SUI-DG-002`.
+- Helper: `flattenColumns`, `getVisibleColumns`, `findColumnById`,
+  `countHeaderRows`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

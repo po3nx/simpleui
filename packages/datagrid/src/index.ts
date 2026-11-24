@@ -9,6 +9,16 @@ export {
   type NormalizeContext,
   type ValidationIssue,
 } from './model/options.js';
+export {
+  countHeaderRows,
+  findColumnById,
+  flattenColumns,
+  getVisibleColumns,
+  normalizeColumnModel,
+  type ColumnInput,
+  type ColumnModelContext,
+  type ColumnState,
+} from './model/columns.js';
 
 export type {
   CellEvent,
