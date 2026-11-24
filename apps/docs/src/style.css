@@ -60,7 +60,8 @@ body {
 .sui-docs-sidebar {
   grid-area: sidebar;
   padding: var(--sui-space-4);
-  border-inline-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  border-inline-end: var(--sui-border-width) solid
+    var(--sui-color-border-subtle);
 }
 
 .sui-docs-section-title {

@@ -28,7 +28,11 @@ export const NAV_SECTIONS: readonly NavSection[] = [
     title: 'Panduan',
     pages: [
       { slug: 'tema', title: 'Tema & Token', markdown: tema },
-      { slug: 'aksesibilitas', title: 'Aksesibilitas', markdown: aksesibilitas },
+      {
+        slug: 'aksesibilitas',
+        title: 'Aksesibilitas',
+        markdown: aksesibilitas,
+      },
       { slug: 'contoh', title: 'Contoh', markdown: contoh },
     ],
   },

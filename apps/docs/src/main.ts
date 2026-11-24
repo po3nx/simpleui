@@ -111,7 +111,9 @@ function render(cleanup: () => void): () => void {
   const content = createElement('main', { className: 'sui-docs-content' });
   const article = createElement('article', { className: 'sui-docs-article' });
   // HTML berasal dari renderMarkdown() yang sudah disanitasi allowlist.
-  article.innerHTML = page ? renderMarkdown(page.markdown) : '<p>Halaman tidak ditemukan.</p>';
+  article.innerHTML = page
+    ? renderMarkdown(page.markdown)
+    : '<p>Halaman tidak ditemukan.</p>';
   content.append(article);
 
   let stopDemo: (() => void) | null = null;
