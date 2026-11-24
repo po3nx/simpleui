@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "check:package": "node tools/check-packaging.mjs",
     "dev": "turbo run dev --parallel",
     "typecheck": "turbo run typecheck",
     "lint": "eslint .",
@@ -34,6 +35,7 @@
     "changeset:version": "changeset version"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
     "@changesets/cli": "^3.0.3",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.65.1",
@@ -45,6 +47,7 @@
     "eslint-config-prettier": "10.1.8",
     "playwright": "1.65.1",
     "prettier": "^3.4.2",
+    "publint": "0.3.25",
     "turbo": "^2.3.3",
     "typescript-eslint": "8.73.0",
     "vitest": "5.1.1"
