@@ -62,52 +62,9 @@ Jika browser disimpan di dalam workspace (mis. lingkungan sandbox), tambahkan
 > Catatan: Node 22 tidak dijadikan baseline karena masa dukungannya berakhir
 > April 2027. Node 26 adalah LTS saat ini; minimum tooling ditetapkan Node 24.
 > **Sudah diverifikasi:** Node 26.13.0 + pnpm 12.21.0, `pnpm install`,
-> `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm test` (8 unit test),
-> `pnpm test:browser` (1 test di Chromium), `pnpm test:e2e` (2 test),
+> `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm test` (unit + coverage,
+> gate core 90/85), `pnpm test:browser` (Chromium), `pnpm test:e2e`,
 > dan `pnpm audit` (0 known vulnerabilities).
-
-### Troubleshooting pnpm di Windows
-
-Jika setelah `npm install -g pnpm@12.21.0` muncul:
-
-```text
-'"...\node_modules\pnpm\pnpm"' is not recognized
-```
-
-postinstall pnpm diblokir oleh kebijakan npm. Perbaiki dengan:
-
-```powershell
-npm config set allow-scripts=pnpm --location=user
-npm rebuild -g pnpm --allow-scripts=pnpm
-pnpm -v
-```
-
-Shim `pnpm.cmd` yang benar akan menunjuk ke `node_modules\pnpm\pnpm.exe`.
-
-### Jika satu tarball timeout karena proxy
-
-Jika registry dapat diakses dari browser tetapi `pnpm` timeout, unduh tarball
-yang gagal lalu masukkan ke store:
-
-```powershell
-pnpm store add "D:\Users\<user>\Downloads\common-22.3.0.tgz" --store-dir "D:\.pnpm-store"
-pnpm install --prefer-offline
-```
-
-Versi tarball harus sama dengan yang diminta lockfile. Contoh di atas untuk
-`@angular/common@22.3.0`.
-
-### Jika muncul ERR_PNPM_IGNORED_BUILDS
-
-Project memakai `ignore-scripts=true`; build script yang diperlukan harus
-disetujui eksplisit. Untuk esbuild:
-
-```powershell
-pnpm approve-builds esbuild
-pnpm install
-```
-
-Persetujuan dicatat di `pnpm-workspace.yaml` sebagai `allowBuilds`.
 
 ## Dokumentasi
 
