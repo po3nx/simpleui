@@ -141,3 +141,10 @@ export type {
   Store as DataStore,
   StoreCapabilities,
 } from './data/types.js';
+
+export { createVirtualizer, Virtualizer } from './view/virtualizer.js';
+export type {
+  VirtualAlign,
+  VirtualRange,
+  VirtualizerOptions,
+} from './view/virtualizer.js';
