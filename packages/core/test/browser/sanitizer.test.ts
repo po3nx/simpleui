@@ -55,3 +55,34 @@ describe('sanitizeHtml — DOM nyata', () => {
     expect(output).not.toContain('<script>');
   });
 });
+
+describe('sanitizeHtmlWithConfig', () => {
+  it('memakai allowlist khusus untuk konten first-party', async () => {
+    const { sanitizeHtmlWithConfig } =
+      await import('../../src/security/sanitizer.js');
+
+    const output = sanitizeHtmlWithConfig('<h2>Judul</h2><p>isi</p>', {
+      allowedTags: ['h2', 'p'],
+      allowedAttributes: [],
+      allowedProtocols: ['https:'],
+    });
+
+    expect(output).toBe('<h2>Judul</h2><p>isi</p>');
+  });
+
+  it('tetap membuang elemen di luar allowlist khusus', async () => {
+    const { sanitizeHtmlWithConfig } =
+      await import('../../src/security/sanitizer.js');
+
+    const output = sanitizeHtmlWithConfig(
+      '<h2>ok</h2><script>alert(1)</script>',
+      {
+        allowedTags: ['h2'],
+        allowedAttributes: [],
+        allowedProtocols: ['https:'],
+      },
+    );
+
+    expect(output).toBe('<h2>ok</h2>');
+  });
+});

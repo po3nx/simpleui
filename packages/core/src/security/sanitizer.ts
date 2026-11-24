@@ -1,6 +1,6 @@
 import { SecurityError } from './errors.js';
 import { sanitizeWithDom } from './sanitizer-dom.js';
-import { SANITIZER_CONFIG } from './sanitizer-config.js';
+import { SANITIZER_CONFIG, type SanitizerConfig } from './sanitizer-config.js';
 
 /**
  * Facade sanitizer HTML (FND-022, docs/05-security.md §3.2).
@@ -12,6 +12,7 @@ import { SANITIZER_CONFIG } from './sanitizer-config.js';
  */
 
 export { SANITIZER_CONFIG } from './sanitizer-config.js';
+export type { SanitizerConfig } from './sanitizer-config.js';
 
 export interface SanitizerProvider {
   sanitize(html: string, config: typeof SANITIZER_CONFIG): string;
@@ -35,8 +36,20 @@ export function escapeHtml(text: string): string {
  * Sanitasi HTML dengan allowlist tetap. Tanpa DOM, seluruh HTML di-escape.
  */
 export function sanitizeHtml(html: string): string {
+  return sanitizeHtmlWithConfig(html, SANITIZER_CONFIG);
+}
+
+/**
+ * Varian untuk konten first-party (mis. situs dokumentasi) yang membutuhkan
+ * allowlist lebih luas. API publik `sanitizeHtml` tetap memakai allowlist tetap.
+ * Tanpa DOM, seluruh HTML di-escape.
+ */
+export function sanitizeHtmlWithConfig(
+  html: string,
+  config: SanitizerConfig,
+): string {
   if (typeof document === 'undefined') return escapeHtml(html);
-  return sanitizeWithDom(html);
+  return sanitizeWithDom(html, config);
 }
 
 /**

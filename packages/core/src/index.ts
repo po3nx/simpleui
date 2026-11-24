@@ -168,3 +168,5 @@ export {
   sanitizeHtml,
 } from './security/sanitizer.js';
 export type { Sanitizer, SanitizerProvider } from './security/sanitizer.js';
+export { sanitizeHtmlWithConfig } from './security/sanitizer.js';
+export type { SanitizerConfig } from './security/sanitizer.js';

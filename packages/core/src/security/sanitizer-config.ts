@@ -1,3 +1,10 @@
+/** Bentuk konfigurasi sanitizer. */
+export interface SanitizerConfig {
+  readonly allowedTags: readonly string[];
+  readonly allowedAttributes: readonly string[];
+  readonly allowedProtocols: readonly string[];
+}
+
 /** Allowlist sanitizer yang tidak dapat dilonggarkan consumer (docs/05 §3.2). */
 export const SANITIZER_CONFIG = {
   allowedTags: [
