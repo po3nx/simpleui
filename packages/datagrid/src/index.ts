@@ -5,6 +5,11 @@ export const DATAGRID_VERSION = '0.0.0';
 
 export { DataGridError, isDataGridError } from './errors.js';
 export {
+  createDataController,
+  type DataController,
+  type DataControllerOptions,
+} from './data/data-controller.js';
+export {
   normalizeDataGridOptions,
   type NormalizeContext,
   type ValidationIssue,
