@@ -1,8 +1,10 @@
 /**
  * Anggaran ukuran bundle (FND-030, docs/00-rule-umum.md §8.1).
  *
- * Diukur dari berkas `dist` hasil build (gzip), tanpa bundling ulang, agar
- * angka yang dijaga sama dengan yang diterima consumer.
+ * JS diukur dengan plugin esbuild: entry di-bundle beserta graf impor
+ * internalnya, lalu diminifikasi dan digzip. Dependency/peer framework
+ * dikecualikan lewat `ignore` supaya angka mencerminkan kode paket, bukan
+ * framework consumer. CSS tema diukur sebagai berkas (plugin file).
  */
 export default [
   {
@@ -22,6 +24,8 @@ export default [
     path: 'packages/testing/dist/adapter.js',
     limit: '10 kB',
     gzip: true,
+
+    ignore: ['vitest'],
   },
   {
     name: '@simpleui/theme (CSS)',
@@ -40,6 +44,8 @@ export default [
     path: 'packages/datagrid/dist/index.js',
     limit: '70 kB',
     gzip: true,
+
+    ignore: ['@simpleui/core'],
   },
   {
     name: '@simpleui/pivotgrid',
@@ -58,18 +64,30 @@ export default [
     path: 'packages/adapter-react/dist/index.js',
     limit: '5 kB',
     gzip: true,
+
+    ignore: ['react', 'react-dom', 'react-dom/client'],
   },
   {
     name: '@simpleui/vue',
     path: 'packages/adapter-vue/dist/index.js',
     limit: '5 kB',
     gzip: true,
+
+    ignore: ['vue'],
   },
   {
     name: '@simpleui/angular',
     path: 'packages/adapter-angular/dist/index.js',
     limit: '5 kB',
     gzip: true,
+
+    ignore: [
+      '@angular/core',
+      '@angular/platform-browser',
+      '@angular/compiler',
+      'rxjs',
+      'tslib',
+    ],
   },
   {
     name: '@simpleui/vanilla',
