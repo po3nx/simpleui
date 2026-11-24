@@ -1,0 +1,21 @@
+{
+  "name": "@simpleui/playground-angular",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "clean": "node ../../tools/clean.mjs ."
+  },
+  "dependencies": {
+    "@simpleui/angular": "workspace:*",
+    "@simpleui/core": "workspace:*",
+    "@simpleui/theme": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

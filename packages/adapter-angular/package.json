@@ -35,10 +35,17 @@
     "@simpleui/datagrid": "workspace:*"
   },
   "peerDependencies": {
-    "@angular/core": ">=17 <23",
-    "@angular/common": ">=17 <23"
+    "@angular/common": ">=17 <23",
+    "@angular/core": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "@simpleui/testing": "workspace:*",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "@angular/platform-browser": "22.3.0",
+    "@angular/compiler": "22.3.0",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.9.1"
   }
 }

@@ -3,8 +3,8 @@
 Library komponen UI enterprise yang framework-agnostic: **JavaScript,
 TypeScript, React, Vue, dan Angular**.
 
-> **Status:** fondasi — 33 dari 35 task selesai; 1 WIP (adapter Angular dan
-> playground), 1 BLOCKED (API Extractor, menunggu TypeScript 7.1). Runtime inti, tema, keamanan, data layer, virtualizer,
+> **Status:** fondasi — 34 dari 35 task selesai; 1 BLOCKED (API Extractor,
+> menunggu TypeScript 7.1). Runtime inti, tema, keamanan, data layer, virtualizer,
 > harness test, situs dokumentasi, dan benchmark sudah berjalan; komponen
 > pertama (DataGrid) belum dimulai.
 > **Mulai implementasi:** Phase 0 dimulai 2026-11-23 — lebih awal dari target
@@ -36,9 +36,8 @@ Isi repositori saat ini:
 - `packages/theme` — design token lengkap, tema light/dark/high-contrast,
   density comfortable/compact/spacious, RTL via properti logis, dibangun
   dengan Lightning CSS.
-- `packages/adapter-react|vue|vanilla` — bridge lifecycle `mount`/`update`/
-  `unmount` tahap spike (kontrak adapter diuji di Chromium).
-- `packages/adapter-angular` — placeholder; spike Angular belum selesai.
+- `packages/adapter-react|vue|angular|vanilla` — bridge lifecycle
+  `mount`/`update`/`unmount` (kontrak adapter dan playground diuji di Chromium).
 - `packages/testing` — fixture deterministik (seeded random) dan kontrak
   adapter untuk parity test.
 - `packages/icons`, `datagrid`, `pivotgrid`, `charts` — placeholder.
