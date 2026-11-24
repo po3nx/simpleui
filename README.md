@@ -169,6 +169,15 @@ Audit berjalan otomatis di [security workflow](.github/workflows/security.yml)
 pada setiap PR, push ke `main`, dan jadwal mingguan. Dependabot membuka PR
 update dependency setiap Senin.
 
+Kebijakan update dependency:
+
+- **patch/minor** — di-merge otomatis setelah check `Gate` hijau
+  ([dependabot-auto-merge.yml](.github/workflows/dependabot-auto-merge.yml)).
+- **major** — dibiarkan terbuka untuk review manual, karena dapat mengubah
+  baseline toolchain (lihat [ADR-0012](docs/adr/0012-typescript-7-side-by-side.md)).
+- Lisensi dependency divalidasi oleh `pnpm check:license` terhadap
+  [allowlist](docs/license-allowlist.md).
+
 ## Langkah berikutnya
 
 1. Review plan v1.0 dan 12 ADR (status per 2026-11-24).

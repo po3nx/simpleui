@@ -1,0 +1,38 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Kebijakan (lihat .github/dependabot.yml):
+# - patch/minor  → auto-merge, tetap menunggu check `Gate` hijau
+# - major        → dibiarkan terbuka untuk review manual
+# Auto-merge hanya mengantre; branch protection tetap menahan sampai Gate lulus.
+jobs:
+  auto-merge:
+    name: Auto-merge minor/patch
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ambil metadata Dependabot
+        id: meta
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Aktifkan auto-merge untuk minor/patch
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Biarkan major untuk review manual
+        if: steps.meta.outputs.update-type == 'version-update:semver-major'
+        run: |
+          echo "Update major terdeteksi (${{ steps.meta.outputs.dependency-names }})."
+          echo "PR dibiarkan terbuka untuk review manual sesuai ADR-0012."
