@@ -27,7 +27,7 @@
 | FND-003 | P0   | TypeScript project references + tsconfig base strict  | Tooling | P0  |       3 | FND-001                   | DONE   | Tech Lead | tsconfig   |
 | FND-004 | P0   | ESLint flat config + Prettier + import rules          | Tooling | P0  |       3 | FND-003                   | DONE   | Tech Lead | FND-004    |
 | FND-005 | P0   | Vitest workspace + coverage + setup browser mode      | Test    | P0  |       3 | FND-003                   | DONE   | Tech Lead | FND-005    |
-| FND-006 | P0   | Playwright config + browser matrix + trace            | Test    | P0  |       3 | FND-001                   | TODO   | —         | —          |
+| FND-006 | P0   | Playwright config + browser matrix + trace            | Test    | P0  |       3 | FND-001                   | DONE   | Tech Lead | FND-006    |
 | FND-007 | P0   | CI pipeline PR + cache + sharding + gate              | CI      | P0  |       4 | FND-004, FND-005, FND-006 | TODO   | —         | —          |
 | FND-008 | P0   | Changesets + versioning fixed group + changelog       | Release | P0  |       3 | FND-001                   | TODO   | —         | —          |
 | FND-009 | P0   | Export map + publint + arethetypeswrong               | Build   | P0  |       2 | FND-003                   | TODO   | —         | —          |
