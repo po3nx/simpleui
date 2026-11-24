@@ -56,6 +56,8 @@ jobs:
         run: pnpm size
       - name: Validasi paket (publint + arethetypeswrong)
         run: pnpm check:package
+      - name: Release smoke (tarball + instalasi bersih)
+        run: pnpm release:smoke
       - name: Validasi lisensi dependency
         run: pnpm check:license
       - name: Verifikasi berkas lisensi paket

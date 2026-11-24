@@ -41,7 +41,8 @@
     "sbom:generate": "pnpm sbom --sbom-format cyclonedx --out sbom.json",
     "bench": "pnpm --filter @simpleui/benchmarks bench",
     "test:visual": "playwright test --project=visual",
-    "test:visual:update": "playwright test --project=visual --update-snapshots"
+    "test:visual:update": "playwright test --project=visual --update-snapshots",
+    "release:smoke": "node tools/release-smoke.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",

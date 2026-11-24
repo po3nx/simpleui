@@ -17,7 +17,9 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "scripts": {
     "build": "node ../../tools/build-theme.mjs",
@@ -26,5 +28,8 @@
   },
   "devDependencies": {
     "vitest": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
