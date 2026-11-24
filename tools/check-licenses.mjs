@@ -28,7 +28,9 @@ const ALLOWED = new Set([
  * didistribusikan bersama kode library.
  */
 const DEV_ONLY_EXCEPTIONS = new Map([
-  ['MPL-2.0', new Set(['lightningcss', 'lightningcss-darwin-arm64'])],
+  // lightningcss mengirim varian per platform (darwin-arm64, linux-x64-gnu,
+  // dst.), jadi dicocokkan lewat prefix, bukan daftar nama tetap.
+  ['MPL-2.0', [/^lightningcss(?:-|$)/]],
 ]);
 
 function runLicenses() {
@@ -85,7 +87,9 @@ for (const [expression, packages] of Object.entries(parsed)) {
       checked += 1;
 
       if (ALLOWED.has(part)) continue;
-      if (exceptionPackages?.has(entry.name)) continue;
+      if (exceptionPackages?.some((pattern) => pattern.test(entry.name))) {
+        continue;
+      }
 
       problems.push(
         `${entry.name}@${entry.versions?.join(', ') ?? '?'} → ${part}` +

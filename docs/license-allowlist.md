@@ -32,9 +32,9 @@ tanpa persetujuan legal tertulis.
 Lisensi berikut **tidak** didistribusikan bersama kode library, hanya dipakai
 saat build/test, dan dibatasi pada paket yang disebutkan.
 
-| Lisensi   | Paket                                       | Alasan                                                                         |
-| --------- | ------------------------------------------- | ------------------------------------------------------------------------------ |
-| `MPL-2.0` | `lightningcss`, `lightningcss-darwin-arm64` | Build dependency Vite untuk minifikasi CSS; weak copyleft, tidak masuk tarball |
+| Lisensi   | Paket                                                     | Alasan                                                                         |
+| --------- | --------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `MPL-2.0` | `lightningcss` dan semua varian platform `lightningcss-*` | Build dependency Vite untuk minifikasi CSS; weak copyleft, tidak masuk tarball |
 
 Menambah pengecualian baru **wajib** disertai alasan dan review, karena
 mengubah permukaan legal produk.
