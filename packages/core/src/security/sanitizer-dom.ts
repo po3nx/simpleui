@@ -1,8 +1,8 @@
 import { safeUrl } from './safe-url.js';
 import {
-  ALLOWED_ATTRIBUTES,
-  ALLOWED_TAGS,
+  SANITIZER_CONFIG,
   SUI_CLASS,
+  type SanitizerConfig,
 } from './sanitizer-config.js';
 
 /**
@@ -19,11 +19,13 @@ function sanitizeClassList(element: Element): void {
   else element.setAttribute('class', kept.join(' '));
 }
 
-function sanitizeAttributes(element: Element): void {
+function sanitizeAttributes(element: Element, config: SanitizerConfig): void {
+  const allowed = new Set(config.allowedAttributes);
+
   for (const attribute of [...element.attributes]) {
     const name = attribute.name.toLowerCase();
 
-    if (!ALLOWED_ATTRIBUTES.has(name)) {
+    if (!allowed.has(name)) {
       element.removeAttribute(attribute.name);
       continue;
     }
@@ -42,7 +44,9 @@ function sanitizeAttributes(element: Element): void {
   }
 }
 
-function sanitizeChildren(parent: ParentNode): void {
+function sanitizeChildren(parent: ParentNode, config: SanitizerConfig): void {
+  const tags = new Set(config.allowedTags);
+
   for (const node of [...parent.childNodes]) {
     if (node.nodeType === 3) continue; // text node
     if (node.nodeType !== 1) {
@@ -51,20 +55,23 @@ function sanitizeChildren(parent: ParentNode): void {
     }
 
     const element = node as Element;
-    if (!ALLOWED_TAGS.has(element.tagName.toLowerCase())) {
+    if (!tags.has(element.tagName.toLowerCase())) {
       element.remove();
       continue;
     }
 
-    sanitizeAttributes(element);
-    sanitizeChildren(element);
+    sanitizeAttributes(element, config);
+    sanitizeChildren(element, config);
   }
 }
 
 /** Sanitasi HTML memakai parser DOM; hanya dipanggil saat `document` ada. */
-export function sanitizeWithDom(html: string): string {
+export function sanitizeWithDom(
+  html: string,
+  config: SanitizerConfig = SANITIZER_CONFIG,
+): string {
   const template = document.createElement('template');
   template.innerHTML = html;
-  sanitizeChildren(template.content);
+  sanitizeChildren(template.content, config);
   return template.innerHTML;
 }
