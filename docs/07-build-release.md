@@ -11,7 +11,7 @@
 | ---------------------- | ----------------------------------- | ---------------------------------- |
 | Package manager        | **pnpm** via Corepack               | Workspace, lockfile ketat          |
 | Monorepo orchestration | **Turborepo**                       | Cache remote opsional              |
-| Bahasa                 | **TypeScript 5.x** strict           | Project references                 |
+| Bahasa                 | **TypeScript 7.x** strict           | Project references                 |
 | Bundler library        | **Vite** (library mode) + Rollup    | ESM + UMD                          |
 | Angular library        | **ng-packagr**                      | Partial Ivy                        |
 | CSS                    | **Lightning CSS** + PostCSS minimal | `@layer`, nesting                  |
@@ -24,6 +24,12 @@
 
 Versi Node dan pnpm dikunci di `package.json` (`engines`, `packageManager`) dan
 `.nvmrc`. CI memakai versi yang sama.
+
+> TypeScript 7 memakai compiler native yang belum menyediakan Compiler API
+> sampai 7.1. Karena itu `typescript-eslint` berjalan di TypeScript 5.9.x
+> (hasil resolusi peer), aturan lint type-aware ditunda, dan FND-029
+> (API Extractor) menunggu. Detail keputusan ada di
+> [ADR-0012](adr/0012-typescript-7-side-by-side.md).
 
 ---
 

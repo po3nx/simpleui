@@ -8,12 +8,29 @@ updates:
       day: monday
     open-pull-requests-limit: 10
     versioning-strategy: increase
+    labels:
+      - dependencies
     groups:
+      # Patch/minor development dikelompokkan: aman di-merge bila CI hijau.
       development-minor-patch:
         dependency-type: development
         update-types:
           - minor
           - patch
+      production-minor-patch:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+    # Major sengaja tidak dikelompokkan: setiap lompatan major harus ditinjau
+    # sendiri karena bisa mengubah baseline toolchain (lihat ADR-0012).
+    ignore:
+      # TypeScript 7.0 belum menyediakan Compiler API sehingga tooling
+      # (typescript-eslint, API Extractor) tertinggal. Lompatan major
+      # berikutnya wajib melalui ADR baru; minor seperti 7.1 tetap diusulkan.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: '/'
@@ -21,3 +38,13 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - ci
+    groups:
+      # Patch/minor action cukup satu PR. Major tetap terpisah agar perubahan
+      # input, permission, atau runtime action dapat dibaca satu per satu.
+      actions-minor-patch:
+        update-types:
+          - minor
+          - patch

@@ -78,6 +78,10 @@ bridge vanilla berfungsi; tidak ada akses DOM top-level.
 | FND-034 | P0   | Contributor docs + PR template + security policy + CODEOWNERS/governance | Docs     | P1  |       2 | FND-024          | TODO   | —         | —        |
 | FND-035 | P0   | Gate P0 review + retro + re-baseline                                     | Process  | P0  |       2 | FND-033, FND-034 | TODO   | —         | —        |
 
+> **FND-029 terblokir** sampai TypeScript menyediakan Compiler API (7.1):
+> API Extractor tidak dapat berjalan di TypeScript 7.0. Lihat
+> [ADR-0012](../adr/0012-typescript-7-side-by-side.md).
+
 ---
 
 ## Aturan update

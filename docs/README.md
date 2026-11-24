@@ -165,17 +165,17 @@ Struktur detail dan aturan dependency ada di
 
 ## 6. Status saat ini
 
-| Area                            | Status                                  | Keterangan                                          |
-| ------------------------------- | --------------------------------------- | --------------------------------------------------- |
-| Perencanaan produk & arsitektur | ✅ Selesai (draft v1.0)                 | Dokumen ini                                         |
-| Keputusan arsitektur            | ✅ 11 ADR Accepted                      | [adr/README](adr/README.md)                         |
-| Dependency security             | ✅ 0 known vulnerability                | `pnpm audit` + workflow `security.yml` + Dependabot |
-| Lisensi                         | ✅ Apache-2.0                           | [ADR-0001](adr/0001-lisensi-apache-2.0.md)          |
-| Nama & scope npm                | ✅ Nama diputuskan; verifikasi scope    | `@simpleui/*`; cek registry (ADR-0002)              |
-| Fondasi repo                    | 🔄 Scaffold selesai; CI/lint/test belum | FND-001…FND-003 selesai                             |
-| DataGrid                        | ⬜ Belum mulai                          | DG-001…DG-090                                       |
-| PivotGrid                       | ⬜ Belum mulai                          | PV-001…PV-029                                       |
-| Chart                           | ⬜ Belum mulai                          | CH-001…CH-033                                       |
+| Area                            | Status                               | Keterangan                                          |
+| ------------------------------- | ------------------------------------ | --------------------------------------------------- |
+| Perencanaan produk & arsitektur | ✅ Selesai (draft v1.0)              | Dokumen ini                                         |
+| Keputusan arsitektur            | ✅ 12 ADR Accepted                   | [adr/README](adr/README.md)                         |
+| Dependency security             | ✅ 0 known vulnerability             | `pnpm audit` + workflow `security.yml` + Dependabot |
+| Lisensi                         | ✅ Apache-2.0                        | [ADR-0001](adr/0001-lisensi-apache-2.0.md)          |
+| Nama & scope npm                | ✅ Nama diputuskan; verifikasi scope | `@simpleui/*`; cek registry (ADR-0002)              |
+| Fondasi repo                    | ✅ Grup A selesai (CI, lint, test)   | FND-001…FND-009 selesai                             |
+| DataGrid                        | ⬜ Belum mulai                       | DG-001…DG-090                                       |
+| PivotGrid                       | ⬜ Belum mulai                       | PV-001…PV-029                                       |
+| Chart                           | ⬜ Belum mulai                       | CH-001…CH-033                                       |
 
 Legenda status: ✅ selesai · 🔄 berjalan · ⏳ menunggu keputusan · ⬜ belum mulai ·
 ⛔ blocked.
@@ -188,19 +188,20 @@ Seluruh keputusan baseline sudah diputuskan pada **2026-11-23**. Detail,
 alternatif, dan konsekuensi ada di masing-masing ADR. Perubahan keputusan wajib
 melalui ADR baru yang menandai ADR lama sebagai `Superseded`.
 
-| ID       | Keputusan                                 | Status   | ADR                                    |
-| -------- | ----------------------------------------- | -------- | -------------------------------------- |
-| ADR-0001 | Lisensi Apache-2.0 + DCO                  | Accepted | [Buka](adr/0001-lisensi-apache-2.0.md) |
-| ADR-0002 | Nama `SimpleUI`, scope `@simpleui/*`      | Accepted | [Buka](adr/0002-nama-dan-scope-npm.md) |
-| ADR-0003 | jQuery bridge opsional, core tanpa jQuery | Accepted | [Buka](adr/0003-dukungan-jquery.md)    |
-| ADR-0004 | DOM engine bersama + adapter tipis        | Accepted | [Buka](adr/0004-rendering-engine.md)   |
-| ADR-0005 | Chart scene graph sendiri, SVG + Canvas   | Accepted | [Buka](adr/0005-chart-engine.md)       |
-| ADR-0006 | Matriks dukungan N/N-1 major              | Accepted | [Buka](adr/0006-matriks-dukungan.md)   |
-| ADR-0007 | Validator ringan internal                 | Accepted | [Buka](adr/0007-runtime-validation.md) |
-| ADR-0008 | Fixed version group                       | Accepted | [Buka](adr/0008-strategi-rilis.md)     |
-| ADR-0009 | Vitest browser + Playwright               | Accepted | [Buka](adr/0009-infrastruktur-test.md) |
-| ADR-0010 | CSS layer + custom properties             | Accepted | [Buka](adr/0010-strategi-css.md)       |
-| ADR-0011 | ESM-first + UMD untuk CDN                 | Accepted | [Buka](adr/0011-format-build.md)       |
+| ID       | Keputusan                                 | Status   | ADR                                           |
+| -------- | ----------------------------------------- | -------- | --------------------------------------------- |
+| ADR-0001 | Lisensi Apache-2.0 + DCO                  | Accepted | [Buka](adr/0001-lisensi-apache-2.0.md)        |
+| ADR-0002 | Nama `SimpleUI`, scope `@simpleui/*`      | Accepted | [Buka](adr/0002-nama-dan-scope-npm.md)        |
+| ADR-0003 | jQuery bridge opsional, core tanpa jQuery | Accepted | [Buka](adr/0003-dukungan-jquery.md)           |
+| ADR-0004 | DOM engine bersama + adapter tipis        | Accepted | [Buka](adr/0004-rendering-engine.md)          |
+| ADR-0005 | Chart scene graph sendiri, SVG + Canvas   | Accepted | [Buka](adr/0005-chart-engine.md)              |
+| ADR-0006 | Matriks dukungan N/N-1 major              | Accepted | [Buka](adr/0006-matriks-dukungan.md)          |
+| ADR-0007 | Validator ringan internal                 | Accepted | [Buka](adr/0007-runtime-validation.md)        |
+| ADR-0008 | Fixed version group                       | Accepted | [Buka](adr/0008-strategi-rilis.md)            |
+| ADR-0009 | Vitest browser + Playwright               | Accepted | [Buka](adr/0009-infrastruktur-test.md)        |
+| ADR-0010 | CSS layer + custom properties             | Accepted | [Buka](adr/0010-strategi-css.md)              |
+| ADR-0011 | ESM-first + UMD untuk CDN                 | Accepted | [Buka](adr/0011-format-build.md)              |
+| ADR-0012 | TypeScript 7 + tooling side-by-side       | Accepted | [Buka](adr/0012-typescript-7-side-by-side.md) |
 
 **Verifikasi yang masih tersisa (bukan keputusan terbuka):**
 

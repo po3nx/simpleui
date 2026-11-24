@@ -1,6 +1,6 @@
 # Architecture Decision Records (ADR)
 
-> **Status:** Index · **Owner:** Tech Lead · **Terakhir diperbarui:** 2026-11-23
+> **Status:** Index · **Owner:** Tech Lead · **Terakhir diperbarui:** 2026-11-24
 > **Template:** [ADR template](../11-templates/adr-template.md)
 > **Aturan:** setiap keputusan arsitektur, keamanan, API, atau tooling yang
 > berdampak lintas paket wajib punya ADR. ADR disimpan sebagai
@@ -39,19 +39,20 @@ perubahan dokumentasi biasa.
 
 ## 3. Daftar ADR
 
-| ID                                     | Judul              | Keputusan                          | Status   | Tanggal    |
-| -------------------------------------- | ------------------ | ---------------------------------- | -------- | ---------- |
-| [ADR-0001](0001-lisensi-apache-2.0.md) | Lisensi proyek     | Apache-2.0 + DCO                   | Accepted | 2026-11-23 |
-| [ADR-0002](0002-nama-dan-scope-npm.md) | Nama & scope npm   | `SimpleUI`, `@simpleui/*`          | Accepted | 2026-11-23 |
-| [ADR-0003](0003-dukungan-jquery.md)    | Dukungan jQuery    | Bridge opsional, core tanpa jQuery | Accepted | 2026-11-23 |
-| [ADR-0004](0004-rendering-engine.md)   | Rendering engine   | DOM bersama + adapter tipis        | Accepted | 2026-11-23 |
-| [ADR-0005](0005-chart-engine.md)       | Chart engine       | Scene graph sendiri, SVG + Canvas  | Accepted | 2026-11-23 |
-| [ADR-0006](0006-matriks-dukungan.md)   | Matriks dukungan   | N/N-1 major, browser modern        | Accepted | 2026-11-23 |
-| [ADR-0007](0007-runtime-validation.md) | Runtime validation | Validator ringan internal          | Accepted | 2026-11-23 |
-| [ADR-0008](0008-strategi-rilis.md)     | Strategi rilis     | Fixed version group                | Accepted | 2026-11-23 |
-| [ADR-0009](0009-infrastruktur-test.md) | Infrastruktur test | Vitest browser + Playwright        | Accepted | 2026-11-23 |
-| [ADR-0010](0010-strategi-css.md)       | Strategi CSS       | Layer + custom properties          | Accepted | 2026-11-23 |
-| [ADR-0011](0011-format-build.md)       | Format build       | ESM-first + UMD untuk CDN          | Accepted | 2026-11-23 |
+| ID                                            | Judul                  | Keputusan                          | Status   | Tanggal    |
+| --------------------------------------------- | ---------------------- | ---------------------------------- | -------- | ---------- |
+| [ADR-0001](0001-lisensi-apache-2.0.md)        | Lisensi proyek         | Apache-2.0 + DCO                   | Accepted | 2026-11-23 |
+| [ADR-0002](0002-nama-dan-scope-npm.md)        | Nama & scope npm       | `SimpleUI`, `@simpleui/*`          | Accepted | 2026-11-23 |
+| [ADR-0003](0003-dukungan-jquery.md)           | Dukungan jQuery        | Bridge opsional, core tanpa jQuery | Accepted | 2026-11-23 |
+| [ADR-0004](0004-rendering-engine.md)          | Rendering engine       | DOM bersama + adapter tipis        | Accepted | 2026-11-23 |
+| [ADR-0005](0005-chart-engine.md)              | Chart engine           | Scene graph sendiri, SVG + Canvas  | Accepted | 2026-11-23 |
+| [ADR-0006](0006-matriks-dukungan.md)          | Matriks dukungan       | N/N-1 major, browser modern        | Accepted | 2026-11-23 |
+| [ADR-0007](0007-runtime-validation.md)        | Runtime validation     | Validator ringan internal          | Accepted | 2026-11-23 |
+| [ADR-0008](0008-strategi-rilis.md)            | Strategi rilis         | Fixed version group                | Accepted | 2026-11-23 |
+| [ADR-0009](0009-infrastruktur-test.md)        | Infrastruktur test     | Vitest browser + Playwright        | Accepted | 2026-11-23 |
+| [ADR-0010](0010-strategi-css.md)              | Strategi CSS           | Layer + custom properties          | Accepted | 2026-11-23 |
+| [ADR-0011](0011-format-build.md)              | Format build           | ESM-first + UMD untuk CDN          | Accepted | 2026-11-23 |
+| [ADR-0012](0012-typescript-7-side-by-side.md) | TypeScript 7 & tooling | Build TS 7, lint TS 5.9 sementara  | Accepted | 2026-11-24 |
 
 Semua ADR di atas berstatus **Accepted** dan menjadi baseline implementasi.
 Perubahan keputusan wajib melalui ADR baru yang menandai ADR lama sebagai
