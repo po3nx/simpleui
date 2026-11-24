@@ -152,11 +152,60 @@ jobs:
             playwright-report/
           retention-days: 7
 
+  # Changeset wajib untuk PR yang menyentuh source paket (ADR-0008 §7).
+  # PR yang tidak menyentuh packages/*/src (mis. Dependabot) dilewatkan.
+  changesets:
+    name: Changeset (PR)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Butuh riwayat penuh agar `origin/<base>` tersedia untuk --since.
+          fetch-depth: 0
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 12.21.0
+          run_install: false
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Wajibkan changeset untuk perubahan source paket
+        run: |
+          base="origin/${{ github.base_ref }}"
+          changed=$(git diff --name-only "$base"...HEAD -- packages | grep '/src/' || true)
+          if [ -z "$changed" ]; then
+            echo "Tidak ada perubahan di packages/*/src — changeset tidak diwajibkan."
+            exit 0
+          fi
+          echo "Perubahan source paket terdeteksi:"
+          echo "$changed"
+          # `changeset status --since` tetap exit 0 tanpa changeset, sehingga
+          # keberadaan berkas changeset baru harus diperiksa langsung.
+          added=$(git diff --name-only --diff-filter=A "$base"...HEAD -- .changeset \
+            | grep -E '^\.changeset/[^/]+\.md$' \
+            | grep -vx '\.changeset/README.md' || true)
+          if [ -z "$added" ]; then
+            echo "::error::PR ini mengubah source paket tetapi tidak menambahkan changeset. Jalankan: pnpm changeset"
+            exit 1
+          fi
+          echo "Changeset baru:"
+          echo "$added"
+          # Pastikan isi changeset dapat dibaca oleh Changesets.
+          pnpm changeset status --since="$base"
+
   # Satu check wajib untuk branch protection: cukup `gate` yang diwajibkan,
   # bukan setiap job, supaya penambahan job tidak mengubah setting proteksi.
   gate:
     name: Gate
-    needs: [quality, unit, browser, e2e]
+    needs: [quality, unit, browser, e2e, changesets]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5

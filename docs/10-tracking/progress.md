@@ -18,23 +18,23 @@
 
 ## Ringkasan Progress
 
-**2,3%** dari total estimasi **831 ideal day** selesai (19 day). Task: 174 aktif, 0 dibatalkan.
+**3,1%** dari total estimasi **831 ideal day** selesai (26 day). Task: 174 aktif, 0 dibatalkan.
 
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
-| DONE | 7 | 19 |
-| WIP | 1 | 4 |
+| DONE | 9 | 26 |
+| WIP | 0 | 0 |
 | BLOCKED | 0 | 0 |
-| TODO | 166 | 808 |
+| TODO | 165 | 805 |
 | CUT | 0 | 0 |
 
-Estimasi WIP: 4 day · estimasi BLOCKED: 0 day.
+Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 ### Progress per komponen
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 7 | 1 | 0 | 27 | 0 | 130 | 19 | 14,6% |
+| Foundation | 35 | 9 | 0 | 0 | 26 | 0 | 130 | 26 | 20,0% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -43,7 +43,7 @@ Estimasi WIP: 4 day · estimasi BLOCKED: 0 day.
 
 | Fase | Task | Est (d) | Est DONE | Progress |
 |---|---:|---:|---:|---:|
-| P0 | 35 | 130 | 19 | 14,6% |
+| P0 | 35 | 130 | 26 | 20,0% |
 | DG-0 | 7 | 24 | 0 | 0,0% |
 | DG-1 | 14 | 60 | 0 | 0,0% |
 | DG-2 | 20 | 85 | 0 | 0,0% |
@@ -70,7 +70,6 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 |---|---|---|---:|---|
 | CH-001 | Finalisasi scope, taksonomi chart, acceptance criteria | Charts | 3 | — |
 | DG-001 | Finalisasi scope, non-goals, dan acceptance criteria | DataGrid | 2 | — |
-| FND-008 | Changesets + versioning fixed group + changelog | Foundation | 3 | — |
 | FND-009 | Export map + publint + arethetypeswrong | Foundation | 2 | — |
 | FND-010 | Design token + CSS layer + tema light/dark/HC/density/RTL | Foundation | 5 | — |
 | FND-011 | Core kernel: lifecycle, options, events, disposal | Foundation | 8 | — |
@@ -78,8 +77,9 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 | FND-021 | Docs site skeleton + navigasi + contoh | Foundation | 5 | — |
 | FND-023 | Benchmark harness + baseline + reporting | Foundation | 3 | — |
 | FND-025 | License/IP review + NOTICE + dependency allowlist | Foundation | 2 | — |
+| FND-026 | Supply chain: lockfile, audit, SBOM, provenance | Foundation | 2 | — |
+| FND-027 | Browser/framework support matrix + CI matrix | Foundation | 2 | — |
 | FND-031 | Setup axe + keyboard E2E + a11y checklist | Foundation | 3 | — |
-| FND-032 | Setup visual regression + baseline awal | Foundation | 3 | — |
 
 ### Blocked
 

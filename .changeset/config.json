@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
+  "linked": [],
+  "ignore": [],
+  "fixed": [
+    [
+      "@simpleui/core",
+      "@simpleui/theme",
+      "@simpleui/icons",
+      "@simpleui/datagrid",
+      "@simpleui/pivotgrid",
+      "@simpleui/charts",
+      "@simpleui/testing",
+      "@simpleui/react",
+      "@simpleui/vue",
+      "@simpleui/angular",
+      "@simpleui/vanilla"
+    ]
+  ]
+}
