@@ -18,14 +18,14 @@
 
 ## Ringkasan Progress
 
-**1,6%** dari total estimasi **831 ideal day** selesai (13 day). Task: 174 aktif, 0 dibatalkan.
+**1,9%** dari total estimasi **831 ideal day** selesai (16 day). Task: 174 aktif, 0 dibatalkan.
 
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
-| DONE | 5 | 13 |
+| DONE | 6 | 16 |
 | WIP | 0 | 0 |
 | BLOCKED | 0 | 0 |
-| TODO | 169 | 818 |
+| TODO | 168 | 815 |
 | CUT | 0 | 0 |
 
 Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
@@ -34,7 +34,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 5 | 0 | 0 | 30 | 0 | 130 | 13 | 10,0% |
+| Foundation | 35 | 6 | 0 | 0 | 29 | 0 | 130 | 16 | 12,3% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -43,7 +43,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Fase | Task | Est (d) | Est DONE | Progress |
 |---|---:|---:|---:|---:|
-| P0 | 35 | 130 | 13 | 10,0% |
+| P0 | 35 | 130 | 16 | 12,3% |
 | DG-0 | 7 | 24 | 0 | 0,0% |
 | DG-1 | 14 | 60 | 0 | 0,0% |
 | DG-2 | 20 | 85 | 0 | 0,0% |
@@ -70,16 +70,16 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 |---|---|---|---:|---|
 | CH-001 | Finalisasi scope, taksonomi chart, acceptance criteria | Charts | 3 | — |
 | DG-001 | Finalisasi scope, non-goals, dan acceptance criteria | DataGrid | 2 | — |
-| FND-005 | Vitest workspace + coverage + setup browser mode | Foundation | 3 | — |
 | FND-006 | Playwright config + browser matrix + trace | Foundation | 3 | — |
 | FND-008 | Changesets + versioning fixed group + changelog | Foundation | 3 | — |
 | FND-009 | Export map + publint + arethetypeswrong | Foundation | 2 | — |
 | FND-010 | Design token + CSS layer + tema light/dark/HC/density/RTL | Foundation | 5 | — |
 | FND-011 | Core kernel: lifecycle, options, events, disposal | Foundation | 8 | — |
+| FND-020 | Testing harness adapter + fixture factory + seeded random | Foundation | 5 | — |
 | FND-021 | Docs site skeleton + navigasi + contoh | Foundation | 5 | — |
+| FND-023 | Benchmark harness + baseline + reporting | Foundation | 3 | — |
 | FND-025 | License/IP review + NOTICE + dependency allowlist | Foundation | 2 | — |
 | FND-034 | Contributor docs + PR template + security policy + CODEOWNERS/governance | Foundation | 2 | — |
-| PV-001 | Finalisasi scope, non-goals, acceptance criteria | PivotGrid | 3 | — |
 
 ### Blocked
 

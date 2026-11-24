@@ -106,6 +106,8 @@ export default tseslint.config(
       '**/coverage/**',
       '**/.turbo/**',
       '**/*.tsbuildinfo',
+      // Browser Playwright berisi bundel Chromium, bukan kode kita.
+      '.playwright-browsers/**',
     ],
   },
 

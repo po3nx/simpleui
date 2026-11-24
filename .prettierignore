@@ -3,6 +3,7 @@ node_modules
 dist
 coverage
 .turbo
+.playwright-browsers
 
 # Lockfile dikelola pnpm, jangan diformat ulang
 pnpm-lock.yaml
