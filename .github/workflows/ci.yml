@@ -54,6 +54,10 @@ jobs:
         run: pnpm build
       - name: Validasi paket (publint + arethetypeswrong)
         run: pnpm check:package
+      - name: Validasi lisensi dependency
+        run: pnpm check:license
+      - name: Verifikasi berkas lisensi paket
+        run: pnpm check:license-files
 
   unit:
     name: Unit test + coverage

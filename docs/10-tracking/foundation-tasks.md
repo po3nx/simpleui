@@ -66,7 +66,7 @@ bridge vanilla berfungsi; tidak ada akses DOM top-level.
 | FND-022 | P0   | Security utils: safeMerge, safeUrl, sanitizer facade, CSV guard          | Security | P0  |       6 | FND-011          | TODO   | —         | —        |
 | FND-023 | P0   | Benchmark harness + baseline + reporting                                 | Perf     | P1  |       3 | FND-005          | TODO   | —         | —        |
 | FND-024 | P0   | Review & publish ADR-0001…0011                                           | Process  | P1  |       2 | —                | DONE   | Tech Lead | docs/adr |
-| FND-025 | P0   | License/IP review + NOTICE + dependency allowlist                        | Legal    | P0  |       2 | —                | TODO   | —         | —        |
+| FND-025 | P0   | License/IP review + NOTICE + dependency allowlist                        | Legal    | P0  |       2 | —                | DONE   | Tech Lead | FND-025  |
 | FND-026 | P0   | Supply chain: lockfile, audit, SBOM, provenance                          | Security | P0  |       2 | FND-007          | TODO   | —         | —        |
 | FND-027 | P0   | Browser/framework support matrix + CI matrix                             | Tooling  | P1  |       2 | FND-007          | TODO   | —         | —        |
 | FND-028 | P0   | Storybook/playground 4 framework                                         | DX       | P1  |       4 | FND-021          | TODO   | —         | —        |
