@@ -6,8 +6,11 @@
  * - `SUI-CORE-002` — method dipanggil setelah `dispose()`.
  * - `SUI-CORE-003` — urutan lifecycle tidak sah (mis. `endUpdate` tanpa
  *   `beginUpdate`).
+ * - `SUI-DOM-001` — atribut atau nilai style tidak aman (mis. handler `on*`
+ *   atau URL `javascript:`).
  */
-export type CoreErrorCode = 'SUI-CORE-001' | 'SUI-CORE-002' | 'SUI-CORE-003';
+export type CoreErrorCode =
+  'SUI-CORE-001' | 'SUI-CORE-002' | 'SUI-CORE-003' | 'SUI-DOM-001';
 
 export class SimpleUIError extends Error {
   readonly code: CoreErrorCode;
