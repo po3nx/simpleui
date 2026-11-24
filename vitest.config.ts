@@ -1,6 +1,9 @@
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import { useWorkspaceBrowsers } from './tools/browsers-path.js';
 import { TEST_ENV } from './vitest.shared.js';
+
+useWorkspaceBrowsers();
 
 /**
  * Vitest workspace (FND-005).

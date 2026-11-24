@@ -41,11 +41,13 @@ Script test:
 | `pnpm test`          | unit test per paket lewat Turbo (cacheable, gate PR) |
 | `pnpm test:coverage` | semua proyek + laporan coverage agregat              |
 | `pnpm test:browser`  | hanya test DOM di Chromium                           |
+| `pnpm test:e2e`      | E2E Playwright di Chromium (gate PR)                 |
+| `pnpm test:e2e:all`  | E2E Chromium + Firefox + WebKit (nightly)            |
 
-Test DOM membutuhkan browser Playwright:
+Test browser dan E2E membutuhkan browser Playwright:
 
 ```bash
-pnpm exec playwright install chromium
+pnpm exec playwright install chromium firefox webkit
 ```
 
 Jika browser disimpan di dalam workspace (mis. lingkungan sandbox), tambahkan
@@ -55,8 +57,8 @@ Jika browser disimpan di dalam workspace (mis. lingkungan sandbox), tambahkan
 > April 2027. Node 26 adalah LTS saat ini; minimum tooling ditetapkan Node 24.
 > **Sudah diverifikasi:** Node 26.13.0 + pnpm 12.21.0, `pnpm install`,
 > `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm test` (8 unit test),
-> `pnpm test:browser` (1 test di Chromium), dan `pnpm audit`
-> (0 known vulnerabilities).
+> `pnpm test:browser` (1 test di Chromium), `pnpm test:e2e` (2 test),
+> dan `pnpm audit` (0 known vulnerabilities).
 
 ### Troubleshooting pnpm di Windows
 

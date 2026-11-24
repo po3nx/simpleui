@@ -7,6 +7,11 @@ coverage/
 # Browser Playwright (bisa dialihkan ke workspace lewat PLAYWRIGHT_BROWSERS_PATH)
 .playwright-browsers/
 
+# Artefak Playwright
+test-results/
+playwright-report/
+blob-report/
+
 .DS_Store
 Thumbs.db
 

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SimpleUI E2E fixture</title>
+  </head>
+  <body>
+    <main>
+      <h1>SimpleUI E2E fixture</h1>
+      <p>Halaman statis deterministik untuk menguji harness Playwright.</p>
+      <button type="button" id="increment">Hitung</button>
+      <output data-testid="counter" for="increment">0</output>
+    </main>
+    <script type="module">
+      const button = document.querySelector('#increment');
+      const output = document.querySelector('[data-testid="counter"]');
+      let count = 0;
+
+      button?.addEventListener('click', () => {
+        count += 1;
+        output.textContent = String(count);
+      });
+    </script>
+  </body>
+</html>
