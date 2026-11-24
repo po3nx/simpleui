@@ -37,7 +37,8 @@
     "changeset:status": "changeset status",
     "changeset:version": "changeset version",
     "bench:virtualizer": "pnpm --filter @simpleui/core build && node bench/virtualizer.bench.mjs",
-    "size": "size-limit"
+    "size": "size-limit",
+    "sbom:generate": "pnpm sbom --sbom-format cyclonedx --out sbom.json"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
