@@ -13,3 +13,10 @@ export type {
 } from './kernel/emitter.js';
 export { mergeOptions } from './kernel/options.js';
 export { ComponentKernel, isDevMode } from './kernel/kernel.js';
+
+export { createStore } from './state/store.js';
+export type { StateListener, StatePatch, Store } from './state/store.js';
+export { createSelector } from './state/selector.js';
+export type { EqualityFn } from './state/selector.js';
+export { createScheduler, yieldToMain } from './state/scheduler.js';
+export type { Scheduler, SchedulerHost } from './state/scheduler.js';

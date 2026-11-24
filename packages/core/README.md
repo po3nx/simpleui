@@ -81,6 +81,36 @@ protected onMount(element: HTMLElement): void {
 }
 ```
 
+## State
+
+```ts
+import { createSelector, createScheduler, createStore } from '@simpleui/core';
+
+const store = createStore({ rows: [] as number[], filter: '' });
+
+store.transaction(() => {
+  store.setState({ rows: [1, 2, 3] });
+  store.setState({ filter: 'a' });
+}); // satu notifikasi untuk kedua perubahan
+
+const selectFiltered = createSelector((state) => state.rows.filter(Boolean));
+const rows = selectFiltered(store.getState()); // memoized
+
+const scheduler = createScheduler();
+store.subscribe((state) => scheduler.scheduleRender(() => render(state)));
+```
+
+- `setState` menerima objek parsial atau fungsi `(state) => patch`.
+- `transaction()` menunda notifikasi sampai blok terluar selesai; `getState()` di
+  dalam transaksi sudah melihat nilai baru.
+- Listener dipanggil sinkron; error dikumpulkan sebagai `AggregateError`.
+- `createSelector` memoized: identitas hasil stabil bila `isEqual` menganggap
+  nilainya sama.
+- `createScheduler` menggabungkan render per frame (`requestAnimationFrame`,
+  fallback `setTimeout` 16ms) dan notifikasi via microtask; `flush()` berguna
+  untuk test, `dispose()` membatalkan frame tertunda.
+- `yieldToMain()` memakai `scheduler.yield()` bila tersedia.
+
 ## Event
 
 ```ts
