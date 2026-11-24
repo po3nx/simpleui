@@ -139,6 +139,55 @@ Aturan yang ditegakkan:
 - `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
   navigasi keyboard.
 
+## Data
+
+Kontrak data layer: `Store<T>` dengan `load`/`byKey`/CRUD opsional, dan
+`capabilities` yang jujur (docs/03-data-layer.md).
+
+```ts
+import {
+  ArrayStore,
+  CachedStore,
+  CustomStore,
+  createTimeoutSignal,
+} from '@simpleui/core';
+
+// Data di memori, pipeline lokal penuh
+const store = new ArrayStore(rows, { key: 'id' });
+await store.load({
+  filter: ['status', 'eq', 'aktif'],
+  sort: [{ selector: 'name', desc: false }],
+  skip: 0,
+  take: 50,
+});
+
+// API arbitrer
+const remote = new CustomStore<Row>({
+  key: 'id',
+  load: ({ signal }) => api.list({ signal }),
+  capabilities: { paging: true, filter: true },
+});
+
+// Cache LRU + TTL + dedupe, invalidasi otomatis setelah mutasi
+const cached = new CachedStore(remote, { maxEntries: 20, ttlMs: 300_000 });
+
+// Timeout 30 detik yang menghormati signal pemanggil
+const { signal, dispose } = createTimeoutSignal(30_000);
+```
+
+- Pipeline lokal berurutan: normalisasi → filter → sort → page; `totalCount`
+  dihitung sebelum paging.
+- Filter memakai AST tertutup (operator union), batas kedalaman 10, 200 node,
+  dan 1.000 nilai untuk `in`.
+- `take` dibatasi `MAX_TAKE` (10.000); pelanggaran menghasilkan
+  `SUI-DATA-001`/`SUI-DATA-006`.
+- `ArrayStore` menyalin input, mendeteksi key duplikat (`SUI-DATA-003`), dan
+  mendukung composite key lewat array field.
+- `CustomStore` memvalidasi bentuk `LoadResult` (`SUI-DATA-002`) dan
+  menormalkan `AbortError` menjadi `SUI-DATA-005`.
+- Timeout menjadi `SUI-DATA-004`; operasi yang tidak didukung store
+  menghasilkan `SUI-DATA-008`.
+
 ## Template
 
 Adapter framework menerjemahkan template menjadi `TemplateRenderer`; core hanya

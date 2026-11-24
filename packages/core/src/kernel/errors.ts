@@ -17,10 +17,15 @@ export type CoreErrorCode =
   | 'SUI-DOM-001'
   | 'SUI-I18N-001';
 
-export class SimpleUIError extends Error {
-  readonly code: CoreErrorCode;
+/**
+ * Error library. `TCode` membuat kode tetap literal di call site, sehingga
+ * modul lain (mis. data layer) dapat memakai kode SUI-DATA-* tanpa membuat
+ * kernel bergantung pada modul tersebut.
+ */
+export class SimpleUIError<TCode extends string = CoreErrorCode> extends Error {
+  readonly code: TCode;
 
-  constructor(code: CoreErrorCode, message: string, options?: ErrorOptions) {
+  constructor(code: TCode, message: string, options?: ErrorOptions) {
     super(`[${code}] ${message}`, options);
     this.name = 'SimpleUIError';
     this.code = code;
@@ -28,6 +33,8 @@ export class SimpleUIError extends Error {
 }
 
 /** Type guard agar consumer dapat membedakan error library dari error lain. */
-export function isSimpleUIError(error: unknown): error is SimpleUIError {
+export function isSimpleUIError(
+  error: unknown,
+): error is SimpleUIError<string> {
   return error instanceof SimpleUIError;
 }
