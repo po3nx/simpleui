@@ -1,0 +1,47 @@
+@layer simpleui.reset {
+  /*
+   * Reset minimal dan ter-scope. Tidak boleh memengaruhi elemen di luar
+   * .sui-theme (docs/06 §1.2).
+   */
+  .sui-theme,
+  .sui-theme *,
+  .sui-theme *::before,
+  .sui-theme *::after {
+    box-sizing: border-box;
+  }
+
+  .sui-theme :where(button, input, select, textarea) {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  .sui-theme :where(button) {
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .sui-theme :where(table) {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .sui-theme :where(fieldset) {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .sui-theme :where(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-theme :where(img, svg) {
+    display: block;
+    max-inline-size: 100%;
+  }
+}

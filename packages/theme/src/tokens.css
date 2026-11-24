@@ -1,59 +1,259 @@
 @layer simpleui.tokens {
+  /*
+   * Token publik SimpleUI. Nama mengikuti --sui-<kategori>-<nama>[-<varian>]
+   * sesuai docs/06-theming-a11y-i18n.md §1.3.
+   *
+   * Tema dipilih dengan data-theme pada .sui-theme (atau <html>); bila tidak
+   * diset, preferensi sistem dipakai lewat prefers-color-scheme.
+   */
   :root,
   .sui-theme {
+    /* Warna — permukaan */
     --sui-color-bg-surface: #ffffff;
     --sui-color-bg-subtle: #f5f6f8;
     --sui-color-bg-hover: #eef1f6;
+    --sui-color-bg-selected: #e6efff;
+
+    /* Warna — teks */
     --sui-color-text-primary: #1a1a1a;
     --sui-color-text-secondary: #5c6370;
-    --sui-color-border-subtle: #d9dde5;
-    --sui-color-accent-default: #0b5fff;
-    --sui-color-accent-subtle: #e6efff;
+    --sui-color-text-disabled: #9aa1ad;
+    --sui-color-text-inverse: #ffffff;
 
+    /* Warna — garis */
+    --sui-color-border-subtle: #d9dde5;
+    --sui-color-border-strong: #aab1bd;
+
+    /* Warna — aksen */
+    --sui-color-accent-default: #0b5fff;
+    --sui-color-accent-hover: #0046cc;
+    --sui-color-accent-subtle: #e6efff;
+    --sui-color-accent-contrast: #ffffff;
+
+    /* Warna — status */
+    --sui-color-success-default: #1f7a3f;
+    --sui-color-success-subtle: #e8f5ec;
+    --sui-color-warning-default: #8a5a00;
+    --sui-color-warning-subtle: #fff4e0;
+    --sui-color-danger-default: #b3261e;
+    --sui-color-danger-subtle: #fdecea;
+    --sui-color-info-default: #0b5fff;
+    --sui-color-info-subtle: #e6efff;
+
+    /* Spacing — skala 4px */
     --sui-space-1: 4px;
     --sui-space-2: 8px;
     --sui-space-3: 12px;
     --sui-space-4: 16px;
+    --sui-space-5: 20px;
+    --sui-space-6: 24px;
+    --sui-space-7: 32px;
+    --sui-space-8: 40px;
+    --sui-space-9: 48px;
+    --sui-space-10: 64px;
+    --sui-space-11: 80px;
+    --sui-space-12: 96px;
 
-    --sui-font-family-base: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    /* Tipografi */
+    --sui-font-family-base:
+      system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', sans-serif;
+    --sui-font-family-mono:
+      ui-monospace, sfmono-regular, menlo, consolas, monospace;
+    --sui-font-size-xs: 12px;
+    --sui-font-size-sm: 13px;
     --sui-font-size-md: 14px;
-    --sui-line-height-normal: 1.5;
+    --sui-font-size-lg: 16px;
+    --sui-font-size-xl: 20px;
+    --sui-font-size-2xl: 24px;
+    --sui-font-weight-regular: 400;
+    --sui-font-weight-medium: 500;
+    --sui-font-weight-semibold: 600;
+    --sui-font-weight-bold: 700;
 
+    /* Line height */
+    --sui-line-height-tight: 1.25;
+    --sui-line-height-normal: 1.5;
+    --sui-line-height-relaxed: 1.7;
+
+    /* Radius */
     --sui-radius-sm: 4px;
     --sui-radius-md: 6px;
+    --sui-radius-lg: 10px;
     --sui-radius-full: 9999px;
 
+    /* Elevation */
+    --sui-shadow-sm: 0 1px 2px rgb(16 24 40 / 8%);
+    --sui-shadow-md: 0 4px 12px rgb(16 24 40 / 12%);
+    --sui-shadow-overlay: 0 12px 32px rgb(16 24 40 / 18%);
+
+    /* Border */
     --sui-border-width: 1px;
+    --sui-border-width-thick: 2px;
+    --sui-border-color: var(--sui-color-border-subtle);
+
+    /* Fokus */
     --sui-focus-ring-color: #0b5fff;
     --sui-focus-ring-width: 2px;
     --sui-focus-ring-offset: 2px;
 
+    /* Z-index */
+    --sui-z-dropdown: 1000;
+    --sui-z-sticky: 1100;
+    --sui-z-modal: 1300;
+    --sui-z-toast: 1400;
+    --sui-z-tooltip: 1500;
+
+    /* Motion */
+    --sui-motion-duration-fast: 120ms;
+    --sui-motion-duration-normal: 200ms;
+    --sui-motion-duration-slow: 320ms;
+    --sui-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --sui-motion-ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+
+    /* Density — comfortable (default desktop) */
     --sui-density-row-height: 40px;
     --sui-density-cell-padding: 10px 12px;
-
-    --sui-motion-duration-fast: 120ms;
-    --sui-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --sui-density-control-height: 32px;
   }
 
+  /* Tema gelap eksplisit. */
+  :root[data-theme='dark'],
   .sui-theme[data-theme='dark'] {
     --sui-color-bg-surface: #16181d;
     --sui-color-bg-subtle: #1e2129;
     --sui-color-bg-hover: #252a34;
+    --sui-color-bg-selected: #1d2b45;
     --sui-color-text-primary: #f2f4f8;
     --sui-color-text-secondary: #a7b0c0;
+    --sui-color-text-disabled: #6b7484;
+    --sui-color-text-inverse: #16181d;
     --sui-color-border-subtle: #343a46;
+    --sui-color-border-strong: #4a5260;
     --sui-color-accent-default: #7aa7ff;
+    --sui-color-accent-hover: #9dbdff;
     --sui-color-accent-subtle: #1d2b45;
+    --sui-color-accent-contrast: #0d1117;
+    --sui-color-success-default: #4ade80;
+    --sui-color-success-subtle: #16241c;
+    --sui-color-warning-default: #fbbf24;
+    --sui-color-warning-subtle: #2b2213;
+    --sui-color-danger-default: #ff8a80;
+    --sui-color-danger-subtle: #2b1614;
+    --sui-color-info-default: #7aa7ff;
+    --sui-color-info-subtle: #1d2b45;
     --sui-focus-ring-color: #7aa7ff;
+    --sui-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+    --sui-shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+    --sui-shadow-overlay: 0 12px 32px rgb(0 0 0 / 55%);
   }
 
+  /* Tema kontras tinggi. */
+  :root[data-theme='high-contrast'],
+  .sui-theme[data-theme='high-contrast'] {
+    --sui-color-bg-surface: #ffffff;
+    --sui-color-bg-subtle: #ffffff;
+    --sui-color-bg-hover: #ebebeb;
+    --sui-color-bg-selected: #dbe7ff;
+    --sui-color-text-primary: #000000;
+    --sui-color-text-secondary: #1a1a1a;
+    --sui-color-text-disabled: #4d4d4d;
+    --sui-color-text-inverse: #ffffff;
+    --sui-color-border-subtle: #000000;
+    --sui-color-border-strong: #000000;
+    --sui-color-accent-default: #0033cc;
+    --sui-color-accent-hover: #001f7a;
+    --sui-color-accent-subtle: #dbe7ff;
+    --sui-color-accent-contrast: #ffffff;
+    --sui-color-success-default: #0b5c2a;
+    --sui-color-warning-default: #6b4300;
+    --sui-color-danger-default: #9b0f0a;
+    --sui-color-info-default: #0033cc;
+    --sui-focus-ring-color: #000000;
+    --sui-focus-ring-width: 3px;
+    --sui-border-width: 2px;
+  }
+
+  /* Default mengikuti preferensi sistem, kecuali tema eksplisit dipilih. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']):not([data-theme='high-contrast']),
+    .sui-theme:not([data-theme='light']):not([data-theme='high-contrast']) {
+      --sui-color-bg-surface: #16181d;
+      --sui-color-bg-subtle: #1e2129;
+      --sui-color-bg-hover: #252a34;
+      --sui-color-bg-selected: #1d2b45;
+      --sui-color-text-primary: #f2f4f8;
+      --sui-color-text-secondary: #a7b0c0;
+      --sui-color-text-disabled: #6b7484;
+      --sui-color-text-inverse: #16181d;
+      --sui-color-border-subtle: #343a46;
+      --sui-color-border-strong: #4a5260;
+      --sui-color-accent-default: #7aa7ff;
+      --sui-color-accent-hover: #9dbdff;
+      --sui-color-accent-subtle: #1d2b45;
+      --sui-color-accent-contrast: #0d1117;
+      --sui-color-success-default: #4ade80;
+      --sui-color-success-subtle: #16241c;
+      --sui-color-warning-default: #fbbf24;
+      --sui-color-warning-subtle: #2b2213;
+      --sui-color-danger-default: #ff8a80;
+      --sui-color-danger-subtle: #2b1614;
+      --sui-color-info-default: #7aa7ff;
+      --sui-color-info-subtle: #1d2b45;
+      --sui-focus-ring-color: #7aa7ff;
+      --sui-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+      --sui-shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+      --sui-shadow-overlay: 0 12px 32px rgb(0 0 0 / 55%);
+    }
+  }
+
+  /* Mode kontras paksa dari OS: pakai warna sistem. */
+  @media (forced-colors: active) {
+    :root,
+    .sui-theme {
+      --sui-color-bg-surface: Canvas;
+      --sui-color-bg-subtle: Canvas;
+      --sui-color-bg-hover: Highlight;
+      --sui-color-bg-selected: Highlight;
+      --sui-color-text-primary: CanvasText;
+      --sui-color-text-secondary: CanvasText;
+      --sui-color-text-disabled: GrayText;
+      --sui-color-text-inverse: HighlightText;
+      --sui-color-border-subtle: CanvasText;
+      --sui-color-border-strong: CanvasText;
+      --sui-color-accent-default: Highlight;
+      --sui-color-accent-hover: Highlight;
+      --sui-color-accent-subtle: Canvas;
+      --sui-color-accent-contrast: HighlightText;
+      --sui-color-success-default: CanvasText;
+      --sui-color-warning-default: CanvasText;
+      --sui-color-danger-default: CanvasText;
+      --sui-color-info-default: CanvasText;
+      --sui-focus-ring-color: Highlight;
+    }
+  }
+
+  /* Density */
+  :root[data-density='compact'],
   .sui-theme[data-density='compact'] {
     --sui-density-row-height: 28px;
     --sui-density-cell-padding: 4px 8px;
+    --sui-density-control-height: 24px;
   }
 
+  :root[data-density='spacious'],
   .sui-theme[data-density='spacious'] {
     --sui-density-row-height: 48px;
     --sui-density-cell-padding: 14px 16px;
+    --sui-density-control-height: 40px;
+  }
+
+  /* Hormati preferensi gerak minimal. */
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    .sui-theme {
+      --sui-motion-duration-fast: 0ms;
+      --sui-motion-duration-normal: 0ms;
+      --sui-motion-duration-slow: 0ms;
+    }
   }
 }

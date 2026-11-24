@@ -25,7 +25,9 @@ pnpm audit
 Scaffold saat ini berisi:
 
 - `packages/core` — seed runtime: `VERSION`, `isBrowser()`, `assertBrowser()`.
-- `packages/theme` — token CSS light/dark/density.
+- `packages/theme` — design token lengkap, tema light/dark/high-contrast,
+  density comfortable/compact/spacious, RTL via properti logis, dibangun
+  dengan Lightning CSS.
 - `packages/icons`, `datagrid`, `pivotgrid`, `charts` — placeholder.
 - `packages/adapter-react|vue|angular|vanilla` — placeholder adapter.
 - `packages/testing` — placeholder harness.
