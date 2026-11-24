@@ -16,7 +16,15 @@ export default defineConfig({
       ...coverageOptions({ gate: 'core' }),
       // Utilitas DOM diuji di browser nyata (test/browser), bukan di Node,
       // sehingga tidak dihitung pada coverage unit.
-      exclude: ['src/**/*.test.ts', '**/*.d.ts', 'src/dom/**'],
+      exclude: [
+        'src/**/*.test.ts',
+        '**/*.d.ts',
+        // Modul yang menyentuh DOM diuji di browser nyata (test/browser):
+        'src/dom/**',
+        'src/a11y/roving.ts',
+        'src/a11y/focus-trap.ts',
+        'src/a11y/announcer.ts',
+      ],
     },
   },
 });
