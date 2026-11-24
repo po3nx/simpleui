@@ -140,6 +140,42 @@ Aturan yang ditegakkan:
 - `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
   navigasi keyboard.
 
+## Aksesibilitas
+
+```ts
+import {
+  Announcer,
+  FocusTrap,
+  RovingTabindex,
+  isEscapeKey,
+} from '@simpleui/core';
+
+const rows = [...root.querySelectorAll<HTMLElement>('[role="row"]')];
+const roving = new RovingTabindex({ getItems: () => rows });
+root.addEventListener('keydown', (event) => roving.handleKeyDown(event));
+
+const trap = new FocusTrap(dialog);
+trap.activate(); // fokus masuk; deactivate() mengembalikannya
+
+dialog.addEventListener('keydown', (event) => {
+  if (isEscapeKey(event.key)) closeDialog();
+});
+
+const announcer = new Announcer({ throttleMs: 150 });
+announcer.announce('3 baris dipilih');
+```
+
+- `RovingTabindex` — satu item `tabindex="0"`, sisanya `-1`; panah + Home/End,
+  orientasi `vertical`/`horizontal`/`both`, opsi `wrap`.
+- `FocusTrap` — menahan `Tab`/`Shift+Tab` di dalam root dan mengembalikan fokus
+  saat `deactivate()`. Menutup overlay tetap tanggung jawab pemanggil
+  (`isEscapeKey`), sesuai R-A11Y-03.
+- `Announcer` — satu region `polite` per instance dengan `aria-atomic="true"`
+  (docs/06 §4); pengumuman di-throttle agar tidak membanjiri screen reader
+  (R-A11Y-08). Region `assertive` dibuat hanya bila dipakai.
+- `nextIndex` dan predikat keyboard adalah fungsi murni sehingga bisa dipakai
+  model grid tanpa DOM.
+
 ## Event
 
 ```ts
