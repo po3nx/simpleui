@@ -30,7 +30,7 @@
 | FND-006 | P0   | Playwright config + browser matrix + trace            | Test    | P0  |       3 | FND-001                   | DONE   | Tech Lead | FND-006    |
 | FND-007 | P0   | CI pipeline PR + cache + sharding + gate              | CI      | P0  |       4 | FND-004, FND-005, FND-006 | DONE   | Tech Lead | FND-007    |
 | FND-008 | P0   | Changesets + versioning fixed group + changelog       | Release | P0  |       3 | FND-001                   | DONE   | Tech Lead | FND-008    |
-| FND-009 | P0   | Export map + publint + arethetypeswrong               | Build   | P0  |       2 | FND-003                   | TODO   | —         | —          |
+| FND-009 | P0   | Export map + publint + arethetypeswrong               | Build   | P0  |       2 | FND-003                   | DONE   | Tech Lead | FND-009    |
 
 **Gate A:** `pnpm install`, `lint`, `typecheck`, `test`, `build` hijau di Node
 22 & 24; CI PR < 15 menit.

@@ -52,6 +52,8 @@ jobs:
         run: pnpm typecheck
       - name: Build
         run: pnpm build
+      - name: Validasi paket (publint + arethetypeswrong)
+        run: pnpm check:package
 
   unit:
     name: Unit test + coverage

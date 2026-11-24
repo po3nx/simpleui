@@ -44,6 +44,7 @@ Script test:
 | `pnpm test:browser`  | hanya test DOM di Chromium                           |
 | `pnpm test:e2e`      | E2E Playwright di Chromium (gate PR)                 |
 | `pnpm test:e2e:all`  | E2E Chromium + Firefox + WebKit (nightly)            |
+| `pnpm check:package` | publint + arethetypeswrong untuk semua paket         |
 
 Test browser dan E2E membutuhkan browser Playwright:
 

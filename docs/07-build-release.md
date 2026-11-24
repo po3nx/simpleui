@@ -164,6 +164,8 @@ Aturan:
 - **DILARANG** deep import ke `dist/internal/*`.
 - `types` harus muncul sebelum `import` di exports.
 - Divalidasi dengan `publint` dan `arethetypeswrong`.
+- CI menjalankan `pnpm check:package` memakai profil `esm-only`, karena
+  ADR-0011 memutuskan CJS tidak dipublikasikan pada 1.0.
 
 ### 3.4 Deklarasi tipe
 
