@@ -1,0 +1,166 @@
+/* Dokumentasi SimpleUI — memakai token dari @simpleui/theme. */
+body {
+  margin: 0;
+  background: var(--sui-color-bg-subtle);
+  color: var(--sui-color-text-primary);
+  font-family: var(--sui-font-family-base);
+  font-size: var(--sui-font-size-md);
+  line-height: var(--sui-line-height-normal);
+}
+
+.sui-docs-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'header header'
+    'sidebar content';
+  min-block-size: 100vh;
+  background: var(--sui-color-bg-surface);
+}
+
+.sui-docs-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sui-space-4);
+  padding: var(--sui-space-3) var(--sui-space-5);
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+}
+
+.sui-docs-brand {
+  font-weight: var(--sui-font-weight-semibold);
+  font-size: var(--sui-font-size-lg);
+  color: var(--sui-color-text-primary);
+  text-decoration: none;
+}
+
+.sui-docs-controls {
+  display: flex;
+  gap: var(--sui-space-3);
+}
+
+.sui-docs-control {
+  display: flex;
+  align-items: center;
+  gap: var(--sui-space-1);
+  font-size: var(--sui-font-size-sm);
+  color: var(--sui-color-text-secondary);
+}
+
+.sui-docs-control select {
+  border: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  padding: 2px var(--sui-space-1);
+}
+
+.sui-docs-sidebar {
+  grid-area: sidebar;
+  padding: var(--sui-space-4);
+  border-inline-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+}
+
+.sui-docs-section-title {
+  margin: var(--sui-space-3) 0 var(--sui-space-1);
+  font-size: var(--sui-font-size-xs);
+  font-weight: var(--sui-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sui-color-text-secondary);
+}
+
+.sui-docs-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sui-docs-nav-link {
+  display: block;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border-radius: var(--sui-radius-sm);
+  color: var(--sui-color-text-primary);
+  text-decoration: none;
+}
+
+.sui-docs-nav-link:hover {
+  background: var(--sui-color-bg-hover);
+}
+
+.sui-docs-nav-link.is-active {
+  background: var(--sui-color-accent-subtle);
+  color: var(--sui-color-accent-default);
+  font-weight: var(--sui-font-weight-medium);
+}
+
+.sui-docs-content {
+  grid-area: content;
+  padding: var(--sui-space-5);
+  overflow: auto;
+}
+
+.sui-docs-article {
+  max-inline-size: 720px;
+}
+
+.sui-docs-article h1 {
+  margin-block-start: 0;
+  font-size: var(--sui-font-size-2xl);
+  line-height: var(--sui-line-height-tight);
+}
+
+.sui-docs-article code {
+  font-family: var(--sui-font-family-mono);
+  font-size: var(--sui-font-size-sm);
+  background: var(--sui-color-bg-subtle);
+  border-radius: var(--sui-radius-sm);
+  padding: 1px 4px;
+}
+
+.sui-docs-article pre {
+  background: var(--sui-color-bg-subtle);
+  border: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-md);
+  padding: var(--sui-space-3);
+  overflow: auto;
+}
+
+.sui-docs-article pre code {
+  background: none;
+  padding: 0;
+}
+
+.sui-docs-demo {
+  margin-block-start: var(--sui-space-4);
+}
+
+.sui-demo-viewport {
+  border: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-md);
+  overflow: auto;
+  max-inline-size: 720px;
+}
+
+.sui-demo-spacer {
+  position: relative;
+}
+
+.sui-demo-window {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+}
+
+.sui-demo-row {
+  display: flex;
+  align-items: center;
+  padding-inline: var(--sui-space-3);
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+}
+
+.sui-demo-row--even {
+  background: var(--sui-color-bg-subtle);
+}

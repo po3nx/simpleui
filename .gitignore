@@ -28,7 +28,7 @@ audit-report.json
 .npm-tmp/
 
 # Dokumen internal (plan, ADR, handbook) dipelihara di repo privat terpisah
-docs/
+/docs/
 
 # Artefak SBOM yang di-generate
 sbom.json
