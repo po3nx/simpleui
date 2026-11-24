@@ -10,6 +10,18 @@ export {
   type ValidationIssue,
 } from './model/options.js';
 export {
+  createDefaultState,
+  createGridStateStore,
+  selectHiddenColumns,
+  selectIsFiltered,
+  selectPageCount,
+  selectSelectedKeySet,
+  type DataStatus,
+  type FocusedCell,
+  type GridState,
+  type GridStateStore,
+} from './model/state.js';
+export {
   countHeaderRows,
   findColumnById,
   flattenColumns,
