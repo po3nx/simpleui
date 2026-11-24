@@ -23,7 +23,14 @@ export default defineConfig({
   retries: isCI ? 2 : 0,
   workers: isCI ? 2 : undefined,
   timeout: 30_000,
-  expect: { timeout: 5_000 },
+  expect: {
+    timeout: 5_000,
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01,
+      animations: 'disabled',
+      caret: 'hide',
+    },
+  },
 
   reporter: isCI
     ? [
@@ -49,6 +56,18 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    {
+      // Visual regression dijalankan terpisah (`pnpm test:visual`) agar tidak
+      // memperlambat PR; baseline per platform (FND-032).
+      name: 'visual',
+      testDir: './tests/visual',
+      snapshotPathTemplate:
+        '{testDir}/__screenshots__/{testFilePath}/{arg}{-projectName}{-snapshotSuffix}{ext}',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 900, height: 700 },
+      },
+    },
   ],
 
   webServer: [

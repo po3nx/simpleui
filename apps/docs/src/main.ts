@@ -45,6 +45,13 @@ function currentDensity(): string {
   return document.documentElement.dataset['density'] ?? 'comfortable';
 }
 
+function applyAppearance(): void {
+  const layout = document.querySelector<HTMLElement>('.sui-docs-layout');
+  if (!layout) return;
+  layout.dataset['theme'] = currentTheme();
+  layout.dataset['density'] = currentDensity();
+}
+
 function createHeader(): HTMLElement {
   const header = createElement('header', { className: 'sui-docs-header' });
   const brand = createElement('a', {
@@ -57,9 +64,11 @@ function createHeader(): HTMLElement {
   controls.append(
     createSelect('Tema', THEMES, currentTheme(), (value) => {
       document.documentElement.dataset['theme'] = value;
+      applyAppearance();
     }),
     createSelect('Density', DENSITIES, currentDensity(), (value) => {
       document.documentElement.dataset['density'] = value;
+      applyAppearance();
     }),
   );
 
@@ -128,6 +137,7 @@ function render(cleanup: () => void): () => void {
   });
   layout.append(createHeader(), createSidebar(slug), content);
   app.replaceChildren(layout);
+  applyAppearance();
 
   cleanup();
   return stopDemo ?? (() => {});

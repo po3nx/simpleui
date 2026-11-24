@@ -39,7 +39,9 @@
     "bench:virtualizer": "pnpm --filter @simpleui/core build && node bench/virtualizer.bench.mjs",
     "size": "size-limit",
     "sbom:generate": "pnpm sbom --sbom-format cyclonedx --out sbom.json",
-    "bench": "pnpm --filter @simpleui/benchmarks bench"
+    "bench": "pnpm --filter @simpleui/benchmarks bench",
+    "test:visual": "playwright test --project=visual",
+    "test:visual:update": "playwright test --project=visual --update-snapshots"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
