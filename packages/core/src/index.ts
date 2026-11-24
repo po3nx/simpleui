@@ -49,3 +49,15 @@ export { FocusTrap, getFocusable } from './a11y/focus-trap.js';
 export type { FocusTrapOptions } from './a11y/focus-trap.js';
 export { Announcer } from './a11y/announcer.js';
 export type { AnnouncerOptions, Politeness } from './a11y/announcer.js';
+
+export {
+  createLayoutService,
+  measureElement,
+} from './layout/layout-service.js';
+export type {
+  LayoutService,
+  LayoutServiceOptions,
+  LayoutSize,
+  ResizeEntryLike,
+  ResizeObserverLike,
+} from './layout/layout-service.js';
