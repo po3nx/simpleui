@@ -3,9 +3,8 @@
 Library komponen UI enterprise yang framework-agnostic: **JavaScript,
 TypeScript, React, Vue, dan Angular**.
 
-> **Status:** fondasi — 32 dari 35 task selesai; 1 WIP (adapter Angular dan
-> playground), 1 BLOCKED (API Extractor, menunggu TypeScript 7.1), 1 TODO
-> (support matrix CI). Runtime inti, tema, keamanan, data layer, virtualizer,
+> **Status:** fondasi — 33 dari 35 task selesai; 1 WIP (adapter Angular dan
+> playground), 1 BLOCKED (API Extractor, menunggu TypeScript 7.1). Runtime inti, tema, keamanan, data layer, virtualizer,
 > harness test, situs dokumentasi, dan benchmark sudah berjalan; komponen
 > pertama (DataGrid) belum dimulai.
 > **Mulai implementasi:** Phase 0 dimulai 2026-11-23 — lebih awal dari target
