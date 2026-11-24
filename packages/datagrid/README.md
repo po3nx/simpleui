@@ -23,6 +23,10 @@ const options = normalizeDataGridOptions({
   (`auto`, min/max). Id duplikat menghasilkan `SUI-DG-002`.
 - Helper: `flattenColumns`, `getVisibleColumns`, `findColumnById`,
   `countHeaderRows`.
+- `createGridStateStore` menyimpan sorting/filter/page/selection/kolom/group
+  secara immutable: filter/sort/pageSize mereset halaman, transaksi
+  mengirim satu notifikasi, transisi status data dijaga (`SUI-DG-009`),
+  snapshot versioned dengan `restore` tervalidasi (`SUI-DG-008`).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
