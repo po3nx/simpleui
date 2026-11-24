@@ -286,6 +286,25 @@ importers:
         specifier: 'catalog:'
         version: 5.1.1(@types/node@26.6.6)(@vitest/browser-playwright@5.1.1)(@vitest/coverage-v8@5.1.1)(@vitest/ui@5.1.1)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
 
+  examples/playground-angular:
+    dependencies:
+      '@simpleui/angular':
+        specifier: workspace:*
+        version: link:../../packages/adapter-angular
+      '@simpleui/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@simpleui/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.8(@types/node@26.6.6)(yaml@2.9.1)
+
   examples/playground-react:
     dependencies:
       '@simpleui/core':
@@ -356,10 +375,10 @@ importers:
     dependencies:
       '@angular/common':
         specifier: '>=17 <23'
-        version: 22.3.0(@angular/core@22.3.0(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core':
-        specifier: '>=17 <23'
-        version: 22.3.0(rxjs@7.8.2)
+        specifier: ^22.0.0
+        version: 22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)
       '@simpleui/core':
         specifier: workspace:*
         version: link:../core
@@ -367,9 +386,27 @@ importers:
         specifier: workspace:*
         version: link:../datagrid
     devDependencies:
+      '@angular/compiler':
+        specifier: 22.3.0
+        version: 22.3.0
+      '@angular/platform-browser':
+        specifier: 22.3.0
+        version: 22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))
+      '@simpleui/testing':
+        specifier: workspace:*
+        version: link:../testing
+      rxjs:
+        specifier: ^7.8.2
+        version: 7.8.2
+      tslib:
+        specifier: ^2.9.1
+        version: 2.9.1
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.1(@types/node@26.6.6)(@vitest/browser-playwright@5.1.1)(@vitest/coverage-v8@5.1.1)(@vitest/ui@5.1.1)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
 
   packages/adapter-react:
     dependencies:
@@ -525,6 +562,10 @@ packages:
       '@angular/core': 22.3.0
       rxjs: ^6.5.3 || ^7.4.0
 
+  '@angular/compiler@22.3.0':
+    resolution: {integrity: sha512-a01VbJm4MANutGvsoBIlFl7oej5V67WEmGWhnd6eLZIAat5DyDLFuKD5++l+yHhZx1BaIvOCooyPgAbIEpb64g==}
+    engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
+
   '@angular/core@22.3.0':
     resolution: {integrity: sha512-wGXoO1eiBa5xPF7Y+Vm9eVj7W7x7drRv3StF2HubXX6l/osaIxeQc9ewaHaWl/teywr/LlGblu5ClKE65wF0Zw==}
     engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
@@ -536,6 +577,17 @@ packages:
       '@angular/compiler':
         optional: true
       zone.js:
+        optional: true
+
+  '@angular/platform-browser@22.3.0':
+    resolution: {integrity: sha512-cbDtSz7gme4EmAnl+GcWLnAloPQRFHUTm/vUW9EDRR/ahO1xWY8Y4vtB9xtxppPIEcbsrAGQzyApXoKLr/cHDg==}
+    engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
+    peerDependencies:
+      '@angular/animations': 22.3.0
+      '@angular/common': 22.3.0
+      '@angular/core': 22.3.0
+    peerDependenciesMeta:
+      '@angular/animations':
         optional: true
 
   '@arethetypeswrong/cli@0.18.5':
@@ -2119,15 +2171,27 @@ snapshots:
 
   '@andrewbranch/untar.js@1.0.4': {}
 
-  '@angular/common@22.3.0(@angular/core@22.3.0(rxjs@7.8.2))(rxjs@7.8.2)':
+  '@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2)':
     dependencies:
-      '@angular/core': 22.3.0(rxjs@7.8.2)
+      '@angular/core': 22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)
       rxjs: 7.8.2
       tslib: 2.9.1
 
-  '@angular/core@22.3.0(rxjs@7.8.2)':
+  '@angular/compiler@22.3.0':
+    dependencies:
+      tslib: 2.9.1
+
+  '@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)':
     dependencies:
       rxjs: 7.8.2
+      tslib: 2.9.1
+    optionalDependencies:
+      '@angular/compiler': 22.3.0
+
+  '@angular/platform-browser@22.3.0(@angular/common@22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))':
+    dependencies:
+      '@angular/common': 22.3.0(@angular/core@22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.3.0(@angular/compiler@22.3.0)(rxjs@7.8.2)
       tslib: 2.9.1
 
   '@arethetypeswrong/cli@0.18.5':

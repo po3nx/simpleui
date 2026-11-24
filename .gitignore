@@ -35,3 +35,6 @@ sbom.json
 
 # Artefak release smoke
 .release-smoke
+
+# Artefak test Vitest (screenshot kegagalan)
+.vitest

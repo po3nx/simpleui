@@ -9,6 +9,7 @@ const BASE = 'http://127.0.0.1:4175';
 const PLAYGROUNDS = [
   { label: 'React', path: 'playground-react' },
   { label: 'Vue', path: 'playground-vue' },
+  { label: 'Angular', path: 'playground-angular' },
   { label: 'vanilla', path: 'playground-vanilla' },
 ];
 
