@@ -60,16 +60,17 @@ Jika hanya **1 orang senior full-time**: DataGrid MVP ± 16–19 bulan, trio
 
 ### Perencanaan & eksekusi
 
-| Dokumen                                                     | Isi                                                     |
-| ----------------------------------------------------------- | ------------------------------------------------------- |
-| [08 — Roadmap Bertahap](08-roadmap.md)                      | Phase 0–7, milestone, gate, urutan komponen             |
-| [09 — Estimasi & Skenario Tim](09-estimasi.md)              | Effort per komponen, skenario tim, kalender, risiko     |
-| [components/README](components/README.md)                   | Katalog komponen, tier prioritas, status maturity       |
-| [10-tracking/README](10-tracking/README.md)                 | Cara tracking task, status, progress, dan aturan update |
-| [10-tracking/master-backlog](10-tracking/master-backlog.md) | Epic lintas fase dan dependency graph                   |
-| [10-tracking/progress](10-tracking/progress.md)             | Dashboard progress (di-generate dari task list)         |
-| [adr/README](adr/README.md)                                 | Indeks Architecture Decision Records                    |
-| [11-templates](11-templates/komponen-plan-template.md)      | Template plan komponen, ADR, dan PR checklist           |
+| Dokumen                                                     | Isi                                                        |
+| ----------------------------------------------------------- | ---------------------------------------------------------- |
+| [08 — Roadmap Bertahap](08-roadmap.md)                      | Phase 0–7, milestone, gate, urutan komponen                |
+| [09 — Estimasi & Skenario Tim](09-estimasi.md)              | Effort per komponen, skenario tim, kalender, risiko        |
+| [components/README](components/README.md)                   | Katalog komponen, tier prioritas, status maturity          |
+| [10-tracking/README](10-tracking/README.md)                 | Cara tracking task, status, progress, dan aturan update    |
+| [10-tracking/master-backlog](10-tracking/master-backlog.md) | Epic lintas fase dan dependency graph                      |
+| [10-tracking/progress](10-tracking/progress.md)             | Dashboard progress (di-generate dari task list)            |
+| [adr/README](adr/README.md)                                 | Indeks Architecture Decision Records                       |
+| [11-templates](11-templates/komponen-plan-template.md)      | Template plan komponen, ADR, dan PR checklist              |
+| [troubleshooting](troubleshooting.md)                       | Kasus instalasi khusus: proxy korporat, npm ketat, Windows |
 
 ### Rencana per komponen
 
