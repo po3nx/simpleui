@@ -46,7 +46,7 @@
 | FND-012 | P0   | Reactive store + transaksi + selector + scheduler         | Core  | P0  |       6 | FND-011 | DONE   | Core Engineer      | FND-012 |
 | FND-013 | P0   | DOM utils: element, class, attr, style, scroll            | Core  | P0  |       4 | FND-011 | DONE   | Core Engineer      | FND-013 |
 | FND-014 | P0   | Focus manager + keyboard + roving tabindex + announcer    | A11y  | P0  |       5 | FND-013 | DONE   | A11y champion      | FND-014 |
-| FND-015 | P0   | ResizeObserver + layout service + cleanup                 | Core  | P0  |       3 | FND-013 | TODO   | —                  | —       |
+| FND-015 | P0   | ResizeObserver + layout service + cleanup                 | Core  | P0  |       3 | FND-013 | DONE   | Core Engineer      | FND-015 |
 | FND-016 | P0   | i18n + Intl format + message catalog + RTL                | Core  | P0  |       5 | FND-011 | TODO   | —                  | —       |
 | FND-017 | P0   | Template bridge contract + vanilla implementation         | Core  | P0  |       6 | FND-011 | TODO   | —                  | —       |
 | FND-018 | P0   | DataSource, ArrayStore, CustomStore, cache, abort         | Data  | P0  |       8 | FND-012 | TODO   | —                  | —       |

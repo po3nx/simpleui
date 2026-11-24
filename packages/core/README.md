@@ -176,6 +176,28 @@ announcer.announce('3 baris dipilih');
 - `nextIndex` dan predikat keyboard adalah fungsi murni sehingga bisa dipakai
   model grid tanpa DOM.
 
+## Layout
+
+```ts
+import { createLayoutService } from '@simpleui/core';
+
+const layout = createLayoutService(); // createObserver bisa di-inject untuk test
+
+const stop = layout.observe(gridElement, ({ width, height }) => {
+  gridElement.style.setProperty('--sui-grid-viewport', `${height}px`);
+});
+
+layout.measure(element); // pengukuran sekali
+stop(); // berhenti untuk satu listener
+layout.dispose(); // putus semua observer (R-ARC-08)
+```
+
+- Ukuran awal langsung dikirim saat `observe()`, jadi consumer tidak perlu
+  memanggil `measure()` lebih dulu.
+- Perubahan ukuran yang sama tidak memicu notifikasi berulang.
+- Tanpa `ResizeObserver` (SSR/test) layanan tetap memberi satu pengukuran.
+- `dispose()` memutus observer dan membersihkan seluruh listener.
+
 ## Event
 
 ```ts
