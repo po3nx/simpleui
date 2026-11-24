@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  background: var(--sui-color-bg-subtle);
+}
+
+.playground {
+  max-inline-size: 720px;
+  margin-inline: auto;
+  padding: 32px 24px;
+  font-family: var(--sui-font-family-base);
+  color: var(--sui-color-text-primary);
+}
+
+.playground h1 {
+  margin-block-start: 0;
+  font-size: var(--sui-font-size-2xl);
+}
+
+.hint {
+  color: var(--sui-color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 16px;
+}
+
+.actions button {
+  padding: 6px 12px;
+  border: 1px solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: var(--sui-color-bg-hover);
+}
+
+.sui-adapter-host {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-md);
+  overflow: hidden;
+}
+
+.sui-adapter-host li {
+  padding: 8px 12px;
+  border-block-end: 1px solid var(--sui-color-border-subtle);
+}
+
+.sui-adapter-host li:nth-child(even) {
+  background: var(--sui-color-bg-subtle);
+}

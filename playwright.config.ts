@@ -81,10 +81,18 @@ export default defineConfig({
     {
       // Docs site disajikan statis untuk uji a11y + keyboard (FND-031).
       // `pnpm build` dijalankan sebagai langkah CI/lokal sebelum test.
-      command: 'node tools/serve-docs.mjs',
+      command: 'node tools/serve-static.mjs',
       url: 'http://127.0.0.1:4174',
       reuseExistingServer: !isCI,
       timeout: 120_000,
+    },
+    {
+      // Playground hasil build untuk E2E lifecycle adapter (FND-028).
+      command: 'node tools/serve-static.mjs',
+      env: { STATIC_ROOT: 'examples', PORT: '4175' },
+      url: 'http://127.0.0.1:4175/playground-react/dist/index.html',
+      reuseExistingServer: !isCI,
+      timeout: 30_000,
     },
   ],
 });
