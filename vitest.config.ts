@@ -34,6 +34,12 @@ export default defineConfig({
           // Browser belum dipakai paket mana pun sampai komponen pertama ada.
           passWithNoTests: true,
         },
+        // Flag esm-bundler Vue agar tidak memunculkan warning di test.
+        define: {
+          __VUE_OPTIONS_API__: 'true',
+          __VUE_PROD_DEVTOOLS__: 'false',
+          __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+        },
       },
     ],
     env: TEST_ENV,
