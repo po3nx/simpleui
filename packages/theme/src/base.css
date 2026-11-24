@@ -1,0 +1,42 @@
+@layer simpleui.base {
+  /*
+   * Dasar visual untuk elemen di dalam scope .sui-theme. Semua nilai berasal
+   * dari token; dilarang hardcoded (docs/06 §1.1).
+   */
+  .sui-theme {
+    font-family: var(--sui-font-family-base);
+    font-size: var(--sui-font-size-md);
+    line-height: var(--sui-line-height-normal);
+    color: var(--sui-color-text-primary);
+    background-color: var(--sui-color-bg-surface);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Cincin fokus konsisten untuk semua kontrol interaktif. */
+  .sui-theme :focus-visible {
+    outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+    outline-offset: var(--sui-focus-ring-offset);
+  }
+
+  /* Jangan tampilkan outline ganda pada pointer; tetap tampil untuk keyboard. */
+  .sui-theme :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .sui-theme a {
+    color: var(--sui-color-accent-default);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .sui-theme a:hover {
+    color: var(--sui-color-accent-hover);
+  }
+
+  /* Target sentuh minimum WCAG 2.2 (24x24) untuk kontrol kecil. */
+  .sui-theme :where(button, [role='button']) {
+    min-block-size: 24px;
+    min-inline-size: 24px;
+  }
+}

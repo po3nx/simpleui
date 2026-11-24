@@ -39,18 +39,18 @@
 
 ## B. Core runtime
 
-| ID      | Fase | Task                                                      | Area  | Pri | Est (d) | Depends | Status | Owner | PR  |
-| ------- | ---- | --------------------------------------------------------- | ----- | --- | ------: | ------- | ------ | ----- | --- |
-| FND-010 | P0   | Design token + CSS layer + tema light/dark/HC/density/RTL | Theme | P0  |       5 | FND-001 | TODO   | —     | —   |
-| FND-011 | P0   | Core kernel: lifecycle, options, events, disposal         | Core  | P0  |       8 | FND-003 | TODO   | —     | —   |
-| FND-012 | P0   | Reactive store + transaksi + selector + scheduler         | Core  | P0  |       6 | FND-011 | TODO   | —     | —   |
-| FND-013 | P0   | DOM utils: element, class, attr, style, scroll            | Core  | P0  |       4 | FND-011 | TODO   | —     | —   |
-| FND-014 | P0   | Focus manager + keyboard + roving tabindex + announcer    | A11y  | P0  |       5 | FND-013 | TODO   | —     | —   |
-| FND-015 | P0   | ResizeObserver + layout service + cleanup                 | Core  | P0  |       3 | FND-013 | TODO   | —     | —   |
-| FND-016 | P0   | i18n + Intl format + message catalog + RTL                | Core  | P0  |       5 | FND-011 | TODO   | —     | —   |
-| FND-017 | P0   | Template bridge contract + vanilla implementation         | Core  | P0  |       6 | FND-011 | TODO   | —     | —   |
-| FND-018 | P0   | DataSource, ArrayStore, CustomStore, cache, abort         | Data  | P0  |       8 | FND-012 | TODO   | —     | —   |
-| FND-019 | P0   | Virtualizer primitive + benchmark 100k                    | Core  | P0  |       6 | FND-013 | TODO   | —     | —   |
+| ID      | Fase | Task                                                      | Area  | Pri | Est (d) | Depends | Status | Owner              | PR      |
+| ------- | ---- | --------------------------------------------------------- | ----- | --- | ------: | ------- | ------ | ------------------ | ------- |
+| FND-010 | P0   | Design token + CSS layer + tema light/dark/HC/density/RTL | Theme | P0  |       5 | FND-001 | DONE   | Design System Lead | FND-010 |
+| FND-011 | P0   | Core kernel: lifecycle, options, events, disposal         | Core  | P0  |       8 | FND-003 | TODO   | —                  | —       |
+| FND-012 | P0   | Reactive store + transaksi + selector + scheduler         | Core  | P0  |       6 | FND-011 | TODO   | —                  | —       |
+| FND-013 | P0   | DOM utils: element, class, attr, style, scroll            | Core  | P0  |       4 | FND-011 | TODO   | —                  | —       |
+| FND-014 | P0   | Focus manager + keyboard + roving tabindex + announcer    | A11y  | P0  |       5 | FND-013 | TODO   | —                  | —       |
+| FND-015 | P0   | ResizeObserver + layout service + cleanup                 | Core  | P0  |       3 | FND-013 | TODO   | —                  | —       |
+| FND-016 | P0   | i18n + Intl format + message catalog + RTL                | Core  | P0  |       5 | FND-011 | TODO   | —                  | —       |
+| FND-017 | P0   | Template bridge contract + vanilla implementation         | Core  | P0  |       6 | FND-011 | TODO   | —                  | —       |
+| FND-018 | P0   | DataSource, ArrayStore, CustomStore, cache, abort         | Data  | P0  |       8 | FND-012 | TODO   | —                  | —       |
+| FND-019 | P0   | Virtualizer primitive + benchmark 100k                    | Core  | P0  |       6 | FND-013 | TODO   | —                  | —       |
 
 **Gate B:** kernel & store unit-tested; virtualizer 100k ≥ 55 fps; template
 bridge vanilla berfungsi; tidak ada akses DOM top-level.

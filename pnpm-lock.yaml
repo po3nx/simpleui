@@ -217,6 +217,9 @@ importers:
       eslint-config-prettier:
         specifier: 10.1.8
         version: 10.1.8(eslint@10.15.0(supports-color@7.2.0))
+      lightningcss:
+        specifier: 1.33.0
+        version: 1.33.0
       playwright:
         specifier: 1.65.1
         version: 1.65.1
@@ -361,7 +364,11 @@ importers:
         specifier: 'catalog:'
         version: 7.0.2
 
-  packages/theme: {}
+  packages/theme:
+    devDependencies:
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.1(@types/node@26.6.6)(@vitest/browser-playwright@5.1.1)(@vitest/coverage-v8@5.1.1)(@vitest/ui@5.1.1)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
 
 packages:
 
