@@ -32,3 +32,6 @@ audit-report.json
 
 # Artefak SBOM yang di-generate
 sbom.json
+
+# Artefak release smoke
+.release-smoke
