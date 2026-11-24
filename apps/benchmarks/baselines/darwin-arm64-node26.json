@@ -1,0 +1,26 @@
+{
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "node26"
+  },
+  "generatedAt": "2026-11-24T06:49:50.015Z",
+  "benchmarks": {
+    "virtualizer.setScrollOffset (100k baris)": {
+      "opsPerSec": 23919006.524269715,
+      "meanMs": 0.0000401319430317362
+    },
+    "ArrayStore.load filter+sort+page (10k baris)": {
+      "opsPerSec": 193.02515616942276,
+      "meanMs": 5.193473435233221
+    },
+    "selector memoized (state sama)": {
+      "opsPerSec": 23286439.66036135,
+      "meanMs": 0.00004351429677440663
+    },
+    "store.transaction (10 perubahan)": {
+      "opsPerSec": 2947442.0628612414,
+      "meanMs": 0.00034828445150619856
+    }
+  }
+}

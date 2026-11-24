@@ -36,6 +36,7 @@ Scaffold saat ini berisi:
 - `packages/testing` — placeholder harness.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
 - Budget ukuran bundle dijaga `size-limit` (`.size-limit.mjs`).
+- `apps/benchmarks` — harness benchmark + baseline per lingkungan (`pnpm bench`).
 - `tools/clean.mjs`, `tools/build-theme.mjs`.
 - Turborepo, TypeScript project references, dan pnpm workspace.
 - Vitest workspace: unit di Node, test DOM di Chromium nyata (browser mode).

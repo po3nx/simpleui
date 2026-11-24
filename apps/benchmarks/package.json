@@ -1,0 +1,21 @@
+{
+  "name": "@simpleui/benchmarks",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Benchmark harness dan baseline performa SimpleUI",
+  "type": "module",
+  "scripts": {
+    "bench": "node bench.mjs",
+    "bench:update": "node bench.mjs --update",
+    "test": "vitest run",
+    "clean": "node ../../tools/clean.mjs ."
+  },
+  "dependencies": {
+    "@simpleui/core": "workspace:*",
+    "@simpleui/testing": "workspace:*"
+  },
+  "devDependencies": {
+    "tinybench": "6.2.5",
+    "vitest": "catalog:"
+  }
+}
