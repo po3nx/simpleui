@@ -29,7 +29,9 @@
     "audit:all": "pnpm audit",
     "audit:prod": "pnpm audit --prod --audit-level high",
     "outdated": "pnpm outdated",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "changeset:status": "changeset status",
+    "changeset:version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",

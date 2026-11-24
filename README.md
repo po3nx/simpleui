@@ -32,7 +32,8 @@ Scaffold saat ini berisi:
 - `tools/clean.mjs`, `tools/build-theme.mjs`.
 - Turborepo, TypeScript project references, dan pnpm workspace.
 - Vitest workspace: unit di Node, test DOM di Chromium nyata (browser mode).
-- Konfigurasi Changesets menyusul di FND-008.
+- Changesets dengan fixed version group untuk seluruh paket library
+  (ADR-0008); alur rilis di [`.changeset/README.md`](.changeset/README.md).
 
 Script test:
 
