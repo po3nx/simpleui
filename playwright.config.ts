@@ -60,9 +60,9 @@ export default defineConfig({
       timeout: 30_000,
     },
     {
-      // Docs site dibangun lalu disajikan untuk uji a11y + keyboard (FND-031).
-      command:
-        'pnpm --filter @simpleui/docs build && pnpm --filter @simpleui/docs exec vite preview --port 4174 --strictPort',
+      // Docs site disajikan statis untuk uji a11y + keyboard (FND-031).
+      // `pnpm build` dijalankan sebagai langkah CI/lokal sebelum test.
+      command: 'node tools/serve-docs.mjs',
       url: 'http://127.0.0.1:4174',
       reuseExistingServer: !isCI,
       timeout: 120_000,

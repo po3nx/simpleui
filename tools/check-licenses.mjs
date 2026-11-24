@@ -30,7 +30,8 @@ const ALLOWED = new Set([
 const DEV_ONLY_EXCEPTIONS = new Map([
   // lightningcss mengirim varian per platform (darwin-arm64, linux-x64-gnu,
   // dst.), jadi dicocokkan lewat prefix, bukan daftar nama tetap.
-  ['MPL-2.0', [/^lightningcss(?:-|$)/]],
+  // axe-core hanya devDependency (uji a11y), tidak ikut dikirim ke consumer.
+  ['MPL-2.0', [/^lightningcss(?:-|$)/, /^(?:@axe-core\/|axe-core$)/]],
 ]);
 
 function runLicenses() {
