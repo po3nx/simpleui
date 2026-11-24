@@ -23,18 +23,18 @@
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
 | DONE | 7 | 19 |
-| WIP | 0 | 0 |
+| WIP | 1 | 4 |
 | BLOCKED | 0 | 0 |
-| TODO | 167 | 812 |
+| TODO | 166 | 808 |
 | CUT | 0 | 0 |
 
-Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
+Estimasi WIP: 4 day · estimasi BLOCKED: 0 day.
 
 ### Progress per komponen
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 7 | 0 | 0 | 28 | 0 | 130 | 19 | 14,6% |
+| Foundation | 35 | 7 | 1 | 0 | 27 | 0 | 130 | 19 | 14,6% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -70,7 +70,6 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 |---|---|---|---:|---|
 | CH-001 | Finalisasi scope, taksonomi chart, acceptance criteria | Charts | 3 | — |
 | DG-001 | Finalisasi scope, non-goals, dan acceptance criteria | DataGrid | 2 | — |
-| FND-007 | CI pipeline PR + cache + sharding + gate | Foundation | 4 | — |
 | FND-008 | Changesets + versioning fixed group + changelog | Foundation | 3 | — |
 | FND-009 | Export map + publint + arethetypeswrong | Foundation | 2 | — |
 | FND-010 | Design token + CSS layer + tema light/dark/HC/density/RTL | Foundation | 5 | — |
@@ -80,6 +79,7 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 | FND-023 | Benchmark harness + baseline + reporting | Foundation | 3 | — |
 | FND-025 | License/IP review + NOTICE + dependency allowlist | Foundation | 2 | — |
 | FND-031 | Setup axe + keyboard E2E + a11y checklist | Foundation | 3 | — |
+| FND-032 | Setup visual regression + baseline awal | Foundation | 3 | — |
 
 ### Blocked
 
