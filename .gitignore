@@ -26,3 +26,6 @@ audit-report.json
 
 # Cache npm sementara untuk verifikasi lokal
 .npm-tmp/
+
+# Dokumen internal (plan, ADR, handbook) dipelihara di repo privat terpisah
+docs/

@@ -1,8 +1,7 @@
 # @simpleui/core
 
 Runtime bersama untuk semua komponen SimpleUI: kernel lifecycle, event
-bertipe, dan manajemen resource ([ADR-0004](../../docs/adr/0004-rendering-engine.md),
-[docs/01 §5](../../docs/01-arsitektur.md#5-runtime-core)).
+bertipe, dan manajemen resource.
 
 ## Kernel
 
@@ -171,7 +170,8 @@ announcer.announce('3 baris dipilih');
   saat `deactivate()`. Menutup overlay tetap tanggung jawab pemanggil
   (`isEscapeKey`), sesuai R-A11Y-03.
 - `Announcer` — satu region `polite` per instance dengan `aria-atomic="true"`
-  (docs/06 §4); pengumuman di-throttle agar tidak membanjiri screen reader
+  untuk satu instance; pengumuman di-throttle agar tidak membanjiri
+  screen reader
   (R-A11Y-08). Region `assertive` dibuat hanya bila dipakai.
 - `nextIndex` dan predikat keyboard adalah fungsi murni sehingga bisa dipakai
   model grid tanpa DOM.
@@ -280,5 +280,4 @@ try {
 pnpm --filter @simpleui/core test
 ```
 
-Coverage gate paket `core`: 90% baris / 85% cabang
-([docs/00 §7.2](../../docs/00-rule-umum.md#72-coverage-gate)).
+Coverage gate paket `core`: 90% baris / 85% cabang.

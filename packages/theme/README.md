@@ -1,7 +1,7 @@
 # @simpleui/theme
 
 Design token, tema, dan utilitas CSS untuk SimpleUI. Tanpa runtime JavaScript
-(CSS layers + custom properties, [ADR-0010](../../docs/adr/0010-strategi-css.md)).
+(CSS layers + custom properties).
 
 ## Pemakaian
 

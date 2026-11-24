@@ -8,10 +8,6 @@ coverage
 # Lockfile dikelola pnpm, jangan diformat ulang
 pnpm-lock.yaml
 
-# Dashboard progress di-generate oleh docs/10-tracking/tools/progress.mjs;
-# memformatnya akan dibatalkan setiap kali generator dijalankan.
-docs/10-tracking/progress.md
-
 # Artefak lain
 *.tsbuildinfo
 npm-debug.log*

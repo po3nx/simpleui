@@ -15,5 +15,4 @@ ketiga. Dependensi runtime-nya hanya peer dependency framework yang disediakan
 oleh consumer (React, Vue, Angular).
 
 Dependensi build dan development tercatat di pnpm-lock.yaml dan diaudit
-terhadap daftar lisensi di docs/license-allowlist.md melalui `pnpm
-check:license`.
+terhadap allowlist lisensi internal melalui `pnpm check:license`.

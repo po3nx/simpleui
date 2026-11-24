@@ -103,7 +103,7 @@ if (problems.length > 0) {
   console.error('✗ Lisensi tidak diizinkan menurut ADR-0001:');
   for (const problem of problems) console.error(`  - ${problem}`);
   console.error(
-    '\nPerbarui docs/license-allowlist.md dan ADR-0001 sebelum menambah dependency baru.',
+    '\nPerbarui allowlist lisensi internal sebelum menambah dependency baru.',
   );
   process.exit(1);
 }

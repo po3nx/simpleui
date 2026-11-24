@@ -68,35 +68,14 @@ Jika browser disimpan di dalam workspace (mis. lingkungan sandbox), tambahkan
 
 ## Dokumentasi
 
-Seluruh plan, aturan rekayasa, arsitektur, dan tracking ada di
-[`docs/`](docs/README.md).
-
-Mulai dari:
-
-1. [Rule Umum](docs/00-rule-umum.md) — kontrak clean code, security, testing.
-2. [Arsitektur](docs/01-arsitektur.md) — core + adapter lintas framework.
-3. [Roadmap](docs/08-roadmap.md) — fase dan milestone.
-4. [Estimasi](docs/09-estimasi.md) — berapa lama dan skenario tim.
-5. [DataGrid](docs/components/datagrid/README.md) — komponen prioritas #1.
-6. [Tracking](docs/10-tracking/README.md) — cara update progress.
-
-## Ringkasan estimasi
-
-| Tonggak                          | Tim 5–6 orang |
-| -------------------------------- | ------------- |
-| DataGrid MVP                     | 4–5 bulan     |
-| DataGrid GA                      | 8–9 bulan     |
-| DataGrid + PivotGrid + Charts GA | 14–16 bulan   |
-| Parity penuh ±100 widget         | 30–36 bulan   |
-
-Angka adalah rough order of magnitude, bukan komitmen. Detail asumsi ada di
-[estimasi](docs/09-estimasi.md).
+Plan produk, ADR, handbook rekayasa, dan tracking task dikelola di repositori
+privat terpisah dan tidak dipublikasikan. Repositori ini memuat kode library,
+lisensi, dan README paket.
 
 ## Struktur yang direncanakan
 
 ```text
 simpleUI/
-├─ docs/          # plan & handbook (sekarang)
 ├─ packages/      # core, komponen, adapter
 ├─ apps/          # docs site, playground, benchmark
 ├─ examples/      # integrasi per framework
@@ -114,7 +93,7 @@ simpleUI/
 
 ## Lisensi
 
-**Apache-2.0** (ADR-0001). Lihat [ADR index](docs/adr/README.md).
+**Apache-2.0**. Teks lengkap ada di [LICENSE](LICENSE).
 
 ## Keamanan
 
@@ -134,17 +113,12 @@ Kebijakan update dependency:
 
 - **patch/minor** — di-merge otomatis setelah check `Gate` hijau
   ([dependabot-auto-merge.yml](.github/workflows/dependabot-auto-merge.yml)).
-- **major** — dibiarkan terbuka untuk review manual, karena dapat mengubah
-  baseline toolchain (lihat [ADR-0012](docs/adr/0012-typescript-7-side-by-side.md)).
-- Lisensi dependency divalidasi oleh `pnpm check:license` terhadap
-  [allowlist](docs/license-allowlist.md).
+- **major** — dibiarkan terbuka untuk review manual karena dapat mengubah
+  baseline toolchain.
+- Lisensi dependency divalidasi oleh `pnpm check:license`.
 
-## Langkah berikutnya
+## Status
 
-1. Review plan v1.0 dan 12 ADR (status per 2026-11-24).
-2. Verifikasi scope npm `@simpleui` dan trademark sebelum publikasi.
-3. Fondasi repo & tooling selesai (FND-001…FND-009); lanjut fondasi produk:
-   FND-025 (LICENSE/NOTICE) lalu FND-010 (design token) dan FND-011 (kernel).
-4. Spike `DG-004` (virtualizer) dan `DG-005` (adapter bridge).
-
-Progress: `node docs/10-tracking/tools/progress.mjs`.
+Fondasi library sedang dibangun: tooling, CI, design token, dan core runtime
+sudah tersedia. Komponen pertama (DataGrid) belum dimulai. Detail perencanaan
+internal tidak dipublikasikan.

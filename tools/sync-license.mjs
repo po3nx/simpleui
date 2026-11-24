@@ -3,7 +3,7 @@
  * Menyalin `LICENSE` dan `NOTICE` dari root ke setiap paket (FND-025).
  *
  * npm/pnpm hanya menyertakan berkas lisensi yang berada di direktori paket,
- * sehingga salinan ini diperlukan agar tarball sesuai docs/07 §7.1.
+ * sehingga salinan ini diperlukan agar tarball memuat lisensi paket.
  *
  * Pemakaian:
  *   node tools/sync-license.mjs           # tulis/segarkan salinan

@@ -2,7 +2,7 @@ name: Nightly
 
 on:
   schedule:
-    # 18:00 UTC = 02:00 WITA. docs/04 §13: suite berat dijalankan nightly.
+    # 18:00 UTC = 02:00 WITA; suite berat dijalankan malam hari.
     - cron: '0 18 * * *'
   workflow_dispatch:
 
