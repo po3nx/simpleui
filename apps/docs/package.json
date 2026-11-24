@@ -1,0 +1,25 @@
+{
+  "name": "@simpleui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dokumentasi publik dan contoh SimpleUI",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "node ../../tools/clean.mjs ."
+  },
+  "dependencies": {
+    "@simpleui/core": "workspace:*",
+    "@simpleui/theme": "workspace:*",
+    "marked": "16.4.1"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

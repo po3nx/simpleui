@@ -117,6 +117,24 @@ describe('token tema', () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('kontras accent di atas accent-subtle memenuhi WCAG AA', () => {
+    const themes = [
+      ['default', defaults],
+      ['dark', dark],
+      ['high-contrast', highContrast],
+    ] as const;
+
+    for (const [name, block] of themes) {
+      expect(
+        contrast(
+          block['--sui-color-accent-default'],
+          block['--sui-color-accent-subtle'],
+        ),
+        name,
+      ).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
   it('kontras teks tema gelap memenuhi WCAG AA', () => {
     const surface = dark['--sui-color-bg-surface'];
     expect(

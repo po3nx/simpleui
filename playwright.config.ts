@@ -51,10 +51,21 @@ export default defineConfig({
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
 
-  webServer: {
-    command: 'node tests/fixtures/server.mjs',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !isCI,
-    timeout: 30_000,
-  },
+  webServer: [
+    {
+      // Fixture minimal untuk smoke test harness.
+      command: 'node tests/fixtures/server.mjs',
+      url: 'http://127.0.0.1:4173',
+      reuseExistingServer: !isCI,
+      timeout: 30_000,
+    },
+    {
+      // Docs site disajikan statis untuk uji a11y + keyboard (FND-031).
+      // `pnpm build` dijalankan sebagai langkah CI/lokal sebelum test.
+      command: 'node tools/serve-docs.mjs',
+      url: 'http://127.0.0.1:4174',
+      reuseExistingServer: !isCI,
+      timeout: 120_000,
+    },
+  ],
 });
