@@ -24,6 +24,8 @@ export default defineConfig({
         'src/a11y/roving.ts',
         'src/a11y/focus-trap.ts',
         'src/a11y/announcer.ts',
+        // Sanitizer DOM diuji di browser nyata:
+        'src/security/sanitizer-dom.ts',
       ],
     },
   },
