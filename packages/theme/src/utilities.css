@@ -1,0 +1,30 @@
+@layer simpleui.utilities {
+  /*
+   * Utility terbatas (docs/06 §1.2). Satu-satunya tempat yang boleh memakai
+   * !important, dan hanya untuk kebutuhan aksesibilitas.
+   */
+  .sui-visually-hidden:not(:focus):not(:active) {
+    position: absolute !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Elemen yang hanya menampilkan teks untuk pembaca layar. */
+  .sui-sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

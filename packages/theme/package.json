@@ -21,6 +21,10 @@
   ],
   "scripts": {
     "build": "node ../../tools/build-theme.mjs",
-    "clean": "node ../../tools/clean.mjs ."
+    "clean": "node ../../tools/clean.mjs .",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
   }
 }
