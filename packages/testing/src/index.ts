@@ -1,5 +1,20 @@
 /**
- * @simpleui/testing — placeholder scaffold (FND-001).
- * Harness adapter dimulai pada FND-020.
+ * @simpleui/testing — harness dan fixture untuk test lintas adapter (FND-020).
+ *
+ * Subpath `@simpleui/testing/adapter` menyediakan kontrak adapter (butuh
+ * Vitest). Entry utama bebas runtime test sehingga bisa dipakai di mana saja.
  */
-export const TESTING_VERSION = '0.0.0';
+export {
+  createSeededRandom,
+  hashSeed,
+  type Seed,
+  type SeededRandom,
+} from './random.js';
+export {
+  createColumns,
+  createRowFactory,
+  createRows,
+  SECURITY_PAYLOADS,
+  type FixtureOptions,
+  type PersonRow,
+} from './fixtures.js';
