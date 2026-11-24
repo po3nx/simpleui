@@ -18,14 +18,14 @@
 
 ## Ringkasan Progress
 
-**6,4%** dari total estimasi **831 ideal day** selesai (53 day). Task: 174 aktif, 0 dibatalkan.
+**7,0%** dari total estimasi **831 ideal day** selesai (58 day). Task: 174 aktif, 0 dibatalkan.
 
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
-| DONE | 15 | 53 |
+| DONE | 16 | 58 |
 | WIP | 0 | 0 |
 | BLOCKED | 0 | 0 |
-| TODO | 159 | 778 |
+| TODO | 158 | 773 |
 | CUT | 0 | 0 |
 
 Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
@@ -34,7 +34,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 15 | 0 | 0 | 20 | 0 | 130 | 53 | 40,8% |
+| Foundation | 35 | 16 | 0 | 0 | 19 | 0 | 130 | 58 | 44,6% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -43,7 +43,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Fase | Task | Est (d) | Est DONE | Progress |
 |---|---:|---:|---:|---:|
-| P0 | 35 | 130 | 53 | 40,8% |
+| P0 | 35 | 130 | 58 | 44,6% |
 | DG-0 | 7 | 24 | 0 | 0,0% |
 | DG-1 | 14 | 60 | 0 | 0,0% |
 | DG-2 | 20 | 85 | 0 | 0,0% |
@@ -70,7 +70,6 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 |---|---|---|---:|---|
 | CH-001 | Finalisasi scope, taksonomi chart, acceptance criteria | Charts | 3 | — |
 | DG-001 | Finalisasi scope, non-goals, dan acceptance criteria | DataGrid | 2 | — |
-| FND-014 | Focus manager + keyboard + roving tabindex + announcer | Foundation | 5 | — |
 | FND-015 | ResizeObserver + layout service + cleanup | Foundation | 3 | — |
 | FND-016 | i18n + Intl format + message catalog + RTL | Foundation | 5 | — |
 | FND-017 | Template bridge contract + vanilla implementation | Foundation | 6 | — |
@@ -80,6 +79,7 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 | FND-021 | Docs site skeleton + navigasi + contoh | Foundation | 5 | — |
 | FND-022 | Security utils: safeMerge, safeUrl, sanitizer facade, CSV guard | Foundation | 6 | — |
 | FND-023 | Benchmark harness + baseline + reporting | Foundation | 3 | — |
+| FND-026 | Supply chain: lockfile, audit, SBOM, provenance | Foundation | 2 | — |
 
 ### Blocked
 

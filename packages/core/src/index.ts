@@ -32,3 +32,20 @@ export {
   toggleClass,
 } from './dom/dom.js';
 export type { ElementOptions } from './dom/dom.js';
+
+export {
+  isActivationKey,
+  isEscapeKey,
+  isNavigationKey,
+  nextIndex,
+} from './a11y/keyboard.js';
+export type {
+  NavigationOptions,
+  NavigationOrientation,
+} from './a11y/keyboard.js';
+export { RovingTabindex } from './a11y/roving.js';
+export type { RovingTabindexOptions } from './a11y/roving.js';
+export { FocusTrap, getFocusable } from './a11y/focus-trap.js';
+export type { FocusTrapOptions } from './a11y/focus-trap.js';
+export { Announcer } from './a11y/announcer.js';
+export type { AnnouncerOptions, Politeness } from './a11y/announcer.js';
