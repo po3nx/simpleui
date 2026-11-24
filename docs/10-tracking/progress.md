@@ -119,3 +119,4 @@ Minggu 2027-W05
 | Tanggal | Progress | Catatan |
 |---|---|---|
 | 2026-11-23 | 1,2% | 11 ADR + scaffold monorepo (FND-001/002/003, 10 ideal day) |
+| 2026-11-24 | 5,2% | FND-004…FND-011 dan FND-025 selesai (33 ideal day tambahan) |

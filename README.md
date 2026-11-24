@@ -3,9 +3,11 @@
 Library komponen UI enterprise yang framework-agnostic: **JavaScript,
 TypeScript, React, Vue, dan Angular**.
 
-> **Status:** fondasi — scaffold monorepo selesai (FND-001/002/003).
-> Belum ada komponen yang diimplementasikan.
-> **Mulai implementasi:** Phase 0 — 1 Desember 2026.
+> **Status:** fondasi — 13 dari 35 task P0 selesai (FND-001…FND-011,
+> FND-024, FND-025). Tooling, CI, design token, dan kernel core sudah ada;
+> komponen pertama (DataGrid) belum dimulai.
+> **Mulai implementasi:** Phase 0 dimulai 2026-11-23 — lebih awal dari target
+> roadmap 2026-12-01.
 > **Komponen pertama:** DataGrid.
 
 ## Quick start

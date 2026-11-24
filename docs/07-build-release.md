@@ -211,14 +211,19 @@ pnpm install --frozen-lockfile
 
 ### 5.1 GitHub Actions
 
-| Workflow                | Trigger            | Isi                                                                                            |
-| ----------------------- | ------------------ | ---------------------------------------------------------------------------------------------- |
-| `ci.yml`                | PR, push ke main   | lint, typecheck, unit, browser (chromium), contract, a11y, security, build, size, api, license |
-| `security.yml`          | PR, push, mingguan | `pnpm audit` high/critical, audit produksi, artifact laporan                                   |
-| `nightly.yml`           | jadwal harian      | e2e 3 browser, visual semua tema, perf, mutation, SSR, audit                                   |
-| `release.yml`           | tag `v*`           | build, test penuh, publish npm + provenance, SBOM, docs deploy, CDN                            |
-| `codeql.yml`            | PR + jadwal        | analisis keamanan statis                                                                       |
-| `dependency-review.yml` | PR                 | review dependency baru                                                                         |
+| Workflow                | Trigger            | Isi                                                                                                                   |
+| ----------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`                | PR, push ke main   | lint, format, typecheck, build, unit+coverage, browser (chromium), e2e (sharded), changeset, lisensi & validasi paket |
+| `security.yml`          | PR, push, mingguan | `pnpm audit` high/critical, audit produksi, artifact laporan                                                          |
+| `nightly.yml`           | jadwal harian      | e2e 3 browser, visual semua tema, perf, mutation, SSR, audit                                                          |
+| `release.yml`           | tag `v*`           | build, test penuh, publish npm + provenance, SBOM, docs deploy, CDN                                                   |
+| `codeql.yml`            | PR + jadwal        | analisis keamanan statis                                                                                              |
+| `dependency-review.yml` | PR                 | review dependency baru                                                                                                |
+
+Job `contract`, `a11y`, `size`, dan `api` ditambahkan setelah task terkait
+selesai (FND-020, FND-031, FND-030, FND-029). `codeql.yml` dan
+`dependency-review.yml` belum diaktifkan; keduanya dapat dipakai sekarang karena
+repository sudah publik.
 
 Aturan:
 

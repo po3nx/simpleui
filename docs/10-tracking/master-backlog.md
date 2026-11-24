@@ -9,14 +9,14 @@
 
 ## 1. Ringkasan eksekutif
 
-| Metrik                     |                      Nilai |
-| -------------------------- | -------------------------: |
-| Epic aktif (sudah dipecah) |                          4 |
-| Task aktif                 |                        174 |
-| Estimasi aktif             |  831 ideal day (± 41,6 PM) |
-| Progress                   |      1,2% (scaffold + ADR) |
-| Milestone terdekat         | M1 Foundation (2027-01-29) |
-| Komponen pertama           |                   DataGrid |
+| Metrik                     |                         Nilai |
+| -------------------------- | ----------------------------: |
+| Epic aktif (sudah dipecah) |                             4 |
+| Task aktif                 |                           174 |
+| Estimasi aktif             |     831 ideal day (± 41,6 PM) |
+| Progress                   | 5,2% (13 task / 43 ideal day) |
+| Milestone terdekat         |    M1 Foundation (2027-01-29) |
+| Komponen pertama           |                      DataGrid |
 
 Angka 831 ideal day **belum** termasuk overhead dokumentasi/QA/security/release
 (25–35%) dan komponen Tier 2–4. Lihat [estimasi](../09-estimasi.md).
@@ -163,11 +163,14 @@ Angka `DONE` kumulatif adalah target, bukan hasil. Gunakan dashboard aktual.
 
 ## 10. Riwayat perubahan
 
-| Tanggal    | Perubahan                                               | Oleh      |
-| ---------- | ------------------------------------------------------- | --------- |
-| 2026-11-23 | Baseline: 4 epic, 174 task, 831 ideal day               | Tech Lead |
-| 2026-11-23 | 11 ADR Accepted; FND-024 selesai (2 ideal day)          | Tech Lead |
-| 2026-11-23 | Scaffold monorepo FND-001/002/003 selesai (8 ideal day) | Tech Lead |
+| Tanggal    | Perubahan                                                                                               | Oleh      |
+| ---------- | ------------------------------------------------------------------------------------------------------- | --------- |
+| 2026-11-23 | Baseline: 4 epic, 174 task, 831 ideal day                                                               | Tech Lead |
+| 2026-11-23 | 11 ADR Accepted; FND-024 selesai (2 ideal day)                                                          | Tech Lead |
+| 2026-11-23 | Scaffold monorepo FND-001/002/003 selesai (8 ideal day)                                                 | Tech Lead |
+| 2026-11-24 | FND-004…FND-009 selesai: lint/Prettier, Vitest, Playwright, CI, Changesets, publint/attw (19 ideal day) | Tech Lead |
+| 2026-11-24 | FND-010 + FND-011 selesai: design token/tema dan kernel core (13 ideal day)                             | Tech Lead |
+| 2026-11-24 | FND-025 selesai: LICENSE, NOTICE, allowlist lisensi (2 ideal day)                                       | Tech Lead |
 
 ---
 
