@@ -1,2 +1,15 @@
 export { VERSION } from './version.js';
 export { isBrowser, assertBrowser } from './env.js';
+
+export { SimpleUIError, isSimpleUIError } from './kernel/errors.js';
+export type { CoreErrorCode } from './kernel/errors.js';
+export { DisposableBag } from './kernel/disposable.js';
+export type { Disposer } from './kernel/disposable.js';
+export { Emitter } from './kernel/emitter.js';
+export type {
+  EmitterOptions,
+  EventListener,
+  EventMap,
+} from './kernel/emitter.js';
+export { mergeOptions } from './kernel/options.js';
+export { ComponentKernel, isDevMode } from './kernel/kernel.js';
