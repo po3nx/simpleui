@@ -139,6 +139,35 @@ Aturan yang ditegakkan:
 - `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
   navigasi keyboard.
 
+## Keamanan
+
+```ts
+import {
+  createSanitizer,
+  escapeCsvCell,
+  safeMerge,
+  safeUrl,
+  toCsv,
+} from '@simpleui/core';
+
+const options = safeMerge(defaults, userOptions); // menolak __proto__/constructor/prototype
+const href = safeUrl(untrustedUrl); // null bila tidak aman
+const safe = createSanitizer().sanitize(html); // allowlist tetap
+const csv = toCsv(rows); // prefix ' untuk = + - @ TAB CR LF
+```
+
+- `safeMerge` deep-merge tanpa memutasi input; key berbahaya **melempar**
+  `SUI-SEC-001`, bukan diabaikan diam-diam; kedalaman dibatasi (default 20).
+- `safeUrl` hanya mengizinkan `https:`, `http:`, `mailto:`, `tel:`; menolak
+  karakter kontrol dan URL ber-userinfo (`https://trusted@evil.com`).
+  `safeImageUrl` menambah `data:image/*` dan `blob:` untuk gambar.
+- `sanitizeHtml`/`createSanitizer` memakai allowlist tetap (tag, atribut,
+  protokol, class `sui-*`); tanpa DOM (SSR) semua HTML di-escape. Provider
+  (mis. DOMPurify) tidak dapat melonggarkan allowlist; kegagalannya menjadi
+  `SUI-SEC-002`.
+- `escapeCsvCell`/`toCsv` mencegah formula injection dan mengutip sel yang
+  mengandung delimiter, kutip, atau newline.
+
 ## Virtualisasi
 
 ```ts

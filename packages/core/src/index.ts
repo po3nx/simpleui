@@ -148,3 +148,23 @@ export type {
   VirtualRange,
   VirtualizerOptions,
 } from './view/virtualizer.js';
+
+export { isSecurityError, SecurityError } from './security/errors.js';
+export type { SecurityErrorCode } from './security/errors.js';
+export { nullPrototypeDict, safeMerge } from './security/safe-merge.js';
+export type { SafeMergeOptions } from './security/safe-merge.js';
+export {
+  ALLOWED_PROTOCOLS,
+  isSafeUrl,
+  safeImageUrl,
+  safeUrl,
+} from './security/safe-url.js';
+export { escapeCsvCell, toCsv } from './security/csv.js';
+export type { CsvOptions } from './security/csv.js';
+export {
+  createSanitizer,
+  escapeHtml,
+  SANITIZER_CONFIG,
+  sanitizeHtml,
+} from './security/sanitizer.js';
+export type { Sanitizer, SanitizerProvider } from './security/sanitizer.js';
