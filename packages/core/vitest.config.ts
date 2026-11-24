@@ -12,6 +12,11 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'],
     env: TEST_ENV,
-    coverage: coverageOptions({ gate: 'core' }),
+    coverage: {
+      ...coverageOptions({ gate: 'core' }),
+      // Utilitas DOM diuji di browser nyata (test/browser), bukan di Node,
+      // sehingga tidak dihitung pada coverage unit.
+      exclude: ['src/**/*.test.ts', '**/*.d.ts', 'src/dom/**'],
+    },
   },
 });

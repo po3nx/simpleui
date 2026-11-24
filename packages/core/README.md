@@ -111,6 +111,35 @@ store.subscribe((state) => scheduler.scheduleRender(() => render(state)));
   untuk test, `dispose()` membatalkan frame tertunda.
 - `yieldToMain()` memakai `scheduler.yield()` bila tersedia.
 
+## DOM
+
+```ts
+import {
+  classNames,
+  createElement,
+  setAttributes,
+  setStyle,
+} from '@simpleui/core';
+
+const cell = createElement('div', {
+  className: classNames('sui-cell', selected && 'sui-cell--selected'),
+  attrs: { role: 'gridcell', 'data-row': 3 },
+  text: String(value),
+});
+
+setAttributes(cell, { 'aria-selected': selected });
+setStyle(cell, '--sui-cell-width', `${width}px`);
+```
+
+Aturan yang ditegakkan:
+
+- Teks selalu lewat `textContent`; tidak ada `innerHTML`.
+- Atribut `on*` dan URL `javascript:` ditolak dengan `SUI-DOM-001`.
+- Style dinamis lewat CSSOM (`style.setProperty`), dan nilai yang mengandung
+  `;`/`{`/`}` ditolak agar tidak menyelundupkan properti.
+- `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
+  navigasi keyboard.
+
 ## Event
 
 ```ts

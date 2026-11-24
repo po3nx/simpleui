@@ -20,3 +20,15 @@ export { createSelector } from './state/selector.js';
 export type { EqualityFn } from './state/selector.js';
 export { createScheduler, yieldToMain } from './state/scheduler.js';
 export type { Scheduler, SchedulerHost } from './state/scheduler.js';
+
+export {
+  classNames,
+  createElement,
+  getScrollParent,
+  scrollIntoViewIfNeeded,
+  setAttributes,
+  setStyle,
+  setStyles,
+  toggleClass,
+} from './dom/dom.js';
+export type { ElementOptions } from './dom/dom.js';
