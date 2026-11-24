@@ -27,6 +27,9 @@ const options = normalizeDataGridOptions({
   secara immutable: filter/sort/pageSize mereset halaman, transaksi
   mengirim satu notifikasi, transisi status data dijaga (`SUI-DG-009`),
   snapshot versioned dengan `restore` tervalidasi (`SUI-DG-008`).
+- `createDataController` menjembatani state dan Store core: memuat sesuai
+  sort/filter/page, membatalkan permintaan lama, memetakan error store menjadi
+  `SUI-DG-004`, dan memancarkan `onDataLoading`/`onDataLoaded`/`onDataError`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
