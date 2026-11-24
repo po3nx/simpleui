@@ -33,7 +33,7 @@
 | FND-009 | P0   | Export map + publint + arethetypeswrong               | Build   | P0  |       2 | FND-003                   | DONE   | Tech Lead | FND-009    |
 
 **Gate A:** `pnpm install`, `lint`, `typecheck`, `test`, `build` hijau di Node
-22 & 24; CI PR < 15 menit.
+24 & 26; CI PR < 15 menit.
 
 ---
 

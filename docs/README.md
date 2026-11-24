@@ -170,9 +170,11 @@ Struktur detail dan aturan dependency ada di
 | Perencanaan produk & arsitektur | ✅ Selesai (draft v1.0)              | Dokumen ini                                         |
 | Keputusan arsitektur            | ✅ 12 ADR Accepted                   | [adr/README](adr/README.md)                         |
 | Dependency security             | ✅ 0 known vulnerability             | `pnpm audit` + workflow `security.yml` + Dependabot |
-| Lisensi                         | ✅ Apache-2.0                        | [ADR-0001](adr/0001-lisensi-apache-2.0.md)          |
+| Lisensi                         | ✅ Apache-2.0 + NOTICE + allowlist   | [ADR-0001](adr/0001-lisensi-apache-2.0.md), FND-025 |
 | Nama & scope npm                | ✅ Nama diputuskan; verifikasi scope | `@simpleui/*`; cek registry (ADR-0002)              |
-| Fondasi repo                    | ✅ Grup A selesai (CI, lint, test)   | FND-001…FND-009 selesai                             |
+| Fondasi repo & tooling          | ✅ Grup A selesai (CI, lint, test)   | FND-001…FND-009 selesai                             |
+| Theme & design token            | ✅ Light/dark/high-contrast, density | FND-010 selesai                                     |
+| Core runtime                    | 🔄 Kernel selesai                    | FND-011 selesai; store/DOM/fokus menyusul           |
 | DataGrid                        | ⬜ Belum mulai                       | DG-001…DG-090                                       |
 | PivotGrid                       | ⬜ Belum mulai                       | PV-001…PV-029                                       |
 | Chart                           | ⬜ Belum mulai                       | CH-001…CH-033                                       |

@@ -225,17 +225,17 @@ implementasi → GA). Estimasi per komponen di
 
 ## 4. Milestone dan gate
 
-| Milestone | Tanggal target | Definisi                                          |
-| --------- | -------------- | ------------------------------------------------- |
-| **M0**    | 2026-11-28     | Plan v1.0 disetujui; 11 ADR Accepted (2026-11-23) |
-| **M1**    | 2027-01-29     | Foundation siap (G1)                              |
-| **M2**    | 2027-04-16     | DataGrid alpha (G2)                               |
-| **M3**    | 2027-05-28     | DataGrid beta 4 adapter (G3)                      |
-| **M4**    | 2027-08-06     | DataGrid 1.0 GA (G4)                              |
-| **M5**    | 2027-11-19     | PivotGrid 1.0 GA (G5)                             |
-| **M6**    | 2028-02-11     | Charts 1.0 GA (G5)                                |
-| **M7**    | 2028-05-19     | Editors & Forms GA (G5)                           |
-| **M8**    | 2029-06-29     | Advanced suite lengkap                            |
+| Milestone | Tanggal target | Definisi                                                                               |
+| --------- | -------------- | -------------------------------------------------------------------------------------- |
+| **M0**    | 2026-11-28     | Plan v1.0 disetujui; 12 ADR Accepted (0001–0011 pada 2026-11-23, 0012 pada 2026-11-24) |
+| **M1**    | 2027-01-29     | Foundation siap (G1)                                                                   |
+| **M2**    | 2027-04-16     | DataGrid alpha (G2)                                                                    |
+| **M3**    | 2027-05-28     | DataGrid beta 4 adapter (G3)                                                           |
+| **M4**    | 2027-08-06     | DataGrid 1.0 GA (G4)                                                                   |
+| **M5**    | 2027-11-19     | PivotGrid 1.0 GA (G5)                                                                  |
+| **M6**    | 2028-02-11     | Charts 1.0 GA (G5)                                                                     |
+| **M7**    | 2028-05-19     | Editors & Forms GA (G5)                                                                |
+| **M8**    | 2029-06-29     | Advanced suite lengkap                                                                 |
 
 Gate G0–G5:
 
