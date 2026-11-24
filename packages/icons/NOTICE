@@ -1,0 +1,19 @@
+SimpleUI
+Copyright 2026 SimpleUI contributors
+
+This product includes software developed at
+SimpleUI (https://github.com/po3nx/simpleui).
+
+SimpleUI is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full text.
+
+Third-party software
+--------------------
+
+Paket yang dipublikasikan (@simpleui/*) tidak membundel kode runtime pihak
+ketiga. Dependensi runtime-nya hanya peer dependency framework yang disediakan
+oleh consumer (React, Vue, Angular).
+
+Dependensi build dan development tercatat di pnpm-lock.yaml dan diaudit
+terhadap daftar lisensi di docs/license-allowlist.md melalui `pnpm
+check:license`.
