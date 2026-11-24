@@ -61,3 +61,29 @@ export type {
   ResizeEntryLike,
   ResizeObserverLike,
 } from './layout/layout-service.js';
+
+export {
+  createLocaleService,
+  DEFAULT_CURRENCY,
+  DEFAULT_LOCALE,
+  resolveLocale,
+} from './i18n/locale-service.js';
+export type { LocaleOptions, LocaleService } from './i18n/locale-service.js';
+export {
+  DEFAULT_MESSAGES,
+  formatMessage,
+  resolvePlural,
+} from './i18n/messages.js';
+export type {
+  MessageCatalog,
+  MessageParams,
+  MessageValue,
+  PluralForms,
+} from './i18n/messages.js';
+export {
+  getDirection,
+  isPseudoLocale,
+  isRtlLocale,
+  pseudoLocalize,
+} from './i18n/locale.js';
+export type { TextDirection } from './i18n/locale.js';
