@@ -139,6 +139,29 @@ Aturan yang ditegakkan:
 - `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
   navigasi keyboard.
 
+## Virtualisasi
+
+```ts
+import { Virtualizer } from '@simpleui/core';
+
+const virtualizer = new Virtualizer({
+  itemCount: 100_000,
+  itemSize: 32,
+  viewportSize: 800,
+});
+
+virtualizer.setScrollOffset(scrollTop);
+const { start, end, offsetTop, totalSize } = virtualizer.range;
+// render hanya start..end, geser kontainer dengan offsetTop, spacer setinggi totalSize
+```
+
+- Matematika murni tanpa DOM; satu pembaruan scroll O(1) dengan overscan
+  (default 3) dan rentang yang selalu dibatasi.
+- `scrollToIndex(index, 'start' | 'center' | 'end')` untuk navigasi keyboard.
+- `indexAt(offset)` dan `offsetOf(index)` untuk hit-testing pointer.
+- `onChange` hanya dipanggil saat rentang benar-benar berubah.
+- Benchmark 100.000 baris: `pnpm bench:virtualizer` (diukur ±0,04 µs/update).
+
 ## Data
 
 Kontrak data layer: `Store<T>` dengan `load`/`byKey`/CRUD opsional, dan

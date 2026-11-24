@@ -35,7 +35,8 @@
     "outdated": "pnpm outdated",
     "changeset": "changeset",
     "changeset:status": "changeset status",
-    "changeset:version": "changeset version"
+    "changeset:version": "changeset version",
+    "bench:virtualizer": "pnpm --filter @simpleui/core build && node bench/virtualizer.bench.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
