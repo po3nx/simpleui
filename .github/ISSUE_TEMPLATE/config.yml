@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Laporan kerentanan keamanan
+    url: https://github.com/po3nx/simpleUI/security/advisories/new
+    about: Laporkan kerentanan secara privat, bukan lewat issue publik.
+  - name: Diskusi dan pertanyaan
+    url: https://github.com/po3nx/simpleUI/discussions
+    about: Gunakan Discussions untuk pertanyaan penggunaan.

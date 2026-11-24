@@ -1,0 +1,8 @@
+# Semua perubahan ditinjau owner sampai ada maintainer lain.
+* @po3nx
+
+# Paket inti dan keamanan
+/packages/core/ @po3nx
+/packages/theme/ @po3nx
+/SECURITY.md @po3nx
+/.github/workflows/ @po3nx

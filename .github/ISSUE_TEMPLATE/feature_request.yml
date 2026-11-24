@@ -1,0 +1,38 @@
+name: Usulan fitur
+description: Usulkan kemampuan atau perubahan perilaku
+labels: [enhancement]
+body:
+  - type: textarea
+    id: masalah
+    attributes:
+      label: Masalah yang ingin diselesaikan
+      description: Jelaskan kebutuhan pengguna, bukan hanya solusinya.
+    validations:
+      required: true
+  - type: textarea
+    id: usulan
+    attributes:
+      label: Usulan solusi
+    validations:
+      required: true
+  - type: textarea
+    id: alternatif
+    attributes:
+      label: Alternatif yang dipertimbangkan
+    validations:
+      required: false
+  - type: dropdown
+    id: paket
+    attributes:
+      label: Paket terkait
+      multiple: true
+      options:
+        - '@simpleui/core'
+        - '@simpleui/theme'
+        - '@simpleui/datagrid'
+        - '@simpleui/pivotgrid'
+        - '@simpleui/charts'
+        - Adapter (React/Vue/Angular/vanilla)
+        - Dokumentasi
+    validations:
+      required: true

@@ -95,6 +95,12 @@ simpleUI/
 - API stabil, semver, dan terdokumentasi.
 - Clean-room: tidak menyalin kode/aset/trademark pihak ketiga.
 
+## Berkontribusi
+
+Baca [CONTRIBUTING.md](CONTRIBUTING.md) untuk lingkungan pengembangan, alur PR,
+DCO, changeset, dan standar test. Kerentanan dilaporkan secara privat sesuai
+[SECURITY.md](SECURITY.md).
+
 ## Lisensi
 
 **Apache-2.0**. Teks lengkap ada di [LICENSE](LICENSE).

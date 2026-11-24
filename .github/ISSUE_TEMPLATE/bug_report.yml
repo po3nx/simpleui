@@ -1,0 +1,48 @@
+name: Laporan bug
+description: Laporkan perilaku yang tidak sesuai harapan
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Jangan sertakan data sensitif, token, atau kredensial.
+        Kerentanan keamanan **tidak** boleh dilaporkan lewat issue publik —
+        ikuti [SECURITY.md](../../SECURITY.md).
+  - type: textarea
+    id: deskripsi
+    attributes:
+      label: Deskripsi
+      description: Apa yang terjadi dan apa yang Anda harapkan?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduksi
+    attributes:
+      label: Langkah reproduksi
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: versi
+    attributes:
+      label: Versi paket
+      placeholder: '@simpleui/core 0.0.0'
+    validations:
+      required: true
+  - type: input
+    id: lingkungan
+    attributes:
+      label: Lingkungan
+      placeholder: 'Node 26 / Chrome 140 / macOS 15'
+    validations:
+      required: true
+  - type: textarea
+    id: tambahan
+    attributes:
+      label: Konteks tambahan
+      description: Log, screenshot, atau tautan reproduksi minimal.
+    validations:
+      required: false
