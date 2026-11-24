@@ -87,3 +87,15 @@ export {
   pseudoLocalize,
 } from './i18n/locale.js';
 export type { TextDirection } from './i18n/locale.js';
+
+export { createTemplateBridge, TemplateBridge } from './template/template.js';
+export type {
+  TemplateBridgeOptions,
+  TemplateCallback,
+  TemplateColumn,
+  TemplateContext,
+  TemplateHandle,
+  TemplatePhase,
+  TemplateRenderer,
+  TemplateSource,
+} from './template/template.js';

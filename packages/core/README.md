@@ -139,6 +139,36 @@ Aturan yang ditegakkan:
 - `getScrollParent()` dan `scrollIntoViewIfNeeded()` membantu virtualisasi dan
   navigasi keyboard.
 
+## Template
+
+Adapter framework menerjemahkan template menjadi `TemplateRenderer`; core hanya
+memanggil render/update/dispose (kontrak di docs/02 §5).
+
+```ts
+import { createTemplateBridge } from '@simpleui/core';
+
+// Vanilla: template menulis ke container, tanpa HTML mentah.
+const bridge = createTemplateBridge<Row>((container, { data }) => {
+  container.textContent = data.name;
+});
+
+const handle = bridge.createHandle(cell, {
+  data: row,
+  index: 0,
+  value: row.name,
+});
+
+handle.update({ data: nextRow, index: 0, value: nextRow.name });
+handle.dispose(); // atau bridge.dispose() untuk seluruh sel
+```
+
+- Template vanilla menerima container dan menulis DOM sendiri (R-TPL-01);
+  `update` membersihkan container sebelum menulis ulang.
+- Adapter framework mengembalikan handle `{ update, dispose }`; bridge memanggil
+  `dispose` saat node didaur ulang sehingga tidak ada kebocoran (R-TPL-02).
+- Error render/update/dispose ditangkap dan dilaporkan lewat `onError`; satu sel
+  gagal tidak merusak grid (R-TPL-04).
+
 ## Aksesibilitas
 
 ```ts
