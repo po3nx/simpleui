@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playground Vue — SimpleUI</title>
+  </head>
+  <body>
+    <main class="sui-theme playground">
+      <h1>Playground Vue</h1>
+      <p class="hint">
+        Bridge <code>createVueBridge</code> dari <code>@simpleui/vue</code>.
+      </p>
+      <div class="actions">
+        <button id="add" type="button">Tambah item</button>
+        <button id="clear" type="button">Kosongkan</button>
+        <button id="unmount" type="button">Unmount</button>
+        <button id="mount" type="button">Mount</button>
+      </div>
+      <p id="status" role="status" aria-live="polite">mounted: 2 item</p>
+      <div id="host"></div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

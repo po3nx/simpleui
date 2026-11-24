@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 /**
- * Server statis untuk apps/docs/dist (FND-031).
+ * Server statis generik untuk artefak build (FND-027/FND-031/FND-028).
  *
  * Dipakai Playwright webServer agar tidak bergantung pada `pnpm`/`vite preview`
  * di lingkungan CI. Jalankan `pnpm build` lebih dulu.
+ *
+ * Env: STATIC_ROOT (default apps/docs/dist), PORT (default 4174).
  */
 
 import { createReadStream } from 'node:fs';
@@ -15,11 +17,9 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '..',
-  'apps',
-  'docs',
-  'dist',
+  process.env.STATIC_ROOT ?? path.join('apps', 'docs', 'dist'),
 );
-const PORT = Number(process.env.DOCS_PORT ?? 4174);
+const PORT = Number(process.env.PORT ?? 4174);
 
 const MIME = {
   '.css': 'text/css; charset=utf-8',
@@ -60,5 +60,5 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`docs server: http://127.0.0.1:${PORT}`);
+  console.log(`static server: http://127.0.0.1:${PORT} (root: ${ROOT})`);
 });
