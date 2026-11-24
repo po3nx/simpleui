@@ -15,6 +15,23 @@ if (!base) {
   process.exit(2);
 }
 
+function githubLogin(email) {
+  const match = /^(?:\d+\+)?([^@]+)@users\.noreply\.github\.com$/i.exec(email);
+  return match?.[1]?.toLowerCase();
+}
+
+/**
+ * GitHub squash-merge menulis ulang email author menjadi noreply; terima
+ * sign-off yang menyebut login GitHub yang sama agar tidak false positive.
+ */
+function matchesSignOff(signedOff, authorName, authorEmail) {
+  const expected = `${authorName} <${authorEmail}>`.toLowerCase();
+  if (signedOff.toLowerCase() === expected) return true;
+
+  const login = githubLogin(authorEmail);
+  return login ? signedOff.toLowerCase().includes(login) : false;
+}
+
 function git(args) {
   return execFileSync('git', args, { encoding: 'utf8' }).trim();
 }
@@ -38,9 +55,9 @@ for (const sha of shas) {
     continue;
   }
 
-  const matches = signedOff.some(
-    (line) => line.toLowerCase() === author.toLowerCase(),
-  );
+  const name = git(['show', '-s', '--format=%an', sha]);
+  const email = git(['show', '-s', '--format=%ae', sha]);
+  const matches = signedOff.some((line) => matchesSignOff(line, name, email));
 
   if (!matches) {
     failures.push(
