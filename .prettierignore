@@ -12,3 +12,7 @@ pnpm-lock.yaml
 *.tsbuildinfo
 npm-debug.log*
 pnpm-debug.log*
+
+# Artefak benchmark yang di-generate
+apps/benchmarks/bench-report.md
+apps/benchmarks/bench-report.json

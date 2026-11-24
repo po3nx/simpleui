@@ -51,10 +51,21 @@ export default defineConfig({
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
 
-  webServer: {
-    command: 'node tests/fixtures/server.mjs',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !isCI,
-    timeout: 30_000,
-  },
+  webServer: [
+    {
+      // Fixture minimal untuk smoke test harness.
+      command: 'node tests/fixtures/server.mjs',
+      url: 'http://127.0.0.1:4173',
+      reuseExistingServer: !isCI,
+      timeout: 30_000,
+    },
+    {
+      // Docs site dibangun lalu disajikan untuk uji a11y + keyboard (FND-031).
+      command:
+        'pnpm --filter @simpleui/docs build && pnpm --filter @simpleui/docs exec vite preview --port 4174 --strictPort',
+      url: 'http://127.0.0.1:4174',
+      reuseExistingServer: !isCI,
+      timeout: 120_000,
+    },
+  ],
 });
