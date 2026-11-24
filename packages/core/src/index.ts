@@ -99,3 +99,45 @@ export type {
   TemplateRenderer,
   TemplateSource,
 } from './template/template.js';
+
+export { ArrayStore } from './data/array-store.js';
+export type { ArrayStoreOptions } from './data/array-store.js';
+export { cacheKeyFor, CachedStore } from './data/cache.js';
+export type { CachedStoreOptions } from './data/cache.js';
+export { CustomStore } from './data/custom-store.js';
+export type { CustomStoreOptions } from './data/custom-store.js';
+export { DataError, isDataError, toDataError } from './data/errors.js';
+export type { DataErrorCode, DataErrorOptions } from './data/errors.js';
+export {
+  createTimeoutSignal,
+  DEFAULT_TIMEOUT_MS,
+  throwIfAborted,
+} from './data/abort.js';
+export type { TimeoutSignal } from './data/abort.js';
+export {
+  applyFilter,
+  applyPage,
+  applySort,
+  MAX_FILTER_DEPTH,
+  MAX_FILTER_NODES,
+  MAX_IN_VALUES,
+  MAX_TAKE,
+  normalizeOptions,
+  runQuery,
+  summarize,
+  validateFilter,
+} from './data/query.js';
+export type { NormalizedQuery, SummaryKind } from './data/query.js';
+export type {
+  FilterExpression,
+  FilterOperator,
+  GroupDescriptor,
+  Key,
+  KeyExpr,
+  LoadOptions,
+  LoadResult,
+  SortDescriptor,
+  // `Store` sudah dipakai reactive store; data layer diekspor sebagai DataStore.
+  Store as DataStore,
+  StoreCapabilities,
+} from './data/types.js';
