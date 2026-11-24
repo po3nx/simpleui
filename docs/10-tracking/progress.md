@@ -18,14 +18,14 @@
 
 ## Ringkasan Progress
 
-**5,2%** dari total estimasi **831 ideal day** selesai (43 day). Task: 174 aktif, 0 dibatalkan.
+**5,9%** dari total estimasi **831 ideal day** selesai (49 day). Task: 174 aktif, 0 dibatalkan.
 
 | Status | Task | Estimasi (d) |
 |---|---:|---:|
-| DONE | 13 | 43 |
+| DONE | 14 | 49 |
 | WIP | 0 | 0 |
 | BLOCKED | 0 | 0 |
-| TODO | 161 | 788 |
+| TODO | 160 | 782 |
 | CUT | 0 | 0 |
 
 Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
@@ -34,7 +34,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Komponen | Task | DONE | WIP | BLOCKED | TODO | CUT | Est total | Est DONE | Progress |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Foundation | 35 | 13 | 0 | 0 | 22 | 0 | 130 | 43 | 33,1% |
+| Foundation | 35 | 14 | 0 | 0 | 21 | 0 | 130 | 49 | 37,7% |
 | DataGrid | 77 | 0 | 0 | 0 | 77 | 0 | 353 | 0 | 0,0% |
 | PivotGrid | 29 | 0 | 0 | 0 | 29 | 0 | 157 | 0 | 0,0% |
 | Charts | 33 | 0 | 0 | 0 | 33 | 0 | 191 | 0 | 0,0% |
@@ -43,7 +43,7 @@ Estimasi WIP: 0 day · estimasi BLOCKED: 0 day.
 
 | Fase | Task | Est (d) | Est DONE | Progress |
 |---|---:|---:|---:|---:|
-| P0 | 35 | 130 | 43 | 33,1% |
+| P0 | 35 | 130 | 49 | 37,7% |
 | DG-0 | 7 | 24 | 0 | 0,0% |
 | DG-1 | 14 | 60 | 0 | 0,0% |
 | DG-2 | 20 | 85 | 0 | 0,0% |
@@ -70,10 +70,10 @@ Task `TODO` yang seluruh dependency-nya sudah `DONE`.
 |---|---|---|---:|---|
 | CH-001 | Finalisasi scope, taksonomi chart, acceptance criteria | Charts | 3 | — |
 | DG-001 | Finalisasi scope, non-goals, dan acceptance criteria | DataGrid | 2 | — |
-| FND-012 | Reactive store + transaksi + selector + scheduler | Foundation | 6 | — |
 | FND-013 | DOM utils: element, class, attr, style, scroll | Foundation | 4 | — |
 | FND-016 | i18n + Intl format + message catalog + RTL | Foundation | 5 | — |
 | FND-017 | Template bridge contract + vanilla implementation | Foundation | 6 | — |
+| FND-018 | DataSource, ArrayStore, CustomStore, cache, abort | Foundation | 8 | — |
 | FND-020 | Testing harness adapter + fixture factory + seeded random | Foundation | 5 | — |
 | FND-021 | Docs site skeleton + navigasi + contoh | Foundation | 5 | — |
 | FND-022 | Security utils: safeMerge, safeUrl, sanitizer facade, CSV guard | Foundation | 6 | — |
