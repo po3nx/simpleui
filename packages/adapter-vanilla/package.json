@@ -43,6 +43,8 @@
     }
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "@simpleui/testing": "workspace:*"
   }
 }

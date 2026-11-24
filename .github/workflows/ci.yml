@@ -122,6 +122,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
+      - name: Build paket (subpath @simpleui/testing/adapter)
+        run: pnpm build
       - name: Browser mode test
         run: pnpm test:browser
 

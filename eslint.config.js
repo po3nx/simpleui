@@ -35,8 +35,9 @@ const FRAMEWORK_MODULES = [
 
 /** Framework yang sah untuk tiap adapter, dipetakan per direktori paket. */
 const ADAPTER_OWN_FRAMEWORK = {
-  'adapter-react': ['react', 'react-dom'],
-  'adapter-vue': ['vue'],
+  // Subpath (mis. `react-dom/client`) ikut diizinkan untuk framework sendiri.
+  'adapter-react': ['react', 'react/*', 'react-dom', 'react-dom/*'],
+  'adapter-vue': ['vue', 'vue/*'],
   'adapter-angular': ['@angular/*'],
   'adapter-vanilla': [],
 };
