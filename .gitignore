@@ -4,6 +4,9 @@ coverage/
 .turbo/
 *.tsbuildinfo
 
+# Browser Playwright (bisa dialihkan ke workspace lewat PLAYWRIGHT_BROWSERS_PATH)
+.playwright-browsers/
+
 .DS_Store
 Thumbs.db
 

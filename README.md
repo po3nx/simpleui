@@ -31,12 +31,31 @@ Scaffold saat ini berisi:
 - `packages/testing` — placeholder harness.
 - `tools/clean.mjs`, `tools/build-theme.mjs`.
 - Turborepo, TypeScript project references, dan pnpm workspace.
+- Vitest workspace: unit di Node, test DOM di Chromium nyata (browser mode).
 - Konfigurasi Changesets menyusul di FND-008.
+
+Script test:
+
+| Perintah             | Cakupan                                              |
+| -------------------- | ---------------------------------------------------- |
+| `pnpm test`          | unit test per paket lewat Turbo (cacheable, gate PR) |
+| `pnpm test:coverage` | semua proyek + laporan coverage agregat              |
+| `pnpm test:browser`  | hanya test DOM di Chromium                           |
+
+Test DOM membutuhkan browser Playwright:
+
+```bash
+pnpm exec playwright install chromium
+```
+
+Jika browser disimpan di dalam workspace (mis. lingkungan sandbox), tambahkan
+`PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers` saat menjalankan test.
 
 > Catatan: Node 22 tidak dijadikan baseline karena masa dukungannya berakhir
 > April 2027. Node 26 adalah LTS saat ini; minimum tooling ditetapkan Node 24.
 > **Sudah diverifikasi:** Node 26.13.0 + pnpm 12.21.0, `pnpm install`,
-> `pnpm build`, `pnpm typecheck`, `pnpm test` (5 test), dan `pnpm audit`
+> `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm test` (8 unit test),
+> `pnpm test:browser` (1 test di Chromium), dan `pnpm audit`
 > (0 known vulnerabilities).
 
 ### Troubleshooting pnpm di Windows
