@@ -1,5 +1,9 @@
 import { setAttributes } from '@simpleui/core';
-import type { SortDescriptor, TemplateRenderer } from '@simpleui/core';
+import type {
+  FilterExpression,
+  SortDescriptor,
+  TemplateRenderer,
+} from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { toggleSort } from '../data/sort.js';
@@ -9,6 +13,7 @@ import {
   type HeaderRenderContext,
 } from './header-renderer.js';
 import { TemplateManager } from './template-manager.js';
+import { createHeaderFilter, type HeaderFilter } from './header-filter.js';
 import { attachColumnResize } from './column-resize.js';
 import {
   moveColumn,
@@ -54,6 +59,11 @@ export interface HeaderControllerOptions<T extends object> {
     | undefined;
   readonly liveElement?: HTMLElement | undefined;
   readonly extraHeaderElement?: HTMLElement | undefined;
+  readonly headerFilter?: boolean | undefined;
+  readonly getUniqueValues?:
+    ((columnId: string) => readonly unknown[]) | undefined;
+  readonly onFilterChange?:
+    ((filter: FilterExpression | null) => void) | undefined;
 }
 
 export interface HeaderController<T extends object> {
@@ -174,6 +184,7 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     width: number,
   ) => void;
   readonly #reorder: NonNullable<HeaderRenderContext['reorder']>;
+  readonly #headerFilter: HeaderFilter | undefined;
   #sortBy: readonly SortDescriptor[];
   #filtered: Set<string>;
 
@@ -186,6 +197,15 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     );
     this.#resize = createResizeAttacher(options);
     this.#reorder = createReorderHandlers(options);
+    this.#headerFilter =
+      options.headerFilter === false
+        ? undefined
+        : createHeaderFilter({
+            getUniqueValues: options.getUniqueValues,
+            locale: undefined,
+            liveElement: options.liveElement,
+            onApply: (filter) => options.onFilterChange?.(filter),
+          });
   }
 
   #announce(text: string): void {
@@ -202,6 +222,11 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
         this.#applySort(columnId, multi, clear),
       mountTemplate: (container, column, index) =>
         mountHeaderTemplate(this.#templates, container, column, index),
+      openHeaderFilter: (column, anchor) =>
+        this.#headerFilter?.open(
+          column as unknown as ColumnState<unknown>,
+          anchor,
+        ),
       attachResize: this.#resize,
       reorder: this.#reorder,
     };
@@ -268,6 +293,7 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
 
   dispose(): void {
     this.#templates.dispose();
+    this.#headerFilter?.dispose();
   }
 }
 

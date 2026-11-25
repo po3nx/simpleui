@@ -99,6 +99,9 @@ const options = normalizeDataGridOptions({
 - Filter row: aktif via `filterRow: true`; input + operator sesuai `dataType`
   (`contains`, `gt`, `eq`, …), kondisi antar kolom digabung `and`, dan
   dilaporkan lewat `onFilterChange`; `setFilterValue` untuk mode controlled.
+- Header filter: panel per kolom dengan nilai unik (dari `getUniqueValues`),
+  pencarian, `(Blanks)` untuk null, pilih semua/kosongkan, Terapkan/Hapus;
+  hasil memakai operator `in` atau `eq null` untuk blanks.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

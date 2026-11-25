@@ -337,3 +337,26 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__header-filter {
+  flex: 0 0 auto;
+  padding: 0 var(--sui-space-1);
+  border: 0;
+  background: none;
+  color: var(--sui-color-text-secondary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__header-filter::before {
+  content: '▾';
+}
+
+.sui-grid__header-filter[aria-expanded='true'] {
+  color: var(--sui-color-accent-default);
+}
+
+.sui-grid__header-filter:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}

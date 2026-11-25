@@ -39,6 +39,8 @@ export interface GridViewOptions<T extends object> {
     ((columnId: string, width: number) => void) | undefined;
   readonly onColumnReorder?: ((order: readonly string[]) => void) | undefined;
   readonly filterRow?: boolean;
+  readonly headerFilter?: boolean;
+  readonly getUniqueValues?: (columnId: string) => readonly unknown[];
   readonly filterValue?: FilterExpression | null | undefined;
   readonly onFilterChange?:
     ((filter: FilterExpression | null) => void) | undefined;
@@ -157,6 +159,12 @@ function createHeader<T extends object>(
     onColumnReorder: options.onColumnReorder,
     liveElement: dom.liveElement,
     extraHeaderElement: filterRow?.element,
+    headerFilter: options.headerFilter,
+    getUniqueValues: options.getUniqueValues,
+    onFilterChange: (filter) => {
+      filterRow?.setFilterValue(filter);
+      options.onFilterChange?.(filter);
+    },
   });
 }
 

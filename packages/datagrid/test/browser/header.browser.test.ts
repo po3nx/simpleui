@@ -43,7 +43,7 @@ describe('header — aria-sort dan indikator', () => {
     expect(id?.getAttribute('aria-sort')).toBe('none');
     expect(name?.getAttribute('aria-sort')).toBe('none');
     expect(locked?.hasAttribute('aria-sort')).toBe(false);
-    expect(locked?.querySelector('button')).toBeNull();
+    expect(locked?.querySelector('.sui-grid__header-button')).toBeNull();
     view.dispose();
   });
 
