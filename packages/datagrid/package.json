@@ -16,7 +16,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./styles.css": "./dist/styles.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,7 +27,7 @@
     "NOTICE"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc -b && node ../../tools/build-css.mjs --in src/styles/grid.css --out dist/styles.css",
     "typecheck": "tsc -b --pretty false",
     "clean": "node ../../tools/clean.mjs .",
     "test": "vitest run"
