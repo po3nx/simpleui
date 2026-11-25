@@ -1,7 +1,8 @@
 /* Grid DataGrid (DG-030). Semua warna/ukuran dari token tema. */
 
 .sui-grid {
-  display: block;
+  display: flex;
+  flex-direction: column;
   block-size: 100%;
   min-block-size: 0;
   border: var(--sui-border-width) solid var(--sui-color-border-subtle);
@@ -42,7 +43,7 @@
 
 .sui-grid__viewport {
   position: relative;
-  block-size: 100%;
+  flex: 1;
   min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
@@ -357,6 +358,48 @@
 }
 
 .sui-grid__header-filter:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
+
+.sui-grid__search {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--sui-space-1);
+  padding: var(--sui-space-2);
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  background: var(--sui-color-bg-surface);
+}
+
+.sui-grid__search-input {
+  flex: 1;
+  min-inline-size: 0;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__search-input:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
+
+.sui-grid__search-clear {
+  padding: 0 var(--sui-space-1);
+  border: 0;
+  background: none;
+  color: var(--sui-color-text-secondary);
+  font: inherit;
+  font-size: var(--sui-font-size-lg);
+  cursor: pointer;
+}
+
+.sui-grid__search-clear:focus-visible {
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }

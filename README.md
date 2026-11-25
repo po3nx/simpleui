@@ -42,7 +42,8 @@ Isi repositori saat ini:
   adapter untuk parity test.
 - `packages/datagrid` — model & data DG-1: normalisasi opsi/kolom, state
   store, DataController, filter/sort/paging, selection, fokus, key identity,
-  error handling, grouping, summary, dan persistensi state; renderer
+  error handling, grouping, summary, persistensi state, dan UI
+  header/filter/search; renderer
   menyusul DG-2.
 - `packages/icons`, `pivotgrid`, `charts` — placeholder.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
