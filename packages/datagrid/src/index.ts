@@ -13,6 +13,12 @@ export {
   type CellFormatOptions,
 } from './view/cell-renderer.js';
 export {
+  applyColumnOrder,
+  moveColumn,
+  moveColumnTo,
+  visibleColumnIds,
+} from './view/column-reorder.js';
+export {
   attachColumnResize,
   clampColumnWidth,
   RESIZE_STEP,

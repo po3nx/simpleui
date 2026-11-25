@@ -89,6 +89,9 @@ const options = normalizeDataGridOptions({
 - Resize kolom: handle `role="separator"` di header, drag pointer dan
   ArrowLeft/ArrowRight (clamp `minWidth`/`maxWidth`), callback
   `onColumnResize`; preview lebar langsung di header dan baris.
+- Reorder kolom: drag header (indikator drop) atau **Alt+ArrowLeft/Right**;
+  urutan dilaporkan lewat `onColumnReorder` dan diumumkan ke live region.
+  Helper `applyColumnOrder`/`moveColumn` tersedia untuk menerapkan urutan.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

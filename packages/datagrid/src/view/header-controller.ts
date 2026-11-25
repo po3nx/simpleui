@@ -10,6 +10,11 @@ import {
 } from './header-renderer.js';
 import { TemplateManager } from './template-manager.js';
 import { attachColumnResize } from './column-resize.js';
+import {
+  moveColumn,
+  moveColumnTo,
+  visibleColumnIds,
+} from './column-reorder.js';
 
 /**
  * Kontrol header (DG-031/DG-033): state sort/filter, layout kolom virtual,
@@ -25,6 +30,48 @@ function previewColumnWidth(
   root.querySelectorAll<HTMLElement>(selector).forEach((cell) => {
     cell.style.flexBasis = `${width}px`;
   });
+}
+
+function createReorderHandlers<T extends object>(
+  options: HeaderControllerOptions<T>,
+): NonNullable<HeaderRenderContext['reorder']> {
+  let source: string | null = null;
+  const order = (): string[] =>
+    visibleColumnIds(getVisibleColumns(options.columns));
+
+  const apply = (next: readonly string[], movedId: string): void => {
+    const current = order();
+    if (next.join('|') === current.join('|')) return;
+    const column = options.columns.find((entry) => entry.id === movedId);
+    const index = next.indexOf(movedId) + 1;
+    options.onColumnReorder?.(next);
+    if (options.liveElement) {
+      options.liveElement.textContent = `Kolom ${column?.caption ?? movedId} dipindah ke posisi ${index}.`;
+    }
+  };
+
+  return {
+    onDragStart(event, columnId) {
+      source = columnId;
+      event.dataTransfer?.setData('text/plain', columnId);
+      if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+    },
+    onDragOver(event, columnId) {
+      void columnId;
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    },
+    onDrop(event, columnId) {
+      event.preventDefault();
+      const moved = source ?? event.dataTransfer?.getData('text/plain') ?? '';
+      source = null;
+      if (!moved || moved === columnId) return;
+      apply(moveColumnTo(order(), moved, columnId, 'before'), moved);
+    },
+    onKeyMove(columnId, delta) {
+      apply(moveColumn(order(), columnId, delta), columnId);
+    },
+  };
 }
 
 function createResizeAttacher<T extends object>(
@@ -83,6 +130,8 @@ export interface HeaderControllerOptions<T extends object> {
     | undefined;
   readonly onColumnResize?:
     ((columnId: string, width: number) => void) | undefined;
+  readonly onColumnReorder?: ((order: readonly string[]) => void) | undefined;
+  readonly liveElement?: HTMLElement | undefined;
 }
 
 export interface HeaderController<T extends object> {
@@ -113,6 +162,7 @@ export function createHeaderController<T extends object>(
     mountTemplate: (container, column, index) =>
       mountHeaderTemplate(templates, container, column, index),
     attachResize: createResizeAttacher(options),
+    reorder: createReorderHandlers(options),
   });
 
   const render = (columns: readonly ColumnState<T>[]): void => {
