@@ -24,6 +24,12 @@ export interface HeaderRenderContext {
     column: HeaderColumn,
     width: number,
   ) => void;
+  readonly reorder?: {
+    onDragStart(event: DragEvent, columnId: string): void;
+    onDragOver(event: DragEvent, columnId: string): void;
+    onDrop(event: DragEvent, columnId: string): void;
+    onKeyMove(columnId: string, delta: -1 | 1): void;
+  };
 }
 
 interface HeaderColumn {
@@ -38,6 +44,7 @@ interface HeaderColumn {
   readonly minWidth: number;
   readonly maxWidth: number | undefined;
   readonly allowResizing: boolean;
+  readonly allowReordering: boolean;
 }
 
 function alignmentStyle(alignment: ColumnState['alignment']): string {
@@ -108,6 +115,45 @@ function createSortButton(
   });
 
   return button;
+}
+
+function attachReorder(
+  cell: HTMLElement,
+  column: HeaderColumn,
+  context: HeaderRenderContext,
+): void {
+  const reorder = context.reorder;
+  if (!reorder || !column.allowReordering) return;
+  cell.draggable = true;
+  cell.classList.add('sui-grid__header-cell--reorderable');
+
+  cell.addEventListener('dragstart', (event) => {
+    reorder.onDragStart(event, column.id);
+  });
+  cell.addEventListener('dragover', (event) => {
+    cell.classList.add('sui-grid__header-cell--drop');
+    reorder.onDragOver(event, column.id);
+  });
+  cell.addEventListener('dragleave', () => {
+    cell.classList.remove('sui-grid__header-cell--drop');
+  });
+  cell.addEventListener('drop', (event) => {
+    cell.classList.remove('sui-grid__header-cell--drop');
+    reorder.onDrop(event, column.id);
+  });
+  cell.addEventListener('dragend', () => {
+    cell.classList.remove('sui-grid__header-cell--drop');
+  });
+  cell.addEventListener('keydown', (event) => {
+    if (
+      !event.altKey ||
+      (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')
+    )
+      return;
+    event.preventDefault();
+    event.stopPropagation();
+    reorder.onKeyMove(column.id, event.key === 'ArrowRight' ? 1 : -1);
+  });
 }
 
 function createResizeHandle(
@@ -187,6 +233,7 @@ export function createHeaderRow<T extends object>(
     if (context.filteredColumns.has(column.id))
       appendFilterMarker(cell, column.id);
 
+    attachReorder(cell, column, context);
     const resizeHandle = createResizeHandle(column, context, entry.width);
     if (resizeHandle) cell.append(resizeHandle);
 

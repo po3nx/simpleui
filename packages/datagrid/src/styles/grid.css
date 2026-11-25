@@ -282,3 +282,17 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: calc(-1 * var(--sui-focus-ring-width));
 }
+
+.sui-grid__header-cell--reorderable {
+  cursor: grab;
+}
+
+.sui-grid__header-cell--reorderable:active {
+  cursor: grabbing;
+}
+
+.sui-grid__header-cell--drop {
+  outline: 2px solid var(--sui-color-accent-default);
+  outline-offset: calc(-1 * var(--sui-border-width-thick));
+  background: var(--sui-color-accent-subtle);
+}
