@@ -19,6 +19,7 @@ import {
   createStatus,
   searchableFields,
 } from './grid-chrome.js';
+import { attachContextMenu, type ContextMenu } from './context-menu.js';
 import { createColumnChooser, type ColumnChooser } from './column-chooser.js';
 import {
   createSelectionState,
@@ -70,6 +71,7 @@ export interface GridViewOptions<T extends object> {
   readonly summaryRows?: readonly T[] | undefined;
   readonly summaryLocale?: string | undefined;
   readonly columnChooser?: boolean;
+  readonly contextMenu?: boolean;
   readonly hiddenColumns?: readonly string[] | undefined;
   readonly onVisibilityChange?:
     ((hidden: readonly string[]) => void) | undefined;
@@ -187,6 +189,7 @@ interface Interactive<T extends object> {
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
   readonly columnChooser: ColumnChooser | undefined;
+  readonly contextMenu: ContextMenu | undefined;
   readonly setHidden: (columnIds: readonly string[]) => void;
   readonly summaryFooter: SummaryFooter<never> | undefined;
   readonly filterVisible: (
@@ -202,6 +205,7 @@ interface Disposables {
   readonly pager: Pager | undefined;
   readonly columnChooser: ColumnChooser | undefined;
   readonly status: StatusView;
+  readonly contextMenu: ContextMenu | undefined;
 }
 
 function disposeGrid(
@@ -216,6 +220,7 @@ function disposeGrid(
   parts.searchPanel?.dispose();
   parts.pager?.dispose();
   parts.columnChooser?.dispose();
+  parts.contextMenu?.dispose();
   parts.status.dispose();
   dom.element.remove();
 }
@@ -291,6 +296,9 @@ function createInteractive<T extends object>(
       })
     : undefined;
   if (columnChooser) dom.element.prepend(columnChooser.element);
+  const contextMenu = options.contextMenu
+    ? attachContextMenu(dom.element)
+    : undefined;
 
   return {
     searchPanel,
@@ -300,6 +308,7 @@ function createInteractive<T extends object>(
     selection,
     withSelection,
     columnChooser,
+    contextMenu,
     setHidden,
     filterVisible,
     summaryFooter,
@@ -324,6 +333,7 @@ interface GridApiContext<T extends object> {
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
   readonly columnChooser: ColumnChooser | undefined;
+  readonly contextMenu: ContextMenu | undefined;
   readonly setHidden: (columnIds: readonly string[]) => void;
   readonly onScroll: () => void;
 }
@@ -366,6 +376,7 @@ function createGridApi<T extends object>(ctx: GridApiContext<T>): GridView<T> {
           searchPanel: ctx.searchPanel,
           pager: ctx.pager,
           columnChooser: ctx.columnChooser,
+          contextMenu: ctx.contextMenu,
           status: ctx.status,
         },
         ctx.onScroll,
@@ -390,6 +401,7 @@ export function createGridView<T extends object>(
     selection,
     withSelection,
     columnChooser,
+    contextMenu,
     setHidden,
     filterVisible,
     summaryFooter,
@@ -412,6 +424,7 @@ export function createGridView<T extends object>(
     withSelection,
     filterVisible,
     columnChooser,
+    contextMenu,
     setHidden,
     onScroll,
   });

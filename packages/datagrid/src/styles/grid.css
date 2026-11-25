@@ -535,3 +535,34 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__context-menu {
+  position: fixed;
+  z-index: var(--sui-z-toast);
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 160px;
+  padding: var(--sui-space-1);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  box-shadow: var(--sui-shadow-md);
+}
+
+.sui-grid__context-menu button {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: 0;
+  border-radius: var(--sui-radius-sm);
+  background: none;
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  font-size: var(--sui-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.sui-grid__context-menu button:hover,
+.sui-grid__context-menu button:focus-visible {
+  background: var(--sui-color-bg-subtle);
+  outline: none;
+}

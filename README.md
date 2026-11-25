@@ -43,7 +43,7 @@ Isi repositori saat ini:
 - `packages/datagrid` — model & data DG-1: normalisasi opsi/kolom, state
   store, DataController, filter/sort/paging, selection, fokus, key identity,
   error handling, grouping, summary, persistensi state, dan UI
-  header/filter/search/pager/selection/keyboard/column chooser/CSV export/summary; renderer
+  header/filter/search/pager/selection/keyboard/column chooser/CSV export/summary/context menu; renderer
   menyusul DG-2.
 - `packages/icons`, `pivotgrid`, `charts` — placeholder.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
