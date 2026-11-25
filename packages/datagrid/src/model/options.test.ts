@@ -120,3 +120,159 @@ describe('normalizeDataGridOptions — validasi', () => {
     expect(options.display.messages).toEqual({ empty: 'kosong' });
   });
 });
+
+describe('normalizeDataGridOptions — validator per tipe', () => {
+  const relax = () => {
+    const onValidationError = vi.fn();
+    return {
+      onValidationError,
+      context: { devMode: false as const, onValidationError },
+    };
+  };
+
+  it('boolean tidak valid jatuh ke default dan dilaporkan', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      {
+        paging: { enabled: 'yes' as never },
+        showBorders: 'x' as never,
+        rowAlternationEnabled: 1 as never,
+      },
+      context,
+    );
+
+    expect(options.paging.enabled).toBe(false);
+    expect(options.display.showBorders).toBe(true);
+    expect(options.display.rowAlternationEnabled).toBe(false);
+    expect(onValidationError.mock.calls.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('angka dan enum tidak valid memakai fallback', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      {
+        paging: { pageSizes: [10], pageIndex: Number.NaN as never },
+        scrolling: { overscan: -1, columnRenderingMode: 'x' as never },
+        editing: { mode: 'x' as never },
+        grouping: { maxGroupCount: 'x' as never },
+      },
+      context,
+    );
+
+    expect(options.paging.pageIndex).toBe(0);
+    expect(options.scrolling.overscan).toBe(5);
+    expect(options.scrolling.columnRenderingMode).toBe('virtual');
+    expect(options.editing.mode).toBe('none');
+    expect(options.grouping.maxGroupCount).toBe(100);
+    expect(onValidationError).toHaveBeenCalled();
+  });
+
+  it('string dan optional string divalidasi', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      {
+        noDataText: '' as never,
+        export: { fileName: '' as never },
+        locale: 42 as never,
+        stateStoring: { storageKey: '' as never },
+      },
+      context,
+    );
+
+    expect(options.display.noDataText).toBe('Tidak ada data');
+    expect(options.export.fileName).toBe('simpleui-export');
+    expect(options.display.locale).toBeUndefined();
+    expect(options.stateStoring.storageKey).toBe('simpleui-datagrid');
+    expect(onValidationError.mock.calls.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('locale valid dan display width/height dipertahankan', () => {
+    const options = normalizeDataGridOptions({
+      locale: 'id-ID',
+      width: 640,
+      height: '50vh',
+      messages: { empty: 'kosong' },
+      filtering: { filterValue: ['name', 'eq', 'a'] },
+      stateStoring: {
+        storage: {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        },
+      },
+    });
+
+    expect(options.display.locale).toBe('id-ID');
+    expect(options.display.width).toBe(640);
+    expect(options.display.height).toBe('50vh');
+    expect(options.display.messages).toEqual({ empty: 'kosong' });
+    expect(options.filtering.filterValue).toEqual(['name', 'eq', 'a']);
+  });
+
+  it('width/height tidak valid dan messages bukan objek memakai default', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      { width: -1 as never, height: {} as never, messages: 'x' as never },
+      context,
+    );
+
+    expect(options.display.width).toBe('100%');
+    expect(options.display.height).toBe('auto');
+    expect(options.display.messages).toEqual({});
+    expect(onValidationError).toHaveBeenCalledTimes(2);
+  });
+
+  it('array string dan array biasa divalidasi', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      {
+        grouping: { groupBy: [1, 2] as never },
+        filtering: { search: { fields: 'name' as never } },
+        sorting: { sortBy: 'x' as never },
+        summary: { totalItems: 'x' as never },
+      },
+      context,
+    );
+
+    expect(options.grouping.groupBy).toEqual([]);
+    expect(options.filtering.search.fields).toEqual([]);
+    expect(options.sorting.sortBy).toEqual([]);
+    expect(options.summary.totalItems).toEqual([]);
+    expect(onValidationError).toHaveBeenCalledTimes(4);
+  });
+
+  it('columns tidak valid dilaporkan tanpa merusak kolom valid', () => {
+    const { onValidationError, context } = relax();
+    const options = normalizeDataGridOptions(
+      {
+        columns: [
+          null as never,
+          { dataField: 'id', width: 0 },
+          { dataField: 1 as never },
+        ],
+      },
+      context,
+    );
+
+    expect(options.columns).toHaveLength(2);
+    expect(onValidationError.mock.calls.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('array string valid dan keyExpr fungsi diterima', () => {
+    const options = normalizeDataGridOptions({
+      grouping: { groupBy: ['city', 'total'] },
+      filtering: { search: { fields: ['name'] } },
+      keyExpr: (row: { id: number }) => `row-${row.id}`,
+    });
+
+    expect(options.grouping.groupBy).toEqual(['city', 'total']);
+    expect(options.filtering.search.fields).toEqual(['name']);
+    expect(typeof options.keyExpr).toBe('function');
+  });
+
+  it('keyExpr tidak valid ditolak', () => {
+    expect(() =>
+      normalizeDataGridOptions({ keyExpr: [1, 2] as never }),
+    ).toThrowError(/keyExpr/);
+  });
+});

@@ -25,5 +25,5 @@
       "persistent": true
     }
   },
-  "globalEnv": ["SKIP_PERF"]
+  "globalEnv": []
 }
