@@ -61,6 +61,9 @@ const options = normalizeDataGridOptions({
   anak), dan `formatSummary` (locale, `displayFormat`, `customizeText`).
   Nilai dikunci per kolom — satu summary per kolom. Formatter yang melempar
   error menghasilkan `—` dan dilaporkan lewat `onError`.
+- Persistensi: `createStatePersistence` menyimpan snapshot versioned dengan
+  **migrasi** (v0 → v1), autosave debounce, batas ukuran, serta menolak state
+  korup/versi lebih baru sebagai `SUI-DG-008`. Selection tidak dipersistenkan.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
