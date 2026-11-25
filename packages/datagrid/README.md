@@ -44,6 +44,9 @@ const options = normalizeDataGridOptions({
   `encodeKey`/`keyToDomId` stabil dan membedakan `1` vs `"1"`,
   `buildKeyIndex`/`assertUniqueKeys` menolak key duplikat (`SUI-DG-002`) atau
   hilang (`SUI-DG-003`).
+- Selection model: `createSelectionModel` (mode none/single/multiple, range
+  inklusif, select-all halaman/semua, rekonsiliasi key setelah reload, event
+  `selectionChanged` berisi added/removed).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

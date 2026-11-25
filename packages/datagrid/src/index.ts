@@ -53,6 +53,11 @@ export {
   type ValidationIssue,
 } from './model/options.js';
 export {
+  createSelectionModel,
+  type SelectionModel,
+  type SelectionModelOptions,
+} from './model/selection.js';
+export {
   createDefaultState,
   createGridStateStore,
   selectHiddenColumns,
