@@ -83,6 +83,9 @@ const options = normalizeDataGridOptions({
   core) di-mount per sel/header, di-`update` saat baris didaur ulang, dan
   di-`dispose` saat kolom berubah/grid dilepas. Error template dilaporkan lewat
   `onTemplateError` tanpa menghentikan render.
+- Status: `setStatus('loading' | 'empty' | 'no-data' | 'error')` menampilkan
+  overlay (spinner, pesan, tombol retry untuk error retryable) tanpa menghapus
+  baris lama; pesan dapat dioverride lewat `messages`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
