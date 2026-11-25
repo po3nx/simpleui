@@ -3,6 +3,12 @@ import type { SortDescriptor } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
 import { createHeaderController } from './header-controller.js';
+import {
+  createStatusView,
+  type GridStatusKind,
+  type GridStatusOptions,
+  type StatusView,
+} from './status-view.js';
 
 /**
  * Kerangka DOM DataGrid (DG-030) + header interaktif (DG-031).
@@ -22,6 +28,8 @@ export interface GridViewOptions<T extends object> {
     error: unknown,
     phase: 'render' | 'update' | 'dispose',
   ) => void;
+  readonly messages?: Readonly<Record<string, string>> | undefined;
+  readonly onRetry?: (() => void) | undefined;
   readonly onScroll?: (scrollTop: number) => void;
 }
 
@@ -33,6 +41,8 @@ export interface GridView<T extends object> {
   readonly rowsElement: HTMLElement;
   readonly footerElement: HTMLElement;
   readonly liveElement: HTMLElement;
+  readonly status: StatusView;
+  setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
   setRowCount(count: number): void;
   setColumns(columns: readonly ColumnState<T>[]): void;
   setSorting(sortBy: readonly SortDescriptor[]): void;
@@ -101,6 +111,18 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   };
 }
 
+function createStatus<T extends object>(
+  options: GridViewOptions<T>,
+  element: HTMLElement,
+): StatusView {
+  const status = createStatusView({
+    messages: options.messages,
+    onRetry: options.onRetry,
+  });
+  element.append(status.element);
+  return status;
+}
+
 export function createGridView<T extends object>(
   options: GridViewOptions<T>,
 ): GridView<T> {
@@ -125,6 +147,8 @@ export function createGridView<T extends object>(
     onTemplateError: options.onTemplateError,
   });
 
+  const status = createStatus(options, dom.element);
+
   header.render(options.columns);
   options.container.append(dom.element);
   // Ukuran viewport baru diketahui setelah elemen masuk DOM.
@@ -142,6 +166,11 @@ export function createGridView<T extends object>(
 
   return {
     ...dom,
+    status,
+    setStatus(kind, statusOptions) {
+      if (kind === null) status.hide();
+      else status.show(kind, statusOptions);
+    },
     setRowCount(count) {
       rowCount = Math.max(0, Math.floor(count));
       setAttributes(dom.element, { 'aria-rowcount': rowCount });
@@ -153,6 +182,7 @@ export function createGridView<T extends object>(
     dispose() {
       dom.viewportElement.removeEventListener('scroll', onScroll);
       header.dispose();
+      status.dispose();
       dom.element.remove();
     },
   };

@@ -13,6 +13,13 @@ export {
   type CellFormatOptions,
 } from './view/cell-renderer.js';
 export {
+  createStatusView,
+  DEFAULT_STATUS_MESSAGES,
+  type GridStatusKind,
+  type GridStatusOptions,
+  type StatusView,
+} from './view/status-view.js';
+export {
   computeColumnLayout,
   type ColumnLayout,
   type ColumnLayoutEntry,
