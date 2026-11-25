@@ -111,6 +111,9 @@ const options = normalizeDataGridOptions({
 - Selection: `selectionMode: 'single' | 'multiple'` + `rowKey`; kolom checkbox
   (`grid.selectionColumn`) untuk dipakai row renderer, select-all halaman
   dengan indeterminate, Shift+klik range, dan `onSelectionChange`/`setSelection`.
+- Keyboard: `attachGridKeyboard` (otomatis lewat `focus` di row renderer):
+  panah, Home/End, Ctrl/Cmd+Home/End, PageUp/PageDown, roving tabindex,
+  perpindahan header ↔ baris; input filter/search tidak diambil alih.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

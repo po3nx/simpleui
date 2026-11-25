@@ -2,6 +2,9 @@ import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { cellValueFor, formatRowCell } from './cell-renderer.js';
+import type { FocusModel } from '../model/focus.js';
+import { keyToDomId } from '../model/key.js';
+import { attachGridKeyboard } from './keyboard.js';
 import { TemplateManager } from './template-manager.js';
 import {
   computeColumnLayout,
@@ -29,6 +32,7 @@ export interface RowRendererOptions<T extends object> {
     error: unknown,
     phase: 'render' | 'update' | 'dispose',
   ) => void;
+  readonly focus?: FocusModel | undefined;
 }
 
 export interface RowRenderer<T extends object> {
@@ -90,6 +94,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #layoutSignature = '';
   #disposed = false;
   readonly #templates: TemplateManager;
+  readonly #detachKeyboard: (() => void) | undefined;
 
   constructor(options: RowRendererOptions<T>) {
     this.#options = options;
@@ -100,6 +105,15 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#templates = new TemplateManager(
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
+    this.#detachKeyboard = options.focus
+      ? attachGridKeyboard({
+          element: options.gridElement,
+          viewportElement: options.viewportElement,
+          focus: options.focus,
+          getRowKeys: () => this.#rows.map((row) => options.keyOf(row)),
+          rowHeight: this.#rowHeight,
+        })
+      : undefined;
     this.#virtualizer = new Virtualizer({
       itemCount: this.#rows.length,
       itemSize: this.#rowHeight,
@@ -221,12 +235,15 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   ): void {
     rowElement.hidden = false;
     rowElement.setAttribute('aria-rowindex', String(index + 1));
-    rowElement.setAttribute('data-row-key', String(this.#options.keyOf(row)));
+    const rowKey = this.#options.keyOf(row);
+    rowElement.setAttribute('data-row-key', String(rowKey));
     rowElement.classList.toggle('sui-grid__row--even', index % 2 === 1);
 
     entries.forEach((entry, cellIndex) => {
       const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
       if (!cell) return;
+      cell.id = `${keyToDomId(rowKey)}-${encodeURIComponent(entry.column.id)}`;
+      if (!cell.hasAttribute('tabindex')) cell.tabIndex = -1;
 
       const template = entry.column.cellTemplate;
       if (template) {
@@ -290,6 +307,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     if (this.#disposed) return;
     this.#disposed = true;
     this.#options.viewportElement.removeEventListener('scroll', this.#onScroll);
+    this.#detachKeyboard?.();
     this.#templates.dispose();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;
