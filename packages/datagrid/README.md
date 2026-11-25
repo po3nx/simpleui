@@ -69,6 +69,9 @@ const options = normalizeDataGridOptions({
   Impor `@simpleui/datagrid/styles.css` untuk layout; semua warna/ukuran dari
   token `@simpleui/theme`. Header sudah mendukung sort (klik/shift+klik,
   `aria-sort`, indikator multi-sort) dan penanda filter.
+- `createRowRenderer` memvirtualkan baris: hanya baris di viewport + overscan
+  yang ada di DOM, node didaur ulang, `aria-rowindex` absolut, dan **scroll
+  anchoring** mempertahankan baris terlihat saat data berubah.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

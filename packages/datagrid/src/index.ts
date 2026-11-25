@@ -5,6 +5,11 @@ export const DATAGRID_VERSION = '0.0.0';
 
 export { DataGridError, isDataGridError } from './errors.js';
 export {
+  createRowRenderer,
+  type RowRenderer,
+  type RowRendererOptions,
+} from './view/row-renderer.js';
+export {
   createGridView,
   type GridView,
   type GridViewOptions,
