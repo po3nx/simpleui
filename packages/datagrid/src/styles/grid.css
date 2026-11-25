@@ -296,3 +296,44 @@
   outline-offset: calc(-1 * var(--sui-border-width-thick));
   background: var(--sui-color-accent-subtle);
 }
+
+.sui-grid__row--filter {
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-strong);
+  background: var(--sui-color-bg-surface);
+}
+
+.sui-grid__filter-cell {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--sui-space-1);
+  align-items: center;
+  min-inline-size: 0;
+  padding: var(--sui-space-1);
+}
+
+.sui-grid__filter-operator,
+.sui-grid__filter-input {
+  min-inline-size: 0;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__filter-operator {
+  flex: 0 0 auto;
+  max-inline-size: 45%;
+}
+
+.sui-grid__filter-input {
+  flex: 1;
+}
+
+.sui-grid__filter-input:focus-visible,
+.sui-grid__filter-operator:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}

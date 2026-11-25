@@ -6,6 +6,8 @@ import {
   createHeaderController,
   type HeaderController,
 } from './header-controller.js';
+import type { FilterExpression } from '@simpleui/core';
+import { createFilterRow, type FilterRow } from './filter-row.js';
 import {
   createStatusView,
   type GridStatusKind,
@@ -36,6 +38,10 @@ export interface GridViewOptions<T extends object> {
   readonly onColumnResize?:
     ((columnId: string, width: number) => void) | undefined;
   readonly onColumnReorder?: ((order: readonly string[]) => void) | undefined;
+  readonly filterRow?: boolean;
+  readonly filterValue?: FilterExpression | null | undefined;
+  readonly onFilterChange?:
+    ((filter: FilterExpression | null) => void) | undefined;
   readonly onScroll?: (scrollTop: number) => void;
 }
 
@@ -48,7 +54,9 @@ export interface GridView<T extends object> {
   readonly footerElement: HTMLElement;
   readonly liveElement: HTMLElement;
   readonly status: StatusView;
+  readonly filterRow: FilterRow | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
+  setFilterValue(filter: FilterExpression | null): void;
   setRowCount(count: number): void;
   setColumns(columns: readonly ColumnState<T>[]): void;
   setSorting(sortBy: readonly SortDescriptor[]): void;
@@ -118,6 +126,40 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   };
 }
 
+function createFilter<T extends object>(
+  options: GridViewOptions<T>,
+): FilterRow | undefined {
+  if (!options.filterRow) return undefined;
+  const row = createFilterRow({
+    columns: options.columns as never,
+    filterValue: options.filterValue,
+    onFilterChange: options.onFilterChange,
+  });
+  if (options.filterValue) row.setFilterValue(options.filterValue);
+  return row;
+}
+
+function createHeader<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+  filterRow: FilterRow | undefined,
+): HeaderController<T> {
+  return createHeaderController<T>({
+    element: dom.element,
+    headerElement: dom.headerElement,
+    viewportElement: dom.viewportElement,
+    columns: options.columns,
+    sortBy: options.sortBy,
+    filteredColumns: options.filteredColumns,
+    onSortChange: options.onSortChange,
+    onTemplateError: options.onTemplateError,
+    onColumnResize: options.onColumnResize,
+    onColumnReorder: options.onColumnReorder,
+    liveElement: dom.liveElement,
+    extraHeaderElement: filterRow?.element,
+  });
+}
+
 function createScrollHandler<T extends object>(
   dom: Skeleton,
   header: HeaderController<T>,
@@ -158,19 +200,13 @@ export function createGridView<T extends object>(
     footer: Boolean(options.footer),
   });
 
-  const header = createHeaderController<T>({
-    element: dom.element,
-    headerElement: dom.headerElement,
-    viewportElement: dom.viewportElement,
-    columns: options.columns,
-    sortBy: options.sortBy,
-    filteredColumns: options.filteredColumns,
-    onSortChange: options.onSortChange,
-    onTemplateError: options.onTemplateError,
-    onColumnResize: options.onColumnResize,
-    onColumnReorder: options.onColumnReorder,
-    liveElement: dom.liveElement,
-  });
+  const filterRow = createFilter(options);
+  const header = createHeader(options, dom, filterRow);
+
+  header.render(options.columns);
+  options.container.append(dom.element);
+  // Ukuran viewport baru diketahui setelah elemen masuk DOM.
+  header.render(options.columns);
 
   const status = createStatus(options, dom.element);
 
@@ -185,6 +221,10 @@ export function createGridView<T extends object>(
   return {
     ...dom,
     status,
+    filterRow,
+    setFilterValue(filter) {
+      filterRow?.setFilterValue(filter);
+    },
     setStatus(kind, statusOptions) {
       if (kind === null) status.hide();
       else status.show(kind, statusOptions);
@@ -194,13 +234,17 @@ export function createGridView<T extends object>(
       setAttributes(dom.element, { 'aria-rowcount': rowCount });
       setStyle(dom.spacerElement, 'block-size', `${rowCount * rowHeight}px`);
     },
-    setColumns: (next) => header.render(next),
+    setColumns: (next) => {
+      header.render(next);
+      filterRow?.setColumns(next as never);
+    },
     setSorting: (next) => header.setSorting(next),
     clearSorting: () => header.clearSorting(),
     setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
     dispose() {
       dom.viewportElement.removeEventListener('scroll', onScroll);
       header.dispose();
+      filterRow?.dispose();
       status.dispose();
       dom.element.remove();
     },

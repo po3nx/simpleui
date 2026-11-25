@@ -96,6 +96,9 @@ const options = normalizeDataGridOptions({
   multi-sort, **Ctrl/Cmd+klik** atau `clearSorting()` untuk reset semua;
   perubahan diumumkan ke live region dan descriptor dibuang bila kolomnya
   tidak lagi tersedia.
+- Filter row: aktif via `filterRow: true`; input + operator sesuai `dataType`
+  (`contains`, `gt`, `eq`, …), kondisi antar kolom digabung `and`, dan
+  dilaporkan lewat `onFilterChange`; `setFilterValue` untuk mode controlled.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
