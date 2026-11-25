@@ -25,6 +25,10 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  attachGridKeyboard,
+  type GridKeyboardOptions,
+} from './view/keyboard.js';
+export {
   createSelectionColumn,
   SELECTION_COLUMN_ID,
   type SelectionColumnOptions,
