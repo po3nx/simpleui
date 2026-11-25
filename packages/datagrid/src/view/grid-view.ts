@@ -10,6 +10,7 @@ import type { FilterExpression } from '@simpleui/core';
 import { createFilterRow, type FilterRow } from './filter-row.js';
 import { createSearchPanel, type SearchPanel } from './search-panel.js';
 import { createPager, type Pager, type PagingState } from './pager.js';
+import { createColumnChooser, type ColumnChooser } from './column-chooser.js';
 import {
   createSelectionColumn,
   type SelectionColumnOptions,
@@ -57,6 +58,10 @@ export interface GridViewOptions<T extends object> {
   readonly selectedKeys?: readonly Key[] | undefined;
   readonly getVisibleKeys?: (() => readonly Key[]) | undefined;
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
+  readonly columnChooser?: boolean;
+  readonly hiddenColumns?: readonly string[] | undefined;
+  readonly onVisibilityChange?:
+    ((hidden: readonly string[]) => void) | undefined;
   readonly pager?: boolean;
   readonly pageIndex?: number;
   readonly pageSize?: number;
@@ -84,7 +89,9 @@ export interface GridView<T extends object> {
   readonly searchPanel: SearchPanel | undefined;
   readonly pager: Pager | undefined;
   readonly selectionColumn: ColumnState<T> | undefined;
+  readonly columnChooser: ColumnChooser | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
+  setHiddenColumns(columnIds: readonly string[]): void;
   setSelection(keys: readonly Key[]): void;
   setPaging(state: PagingState): void;
   setFilterValue(filter: FilterExpression | null): void;
@@ -291,6 +298,35 @@ interface Interactive<T extends object> {
   readonly withSelection: (
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
+  readonly columnChooser: ColumnChooser | undefined;
+  readonly setHidden: (columnIds: readonly string[]) => void;
+  readonly filterVisible: (
+    columns: readonly ColumnState<T>[],
+  ) => readonly ColumnState<T>[];
+}
+
+interface Disposables {
+  readonly header: { dispose(): void };
+  readonly filterRow: FilterRow | undefined;
+  readonly searchPanel: SearchPanel | undefined;
+  readonly pager: Pager | undefined;
+  readonly columnChooser: ColumnChooser | undefined;
+  readonly status: StatusView;
+}
+
+function disposeGrid(
+  dom: Skeleton,
+  parts: Disposables,
+  onScroll: () => void,
+): void {
+  dom.viewportElement.removeEventListener('scroll', onScroll);
+  parts.header.dispose();
+  parts.filterRow?.dispose();
+  parts.searchPanel?.dispose();
+  parts.pager?.dispose();
+  parts.columnChooser?.dispose();
+  parts.status.dispose();
+  dom.element.remove();
 }
 
 function mountGrid<T extends object>(
@@ -305,6 +341,21 @@ function mountGrid<T extends object>(
   header.render(columns);
 }
 
+function applyRowCount(dom: Skeleton, rowHeight: number, count: number): void {
+  const next = Math.max(0, Math.floor(count));
+  setAttributes(dom.element, { 'aria-rowcount': next });
+  setStyle(dom.spacerElement, 'block-size', `${next * rowHeight}px`);
+}
+
+function applyStatus(
+  status: StatusView,
+  kind: GridStatusKind | null,
+  options?: GridStatusOptions,
+): void {
+  if (kind === null) status.hide();
+  else status.show(kind, options);
+}
+
 function createInteractive<T extends object>(
   options: GridViewOptions<T>,
   dom: Skeleton,
@@ -312,12 +363,19 @@ function createInteractive<T extends object>(
   const searchPanel = createSearch(options);
   const filterRow = createFilter(options);
   const pager = attachPager(options, dom);
+  const hidden = new Set(options.hiddenColumns ?? []);
   let refreshSelection = (): void => {};
   const selection = createSelectionState(options, () => refreshSelection());
-  const withSelection = (
+  const filterVisible = (
     columns: readonly ColumnState<T>[],
   ): readonly ColumnState<T>[] =>
-    selection ? [selection.column, ...columns] : columns;
+    columns.filter((column) => !hidden.has(column.id));
+  const withSelection = (
+    columns: readonly ColumnState<T>[],
+  ): readonly ColumnState<T>[] => {
+    const visible = filterVisible(columns);
+    return selection ? [selection.column, ...visible] : visible;
+  };
   const header = createHeader(
     options,
     dom,
@@ -325,7 +383,34 @@ function createInteractive<T extends object>(
     withSelection(options.columns),
   );
   refreshSelection = () => header.render(withSelection(options.columns));
-  return { searchPanel, filterRow, pager, header, selection, withSelection };
+
+  function setHidden(columnIds: readonly string[]): void {
+    hidden.clear();
+    columnIds.forEach((id) => hidden.add(id));
+    options.onVisibilityChange?.([...hidden]);
+    header.render(withSelection(options.columns));
+  }
+
+  const columnChooser = options.columnChooser
+    ? createColumnChooser({
+        getColumns: () => options.columns as readonly ColumnState<unknown>[],
+        getHidden: () => hidden,
+        onChange: setHidden,
+      })
+    : undefined;
+  if (columnChooser) dom.element.prepend(columnChooser.element);
+
+  return {
+    searchPanel,
+    filterRow,
+    pager,
+    header,
+    selection,
+    withSelection,
+    columnChooser,
+    setHidden,
+    filterVisible,
+  };
 }
 
 function createHeader<T extends object>(
@@ -389,65 +474,58 @@ export function createGridView<T extends object>(
   options: GridViewOptions<T>,
 ): GridView<T> {
   const rowHeight = options.rowHeight ?? DEFAULT_ROW_HEIGHT;
-  let rowCount = options.rowCount;
-
   const dom = createSkeleton({
-    rowCount,
+    rowCount: options.rowCount,
     rowHeight,
     rtl: Boolean(options.rtl),
     footer: Boolean(options.footer),
   });
-
-  const { searchPanel, filterRow, pager, header, selection, withSelection } =
-    createInteractive(options, dom);
-
+  const {
+    searchPanel,
+    filterRow,
+    pager,
+    header,
+    selection,
+    withSelection,
+    columnChooser,
+    setHidden,
+    filterVisible,
+  } = createInteractive(options, dom);
   mountGrid(options, dom, header, withSelection(options.columns));
 
   const status = createStatus(options, dom.element);
-
   const onScroll = createScrollHandler(dom, header, options);
-
   return {
     ...dom,
     status,
     filterRow,
     searchPanel,
     pager,
-    setFilterValue(filter) {
-      filterRow?.setFilterValue(filter);
-    },
-    setPaging(state) {
-      pager?.setState(state);
-    },
-    setStatus(kind, statusOptions) {
-      if (kind === null) status.hide();
-      else status.show(kind, statusOptions);
-    },
-    setRowCount(count) {
-      rowCount = Math.max(0, Math.floor(count));
-      setAttributes(dom.element, { 'aria-rowcount': rowCount });
-      setStyle(dom.spacerElement, 'block-size', `${rowCount * rowHeight}px`);
-    },
+    setFilterValue: (filter) => filterRow?.setFilterValue(filter),
+    setPaging: (state) => pager?.setState(state),
+    setStatus: (kind, statusOptions) =>
+      applyStatus(status, kind, statusOptions),
+    setRowCount: (count) => applyRowCount(dom, rowHeight, count),
     setColumns: (next) => {
       header.render(withSelection(next));
-      filterRow?.setColumns(next as never);
-      if (!options.searchFields) searchPanel?.setFields(searchableFields(next));
+      const visible = filterVisible(next);
+      filterRow?.setColumns(visible as never);
+      if (!options.searchFields) {
+        searchPanel?.setFields(searchableFields(visible));
+      }
     },
     selectionColumn: selection?.column,
-    setSelection(keys) {
-      selection?.setKeys(keys);
-    },
+    columnChooser,
+    setSelection: (keys) => selection?.setKeys(keys),
+    setHiddenColumns: (columnIds) => setHidden(columnIds),
     setSorting: (next) => header.setSorting(next),
     clearSorting: () => header.clearSorting(),
     setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
-    dispose() {
-      dom.viewportElement.removeEventListener('scroll', onScroll);
-      header.dispose();
-      filterRow?.dispose();
-      searchPanel?.dispose();
-      pager?.dispose();
-      status.dispose();
-      dom.element.remove();
-    },
+    dispose: () =>
+      disposeGrid(
+        dom,
+        { header, filterRow, searchPanel, pager, columnChooser, status },
+        onScroll,
+      ),
   };
 }

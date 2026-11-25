@@ -114,6 +114,9 @@ const options = normalizeDataGridOptions({
 - Keyboard: `attachGridKeyboard` (otomatis lewat `focus` di row renderer):
   panah, Home/End, Ctrl/Cmd+Home/End, PageUp/PageDown, roving tabindex,
   perpindahan header ↔ baris; input filter/search tidak diambil alih.
+- Column chooser: `columnChooser: true` + `hiddenColumns`; panel checkbox
+  visibilitas (dan "Tampilkan semua"), `onVisibilityChange` untuk diteruskan
+  ke state store/persistensi, serta `setHiddenColumns`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

@@ -468,3 +468,70 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  background: var(--sui-color-bg-surface);
+}
+
+.sui-grid__chooser-button {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  font-size: var(--sui-font-size-sm);
+  cursor: pointer;
+}
+
+.sui-grid__chooser-panel {
+  position: fixed;
+  z-index: var(--sui-z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sui-space-1);
+  inline-size: 240px;
+  max-block-size: 320px;
+  padding: var(--sui-space-2);
+  overflow: auto;
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  box-shadow: var(--sui-shadow-md);
+}
+
+.sui-grid__chooser-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sui-grid__chooser-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sui-space-1);
+  padding: var(--sui-space-1);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__chooser-all {
+  padding: var(--sui-space-1);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-subtle);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  font-size: var(--sui-font-size-sm);
+  cursor: pointer;
+}
+
+.sui-grid__chooser-button:focus-visible,
+.sui-grid__chooser-option input:focus-visible,
+.sui-grid__chooser-all:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
