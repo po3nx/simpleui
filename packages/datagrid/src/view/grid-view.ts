@@ -18,6 +18,10 @@ export interface GridViewOptions<T extends object> {
   readonly sortBy?: readonly SortDescriptor[];
   readonly filteredColumns?: readonly string[];
   readonly onSortChange?: (sortBy: readonly SortDescriptor[]) => void;
+  readonly onTemplateError?: (
+    error: unknown,
+    phase: 'render' | 'update' | 'dispose',
+  ) => void;
   readonly onScroll?: (scrollTop: number) => void;
 }
 
@@ -118,6 +122,7 @@ export function createGridView<T extends object>(
     sortBy: options.sortBy,
     filteredColumns: options.filteredColumns,
     onSortChange: options.onSortChange,
+    onTemplateError: options.onTemplateError,
   });
 
   header.render(options.columns);
@@ -147,6 +152,7 @@ export function createGridView<T extends object>(
     setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
     dispose() {
       dom.viewportElement.removeEventListener('scroll', onScroll);
+      header.dispose();
       dom.element.remove();
     },
   };

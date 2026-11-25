@@ -1,7 +1,8 @@
 import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
-import { formatRowCell } from './cell-renderer.js';
+import { cellValueFor, formatRowCell } from './cell-renderer.js';
+import { TemplateManager } from './template-manager.js';
 import {
   computeColumnLayout,
   type ColumnLayoutEntry,
@@ -24,6 +25,10 @@ export interface RowRendererOptions<T extends object> {
   readonly overscan?: number;
   readonly locale?: string;
   readonly emptyText?: string;
+  readonly onTemplateError?: (
+    error: unknown,
+    phase: 'render' | 'update' | 'dispose',
+  ) => void;
 }
 
 export interface RowRenderer<T extends object> {
@@ -84,6 +89,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #columns: readonly ColumnState<T>[];
   #layoutSignature = '';
   #disposed = false;
+  readonly #templates: TemplateManager;
 
   constructor(options: RowRendererOptions<T>) {
     this.#options = options;
@@ -91,6 +97,9 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#overscan = options.overscan ?? 5;
     this.#rows = options.rows;
     this.#columns = getVisibleColumns(options.columns);
+    this.#templates = new TemplateManager(
+      options.onTemplateError ? { onError: options.onTemplateError } : {},
+    );
     this.#virtualizer = new Virtualizer({
       itemCount: this.#rows.length,
       itemSize: this.#rowHeight,
@@ -166,6 +175,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
       .join('|');
     if (signature === this.#layoutSignature) return false;
 
+    this.#templates.clear();
     this.#pool.forEach((rowElement) => {
       rowElement.replaceChildren();
       entries.forEach((entry) => {
@@ -217,6 +227,23 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     entries.forEach((entry, cellIndex) => {
       const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
       if (!cell) return;
+
+      const template = entry.column.cellTemplate;
+      if (template) {
+        this.#templates.mount(cell, template, {
+          data: row,
+          row,
+          column: {
+            field: entry.column.dataField ?? entry.column.id,
+            caption: entry.column.caption,
+          },
+          index,
+          value: cellValueFor(row, entry.column),
+        });
+        return;
+      }
+
+      this.#templates.unmount(cell);
       const text = formatRowCell(row, entry.column, {
         locale: this.#options.locale,
         placeholder: this.#options.emptyText,
@@ -247,8 +274,11 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   setColumns(next: readonly ColumnState<T>[]): void {
     if (this.#disposed) return;
     this.#columns = getVisibleColumns(next);
+    // Lepas template lama sebelum node dibuang, lalu bangun ulang struktur sel.
+    this.#templates.clear();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;
+    this.#layoutSignature = '';
     this.#render();
   }
 
@@ -260,6 +290,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     if (this.#disposed) return;
     this.#disposed = true;
     this.#options.viewportElement.removeEventListener('scroll', this.#onScroll);
+    this.#templates.dispose();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;
   }

@@ -1,5 +1,5 @@
 import { setAttributes } from '@simpleui/core';
-import type { SortDescriptor } from '@simpleui/core';
+import type { SortDescriptor, TemplateRenderer } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { toggleSort } from '../data/sort.js';
@@ -8,11 +8,34 @@ import {
   createHeaderRow,
   type HeaderRenderContext,
 } from './header-renderer.js';
+import { TemplateManager } from './template-manager.js';
 
 /**
  * Kontrol header (DG-031/DG-033): state sort/filter, layout kolom virtual,
  * shadow tepi, dan aria-colcount.
  */
+
+function mountHeaderTemplate(
+  templates: TemplateManager,
+  container: HTMLElement,
+  column: HeaderColumnLike,
+  index: number,
+): void {
+  const template = column.headerCellTemplate;
+  if (!template) return;
+  templates.mount(container, template, {
+    column: { field: column.dataField ?? column.id, caption: column.caption },
+    index,
+    value: column.caption,
+  } as never);
+}
+
+interface HeaderColumnLike {
+  readonly id: string;
+  readonly dataField?: string | undefined;
+  readonly caption: string;
+  readonly headerCellTemplate: TemplateRenderer | undefined;
+}
 
 export interface HeaderControllerOptions<T extends object> {
   readonly element: HTMLElement;
@@ -23,12 +46,16 @@ export interface HeaderControllerOptions<T extends object> {
   readonly filteredColumns?: readonly string[] | undefined;
   readonly onSortChange?:
     ((sortBy: readonly SortDescriptor[]) => void) | undefined;
+  readonly onTemplateError?:
+    | ((error: unknown, phase: 'render' | 'update' | 'dispose') => void)
+    | undefined;
 }
 
 export interface HeaderController<T extends object> {
   render(columns: readonly ColumnState<T>[]): void;
   setSorting(sortBy: readonly SortDescriptor[]): void;
   setFilteredColumns(columnIds: readonly string[]): void;
+  dispose(): void;
 }
 
 export function createHeaderController<T extends object>(
@@ -36,6 +63,9 @@ export function createHeaderController<T extends object>(
 ): HeaderController<T> {
   let sortBy: readonly SortDescriptor[] = options.sortBy ?? [];
   let filtered = new Set(options.filteredColumns ?? []);
+  const templates = new TemplateManager(
+    options.onTemplateError ? { onError: options.onTemplateError } : {},
+  );
 
   const context = (): HeaderRenderContext => ({
     sortBy,
@@ -46,6 +76,8 @@ export function createHeaderController<T extends object>(
       render(options.columns);
       options.onSortChange?.(next);
     },
+    mountTemplate: (container, column, index) =>
+      mountHeaderTemplate(templates, container, column, index),
   });
 
   const render = (columns: readonly ColumnState<T>[]): void => {
@@ -61,6 +93,7 @@ export function createHeaderController<T extends object>(
       layout.shadowStart,
     );
     options.element.classList.toggle('sui-grid--shadow-end', layout.shadowEnd);
+    templates.clear();
     const row = createHeaderRow<T>(layout.columns, context());
     row.style.minInlineSize = `${layout.totalWidth}px`;
     options.headerElement.replaceChildren(row);
@@ -75,6 +108,9 @@ export function createHeaderController<T extends object>(
     setFilteredColumns(columnIds) {
       filtered = new Set(columnIds);
       render(options.columns);
+    },
+    dispose() {
+      templates.dispose();
     },
   };
 }
