@@ -220,6 +220,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 5.1.1
         version: 5.1.1(@vitest/browser@5.1.1)(vitest@5.1.1)
+      axe-core:
+        specifier: 4.11.0
+        version: 4.11.0
       eslint:
         specifier: 10.15.0
         version: 10.15.0(supports-color@7.2.0)
@@ -423,6 +426,9 @@ importers:
       '@simpleui/testing':
         specifier: workspace:*
         version: link:../testing
+      '@simpleui/vanilla':
+        specifier: workspace:*
+        version: link:../adapter-vanilla
       '@types/react':
         specifier: ^19.2.0
         version: 19.3.0
@@ -1483,6 +1489,10 @@ packages:
 
   ast-v8-to-istanbul@1.0.8:
     resolution: {integrity: sha512-lPdpagk13ANXV+HClJEpCZM7kUsl5XcvgqKzZhaj6Ve1ZFICcY2sGhAN1n1vT0tML6EclT7bfVgTxqL57Gkpow==}
+
+  axe-core@4.11.0:
+    resolution: {integrity: sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==}
+    engines: {node: '>=4'}
 
   axe-core@4.11.4:
     resolution: {integrity: sha512-KunSNx+TVpkAw/6ULfhnx+HWRecjqZGTOyquAoWHYLRSdK1tB5Ihce1ZW+UY3fj33bYAFWPu7W/GRSmmrCGuxA==}
@@ -3191,6 +3201,8 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       estree-walker: 3.0.3
       js-tokens: 10.0.1
+
+  axe-core@4.11.0: {}
 
   axe-core@4.11.4: {}
 

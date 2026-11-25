@@ -94,7 +94,8 @@ describe('summary footer — render', () => {
     const { container, grid, footer } = setup();
     expect(footer()).not.toBeUndefined();
     expect(grid.pager).toBeDefined();
-    expect(grid.footerElement.querySelector('.sui-grid__pager')).not.toBeNull();
+    expect(grid.pager?.element).toBeDefined();
+    expect(grid.host.querySelector('.sui-grid__pager')).not.toBeNull();
     grid.dispose();
     container.remove();
   });

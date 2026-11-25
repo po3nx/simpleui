@@ -90,6 +90,7 @@ export interface GridViewOptions<T extends object> {
 }
 
 export interface GridView<T extends object> {
+  readonly host: HTMLElement;
   readonly element: HTMLElement;
   readonly headerElement: HTMLElement;
   readonly viewportElement: HTMLElement;
@@ -121,6 +122,7 @@ export interface GridView<T extends object> {
 const DEFAULT_ROW_HEIGHT = 40;
 
 export interface Skeleton {
+  readonly host: HTMLElement;
   readonly element: HTMLElement;
   readonly headerElement: HTMLElement;
   readonly viewportElement: HTMLElement;
@@ -138,9 +140,13 @@ interface SkeletonConfig {
 }
 
 function createSkeleton(config: SkeletonConfig): Skeleton {
-  const element = createElement('div', { className: 'sui-grid' });
+  const host = createElement('div', { className: 'sui-grid' });
+  const element = createElement('div', { className: 'sui-grid__grid' });
   setAttributes(element, { role: 'grid', 'aria-rowcount': config.rowCount });
-  if (config.rtl) setAttributes(element, { dir: 'rtl' });
+  if (config.rtl) {
+    setAttributes(host, { dir: 'rtl' });
+    setAttributes(element, { dir: 'rtl' });
+  }
 
   const headerElement = createElement('div', { className: 'sui-grid__header' });
   setAttributes(headerElement, { role: 'rowgroup' });
@@ -148,8 +154,11 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   const viewportElement = createElement('div', {
     className: 'sui-grid__viewport',
   });
+  setAttributes(viewportElement, { role: 'presentation' });
   const spacerElement = createElement('div', { className: 'sui-grid__spacer' });
+  setAttributes(spacerElement, { role: 'presentation' });
   const rowsElement = createElement('div', { className: 'sui-grid__rows' });
+  setAttributes(rowsElement, { role: 'presentation' });
   setStyle(
     spacerElement,
     'block-size',
@@ -166,9 +175,11 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   setAttributes(liveElement, { 'aria-live': 'polite', 'aria-atomic': 'true' });
 
   viewportElement.append(headerElement, spacerElement, footerElement);
-  element.append(viewportElement, liveElement);
+  element.append(viewportElement);
+  host.append(element, liveElement);
 
   return {
+    host,
     element,
     headerElement,
     viewportElement,
@@ -222,7 +233,7 @@ function disposeGrid(
   parts.columnChooser?.dispose();
   parts.contextMenu?.dispose();
   parts.status.dispose();
-  dom.element.remove();
+  dom.host.remove();
 }
 
 function mountGrid<T extends object>(
@@ -232,7 +243,7 @@ function mountGrid<T extends object>(
   columns: readonly ColumnState<T>[],
 ): void {
   header.render(columns);
-  options.container.append(dom.element);
+  options.container.append(dom.host);
   // Ukuran viewport baru diketahui setelah elemen masuk DOM.
   header.render(columns);
 }
@@ -295,7 +306,7 @@ function createInteractive<T extends object>(
         onChange: setHidden,
       })
     : undefined;
-  if (columnChooser) dom.element.prepend(columnChooser.element);
+  if (columnChooser) dom.host.prepend(columnChooser.element);
   const contextMenu = options.contextMenu
     ? attachContextMenu(dom.element)
     : undefined;
@@ -408,7 +419,7 @@ export function createGridView<T extends object>(
   } = createInteractive(options, dom);
   mountGrid(options, dom, header, withSelection(options.columns));
 
-  const status = createStatus(options, dom.element);
+  const status = createStatus(options, dom.host);
   const onScroll = createScrollHandler(dom, header, options);
   return createGridApi({
     options,

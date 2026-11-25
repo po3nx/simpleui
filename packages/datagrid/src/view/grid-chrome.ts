@@ -65,8 +65,7 @@ export function attachPager<T extends object>(
     pageSizes: options.pageSizes,
     onPageChange: options.onPageChange,
   });
-  dom.footerElement.hidden = false;
-  dom.footerElement.append(pager.element);
+  dom.host.append(pager.element);
   return pager;
 }
 
