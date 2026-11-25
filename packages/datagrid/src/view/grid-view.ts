@@ -9,6 +9,7 @@ import {
 import type { FilterExpression } from '@simpleui/core';
 import { createFilterRow, type FilterRow } from './filter-row.js';
 import { createSearchPanel, type SearchPanel } from './search-panel.js';
+import { createPager, type Pager, type PagingState } from './pager.js';
 import {
   createStatusView,
   type GridStatusKind,
@@ -47,6 +48,14 @@ export interface GridViewOptions<T extends object> {
   readonly searchFields?: readonly string[];
   readonly onSearchChange?:
     ((query: string, fields: readonly string[]) => void) | undefined;
+  readonly pager?: boolean;
+  readonly pageIndex?: number;
+  readonly pageSize?: number;
+  readonly pageSizes?: readonly number[];
+  readonly totalCount?: number | null | undefined;
+  readonly itemCount?: number | undefined;
+  readonly onPageChange?:
+    ((state: { pageIndex: number; pageSize: number }) => void) | undefined;
   readonly filterValue?: FilterExpression | null | undefined;
   readonly onFilterChange?:
     ((filter: FilterExpression | null) => void) | undefined;
@@ -64,7 +73,9 @@ export interface GridView<T extends object> {
   readonly status: StatusView;
   readonly filterRow: FilterRow | undefined;
   readonly searchPanel: SearchPanel | undefined;
+  readonly pager: Pager | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
+  setPaging(state: PagingState): void;
   setFilterValue(filter: FilterExpression | null): void;
   setRowCount(count: number): void;
   setColumns(columns: readonly ColumnState<T>[]): void;
@@ -168,6 +179,28 @@ function createFilter<T extends object>(
   return row;
 }
 
+function attachPager<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+): Pager | undefined {
+  if (!options.pager) return undefined;
+  const pager = createPager({
+    pageIndex: options.pageIndex ?? 0,
+    pageSize: options.pageSize ?? 20,
+    ...(options.totalCount !== undefined
+      ? { totalCount: options.totalCount }
+      : {}),
+    ...(options.itemCount !== undefined
+      ? { itemCount: options.itemCount }
+      : {}),
+    pageSizes: options.pageSizes,
+    onPageChange: options.onPageChange,
+  });
+  dom.footerElement.hidden = false;
+  dom.footerElement.append(pager.element);
+  return pager;
+}
+
 function createHeader<T extends object>(
   options: GridViewOptions<T>,
   dom: Skeleton,
@@ -201,13 +234,15 @@ function createScrollHandler<T extends object>(
   options: GridViewOptions<T>,
 ): () => void {
   let lastScrollLeft = dom.viewportElement.scrollLeft;
-  return () => {
+  const handler = (): void => {
     if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
       lastScrollLeft = dom.viewportElement.scrollLeft;
       header.render(options.columns);
     }
     options.onScroll?.(dom.viewportElement.scrollTop);
   };
+  dom.viewportElement.addEventListener('scroll', handler, { passive: true });
+  return handler;
 }
 
 function createStatus<T extends object>(
@@ -237,6 +272,7 @@ export function createGridView<T extends object>(
 
   const searchPanel = createSearch(options);
   const filterRow = createFilter(options);
+  const pager = attachPager(options, dom);
   const header = createHeader(options, dom, filterRow);
 
   header.render(options.columns);
@@ -246,21 +282,19 @@ export function createGridView<T extends object>(
 
   const status = createStatus(options, dom.element);
 
-  header.render(options.columns);
-  options.container.append(dom.element);
-  // Ukuran viewport baru diketahui setelah elemen masuk DOM.
-  header.render(options.columns);
-
   const onScroll = createScrollHandler(dom, header, options);
-  dom.viewportElement.addEventListener('scroll', onScroll, { passive: true });
 
   return {
     ...dom,
     status,
     filterRow,
     searchPanel,
+    pager,
     setFilterValue(filter) {
       filterRow?.setFilterValue(filter);
+    },
+    setPaging(state) {
+      pager?.setState(state);
     },
     setStatus(kind, statusOptions) {
       if (kind === null) status.hide();
@@ -284,6 +318,7 @@ export function createGridView<T extends object>(
       header.dispose();
       filterRow?.dispose();
       searchPanel?.dispose();
+      pager?.dispose();
       status.dispose();
       dom.element.remove();
     },

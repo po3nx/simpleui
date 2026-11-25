@@ -105,6 +105,9 @@ const options = normalizeDataGridOptions({
 - Search panel: `searchPanel: true`, debounce (`searchDebounceMs`, default
   250 ms), scope via `searchFields` atau otomatis kolom filterable; tombol
   bersihkan dan Escape; hasil lewat `onSearchChange(query, fields)`.
+- Pager: `pager: true` menampilkan prev/next, ukuran halaman, dan status
+  "Halaman X dari Y"; bila `totalCount` null, mode next-page memakai
+  `itemCount`; `onPageChange` + `setPaging` untuk controlled.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
