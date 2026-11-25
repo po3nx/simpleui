@@ -50,6 +50,10 @@ const options = normalizeDataGridOptions({
 - Focus model: `createFocusModel` — sel aktif, navigasi panah dengan clamp,
   Home/End per baris/grid, roving tabindex, `cellDomId` untuk
   `aria-activedescendant`, dan pemulihan fokus setelah reload.
+- Error: `toGridError`/`classifyError` memetakan `DataError`, 409, dan error
+  asing ke kode `SUI-DG-*` dengan pesan aman; `describeGridError` memberi
+  `retryable`; DataController punya `getError`/`canRetry`/`retry` (abort tidak
+  dihitung sebagai error).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

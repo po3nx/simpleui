@@ -1,6 +1,5 @@
 import {
   ArrayStore,
-  isDataError,
   type DataStore,
   type Key,
   type KeyExpr,
@@ -10,6 +9,7 @@ import {
 import type { DataSourceInput } from '../api/types.js';
 import { DataGridError } from '../errors.js';
 import type { GridStateStore } from '../model/state.js';
+import { isAbortError, isRetryable, toGridError } from './error-utils.js';
 
 /**
  * DataController (DG-013): menjembatani state grid dengan Store core —
@@ -32,18 +32,13 @@ export interface DataController<T extends object> {
   getTotalCount(): number;
   getRowByKey(key: Key): T | undefined;
   getKey(row: T): Key;
+  getError(): DataGridError | null;
+  canRetry(): boolean;
+  retry(): Promise<void>;
   dispose(): void;
 }
 
 type EventHandler = (payload: unknown) => void;
-
-function isAbortError(error: unknown): boolean {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    (error as { name?: string }).name === 'AbortError'
-  );
-}
 
 function resolveStore<T extends object>(
   dataSource: DataSourceInput<T>,
@@ -107,14 +102,7 @@ function wrapError(
   if (!isCurrent(id) || current.signal.aborted || isAbortError(error)) {
     return null;
   }
-  if (error instanceof DataGridError) return error;
-  return new DataGridError(
-    'SUI-DG-004',
-    isDataError(error)
-      ? `Gagal memuat data: ${error.message}`
-      : 'Gagal memuat data.',
-    { cause: error },
-  );
+  return toGridError(error);
 }
 
 function createEmitter(
@@ -131,10 +119,20 @@ function createEmitter(
   };
 }
 
+function emitLoading(
+  emit: (name: string, payload: unknown) => void,
+  loadOptions: LoadOptions,
+): void {
+  emit('onDataLoading', {
+    loadOptions: { skip: loadOptions.skip ?? 0, take: loadOptions.take ?? 0 },
+  });
+}
+
 interface Loader<T extends object> {
   load(): Promise<void>;
   getRows(): readonly T[];
   getTotalCount(): number;
+  getError(): DataGridError | null;
   dispose(): void;
 }
 
@@ -149,6 +147,7 @@ function createLoader<T extends object>(
   let requestId = 0;
   let controller: AbortController | null = null;
   let disposed = false;
+  let lastError: DataGridError | null = null;
 
   const emit = createEmitter(events);
 
@@ -166,12 +165,7 @@ function createLoader<T extends object>(
 
       const loadOptions = buildLoadOptions(state.getState(), paging);
       state.setStatus('loading');
-      emit('onDataLoading', {
-        loadOptions: {
-          skip: loadOptions.skip ?? 0,
-          take: loadOptions.take ?? 0,
-        },
-      });
+      emitLoading(emit, loadOptions);
 
       try {
         const result = await store.load({
@@ -182,11 +176,13 @@ function createLoader<T extends object>(
 
         rows = result.data;
         totalCount = result.totalCount ?? result.data.length;
+        lastError = null;
         state.setStatus('loaded');
         emit('onDataLoaded', { data: rows, totalCount });
       } catch (error) {
         const wrapped = wrapError(error, id, current, isCurrent);
         if (!wrapped) return;
+        lastError = wrapped;
         state.setStatus('error');
         emit('onDataError', { error: wrapped });
         throw wrapped;
@@ -195,6 +191,7 @@ function createLoader<T extends object>(
 
     getRows: () => rows,
     getTotalCount: () => totalCount,
+    getError: () => lastError,
 
     dispose() {
       if (disposed) return;
@@ -218,6 +215,11 @@ export function createDataController<T extends object>(
     options.events ?? {},
   );
 
+  const canRetry = (): boolean => {
+    const error = loader.getError();
+    return error !== null && isRetryable(error);
+  };
+
   return {
     store,
     load: () => loader.load(),
@@ -226,6 +228,12 @@ export function createDataController<T extends object>(
     getRowByKey: (key) =>
       loader.getRows().find((row) => Object.is(keyOf(keyExpr, row), key)),
     getKey: (row) => keyOf(keyExpr, row),
+    getError: () => loader.getError(),
+    canRetry,
+    retry: async () => {
+      if (!canRetry()) return;
+      await loader.load();
+    },
     dispose: () => loader.dispose(),
   };
 }
