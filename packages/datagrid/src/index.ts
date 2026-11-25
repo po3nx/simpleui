@@ -25,6 +25,11 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createSearchPanel,
+  type SearchPanel,
+  type SearchPanelOptions,
+} from './view/search-panel.js';
+export {
   createHeaderFilter,
   type HeaderFilter,
   type HeaderFilterOptions,

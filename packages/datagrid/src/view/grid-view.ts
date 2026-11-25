@@ -8,6 +8,7 @@ import {
 } from './header-controller.js';
 import type { FilterExpression } from '@simpleui/core';
 import { createFilterRow, type FilterRow } from './filter-row.js';
+import { createSearchPanel, type SearchPanel } from './search-panel.js';
 import {
   createStatusView,
   type GridStatusKind,
@@ -41,6 +42,11 @@ export interface GridViewOptions<T extends object> {
   readonly filterRow?: boolean;
   readonly headerFilter?: boolean;
   readonly getUniqueValues?: (columnId: string) => readonly unknown[];
+  readonly searchPanel?: boolean;
+  readonly searchDebounceMs?: number;
+  readonly searchFields?: readonly string[];
+  readonly onSearchChange?:
+    ((query: string, fields: readonly string[]) => void) | undefined;
   readonly filterValue?: FilterExpression | null | undefined;
   readonly onFilterChange?:
     ((filter: FilterExpression | null) => void) | undefined;
@@ -57,6 +63,7 @@ export interface GridView<T extends object> {
   readonly liveElement: HTMLElement;
   readonly status: StatusView;
   readonly filterRow: FilterRow | undefined;
+  readonly searchPanel: SearchPanel | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
   setFilterValue(filter: FilterExpression | null): void;
   setRowCount(count: number): void;
@@ -126,6 +133,26 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
     footerElement,
     liveElement,
   };
+}
+
+function searchableFields<T extends object>(
+  columns: readonly ColumnState<T>[],
+): string[] {
+  return columns
+    .filter((column) => column.visible && column.allowFiltering)
+    .map((column) => column.dataField ?? column.id);
+}
+
+function createSearch<T extends object>(
+  options: GridViewOptions<T>,
+): SearchPanel | undefined {
+  if (!options.searchPanel) return undefined;
+  return createSearchPanel({
+    debounceMs: options.searchDebounceMs,
+    fields: options.searchFields ?? searchableFields(options.columns),
+    placeholder: options.messages?.['searchPlaceholder'],
+    onSearchChange: options.onSearchChange,
+  });
 }
 
 function createFilter<T extends object>(
@@ -208,6 +235,7 @@ export function createGridView<T extends object>(
     footer: Boolean(options.footer),
   });
 
+  const searchPanel = createSearch(options);
   const filterRow = createFilter(options);
   const header = createHeader(options, dom, filterRow);
 
@@ -230,6 +258,7 @@ export function createGridView<T extends object>(
     ...dom,
     status,
     filterRow,
+    searchPanel,
     setFilterValue(filter) {
       filterRow?.setFilterValue(filter);
     },
@@ -245,6 +274,7 @@ export function createGridView<T extends object>(
     setColumns: (next) => {
       header.render(next);
       filterRow?.setColumns(next as never);
+      if (!options.searchFields) searchPanel?.setFields(searchableFields(next));
     },
     setSorting: (next) => header.setSorting(next),
     clearSorting: () => header.clearSorting(),
@@ -253,6 +283,7 @@ export function createGridView<T extends object>(
       dom.viewportElement.removeEventListener('scroll', onScroll);
       header.dispose();
       filterRow?.dispose();
+      searchPanel?.dispose();
       status.dispose();
       dom.element.remove();
     },

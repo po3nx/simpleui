@@ -102,6 +102,9 @@ const options = normalizeDataGridOptions({
 - Header filter: panel per kolom dengan nilai unik (dari `getUniqueValues`),
   pencarian, `(Blanks)` untuk null, pilih semua/kosongkan, Terapkan/Hapus;
   hasil memakai operator `in` atau `eq null` untuk blanks.
+- Search panel: `searchPanel: true`, debounce (`searchDebounceMs`, default
+  250 ms), scope via `searchFields` atau otomatis kolom filterable; tombol
+  bersihkan dan Escape; hasil lewat `onSearchChange(query, fields)`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
