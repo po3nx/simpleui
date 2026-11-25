@@ -25,6 +25,13 @@ export {
   type VirtualScrollOptions,
 } from './data/virtual-scroll.js';
 export {
+  createStatePersistence,
+  CURRENT_SNAPSHOT_VERSION,
+  DEFAULT_MAX_SNAPSHOT_SIZE,
+  type StatePersistence,
+  type StatePersistenceOptions,
+} from './data/persistence.js';
+export {
   computeGroupSummary,
   computeSummary,
   formatSummary,
