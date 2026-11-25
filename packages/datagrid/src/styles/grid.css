@@ -1,8 +1,7 @@
 /* Grid DataGrid (DG-030). Semua warna/ukuran dari token tema. */
 
 .sui-grid {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  display: block;
   block-size: 100%;
   min-block-size: 0;
   border: var(--sui-border-width) solid var(--sui-color-border-subtle);
@@ -43,6 +42,7 @@
 
 .sui-grid__viewport {
   position: relative;
+  block-size: 100%;
   min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
@@ -152,4 +152,31 @@
   margin-inline-start: var(--sui-space-1);
   color: var(--sui-color-accent-default);
   font-size: var(--sui-font-size-xs);
+}
+
+.sui-grid__header-cell--sticky-start,
+.sui-grid__cell--sticky-start {
+  background: inherit;
+}
+
+.sui-grid__header-cell--sticky-end,
+.sui-grid__cell--sticky-end {
+  background: inherit;
+}
+
+.sui-grid__header-cell--shadow-start,
+.sui-grid__cell--shadow-start {
+  box-shadow: inset calc(-1 * var(--sui-border-width-thick)) 0 0
+    var(--sui-color-border-strong);
+}
+
+.sui-grid__header-cell--shadow-end,
+.sui-grid__cell--shadow-end {
+  box-shadow: inset var(--sui-border-width-thick) 0 0
+    var(--sui-color-border-strong);
+}
+
+.sui-grid__header {
+  inline-size: max-content;
+  min-inline-size: 100%;
 }

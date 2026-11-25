@@ -1,6 +1,10 @@
 import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
+import {
+  computeColumnLayout,
+  type ColumnLayoutEntry,
+} from './column-virtualizer.js';
 
 /**
  * Row renderer DataGrid (DG-032): virtualisasi baris, daur ulang node, dan
@@ -50,35 +54,31 @@ function justifyFor(alignment: ColumnState['alignment']): string {
   return 'flex-start';
 }
 
-function appendCells<T extends object>(
-  rowElement: HTMLElement,
-  columns: readonly ColumnState<T>[],
-): void {
-  columns.forEach((column, index) => {
-    const cell = document.createElement('div');
-    cell.className = 'sui-grid__cell';
-    cell.setAttribute('role', 'gridcell');
-    cell.setAttribute('aria-colindex', String(index + 1));
-    cell.setAttribute('data-column-id', column.id);
-    const width = column.width === 'auto' ? column.minWidth : column.width;
-    cell.style.flexBasis = `${width}px`;
-    cell.style.justifyContent = justifyFor(column.alignment);
-    rowElement.append(cell);
-  });
-}
+function createCell<T extends object>(
+  entry: ColumnLayoutEntry<T>,
+  columnIndex: number,
+): HTMLElement {
+  const cell = document.createElement('div');
+  cell.className = 'sui-grid__cell';
+  cell.setAttribute('role', 'gridcell');
+  cell.setAttribute('aria-colindex', String(columnIndex));
+  cell.setAttribute('data-column-id', entry.column.id);
+  cell.style.flexBasis = `${entry.width}px`;
+  cell.style.justifyContent = justifyFor(entry.column.alignment);
 
-function updateCells<T extends object>(
-  rowElement: HTMLElement,
-  columns: readonly ColumnState<T>[],
-  row: T,
-): void {
-  const cells = rowElement.children;
-  columns.forEach((column, index) => {
-    const cell = cells[index] as HTMLElement | undefined;
-    if (!cell) return;
-    const text = cellText(column, row);
-    if (cell.textContent !== text) cell.textContent = text;
-  });
+  if (entry.fixed && entry.stickyOffset !== undefined) {
+    cell.classList.add(`sui-grid__cell--sticky-${entry.fixed}`);
+    cell.style.position = 'sticky';
+    cell.style[
+      entry.fixed === 'start' ? 'insetInlineStart' : 'insetInlineEnd'
+    ] = `${entry.stickyOffset}px`;
+    cell.style.zIndex = '1';
+  }
+  if (entry.shadow) {
+    cell.classList.add(`sui-grid__cell--shadow-${entry.shadow}`);
+  }
+
+  return cell;
 }
 
 class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
@@ -89,6 +89,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   readonly #pool: HTMLElement[] = [];
   #rows: readonly T[];
   #columns: readonly ColumnState<T>[];
+  #layoutSignature = '';
   #disposed = false;
 
   constructor(options: RowRendererOptions<T>) {
@@ -150,19 +151,43 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
       index * this.#rowHeight + anchor.offset;
   }
 
-  #ensurePool(size: number): void {
-    while (this.#pool.length < size) {
-      const rowElement = document.createElement('div');
-      rowElement.className = 'sui-grid__row';
-      rowElement.setAttribute('role', 'row');
-      appendCells(rowElement, this.#columns);
-      this.#options.rowsElement.append(rowElement);
-      this.#pool.push(rowElement);
-    }
+  #layout(): {
+    entries: readonly ColumnLayoutEntry<T>[];
+    totalWidth: number;
+  } {
+    const layout = computeColumnLayout(
+      this.#columns,
+      this.#options.viewportElement.clientWidth,
+      this.#options.viewportElement.scrollLeft,
+    );
+    return { entries: layout.columns, totalWidth: layout.totalWidth };
+  }
+
+  #columnIndex(columnId: string): number {
+    return this.#columns.findIndex((column) => column.id === columnId) + 1;
+  }
+
+  #syncCells(entries: readonly ColumnLayoutEntry<T>[]): boolean {
+    const signature = entries
+      .map((entry) => `${entry.column.id}:${entry.width}`)
+      .join('|');
+    if (signature === this.#layoutSignature) return false;
+
+    this.#pool.forEach((rowElement) => {
+      rowElement.replaceChildren();
+      entries.forEach((entry) => {
+        rowElement.append(
+          createCell(entry, this.#columnIndex(entry.column.id)),
+        );
+      });
+    });
+    this.#layoutSignature = signature;
+    return true;
   }
 
   #render(): void {
     if (this.#disposed) return;
+    const layout = this.#layout();
     this.#virtualizer.setViewportSize(this.#viewportSize());
     this.#virtualizer.setItemCount(this.#rows.length);
     this.#virtualizer.setScrollOffset(this.#options.viewportElement.scrollTop);
@@ -170,7 +195,10 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     const { start, end, offsetTop } = this.#virtualizer.range;
     const count = Math.max(0, end - start);
     this.#ensurePool(count);
+    this.#syncCells(layout.entries);
     this.#options.rowsElement.style.transform = `translateY(${offsetTop}px)`;
+    this.#options.rowsElement.style.minInlineSize = `${layout.totalWidth}px`;
+    this.#options.spacerElement.style.inlineSize = `${layout.totalWidth}px`;
 
     this.#pool.forEach((rowElement, poolIndex) => {
       const row = this.#rows[start + poolIndex];
@@ -178,16 +206,37 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
         rowElement.hidden = true;
         return;
       }
-      this.#paintRow(rowElement, row, start + poolIndex);
+      this.#paintRow(rowElement, row, start + poolIndex, layout.entries);
     });
   }
 
-  #paintRow(rowElement: HTMLElement, row: T, index: number): void {
+  #paintRow(
+    rowElement: HTMLElement,
+    row: T,
+    index: number,
+    entries: readonly ColumnLayoutEntry<T>[],
+  ): void {
     rowElement.hidden = false;
     rowElement.setAttribute('aria-rowindex', String(index + 1));
     rowElement.setAttribute('data-row-key', String(this.#options.keyOf(row)));
     rowElement.classList.toggle('sui-grid__row--even', index % 2 === 1);
-    updateCells(rowElement, this.#columns, row);
+
+    entries.forEach((entry, cellIndex) => {
+      const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
+      if (!cell) return;
+      const text = cellText(entry.column, row);
+      if (cell.textContent !== text) cell.textContent = text;
+    });
+  }
+
+  #ensurePool(size: number): void {
+    while (this.#pool.length < size) {
+      const rowElement = document.createElement('div');
+      rowElement.className = 'sui-grid__row';
+      rowElement.setAttribute('role', 'row');
+      this.#options.rowsElement.append(rowElement);
+      this.#pool.push(rowElement);
+    }
   }
 
   setRows(next: readonly T[]): void {
