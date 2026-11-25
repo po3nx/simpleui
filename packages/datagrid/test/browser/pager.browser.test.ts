@@ -30,8 +30,7 @@ function setup(
     onPageChange,
     ...options,
   });
-  const pager = (): HTMLElement =>
-    grid.footerElement.querySelector('.sui-grid__pager') as HTMLElement;
+  const pager = (): HTMLElement => grid.pager?.element as HTMLElement;
   const status = (): string =>
     (pager().querySelector('.sui-grid__pager-status') as HTMLElement)
       .textContent ?? '';

@@ -40,11 +40,10 @@ Isi repositori saat ini:
   `mount`/`update`/`unmount` (kontrak adapter dan playground diuji di Chromium).
 - `packages/testing` — fixture deterministik (seeded random) dan kontrak
   adapter untuk parity test.
-- `packages/datagrid` — model & data DG-1: normalisasi opsi/kolom, state
-  store, DataController, filter/sort/paging, selection, fokus, key identity,
-  error handling, grouping, summary, persistensi state, dan UI
-  header/filter/search/pager/selection/keyboard/column chooser/CSV export/summary/context menu; renderer
-  menyusul DG-2.
+- `packages/datagrid` — DG-1 model/data + **DG-2 renderer MVP**: virtualisasi
+  baris/kolom, header sort/filter, filter row, header filter, search, pager,
+  selection, keyboard navigation, column chooser, summary footer, CSV export,
+  context menu, template bridge, dan persistensi state.
 - `packages/icons`, `pivotgrid`, `charts` — placeholder.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
 - `apps/benchmarks` — harness benchmark + baseline per lingkungan (`pnpm bench`).
