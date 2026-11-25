@@ -1,6 +1,7 @@
 import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
+import { formatRowCell } from './cell-renderer.js';
 import {
   computeColumnLayout,
   type ColumnLayoutEntry,
@@ -21,6 +22,8 @@ export interface RowRendererOptions<T extends object> {
   readonly keyOf: (row: T) => Key;
   readonly rowHeight?: number;
   readonly overscan?: number;
+  readonly locale?: string;
+  readonly emptyText?: string;
 }
 
 export interface RowRenderer<T extends object> {
@@ -36,16 +39,6 @@ const FALLBACK_VIEWPORT = 320;
 interface Anchor {
   readonly key: Key;
   readonly offset: number;
-}
-
-function cellText<T extends object>(column: ColumnState<T>, row: T): string {
-  if (column.calculateCellValue) {
-    const computed = column.calculateCellValue(row);
-    return computed === null || computed === undefined ? '' : String(computed);
-  }
-  if (!column.dataField) return '';
-  const value = (row as Record<string, unknown>)[column.dataField];
-  return value === null || value === undefined ? '' : String(value);
 }
 
 function justifyFor(alignment: ColumnState['alignment']): string {
@@ -224,7 +217,10 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     entries.forEach((entry, cellIndex) => {
       const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
       if (!cell) return;
-      const text = cellText(entry.column, row);
+      const text = formatRowCell(row, entry.column, {
+        locale: this.#options.locale,
+        placeholder: this.#options.emptyText,
+      });
       if (cell.textContent !== text) cell.textContent = text;
     });
   }

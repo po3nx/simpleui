@@ -75,6 +75,10 @@ const options = normalizeDataGridOptions({
 - Kolom: `computeColumnLayout` (prefix sum + binary search) memvirtualkan kolom,
   kolom `fixed: 'start' | 'end'` sticky, dengan penanda shadow tepi dan
   `aria-colcount` absolut.
+- Sel: `formatCellValue`/`formatRowCell` memformat angka, persen, mata uang,
+  tanggal, dan boolean sesuai locale + `ColumnFormat`; `null`/`undefined`
+  menjadi placeholder `—`; konten selalu ditulis sebagai **teks murni**
+  (`setCellText`), tidak pernah `innerHTML`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

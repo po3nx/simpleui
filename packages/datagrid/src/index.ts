@@ -5,6 +5,14 @@ export const DATAGRID_VERSION = '0.0.0';
 
 export { DataGridError, isDataGridError } from './errors.js';
 export {
+  cellValueFor,
+  DEFAULT_EMPTY_TEXT,
+  formatCellValue,
+  formatRowCell,
+  setCellText,
+  type CellFormatOptions,
+} from './view/cell-renderer.js';
+export {
   computeColumnLayout,
   type ColumnLayout,
   type ColumnLayoutEntry,
