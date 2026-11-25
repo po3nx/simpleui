@@ -9,11 +9,40 @@ import {
   type HeaderRenderContext,
 } from './header-renderer.js';
 import { TemplateManager } from './template-manager.js';
+import { attachColumnResize } from './column-resize.js';
 
 /**
  * Kontrol header (DG-031/DG-033): state sort/filter, layout kolom virtual,
  * shadow tepi, dan aria-colcount.
  */
+
+function previewColumnWidth(
+  root: HTMLElement,
+  columnId: string,
+  width: number,
+): void {
+  const selector = `[data-column-id="${CSS.escape(columnId)}"]`;
+  root.querySelectorAll<HTMLElement>(selector).forEach((cell) => {
+    cell.style.flexBasis = `${width}px`;
+  });
+}
+
+function createResizeAttacher<T extends object>(
+  options: HeaderControllerOptions<T>,
+): (handle: HTMLElement, column: HeaderColumnLike, width: number) => void {
+  return (handle, column, width) =>
+    attachColumnResize({
+      handle,
+      initialWidth: width,
+      minWidth: column.minWidth,
+      maxWidth: column.maxWidth,
+      onPreview: (next) => {
+        handle.setAttribute('aria-valuenow', String(next));
+        previewColumnWidth(options.element, column.id, next);
+      },
+      onCommit: (next) => options.onColumnResize?.(column.id, next),
+    });
+}
 
 function mountHeaderTemplate(
   templates: TemplateManager,
@@ -35,6 +64,9 @@ interface HeaderColumnLike {
   readonly dataField?: string | undefined;
   readonly caption: string;
   readonly headerCellTemplate: TemplateRenderer | undefined;
+  readonly minWidth: number;
+  readonly maxWidth: number | undefined;
+  readonly allowResizing: boolean;
 }
 
 export interface HeaderControllerOptions<T extends object> {
@@ -49,6 +81,8 @@ export interface HeaderControllerOptions<T extends object> {
   readonly onTemplateError?:
     | ((error: unknown, phase: 'render' | 'update' | 'dispose') => void)
     | undefined;
+  readonly onColumnResize?:
+    ((columnId: string, width: number) => void) | undefined;
 }
 
 export interface HeaderController<T extends object> {
@@ -78,6 +112,7 @@ export function createHeaderController<T extends object>(
     },
     mountTemplate: (container, column, index) =>
       mountHeaderTemplate(templates, container, column, index),
+    attachResize: createResizeAttacher(options),
   });
 
   const render = (columns: readonly ColumnState<T>[]): void => {
