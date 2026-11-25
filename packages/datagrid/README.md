@@ -92,6 +92,10 @@ const options = normalizeDataGridOptions({
 - Reorder kolom: drag header (indikator drop) atau **Alt+ArrowLeft/Right**;
   urutan dilaporkan lewat `onColumnReorder` dan diumumkan ke live region.
   Helper `applyColumnOrder`/`moveColumn` tersedia untuk menerapkan urutan.
+- Sorting UX: siklus klik asc → desc → none, Shift+klik / Shift+Enter untuk
+  multi-sort, **Ctrl/Cmd+klik** atau `clearSorting()` untuk reset semua;
+  perubahan diumumkan ke live region dan descriptor dibuang bila kolomnya
+  tidak lagi tersedia.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

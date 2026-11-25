@@ -2,7 +2,10 @@ import { createElement, setAttributes, setStyle } from '@simpleui/core';
 import type { SortDescriptor } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
-import { createHeaderController } from './header-controller.js';
+import {
+  createHeaderController,
+  type HeaderController,
+} from './header-controller.js';
 import {
   createStatusView,
   type GridStatusKind,
@@ -49,6 +52,7 @@ export interface GridView<T extends object> {
   setRowCount(count: number): void;
   setColumns(columns: readonly ColumnState<T>[]): void;
   setSorting(sortBy: readonly SortDescriptor[]): void;
+  clearSorting(): void;
   setFilteredColumns(columnIds: readonly string[]): void;
   dispose(): void;
 }
@@ -114,6 +118,21 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   };
 }
 
+function createScrollHandler<T extends object>(
+  dom: Skeleton,
+  header: HeaderController<T>,
+  options: GridViewOptions<T>,
+): () => void {
+  let lastScrollLeft = dom.viewportElement.scrollLeft;
+  return () => {
+    if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
+      lastScrollLeft = dom.viewportElement.scrollLeft;
+      header.render(options.columns);
+    }
+    options.onScroll?.(dom.viewportElement.scrollTop);
+  };
+}
+
 function createStatus<T extends object>(
   options: GridViewOptions<T>,
   element: HTMLElement,
@@ -160,14 +179,7 @@ export function createGridView<T extends object>(
   // Ukuran viewport baru diketahui setelah elemen masuk DOM.
   header.render(options.columns);
 
-  let lastScrollLeft = dom.viewportElement.scrollLeft;
-  const onScroll = (): void => {
-    if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
-      lastScrollLeft = dom.viewportElement.scrollLeft;
-      header.render(options.columns);
-    }
-    options.onScroll?.(dom.viewportElement.scrollTop);
-  };
+  const onScroll = createScrollHandler(dom, header, options);
   dom.viewportElement.addEventListener('scroll', onScroll, { passive: true });
 
   return {
@@ -184,6 +196,7 @@ export function createGridView<T extends object>(
     },
     setColumns: (next) => header.render(next),
     setSorting: (next) => header.setSorting(next),
+    clearSorting: () => header.clearSorting(),
     setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
     dispose() {
       dom.viewportElement.removeEventListener('scroll', onScroll);
