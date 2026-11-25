@@ -47,6 +47,9 @@ const options = normalizeDataGridOptions({
 - Selection model: `createSelectionModel` (mode none/single/multiple, range
   inklusif, select-all halaman/semua, rekonsiliasi key setelah reload, event
   `selectionChanged` berisi added/removed).
+- Focus model: `createFocusModel` — sel aktif, navigasi panah dengan clamp,
+  Home/End per baris/grid, roving tabindex, `cellDomId` untuk
+  `aria-activedescendant`, dan pemulihan fokus setelah reload.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
