@@ -25,6 +25,15 @@ export {
   type VirtualScrollOptions,
 } from './data/virtual-scroll.js';
 export {
+  classifyError,
+  DEFAULT_ERROR_MESSAGES,
+  describeGridError,
+  isAbortError,
+  isRetryable,
+  toGridError,
+  type GridErrorInfo,
+} from './data/error-utils.js';
+export {
   applyGridSort,
   clearSort,
   nextSortDirection,

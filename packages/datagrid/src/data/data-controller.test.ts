@@ -197,6 +197,84 @@ describe('createDataController — store remote', () => {
   });
 });
 
+describe('createDataController — retry dan error terklasifikasi', () => {
+  it('dapat retry setelah kegagalan sementara lalu bersih', async () => {
+    const state = createGridStateStore();
+    const { store, pending } = deferredStore();
+    const controller = createDataController<Row>({
+      dataSource: store,
+      state,
+      paging: false,
+    });
+
+    const first = controller.load();
+    pending[0]?.reject(new Error('jaringan'));
+    await expect(first).rejects.toBeInstanceOf(DataGridError);
+
+    expect(controller.canRetry()).toBe(true);
+    expect(controller.getError()?.code).toBe('SUI-DG-004');
+
+    const retry = controller.retry();
+    pending[1]?.resolve({ data: ROWS, totalCount: 3 });
+    await retry;
+
+    expect(controller.canRetry()).toBe(false);
+    expect(controller.getError()).toBeNull();
+    expect(controller.getRows()).toHaveLength(3);
+  });
+
+  it('error konflik 409 tidak retryable dan retry tidak memanggil store', async () => {
+    const state = createGridStateStore();
+    const { store, calls, pending } = deferredStore();
+    const controller = createDataController<Row>({
+      dataSource: store,
+      state,
+      paging: false,
+    });
+
+    const loading = controller.load();
+    pending[0]?.reject(Object.assign(new Error('conflict'), { status: 409 }));
+    await expect(loading).rejects.toBeInstanceOf(DataGridError);
+
+    expect(controller.getError()?.code).toBe('SUI-DG-005');
+    expect(controller.canRetry()).toBe(false);
+
+    await controller.retry();
+    expect(calls).toHaveLength(1);
+  });
+
+  it('retry tanpa error tidak melakukan apa pun', async () => {
+    const state = createGridStateStore();
+    const { store, calls } = deferredStore();
+    const controller = createDataController<Row>({
+      dataSource: store,
+      state,
+      paging: false,
+    });
+
+    await controller.retry();
+    expect(calls).toHaveLength(0);
+  });
+
+  it('abort tidak dicatat sebagai error', async () => {
+    const state = createGridStateStore();
+    const { store, pending } = deferredStore();
+    const controller = createDataController<Row>({
+      dataSource: store,
+      state,
+      paging: false,
+    });
+
+    const loading = controller.load();
+    controller.dispose();
+    pending[0]?.resolve({ data: ROWS, totalCount: 3 });
+    await loading;
+
+    expect(controller.getError()).toBeNull();
+    expect(controller.canRetry()).toBe(false);
+  });
+});
+
 describe('createDataController — key dan pencarian baris', () => {
   it('mendukung key string, composite, dan fungsi', async () => {
     const state = createGridStateStore();
