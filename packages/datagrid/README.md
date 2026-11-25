@@ -72,6 +72,9 @@ const options = normalizeDataGridOptions({
 - `createRowRenderer` memvirtualkan baris: hanya baris di viewport + overscan
   yang ada di DOM, node didaur ulang, `aria-rowindex` absolut, dan **scroll
   anchoring** mempertahankan baris terlihat saat data berubah.
+- Kolom: `computeColumnLayout` (prefix sum + binary search) memvirtualkan kolom,
+  kolom `fixed: 'start' | 'end'` sticky, dengan penanda shadow tepi dan
+  `aria-colcount` absolut.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

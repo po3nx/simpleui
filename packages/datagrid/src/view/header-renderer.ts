@@ -3,6 +3,7 @@ import type { SortDescriptor } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
 import { sortDirectionFor, sortIndexFor } from '../data/sort.js';
+import type { ColumnLayoutEntry } from './column-virtualizer.js';
 
 /**
  * Header renderer DataGrid (DG-031): aria-sort, indikator arah/urutan
@@ -30,10 +31,6 @@ function alignmentStyle(alignment: ColumnState['alignment']): string {
   if (alignment === 'end') return 'flex-end';
   if (alignment === 'center') return 'center';
   return 'flex-start';
-}
-
-function cellWidth(column: HeaderColumn): number {
-  return column.width === 'auto' ? column.minWidth : column.width;
 }
 
 function ariaSortFor(
@@ -109,7 +106,7 @@ function appendFilterMarker(cell: HTMLElement, columnId: string): void {
 }
 
 export function createHeaderRow<T extends object>(
-  columns: readonly ColumnState<T>[],
+  entries: readonly ColumnLayoutEntry<T>[],
   context: HeaderRenderContext,
 ): HTMLElement {
   const row = createElement('div', {
@@ -117,12 +114,27 @@ export function createHeaderRow<T extends object>(
   });
   setAttributes(row, { role: 'row' });
 
-  columns.forEach((column, index) => {
+  entries.forEach((entry, index) => {
+    const column = entry.column;
     const cell = createElement('div', { className: 'sui-grid__header-cell' });
     setAttributes(cell, { role: 'columnheader', 'aria-colindex': index + 1 });
     setAttributes(cell, { 'data-column-id': column.id });
-    setStyle(cell, 'flex-basis', `${cellWidth(column)}px`);
+    setStyle(cell, 'flex-basis', `${entry.width}px`);
     setStyle(cell, 'justify-content', alignmentStyle(column.alignment));
+
+    if (entry.fixed && entry.stickyOffset !== undefined) {
+      cell.classList.add(`sui-grid__header-cell--sticky-${entry.fixed}`);
+      setStyle(cell, 'position', 'sticky');
+      setStyle(
+        cell,
+        entry.fixed === 'start' ? 'inset-inline-start' : 'inset-inline-end',
+        `${entry.stickyOffset}px`,
+      );
+      setStyle(cell, 'z-index', '1');
+    }
+    if (entry.shadow) {
+      cell.classList.add(`sui-grid__cell--shadow-${entry.shadow}`);
+    }
 
     const ariaSort = ariaSortFor(column, context.sortBy);
     if (ariaSort) setAttributes(cell, { 'aria-sort': ariaSort });

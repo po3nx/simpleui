@@ -1,12 +1,8 @@
 import { createElement, setAttributes, setStyle } from '@simpleui/core';
 import type { SortDescriptor } from '@simpleui/core';
 
-import { getVisibleColumns, type ColumnState } from '../model/columns.js';
-import { toggleSort } from '../data/sort.js';
-import {
-  createHeaderRow,
-  type HeaderRenderContext,
-} from './header-renderer.js';
+import type { ColumnState } from '../model/columns.js';
+import { createHeaderController } from './header-controller.js';
 
 /**
  * Kerangka DOM DataGrid (DG-030) + header interaktif (DG-031).
@@ -87,7 +83,8 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   const liveElement = createElement('div', { className: 'sui-grid__live' });
   setAttributes(liveElement, { 'aria-live': 'polite', 'aria-atomic': 'true' });
 
-  element.append(headerElement, viewportElement, footerElement, liveElement);
+  viewportElement.append(headerElement, spacerElement, footerElement);
+  element.append(viewportElement, liveElement);
 
   return {
     element,
@@ -105,8 +102,6 @@ export function createGridView<T extends object>(
 ): GridView<T> {
   const rowHeight = options.rowHeight ?? DEFAULT_ROW_HEIGHT;
   let rowCount = options.rowCount;
-  let sortBy: readonly SortDescriptor[] = options.sortBy ?? [];
-  let filtered = new Set(options.filteredColumns ?? []);
 
   const dom = createSkeleton({
     rowCount,
@@ -115,27 +110,27 @@ export function createGridView<T extends object>(
     footer: Boolean(options.footer),
   });
 
-  const context = (): HeaderRenderContext => ({
-    sortBy,
-    filteredColumns: filtered,
-    onSortRequest: (columnId, multi) => {
-      const next = toggleSort(options.columns, sortBy, columnId, { multi });
-      sortBy = next;
-      renderHeader(options.columns);
-      options.onSortChange?.(next);
-    },
+  const header = createHeaderController<T>({
+    element: dom.element,
+    headerElement: dom.headerElement,
+    viewportElement: dom.viewportElement,
+    columns: options.columns,
+    sortBy: options.sortBy,
+    filteredColumns: options.filteredColumns,
+    onSortChange: options.onSortChange,
   });
 
-  const renderHeader = (columns: readonly ColumnState<T>[]): void => {
-    const visible = getVisibleColumns(columns);
-    setAttributes(dom.element, { 'aria-colcount': visible.length });
-    dom.headerElement.replaceChildren(createHeaderRow<T>(visible, context()));
-  };
-
-  renderHeader(options.columns);
+  header.render(options.columns);
   options.container.append(dom.element);
+  // Ukuran viewport baru diketahui setelah elemen masuk DOM.
+  header.render(options.columns);
 
+  let lastScrollLeft = dom.viewportElement.scrollLeft;
   const onScroll = (): void => {
+    if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
+      lastScrollLeft = dom.viewportElement.scrollLeft;
+      header.render(options.columns);
+    }
     options.onScroll?.(dom.viewportElement.scrollTop);
   };
   dom.viewportElement.addEventListener('scroll', onScroll, { passive: true });
@@ -147,15 +142,9 @@ export function createGridView<T extends object>(
       setAttributes(dom.element, { 'aria-rowcount': rowCount });
       setStyle(dom.spacerElement, 'block-size', `${rowCount * rowHeight}px`);
     },
-    setColumns: (next) => renderHeader(next),
-    setSorting(next) {
-      sortBy = next;
-      renderHeader(options.columns);
-    },
-    setFilteredColumns(columnIds) {
-      filtered = new Set(columnIds);
-      renderHeader(options.columns);
-    },
+    setColumns: (next) => header.render(next),
+    setSorting: (next) => header.setSorting(next),
+    setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
     dispose() {
       dom.viewportElement.removeEventListener('scroll', onScroll);
       dom.element.remove();
