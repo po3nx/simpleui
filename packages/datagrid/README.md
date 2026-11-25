@@ -37,6 +37,9 @@ const options = normalizeDataGridOptions({
 - Sort model: `toggleSort` (siklus asc → desc → none; `multi` untuk Shift+klik),
   `sortIndexFor`/`sortDirectionFor` untuk indikator, `applyGridSort` memakai
   pipeline core (collator, null selalu di akhir).
+- Paging & virtual scroll: `pageCountFor`, `createPageInfo`, `pageRange`,
+  `clampPageIndex`, dan `createVirtualScroll` (di atas `Virtualizer` core:
+  rentang O(1), offset baris/halaman, total tinggi).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

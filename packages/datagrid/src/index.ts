@@ -10,6 +10,21 @@ export {
   type DataControllerOptions,
 } from './data/data-controller.js';
 export {
+  clampPageIndex,
+  createPageInfo,
+  hasNextPage,
+  pageCountFor,
+  pageForRowIndex,
+  pageRange,
+  skipForPage,
+  type PageInfo,
+} from './data/paging.js';
+export {
+  createVirtualScroll,
+  type VirtualScrollModel,
+  type VirtualScrollOptions,
+} from './data/virtual-scroll.js';
+export {
   applyGridSort,
   clearSort,
   nextSortDirection,
