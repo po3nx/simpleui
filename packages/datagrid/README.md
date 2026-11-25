@@ -40,6 +40,10 @@ const options = normalizeDataGridOptions({
 - Paging & virtual scroll: `pageCountFor`, `createPageInfo`, `pageRange`,
   `clampPageIndex`, dan `createVirtualScroll` (di atas `Virtualizer` core:
   rentang O(1), offset baris/halaman, total tinggi).
+- Key identity: `createKeyResolver` (field tunggal, composite, fungsi),
+  `encodeKey`/`keyToDomId` stabil dan membedakan `1` vs `"1"`,
+  `buildKeyIndex`/`assertUniqueKeys` menolak key duplikat (`SUI-DG-002`) atau
+  hilang (`SUI-DG-003`).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

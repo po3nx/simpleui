@@ -65,6 +65,14 @@ export {
   type GridStateStore,
 } from './model/state.js';
 export {
+  assertUniqueKeys,
+  buildKeyIndex,
+  createKeyResolver,
+  encodeKey,
+  keyToDomId,
+  type KeyResolver,
+} from './model/key.js';
+export {
   countHeaderRows,
   findColumnById,
   flattenColumns,
