@@ -123,6 +123,9 @@ const options = normalizeDataGridOptions({
 - Summary footer: `summaryItems` + `summaryRows` + `summaryLocale` merender
   total per kolom di footer sticky (format locale, `displayFormat`,
   `customizeText`, error → `—`), `setSummaryRows` untuk update.
+- Context menu: `contextMenu: true`; klik kanan / Shift+F10 membuka
+  "Salin sel"/"Salin baris", dengan **guard formula** dan TSV aman; Escape/klik
+  luar menutup.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

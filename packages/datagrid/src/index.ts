@@ -25,6 +25,13 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  attachContextMenu,
+  guardClipboardText,
+  tsvCell,
+  type ContextMenu,
+  type ContextMenuOptions,
+} from './view/context-menu.js';
+export {
   createSummaryFooter,
   type SummaryFooter,
   type SummaryFooterOptions,
