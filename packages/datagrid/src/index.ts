@@ -53,6 +53,14 @@ export {
   type ValidationIssue,
 } from './model/options.js';
 export {
+  createFocusModel,
+  type Edge,
+  type EdgeScope,
+  type FocusModel,
+  type FocusModelOptions,
+  type MoveDirection,
+} from './model/focus.js';
+export {
   createSelectionModel,
   type SelectionModel,
   type SelectionModelOptions,
