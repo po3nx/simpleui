@@ -25,6 +25,12 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createPager,
+  type Pager,
+  type PagerOptions,
+  type PagingState,
+} from './view/pager.js';
+export {
   createSearchPanel,
   type SearchPanel,
   type SearchPanelOptions,

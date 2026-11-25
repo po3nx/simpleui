@@ -403,3 +403,55 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__pager {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--sui-space-2);
+  min-inline-size: 0;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__pager-status {
+  flex: 1;
+  color: var(--sui-color-text-secondary);
+}
+
+.sui-grid__pager-button {
+  padding: 0 var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__pager-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sui-grid__pager-button:focus-visible,
+.sui-grid__pager-size select:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
+
+.sui-grid__pager-size {
+  display: flex;
+  align-items: center;
+  gap: var(--sui-space-1);
+  color: var(--sui-color-text-secondary);
+}
+
+.sui-grid__pager-size select {
+  padding: var(--sui-space-1);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+}
