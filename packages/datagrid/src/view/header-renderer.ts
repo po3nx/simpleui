@@ -230,6 +230,63 @@ function appendFilterMarker(cell: HTMLElement, columnId: string): void {
   cell.append(marker);
 }
 
+function applyColumnPosition<T extends object>(
+  cell: HTMLElement,
+  entry: ColumnLayoutEntry<T>,
+): void {
+  if (entry.fixed && entry.stickyOffset !== undefined) {
+    cell.classList.add(`sui-grid__header-cell--sticky-${entry.fixed}`);
+    setStyle(cell, 'position', 'sticky');
+    setStyle(
+      cell,
+      entry.fixed === 'start' ? 'inset-inline-start' : 'inset-inline-end',
+      `${entry.stickyOffset}px`,
+    );
+    setStyle(cell, 'z-index', '1');
+  }
+  if (entry.shadow) {
+    cell.classList.add(`sui-grid__cell--shadow-${entry.shadow}`);
+  }
+}
+
+function createHeaderCell<T extends object>(
+  entry: ColumnLayoutEntry<T>,
+  index: number,
+  context: HeaderRenderContext,
+): HTMLElement {
+  const column = entry.column;
+  const cell = createElement('div', { className: 'sui-grid__header-cell' });
+  setAttributes(cell, { role: 'columnheader', 'aria-colindex': index + 1 });
+  setAttributes(cell, { 'data-column-id': column.id });
+  setStyle(cell, 'flex-basis', `${entry.width}px`);
+  setStyle(cell, 'justify-content', alignmentStyle(column.alignment));
+
+  applyColumnPosition(cell, entry);
+
+  const ariaSort = ariaSortFor(column, context.sortBy);
+  if (ariaSort) setAttributes(cell, { 'aria-sort': ariaSort });
+
+  if (column.allowSorting && !column.children) {
+    cell.append(createSortButton(column, context, index));
+  } else if (column.headerCellTemplate && context.mountTemplate) {
+    context.mountTemplate(cell, column, index);
+  } else {
+    const label = createElement('span', { text: column.caption });
+    cell.append(label);
+  }
+
+  if (context.filteredColumns.has(column.id))
+    appendFilterMarker(cell, column.id);
+
+  attachReorder(cell, column, context);
+  const filterButton = createFilterButton(column, context);
+  if (filterButton) cell.append(filterButton);
+  const resizeHandle = createResizeHandle(column, context, entry.width);
+  if (resizeHandle) cell.append(resizeHandle);
+
+  return cell;
+}
+
 export function createHeaderRow<T extends object>(
   entries: readonly ColumnLayoutEntry<T>[],
   context: HeaderRenderContext,
@@ -240,47 +297,7 @@ export function createHeaderRow<T extends object>(
   setAttributes(row, { role: 'row' });
 
   entries.forEach((entry, index) => {
-    const column = entry.column;
-    const cell = createElement('div', { className: 'sui-grid__header-cell' });
-    setAttributes(cell, { role: 'columnheader', 'aria-colindex': index + 1 });
-    setAttributes(cell, { 'data-column-id': column.id });
-    setStyle(cell, 'flex-basis', `${entry.width}px`);
-    setStyle(cell, 'justify-content', alignmentStyle(column.alignment));
-
-    if (entry.fixed && entry.stickyOffset !== undefined) {
-      cell.classList.add(`sui-grid__header-cell--sticky-${entry.fixed}`);
-      setStyle(cell, 'position', 'sticky');
-      setStyle(
-        cell,
-        entry.fixed === 'start' ? 'inset-inline-start' : 'inset-inline-end',
-        `${entry.stickyOffset}px`,
-      );
-      setStyle(cell, 'z-index', '1');
-    }
-    if (entry.shadow) {
-      cell.classList.add(`sui-grid__cell--shadow-${entry.shadow}`);
-    }
-
-    const ariaSort = ariaSortFor(column, context.sortBy);
-    if (ariaSort) setAttributes(cell, { 'aria-sort': ariaSort });
-
-    if (column.allowSorting && !column.children) {
-      cell.append(createSortButton(column, context, index));
-    } else {
-      const label = createElement('span', { text: column.caption });
-      cell.append(label);
-    }
-
-    if (context.filteredColumns.has(column.id))
-      appendFilterMarker(cell, column.id);
-
-    attachReorder(cell, column, context);
-    const filterButton = createFilterButton(column, context);
-    if (filterButton) cell.append(filterButton);
-    const resizeHandle = createResizeHandle(column, context, entry.width);
-    if (resizeHandle) cell.append(resizeHandle);
-
-    row.append(cell);
+    row.append(createHeaderCell(entry, index, context));
   });
 
   return row;

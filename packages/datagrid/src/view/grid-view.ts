@@ -1,5 +1,5 @@
 import { createElement, setAttributes, setStyle } from '@simpleui/core';
-import type { SortDescriptor } from '@simpleui/core';
+import type { Key, SortDescriptor } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
 import {
@@ -10,6 +10,10 @@ import type { FilterExpression } from '@simpleui/core';
 import { createFilterRow, type FilterRow } from './filter-row.js';
 import { createSearchPanel, type SearchPanel } from './search-panel.js';
 import { createPager, type Pager, type PagingState } from './pager.js';
+import {
+  createSelectionColumn,
+  type SelectionColumnOptions,
+} from './selection-column.js';
 import {
   createStatusView,
   type GridStatusKind,
@@ -48,6 +52,11 @@ export interface GridViewOptions<T extends object> {
   readonly searchFields?: readonly string[];
   readonly onSearchChange?:
     ((query: string, fields: readonly string[]) => void) | undefined;
+  readonly selectionMode?: 'none' | 'single' | 'multiple';
+  readonly rowKey?: ((row: T) => Key) | undefined;
+  readonly selectedKeys?: readonly Key[] | undefined;
+  readonly getVisibleKeys?: (() => readonly Key[]) | undefined;
+  readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
   readonly pager?: boolean;
   readonly pageIndex?: number;
   readonly pageSize?: number;
@@ -74,7 +83,9 @@ export interface GridView<T extends object> {
   readonly filterRow: FilterRow | undefined;
   readonly searchPanel: SearchPanel | undefined;
   readonly pager: Pager | undefined;
+  readonly selectionColumn: ColumnState<T> | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
+  setSelection(keys: readonly Key[]): void;
   setPaging(state: PagingState): void;
   setFilterValue(filter: FilterExpression | null): void;
   setRowCount(count: number): void;
@@ -179,6 +190,76 @@ function createFilter<T extends object>(
   return row;
 }
 
+interface SelectionState<T extends object> {
+  readonly column: ColumnState<T>;
+  setKeys(keys: readonly Key[]): void;
+}
+
+function createSelectionState<T extends object>(
+  options: GridViewOptions<T>,
+  refresh: () => void,
+): SelectionState<T> | undefined {
+  const mode = options.selectionMode ?? 'none';
+  if (mode === 'none' || !options.rowKey) return undefined;
+  const getKey = options.rowKey;
+  const selected = new Set<Key>(options.selectedKeys ?? []);
+  let lastIndex = -1;
+
+  const notify = (): void => {
+    options.onSelectionChange?.([...selected]);
+    refresh();
+  };
+
+  const onToggle = (key: Key, shift: boolean): void => {
+    const visible = options.getVisibleKeys?.() ?? [];
+    if (mode === 'single') {
+      const wasSelected = selected.has(key);
+      selected.clear();
+      if (!wasSelected) selected.add(key);
+    } else if (shift && lastIndex >= 0) {
+      const index = visible.indexOf(key);
+      if (index >= 0) {
+        const from = Math.min(index, lastIndex);
+        const to = Math.max(index, lastIndex);
+        selected.clear();
+        visible.slice(from, to + 1).forEach((entry) => selected.add(entry));
+      }
+      lastIndex = index;
+    } else {
+      if (selected.has(key)) selected.delete(key);
+      else selected.add(key);
+      lastIndex = visible.indexOf(key);
+    }
+    notify();
+  };
+
+  const onToggleAll = (select: boolean): void => {
+    selected.clear();
+    if (select)
+      (options.getVisibleKeys?.() ?? []).forEach((key) => selected.add(key));
+    notify();
+  };
+
+  const selectionOptions: SelectionColumnOptions<T> = {
+    mode,
+    getKey,
+    isSelected: (key) => selected.has(key),
+    getVisibleKeys: () => options.getVisibleKeys?.() ?? [],
+    getSelectedKeys: () => [...selected],
+    onToggle,
+    onToggleAll,
+  };
+
+  return {
+    column: createSelectionColumn(selectionOptions),
+    setKeys(keys) {
+      selected.clear();
+      keys.forEach((key) => selected.add(key));
+      refresh();
+    },
+  };
+}
+
 function attachPager<T extends object>(
   options: GridViewOptions<T>,
   dom: Skeleton,
@@ -201,16 +282,63 @@ function attachPager<T extends object>(
   return pager;
 }
 
+interface Interactive<T extends object> {
+  readonly searchPanel: SearchPanel | undefined;
+  readonly filterRow: FilterRow | undefined;
+  readonly pager: Pager | undefined;
+  readonly header: HeaderController<T>;
+  readonly selection: SelectionState<T> | undefined;
+  readonly withSelection: (
+    columns: readonly ColumnState<T>[],
+  ) => readonly ColumnState<T>[];
+}
+
+function mountGrid<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+  header: HeaderController<T>,
+  columns: readonly ColumnState<T>[],
+): void {
+  header.render(columns);
+  options.container.append(dom.element);
+  // Ukuran viewport baru diketahui setelah elemen masuk DOM.
+  header.render(columns);
+}
+
+function createInteractive<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+): Interactive<T> {
+  const searchPanel = createSearch(options);
+  const filterRow = createFilter(options);
+  const pager = attachPager(options, dom);
+  let refreshSelection = (): void => {};
+  const selection = createSelectionState(options, () => refreshSelection());
+  const withSelection = (
+    columns: readonly ColumnState<T>[],
+  ): readonly ColumnState<T>[] =>
+    selection ? [selection.column, ...columns] : columns;
+  const header = createHeader(
+    options,
+    dom,
+    filterRow,
+    withSelection(options.columns),
+  );
+  refreshSelection = () => header.render(withSelection(options.columns));
+  return { searchPanel, filterRow, pager, header, selection, withSelection };
+}
+
 function createHeader<T extends object>(
   options: GridViewOptions<T>,
   dom: Skeleton,
   filterRow: FilterRow | undefined,
+  columns: readonly ColumnState<T>[],
 ): HeaderController<T> {
   return createHeaderController<T>({
     element: dom.element,
     headerElement: dom.headerElement,
     viewportElement: dom.viewportElement,
-    columns: options.columns,
+    columns,
     sortBy: options.sortBy,
     filteredColumns: options.filteredColumns,
     onSortChange: options.onSortChange,
@@ -270,15 +398,10 @@ export function createGridView<T extends object>(
     footer: Boolean(options.footer),
   });
 
-  const searchPanel = createSearch(options);
-  const filterRow = createFilter(options);
-  const pager = attachPager(options, dom);
-  const header = createHeader(options, dom, filterRow);
+  const { searchPanel, filterRow, pager, header, selection, withSelection } =
+    createInteractive(options, dom);
 
-  header.render(options.columns);
-  options.container.append(dom.element);
-  // Ukuran viewport baru diketahui setelah elemen masuk DOM.
-  header.render(options.columns);
+  mountGrid(options, dom, header, withSelection(options.columns));
 
   const status = createStatus(options, dom.element);
 
@@ -306,9 +429,13 @@ export function createGridView<T extends object>(
       setStyle(dom.spacerElement, 'block-size', `${rowCount * rowHeight}px`);
     },
     setColumns: (next) => {
-      header.render(next);
+      header.render(withSelection(next));
       filterRow?.setColumns(next as never);
       if (!options.searchFields) searchPanel?.setFields(searchableFields(next));
+    },
+    selectionColumn: selection?.column,
+    setSelection(keys) {
+      selection?.setKeys(keys);
     },
     setSorting: (next) => header.setSorting(next),
     clearSorting: () => header.clearSorting(),

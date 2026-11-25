@@ -455,3 +455,16 @@
   color: var(--sui-color-text-primary);
   font: inherit;
 }
+
+.sui-grid__select {
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--sui-color-accent-default);
+}
+
+.sui-grid__select:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}

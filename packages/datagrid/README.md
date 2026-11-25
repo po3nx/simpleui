@@ -108,6 +108,9 @@ const options = normalizeDataGridOptions({
 - Pager: `pager: true` menampilkan prev/next, ukuran halaman, dan status
   "Halaman X dari Y"; bila `totalCount` null, mode next-page memakai
   `itemCount`; `onPageChange` + `setPaging` untuk controlled.
+- Selection: `selectionMode: 'single' | 'multiple'` + `rowKey`; kolom checkbox
+  (`grid.selectionColumn`) untuk dipakai row renderer, select-all halaman
+  dengan indeterminate, Shift+klik range, dan `onSelectionChange`/`setSelection`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
