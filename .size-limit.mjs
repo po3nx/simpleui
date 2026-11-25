@@ -65,7 +65,7 @@ export default [
     limit: '5 kB',
     gzip: true,
 
-    ignore: ['react', 'react-dom', 'react-dom/client'],
+    ignore: ['react', 'react-dom', 'react-dom/client', '@simpleui/datagrid'],
   },
   {
     name: '@simpleui/vue',

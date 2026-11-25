@@ -42,3 +42,5 @@ export function createReactBridge(): AdapterBridge {
     },
   };
 }
+
+export { DataGrid, type DataGridProps } from './grid.js';
