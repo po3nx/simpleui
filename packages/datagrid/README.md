@@ -67,7 +67,8 @@ const options = normalizeDataGridOptions({
 - Renderer skeleton: `createGridView` membentuk DOM grid (header sticky,
   viewport + spacer, footer, live region, RTL) — renderer baris menyusul.
   Impor `@simpleui/datagrid/styles.css` untuk layout; semua warna/ukuran dari
-  token `@simpleui/theme`.
+  token `@simpleui/theme`. Header sudah mendukung sort (klik/shift+klik,
+  `aria-sort`, indikator multi-sort) dan penanda filter.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

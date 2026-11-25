@@ -1,7 +1,27 @@
 import { applySort, type SortDescriptor } from '@simpleui/core';
 
 import { DataGridError } from '../errors.js';
-import { findColumnById, type ColumnState } from '../model/columns.js';
+interface SortableColumn {
+  readonly id: string;
+  readonly dataField?: string | undefined;
+  readonly allowSorting: boolean;
+  readonly children: readonly unknown[] | undefined;
+}
+
+function findSortableColumn(
+  columns: readonly SortableColumn[],
+  id: string,
+): SortableColumn | undefined {
+  for (const column of columns) {
+    if (column.id === id) return column;
+    if (column.children) {
+      const children = column.children as readonly SortableColumn[];
+      const found = findSortableColumn(children, id);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
 
 /**
  * Sort model DataGrid (DG-015): siklus asc → desc → none, multi-sort yang
@@ -57,7 +77,7 @@ export function sortIndexFor(
   return index < 0 ? 0 : index + 1;
 }
 
-function resolveSelector(column: ColumnState): string {
+function resolveSelector(column: SortableColumn): string {
   if (!column.allowSorting || column.children) {
     fail(`kolom ${column.id} tidak dapat disortir`);
   }
@@ -66,12 +86,12 @@ function resolveSelector(column: ColumnState): string {
 
 /** Ubah sortBy setelah klik header kolom. */
 export function toggleSort(
-  columns: readonly ColumnState[],
+  columns: readonly SortableColumn[],
   sortBy: readonly SortDescriptor[],
   columnId: string,
   options: ToggleSortOptions = {},
 ): readonly SortDescriptor[] {
-  const column = findColumnById(columns, columnId);
+  const column = findSortableColumn(columns, columnId);
   if (!column) fail(`kolom ${columnId} tidak ditemukan`);
 
   const selector = resolveSelector(column);
