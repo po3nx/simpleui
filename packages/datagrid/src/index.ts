@@ -25,6 +25,11 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createSelectionColumn,
+  SELECTION_COLUMN_ID,
+  type SelectionColumnOptions,
+} from './view/selection-column.js';
+export {
   createPager,
   type Pager,
   type PagerOptions,
