@@ -10,6 +10,16 @@ export {
   type DataControllerOptions,
 } from './data/data-controller.js';
 export {
+  applyGridSort,
+  clearSort,
+  nextSortDirection,
+  sortDirectionFor,
+  sortIndexFor,
+  toggleSort,
+  type SortDirection,
+  type ToggleSortOptions,
+} from './data/sort.js';
+export {
   applyGridFilter,
   buildFilterCondition,
   buildFilterRow,

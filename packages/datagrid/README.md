@@ -34,6 +34,9 @@ const options = normalizeDataGridOptions({
   (`buildFilterRow`) dan pencarian (`buildSearchFilter`) menghasilkan AST
   tertutup; batas kedalaman/node/`in` ditegakkan dan error menjadi
   `SUI-DG-001`. `applyGridFilter` memakai pipeline core (tanpa duplikasi).
+- Sort model: `toggleSort` (siklus asc → desc → none; `multi` untuk Shift+klik),
+  `sortIndexFor`/`sortDirectionFor` untuk indikator, `applyGridSort` memakai
+  pipeline core (collator, null selalu di akhir).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
