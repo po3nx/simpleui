@@ -120,6 +120,9 @@ const options = normalizeDataGridOptions({
 - CSV export: `exportCsv` (caption header, kolom terlihat, `calculateCellValue`,
   CRLF, delimiter) dengan **guard formula** dan `sanitizeFilename`; `downloadCsv`
   menambahkan BOM UTF-8 dan memicu unduhan aman.
+- Summary footer: `summaryItems` + `summaryRows` + `summaryLocale` merender
+  total per kolom di footer sticky (format locale, `displayFormat`,
+  `customizeText`, error → `—`), `setSummaryRows` untuk update.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

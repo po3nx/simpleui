@@ -1,25 +1,33 @@
 import { createElement, setAttributes, setStyle } from '@simpleui/core';
 import type { Key, SortDescriptor } from '@simpleui/core';
+import type { SummaryItem } from '../api/types.js';
 
 import type { ColumnState } from '../model/columns.js';
-import {
-  createHeaderController,
-  type HeaderController,
-} from './header-controller.js';
+import type { HeaderController } from './header-controller.js';
 import type { FilterExpression } from '@simpleui/core';
-import { createFilterRow, type FilterRow } from './filter-row.js';
-import { createSearchPanel, type SearchPanel } from './search-panel.js';
-import { createPager, type Pager, type PagingState } from './pager.js';
+import type { FilterRow } from './filter-row.js';
+import type { SearchPanel } from './search-panel.js';
+import type { Pager, PagingState } from './pager.js';
+import type { SummaryFooter } from './summary-footer.js';
+import {
+  attachPager,
+  attachSummary,
+  createFilter,
+  createHeader,
+  createScrollHandler,
+  createSearch,
+  createStatus,
+  searchableFields,
+} from './grid-chrome.js';
 import { createColumnChooser, type ColumnChooser } from './column-chooser.js';
 import {
-  createSelectionColumn,
-  type SelectionColumnOptions,
-} from './selection-column.js';
-import {
-  createStatusView,
-  type GridStatusKind,
-  type GridStatusOptions,
-  type StatusView,
+  createSelectionState,
+  type SelectionState,
+} from './selection-state.js';
+import type {
+  GridStatusKind,
+  GridStatusOptions,
+  StatusView,
 } from './status-view.js';
 
 /**
@@ -58,6 +66,9 @@ export interface GridViewOptions<T extends object> {
   readonly selectedKeys?: readonly Key[] | undefined;
   readonly getVisibleKeys?: (() => readonly Key[]) | undefined;
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
+  readonly summaryItems?: readonly SummaryItem<T>[] | undefined;
+  readonly summaryRows?: readonly T[] | undefined;
+  readonly summaryLocale?: string | undefined;
   readonly columnChooser?: boolean;
   readonly hiddenColumns?: readonly string[] | undefined;
   readonly onVisibilityChange?:
@@ -90,7 +101,9 @@ export interface GridView<T extends object> {
   readonly pager: Pager | undefined;
   readonly selectionColumn: ColumnState<T> | undefined;
   readonly columnChooser: ColumnChooser | undefined;
+  readonly summaryFooter: SummaryFooter<T> | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
+  setSummaryRows(rows: readonly T[]): void;
   setHiddenColumns(columnIds: readonly string[]): void;
   setSelection(keys: readonly Key[]): void;
   setPaging(state: PagingState): void;
@@ -105,7 +118,7 @@ export interface GridView<T extends object> {
 
 const DEFAULT_ROW_HEIGHT = 40;
 
-interface Skeleton {
+export interface Skeleton {
   readonly element: HTMLElement;
   readonly headerElement: HTMLElement;
   readonly viewportElement: HTMLElement;
@@ -164,131 +177,6 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   };
 }
 
-function searchableFields<T extends object>(
-  columns: readonly ColumnState<T>[],
-): string[] {
-  return columns
-    .filter((column) => column.visible && column.allowFiltering)
-    .map((column) => column.dataField ?? column.id);
-}
-
-function createSearch<T extends object>(
-  options: GridViewOptions<T>,
-): SearchPanel | undefined {
-  if (!options.searchPanel) return undefined;
-  return createSearchPanel({
-    debounceMs: options.searchDebounceMs,
-    fields: options.searchFields ?? searchableFields(options.columns),
-    placeholder: options.messages?.['searchPlaceholder'],
-    onSearchChange: options.onSearchChange,
-  });
-}
-
-function createFilter<T extends object>(
-  options: GridViewOptions<T>,
-): FilterRow | undefined {
-  if (!options.filterRow) return undefined;
-  const row = createFilterRow({
-    columns: options.columns as never,
-    filterValue: options.filterValue,
-    onFilterChange: options.onFilterChange,
-  });
-  if (options.filterValue) row.setFilterValue(options.filterValue);
-  return row;
-}
-
-interface SelectionState<T extends object> {
-  readonly column: ColumnState<T>;
-  setKeys(keys: readonly Key[]): void;
-}
-
-function createSelectionState<T extends object>(
-  options: GridViewOptions<T>,
-  refresh: () => void,
-): SelectionState<T> | undefined {
-  const mode = options.selectionMode ?? 'none';
-  if (mode === 'none' || !options.rowKey) return undefined;
-  const getKey = options.rowKey;
-  const selected = new Set<Key>(options.selectedKeys ?? []);
-  let lastIndex = -1;
-
-  const notify = (): void => {
-    options.onSelectionChange?.([...selected]);
-    refresh();
-  };
-
-  const onToggle = (key: Key, shift: boolean): void => {
-    const visible = options.getVisibleKeys?.() ?? [];
-    if (mode === 'single') {
-      const wasSelected = selected.has(key);
-      selected.clear();
-      if (!wasSelected) selected.add(key);
-    } else if (shift && lastIndex >= 0) {
-      const index = visible.indexOf(key);
-      if (index >= 0) {
-        const from = Math.min(index, lastIndex);
-        const to = Math.max(index, lastIndex);
-        selected.clear();
-        visible.slice(from, to + 1).forEach((entry) => selected.add(entry));
-      }
-      lastIndex = index;
-    } else {
-      if (selected.has(key)) selected.delete(key);
-      else selected.add(key);
-      lastIndex = visible.indexOf(key);
-    }
-    notify();
-  };
-
-  const onToggleAll = (select: boolean): void => {
-    selected.clear();
-    if (select)
-      (options.getVisibleKeys?.() ?? []).forEach((key) => selected.add(key));
-    notify();
-  };
-
-  const selectionOptions: SelectionColumnOptions<T> = {
-    mode,
-    getKey,
-    isSelected: (key) => selected.has(key),
-    getVisibleKeys: () => options.getVisibleKeys?.() ?? [],
-    getSelectedKeys: () => [...selected],
-    onToggle,
-    onToggleAll,
-  };
-
-  return {
-    column: createSelectionColumn(selectionOptions),
-    setKeys(keys) {
-      selected.clear();
-      keys.forEach((key) => selected.add(key));
-      refresh();
-    },
-  };
-}
-
-function attachPager<T extends object>(
-  options: GridViewOptions<T>,
-  dom: Skeleton,
-): Pager | undefined {
-  if (!options.pager) return undefined;
-  const pager = createPager({
-    pageIndex: options.pageIndex ?? 0,
-    pageSize: options.pageSize ?? 20,
-    ...(options.totalCount !== undefined
-      ? { totalCount: options.totalCount }
-      : {}),
-    ...(options.itemCount !== undefined
-      ? { itemCount: options.itemCount }
-      : {}),
-    pageSizes: options.pageSizes,
-    onPageChange: options.onPageChange,
-  });
-  dom.footerElement.hidden = false;
-  dom.footerElement.append(pager.element);
-  return pager;
-}
-
 interface Interactive<T extends object> {
   readonly searchPanel: SearchPanel | undefined;
   readonly filterRow: FilterRow | undefined;
@@ -300,6 +188,7 @@ interface Interactive<T extends object> {
   ) => readonly ColumnState<T>[];
   readonly columnChooser: ColumnChooser | undefined;
   readonly setHidden: (columnIds: readonly string[]) => void;
+  readonly summaryFooter: SummaryFooter<never> | undefined;
   readonly filterVisible: (
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
@@ -307,6 +196,7 @@ interface Interactive<T extends object> {
 
 interface Disposables {
   readonly header: { dispose(): void };
+  readonly summaryFooter: SummaryFooter<never> | undefined;
   readonly filterRow: FilterRow | undefined;
   readonly searchPanel: SearchPanel | undefined;
   readonly pager: Pager | undefined;
@@ -321,6 +211,7 @@ function disposeGrid(
 ): void {
   dom.viewportElement.removeEventListener('scroll', onScroll);
   parts.header.dispose();
+  parts.summaryFooter?.dispose();
   parts.filterRow?.dispose();
   parts.searchPanel?.dispose();
   parts.pager?.dispose();
@@ -362,6 +253,7 @@ function createInteractive<T extends object>(
 ): Interactive<T> {
   const searchPanel = createSearch(options);
   const filterRow = createFilter(options);
+  const summaryFooter = attachSummary(options, dom);
   const pager = attachPager(options, dom);
   const hidden = new Set(options.hiddenColumns ?? []);
   let refreshSelection = (): void => {};
@@ -410,66 +302,76 @@ function createInteractive<T extends object>(
     columnChooser,
     setHidden,
     filterVisible,
+    summaryFooter,
   };
 }
 
-function createHeader<T extends object>(
-  options: GridViewOptions<T>,
-  dom: Skeleton,
-  filterRow: FilterRow | undefined,
-  columns: readonly ColumnState<T>[],
-): HeaderController<T> {
-  return createHeaderController<T>({
-    element: dom.element,
-    headerElement: dom.headerElement,
-    viewportElement: dom.viewportElement,
-    columns,
-    sortBy: options.sortBy,
-    filteredColumns: options.filteredColumns,
-    onSortChange: options.onSortChange,
-    onTemplateError: options.onTemplateError,
-    onColumnResize: options.onColumnResize,
-    onColumnReorder: options.onColumnReorder,
-    liveElement: dom.liveElement,
-    extraHeaderElement: filterRow?.element,
-    headerFilter: options.headerFilter,
-    getUniqueValues: options.getUniqueValues,
-    onFilterChange: (filter) => {
-      filterRow?.setFilterValue(filter);
-      options.onFilterChange?.(filter);
+interface GridApiContext<T extends object> {
+  readonly options: GridViewOptions<T>;
+  readonly dom: Skeleton;
+  readonly rowHeight: number;
+  readonly header: HeaderController<T>;
+  readonly filterRow: FilterRow | undefined;
+  readonly searchPanel: SearchPanel | undefined;
+  readonly pager: Pager | undefined;
+  readonly status: StatusView;
+  readonly summaryFooter: SummaryFooter<T> | undefined;
+  readonly selection: SelectionState<T> | undefined;
+  readonly withSelection: (
+    columns: readonly ColumnState<T>[],
+  ) => readonly ColumnState<T>[];
+  readonly filterVisible: (
+    columns: readonly ColumnState<T>[],
+  ) => readonly ColumnState<T>[];
+  readonly columnChooser: ColumnChooser | undefined;
+  readonly setHidden: (columnIds: readonly string[]) => void;
+  readonly onScroll: () => void;
+}
+function createGridApi<T extends object>(ctx: GridApiContext<T>): GridView<T> {
+  return {
+    ...ctx.dom,
+    status: ctx.status,
+    filterRow: ctx.filterRow,
+    searchPanel: ctx.searchPanel,
+    pager: ctx.pager,
+    summaryFooter: ctx.summaryFooter,
+    setSummaryRows: (rows) => ctx.summaryFooter?.setRows(rows),
+    setFilterValue: (filter) => ctx.filterRow?.setFilterValue(filter),
+    setPaging: (state) => ctx.pager?.setState(state),
+    setStatus: (kind, statusOptions) =>
+      applyStatus(ctx.status, kind, statusOptions),
+    setRowCount: (count) => applyRowCount(ctx.dom, ctx.rowHeight, count),
+    setColumns: (next) => {
+      ctx.header.render(ctx.withSelection(next));
+      const visible = ctx.filterVisible(next);
+      ctx.filterRow?.setColumns(visible as never);
+      if (!ctx.options.searchFields) {
+        ctx.searchPanel?.setFields(searchableFields(visible));
+      }
     },
-  });
-}
-
-function createScrollHandler<T extends object>(
-  dom: Skeleton,
-  header: HeaderController<T>,
-  options: GridViewOptions<T>,
-): () => void {
-  let lastScrollLeft = dom.viewportElement.scrollLeft;
-  const handler = (): void => {
-    if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
-      lastScrollLeft = dom.viewportElement.scrollLeft;
-      header.render(options.columns);
-    }
-    options.onScroll?.(dom.viewportElement.scrollTop);
+    selectionColumn: ctx.selection?.column,
+    columnChooser: ctx.columnChooser,
+    setSelection: (keys) => ctx.selection?.setKeys(keys),
+    setHiddenColumns: (columnIds) => ctx.setHidden(columnIds),
+    setSorting: (next) => ctx.header.setSorting(next),
+    clearSorting: () => ctx.header.clearSorting(),
+    setFilteredColumns: (columnIds) => ctx.header.setFilteredColumns(columnIds),
+    dispose: () =>
+      disposeGrid(
+        ctx.dom,
+        {
+          header: ctx.header,
+          summaryFooter: ctx.summaryFooter,
+          filterRow: ctx.filterRow,
+          searchPanel: ctx.searchPanel,
+          pager: ctx.pager,
+          columnChooser: ctx.columnChooser,
+          status: ctx.status,
+        },
+        ctx.onScroll,
+      ),
   };
-  dom.viewportElement.addEventListener('scroll', handler, { passive: true });
-  return handler;
 }
-
-function createStatus<T extends object>(
-  options: GridViewOptions<T>,
-  element: HTMLElement,
-): StatusView {
-  const status = createStatusView({
-    messages: options.messages,
-    onRetry: options.onRetry,
-  });
-  element.append(status.element);
-  return status;
-}
-
 export function createGridView<T extends object>(
   options: GridViewOptions<T>,
 ): GridView<T> {
@@ -490,42 +392,27 @@ export function createGridView<T extends object>(
     columnChooser,
     setHidden,
     filterVisible,
+    summaryFooter,
   } = createInteractive(options, dom);
   mountGrid(options, dom, header, withSelection(options.columns));
 
   const status = createStatus(options, dom.element);
   const onScroll = createScrollHandler(dom, header, options);
-  return {
-    ...dom,
-    status,
+  return createGridApi({
+    options,
+    dom,
+    rowHeight,
+    header,
     filterRow,
     searchPanel,
     pager,
-    setFilterValue: (filter) => filterRow?.setFilterValue(filter),
-    setPaging: (state) => pager?.setState(state),
-    setStatus: (kind, statusOptions) =>
-      applyStatus(status, kind, statusOptions),
-    setRowCount: (count) => applyRowCount(dom, rowHeight, count),
-    setColumns: (next) => {
-      header.render(withSelection(next));
-      const visible = filterVisible(next);
-      filterRow?.setColumns(visible as never);
-      if (!options.searchFields) {
-        searchPanel?.setFields(searchableFields(visible));
-      }
-    },
-    selectionColumn: selection?.column,
+    status,
+    summaryFooter: summaryFooter as SummaryFooter<T> | undefined,
+    selection,
+    withSelection,
+    filterVisible,
     columnChooser,
-    setSelection: (keys) => selection?.setKeys(keys),
-    setHiddenColumns: (columnIds) => setHidden(columnIds),
-    setSorting: (next) => header.setSorting(next),
-    clearSorting: () => header.clearSorting(),
-    setFilteredColumns: (columnIds) => header.setFilteredColumns(columnIds),
-    dispose: () =>
-      disposeGrid(
-        dom,
-        { header, filterRow, searchPanel, pager, columnChooser, status },
-        onScroll,
-      ),
-  };
+    setHidden,
+    onScroll,
+  });
 }
