@@ -27,7 +27,7 @@ export interface NormalizeContext {
 type Rule =
   | { kind: 'boolean'; fallback: boolean }
   | { kind: 'number'; fallback: number; min?: number; max?: number }
-  | { kind: 'string'; fallback: string; allowEmpty?: boolean }
+  | { kind: 'string'; fallback: string }
   | { kind: 'optionalString'; fallback: string | undefined }
   | { kind: 'enum'; values: readonly string[]; fallback: string }
   | { kind: 'stringArray'; fallback: readonly string[] }
@@ -321,8 +321,7 @@ function validateString(
   path: string,
   fail: Fail,
 ): unknown {
-  if (typeof value === 'string' && (rule.allowEmpty || value.length > 0))
-    return value;
+  if (typeof value === 'string' && value.length > 0) return value;
   fail(path, 'harus string tidak kosong');
   return rule.fallback;
 }

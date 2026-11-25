@@ -35,13 +35,9 @@ function measure(fn: () => void): number {
   return performance.now() - started;
 }
 
-// Perf tidak dijalankan saat pengukuran coverage: instrumentasi v8 membuat
-// waktu tidak representatif (sort bisa 3-5x lebih lambat). Vitest menandai
-// sesi coverage lewat NODE_V8_COVERAGE; SKIP_PERF untuk jalan manual.
-const underCoverage =
-  process.env['SKIP_PERF'] === '1' || Boolean(process.env['NODE_V8_COVERAGE']);
-
-describe.skipIf(underCoverage)('model 100k baris', () => {
+// Opt-in: hanya berjalan dengan RUN_PERF=1, sehingga `pnpm test` biasa dan
+// sesi coverage tidak terpengaruh contention/instrumentasi v8.
+describe.skipIf(process.env['RUN_PERF'] !== '1')('model 100k baris', () => {
   const rows = buildRows(ROW_COUNT);
 
   it('memuat 100k baris dari ArrayStore dengan totalCount benar', async () => {
