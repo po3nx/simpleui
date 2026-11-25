@@ -25,6 +25,13 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  downloadCsv,
+  exportCsv,
+  sanitizeFilename,
+  type CsvExportOptions,
+  type CsvExportResult,
+} from './data/export.js';
+export {
   createColumnChooser,
   type ColumnChooser,
   type ColumnChooserOptions,

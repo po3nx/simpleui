@@ -117,6 +117,9 @@ const options = normalizeDataGridOptions({
 - Column chooser: `columnChooser: true` + `hiddenColumns`; panel checkbox
   visibilitas (dan "Tampilkan semua"), `onVisibilityChange` untuk diteruskan
   ke state store/persistensi, serta `setHiddenColumns`.
+- CSV export: `exportCsv` (caption header, kolom terlihat, `calculateCellValue`,
+  CRLF, delimiter) dengan **guard formula** dan `sanitizeFilename`; `downloadCsv`
+  menambahkan BOM UTF-8 dan memicu unduhan aman.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
