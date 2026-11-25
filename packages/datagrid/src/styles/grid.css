@@ -247,3 +247,38 @@
     animation: none;
   }
 }
+
+.sui-grid__header-cell {
+  position: relative;
+}
+
+.sui-grid__resize-handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 2;
+  inline-size: 8px;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.sui-grid__resize-handle::after {
+  content: '';
+  position: absolute;
+  inset-block: 25%;
+  inset-inline-start: 3px;
+  inline-size: 2px;
+  border-radius: 1px;
+  background: var(--sui-color-border-strong);
+  opacity: 0;
+}
+
+.sui-grid__header-cell:hover .sui-grid__resize-handle::after,
+.sui-grid__resize-handle:focus-visible::after {
+  opacity: 1;
+}
+
+.sui-grid__resize-handle:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: calc(-1 * var(--sui-focus-ring-width));
+}

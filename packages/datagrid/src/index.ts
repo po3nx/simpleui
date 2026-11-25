@@ -13,6 +13,12 @@ export {
   type CellFormatOptions,
 } from './view/cell-renderer.js';
 export {
+  attachColumnResize,
+  clampColumnWidth,
+  RESIZE_STEP,
+  type ColumnResizeOptions,
+} from './view/column-resize.js';
+export {
   createStatusView,
   DEFAULT_STATUS_MESSAGES,
   type GridStatusKind,

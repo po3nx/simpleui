@@ -19,6 +19,11 @@ export interface HeaderRenderContext {
     column: HeaderColumn,
     index: number,
   ) => void;
+  readonly attachResize?: (
+    handle: HTMLElement,
+    column: HeaderColumn,
+    width: number,
+  ) => void;
 }
 
 interface HeaderColumn {
@@ -31,6 +36,8 @@ interface HeaderColumn {
   readonly alignment: ColumnState['alignment'];
   readonly width: number | 'auto';
   readonly minWidth: number;
+  readonly maxWidth: number | undefined;
+  readonly allowResizing: boolean;
 }
 
 function alignmentStyle(alignment: ColumnState['alignment']): string {
@@ -103,6 +110,26 @@ function createSortButton(
   return button;
 }
 
+function createResizeHandle(
+  column: HeaderColumn,
+  context: HeaderRenderContext,
+  width: number,
+): HTMLElement | null {
+  if (!column.allowResizing || !context.attachResize) return null;
+  const handle = createElement('div', { className: 'sui-grid__resize-handle' });
+  setAttributes(handle, {
+    role: 'separator',
+    'aria-orientation': 'vertical',
+    tabindex: '0',
+    'aria-label': `Ubah lebar ${column.caption}`,
+    'aria-valuenow': width,
+    'aria-valuemin': column.minWidth,
+    'aria-valuemax': column.maxWidth ?? 1000,
+  });
+  context.attachResize(handle, column, width);
+  return handle;
+}
+
 function appendFilterMarker(cell: HTMLElement, columnId: string): void {
   const marker = createElement('span', {
     className: 'sui-grid__filter-indicator',
@@ -159,6 +186,9 @@ export function createHeaderRow<T extends object>(
 
     if (context.filteredColumns.has(column.id))
       appendFilterMarker(cell, column.id);
+
+    const resizeHandle = createResizeHandle(column, context, entry.width);
+    if (resizeHandle) cell.append(resizeHandle);
 
     row.append(cell);
   });

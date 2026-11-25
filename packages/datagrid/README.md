@@ -86,6 +86,9 @@ const options = normalizeDataGridOptions({
 - Status: `setStatus('loading' | 'empty' | 'no-data' | 'error')` menampilkan
   overlay (spinner, pesan, tombol retry untuk error retryable) tanpa menghapus
   baris lama; pesan dapat dioverride lewat `messages`.
+- Resize kolom: handle `role="separator"` di header, drag pointer dan
+  ArrowLeft/ArrowRight (clamp `minWidth`/`maxWidth`), callback
+  `onColumnResize`; preview lebar langsung di header dan baris.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

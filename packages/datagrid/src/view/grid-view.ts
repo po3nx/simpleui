@@ -30,6 +30,8 @@ export interface GridViewOptions<T extends object> {
   ) => void;
   readonly messages?: Readonly<Record<string, string>> | undefined;
   readonly onRetry?: (() => void) | undefined;
+  readonly onColumnResize?:
+    ((columnId: string, width: number) => void) | undefined;
   readonly onScroll?: (scrollTop: number) => void;
 }
 
@@ -145,6 +147,7 @@ export function createGridView<T extends object>(
     filteredColumns: options.filteredColumns,
     onSortChange: options.onSortChange,
     onTemplateError: options.onTemplateError,
+    onColumnResize: options.onColumnResize,
   });
 
   const status = createStatus(options, dom.element);
