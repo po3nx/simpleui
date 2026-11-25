@@ -64,6 +64,10 @@ const options = normalizeDataGridOptions({
 - Persistensi: `createStatePersistence` menyimpan snapshot versioned dengan
   **migrasi** (v0 → v1), autosave debounce, batas ukuran, serta menolak state
   korup/versi lebih baru sebagai `SUI-DG-008`. Selection tidak dipersistenkan.
+- Renderer skeleton: `createGridView` membentuk DOM grid (header sticky,
+  viewport + spacer, footer, live region, RTL) — renderer baris menyusul.
+  Impor `@simpleui/datagrid/styles.css` untuk layout; semua warna/ukuran dari
+  token `@simpleui/theme`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

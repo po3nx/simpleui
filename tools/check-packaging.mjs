@@ -94,13 +94,22 @@ for (const directory of directories) {
   }
 
   const publint = await run(PUBLINT_BIN, [packageDir]);
-  const attw = await run(ATTW_BIN, [
+  // CSS bukan modul JS: attw tidak dapat me-resolve tipe/JS untuk entrypoint
+  // `.css`, jadi entrypoint tersebut dikecualikan dari pemeriksaan attw.
+  const cssEntrypoints = Object.keys(manifest.exports ?? {}).filter((key) =>
+    key.endsWith('.css'),
+  );
+  const attwArgs = [
     '--pack',
     packageDir,
     '--profile',
     'esm-only',
     '--no-emoji',
-  ]);
+    ...(cssEntrypoints.length > 0
+      ? ['--exclude-entrypoints', ...cssEntrypoints]
+      : []),
+  ];
+  const attw = await run(ATTW_BIN, attwArgs);
 
   if (publint.ok && attw.ok) {
     console.log(`✓ ${manifest.name}`);

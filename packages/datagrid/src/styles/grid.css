@@ -1,0 +1,117 @@
+/* Grid DataGrid (DG-030). Semua warna/ukuran dari token tema. */
+
+.sui-grid {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  block-size: 100%;
+  min-block-size: 0;
+  border: var(--sui-border-width) solid var(--sui-color-border-subtle);
+  border-radius: var(--sui-radius-md);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font-family: var(--sui-font-family-base);
+  font-size: var(--sui-font-size-md);
+  line-height: var(--sui-line-height-normal);
+  overflow: hidden;
+}
+
+.sui-grid__header,
+.sui-grid__footer {
+  position: sticky;
+  inset-inline: 0;
+  z-index: var(--sui-z-sticky);
+  display: flex;
+  align-items: stretch;
+  background: var(--sui-color-bg-subtle);
+}
+
+.sui-grid__header {
+  inset-block-start: 0;
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-strong);
+}
+
+.sui-grid__footer {
+  inset-block-end: 0;
+  border-block-start: var(--sui-border-width) solid
+    var(--sui-color-border-strong);
+}
+
+.sui-grid__header[hidden],
+.sui-grid__footer[hidden] {
+  display: none;
+}
+
+.sui-grid__viewport {
+  position: relative;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.sui-grid__spacer {
+  position: relative;
+  inline-size: 100%;
+}
+
+.sui-grid__rows {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sui-grid__row {
+  display: flex;
+  align-items: stretch;
+  min-inline-size: 100%;
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+}
+
+.sui-grid__row--even {
+  background: var(--sui-color-bg-subtle);
+}
+
+.sui-grid__row:hover {
+  background: var(--sui-color-bg-hover);
+}
+
+.sui-grid__row[aria-selected='true'] {
+  background: var(--sui-color-bg-selected);
+}
+
+.sui-grid__cell,
+.sui-grid__header-cell {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-inline-size: 0;
+  padding: var(--sui-density-cell-padding);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sui-grid__header-cell {
+  font-size: var(--sui-font-size-sm);
+  font-weight: var(--sui-font-weight-semibold);
+  color: var(--sui-color-text-primary);
+}
+
+.sui-grid__header-cell[data-sorted='true'] {
+  color: var(--sui-color-accent-default);
+}
+
+.sui-grid__cell:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: calc(-1 * var(--sui-focus-ring-offset));
+}
+
+.sui-grid__live {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
