@@ -25,6 +25,11 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createSummaryFooter,
+  type SummaryFooter,
+  type SummaryFooterOptions,
+} from './view/summary-footer.js';
+export {
   downloadCsv,
   exportCsv,
   sanitizeFilename,
