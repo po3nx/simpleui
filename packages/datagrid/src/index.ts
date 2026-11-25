@@ -25,6 +25,14 @@ export {
   type VirtualScrollOptions,
 } from './data/virtual-scroll.js';
 export {
+  flattenGroups,
+  groupKey,
+  groupRows,
+  type GroupedEntry,
+  type GroupNode,
+  type GroupOptions,
+} from './data/grouping.js';
+export {
   classifyError,
   DEFAULT_ERROR_MESSAGES,
   describeGridError,

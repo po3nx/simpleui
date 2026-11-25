@@ -54,6 +54,9 @@ const options = normalizeDataGridOptions({
   asing ke kode `SUI-DG-*` dengan pesan aman; `describeGridError` memberi
   `retryable`; DataController punya `getError`/`canRetry`/`retry` (abort tidak
   dihitung sebagai error).
+- Grouping: `groupRows` membentuk pohon multi-field dengan `groupKey` stabil
+  dan batas `maxGroupCount` per level (`SUI-DG-009`); `flattenGroups`
+  menghasilkan header grup + baris sesuai state ekspansi.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.
