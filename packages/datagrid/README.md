@@ -57,6 +57,10 @@ const options = normalizeDataGridOptions({
 - Grouping: `groupRows` membentuk pohon multi-field dengan `groupKey` stabil
   dan batas `maxGroupCount` per level (`SUI-DG-009`); `flattenGroups`
   menghasilkan header grup + baris sesuai state ekspansi.
+- Summary: `computeSummary` (total), `computeGroupSummary` (per grup termasuk
+  anak), dan `formatSummary` (locale, `displayFormat`, `customizeText`).
+  Nilai dikunci per kolom — satu summary per kolom. Formatter yang melempar
+  error menghasilkan `—` dan dilaporkan lewat `onError`.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

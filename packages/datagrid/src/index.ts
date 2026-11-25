@@ -25,6 +25,14 @@ export {
   type VirtualScrollOptions,
 } from './data/virtual-scroll.js';
 export {
+  computeGroupSummary,
+  computeSummary,
+  formatSummary,
+  type FormatSummaryOptions,
+  type SummaryComputeOptions,
+  type SummaryValues,
+} from './data/summary.js';
+export {
   flattenGroups,
   groupKey,
   groupRows,
