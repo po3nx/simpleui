@@ -30,6 +30,10 @@ const options = normalizeDataGridOptions({
 - `createDataController` menjembatani state dan Store core: memuat sesuai
   sort/filter/page, membatalkan permintaan lama, memetakan error store menjadi
   `SUI-DG-004`, dan memancarkan `onDataLoading`/`onDataLoaded`/`onDataError`.
+- Filter pipeline: operator per tipe kolom (`operatorsForType`), filter row
+  (`buildFilterRow`) dan pencarian (`buildSearchFilter`) menghasilkan AST
+  tertutup; batas kedalaman/node/`in` ditegakkan dan error menjadi
+  `SUI-DG-001`. `applyGridFilter` memakai pipeline core (tanpa duplikasi).
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

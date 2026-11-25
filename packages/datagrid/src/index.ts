@@ -10,6 +10,19 @@ export {
   type DataControllerOptions,
 } from './data/data-controller.js';
 export {
+  applyGridFilter,
+  buildFilterCondition,
+  buildFilterRow,
+  buildSearchFilter,
+  defaultOperatorForType,
+  isOperatorAllowed,
+  MAX_SEARCH_LENGTH,
+  operatorsForType,
+  validateGridFilter,
+  type FilterRowValue,
+  type FilterRowValues,
+} from './data/filter.js';
+export {
   normalizeDataGridOptions,
   type NormalizeContext,
   type ValidationIssue,
