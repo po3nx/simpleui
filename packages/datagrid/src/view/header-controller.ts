@@ -53,6 +53,7 @@ export interface HeaderControllerOptions<T extends object> {
     | ((error: unknown, phase: 'render' | 'update' | 'dispose') => void)
     | undefined;
   readonly liveElement?: HTMLElement | undefined;
+  readonly extraHeaderElement?: HTMLElement | undefined;
 }
 
 export interface HeaderController<T extends object> {
@@ -243,7 +244,9 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     this.#templates.clear();
     const row = createHeaderRow<T>(layout.columns, this.#context());
     row.style.minInlineSize = `${layout.totalWidth}px`;
-    this.#options.headerElement.replaceChildren(row);
+    const extra = this.#options.extraHeaderElement;
+    if (extra) extra.style.minInlineSize = `${layout.totalWidth}px`;
+    this.#options.headerElement.replaceChildren(row, ...(extra ? [extra] : []));
   }
 
   setSorting(next: readonly SortDescriptor[]): void {

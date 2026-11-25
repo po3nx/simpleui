@@ -25,6 +25,11 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createFilterRow,
+  type FilterRow,
+  type FilterRowOptions,
+} from './view/filter-row.js';
+export {
   createStatusView,
   DEFAULT_STATUS_MESSAGES,
   type GridStatusKind,
