@@ -79,6 +79,10 @@ const options = normalizeDataGridOptions({
   tanggal, dan boolean sesuai locale + `ColumnFormat`; `null`/`undefined`
   menjadi placeholder `—`; konten selalu ditulis sebagai **teks murni**
   (`setCellText`), tidak pernah `innerHTML`.
+- Template: `cellTemplate`/`headerCellTemplate` (kontrak `TemplateRenderer`
+  core) di-mount per sel/header, di-`update` saat baris didaur ulang, dan
+  di-`dispose` saat kolom berubah/grid dilepas. Error template dilaporkan lewat
+  `onTemplateError` tanpa menghentikan render.
 - Tipe publik lengkap ada di `src/api/types.ts` (DG-002).
 
 Implementasi bertahap mengikuti `07-tasks.md` di repositori dokumen privat.

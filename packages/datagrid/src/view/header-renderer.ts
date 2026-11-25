@@ -1,5 +1,5 @@
 import { createElement, setAttributes, setStyle } from '@simpleui/core';
-import type { SortDescriptor } from '@simpleui/core';
+import type { SortDescriptor, TemplateRenderer } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
 import { sortDirectionFor, sortIndexFor } from '../data/sort.js';
@@ -14,6 +14,11 @@ export interface HeaderRenderContext {
   readonly sortBy: readonly SortDescriptor[];
   readonly filteredColumns: ReadonlySet<string>;
   readonly onSortRequest?: (columnId: string, multi: boolean) => void;
+  readonly mountTemplate?: (
+    container: HTMLElement,
+    column: HeaderColumn,
+    index: number,
+  ) => void;
 }
 
 interface HeaderColumn {
@@ -21,6 +26,7 @@ interface HeaderColumn {
   readonly dataField?: string | undefined;
   readonly caption: string;
   readonly allowSorting: boolean;
+  readonly headerCellTemplate: TemplateRenderer | undefined;
   readonly children: readonly unknown[] | undefined;
   readonly alignment: ColumnState['alignment'];
   readonly width: number | 'auto';
@@ -76,12 +82,17 @@ function appendIndicator(
 function createSortButton(
   column: HeaderColumn,
   context: HeaderRenderContext,
+  index: number,
 ): HTMLElement {
   const button = createElement('button', {
     className: 'sui-grid__header-button',
   });
   setAttributes(button, { type: 'button' });
-  button.textContent = column.caption;
+  if (column.headerCellTemplate && context.mountTemplate) {
+    context.mountTemplate(button, column, index);
+  } else {
+    button.textContent = column.caption;
+  }
   appendIndicator(button, column, context.sortBy);
 
   button.addEventListener('click', (event) => {
@@ -140,7 +151,7 @@ export function createHeaderRow<T extends object>(
     if (ariaSort) setAttributes(cell, { 'aria-sort': ariaSort });
 
     if (column.allowSorting && !column.children) {
-      cell.append(createSortButton(column, context));
+      cell.append(createSortButton(column, context, index));
     } else {
       const label = createElement('span', { text: column.caption });
       cell.append(label);
