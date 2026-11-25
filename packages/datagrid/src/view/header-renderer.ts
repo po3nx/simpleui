@@ -13,7 +13,11 @@ import type { ColumnLayoutEntry } from './column-virtualizer.js';
 export interface HeaderRenderContext {
   readonly sortBy: readonly SortDescriptor[];
   readonly filteredColumns: ReadonlySet<string>;
-  readonly onSortRequest?: (columnId: string, multi: boolean) => void;
+  readonly onSortRequest?: (
+    columnId: string,
+    multi: boolean,
+    clear: boolean,
+  ) => void;
   readonly mountTemplate?: (
     container: HTMLElement,
     column: HeaderColumn,
@@ -111,7 +115,18 @@ function createSortButton(
 
   button.addEventListener('click', (event) => {
     if (!context.onSortRequest) return;
-    context.onSortRequest(column.id, (event as MouseEvent).shiftKey);
+    const mouse = event as MouseEvent;
+    context.onSortRequest(
+      column.id,
+      mouse.shiftKey,
+      mouse.ctrlKey || mouse.metaKey,
+    );
+  });
+
+  button.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' || !event.shiftKey) return;
+    event.preventDefault();
+    context.onSortRequest?.(column.id, true, false);
   });
 
   return button;
