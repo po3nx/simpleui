@@ -92,6 +92,10 @@ jobs:
             turbo-${{ runner.os }}-
       - name: Unit test
         run: pnpm test
+        env:
+          SKIP_PERF: '1'
+      - name: Perf model 100k (tanpa coverage)
+        run: pnpm --filter @simpleui/datagrid exec vitest run src/data/model-perf.test.ts
       - name: Upload coverage
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
