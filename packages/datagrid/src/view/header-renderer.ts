@@ -1,0 +1,144 @@
+import { createElement, setAttributes, setStyle } from '@simpleui/core';
+import type { SortDescriptor } from '@simpleui/core';
+
+import type { ColumnState } from '../model/columns.js';
+import { sortDirectionFor, sortIndexFor } from '../data/sort.js';
+
+/**
+ * Header renderer DataGrid (DG-031): aria-sort, indikator arah/urutan
+ * multi-sort, penanda filter, dan aktivasi keyboard (button native).
+ */
+
+export interface HeaderRenderContext {
+  readonly sortBy: readonly SortDescriptor[];
+  readonly filteredColumns: ReadonlySet<string>;
+  readonly onSortRequest?: (columnId: string, multi: boolean) => void;
+}
+
+interface HeaderColumn {
+  readonly id: string;
+  readonly dataField?: string | undefined;
+  readonly caption: string;
+  readonly allowSorting: boolean;
+  readonly children: readonly unknown[] | undefined;
+  readonly alignment: ColumnState['alignment'];
+  readonly width: number | 'auto';
+  readonly minWidth: number;
+}
+
+function alignmentStyle(alignment: ColumnState['alignment']): string {
+  if (alignment === 'end') return 'flex-end';
+  if (alignment === 'center') return 'center';
+  return 'flex-start';
+}
+
+function cellWidth(column: HeaderColumn): number {
+  return column.width === 'auto' ? column.minWidth : column.width;
+}
+
+function ariaSortFor(
+  column: HeaderColumn,
+  sortBy: readonly SortDescriptor[],
+): 'ascending' | 'descending' | 'none' | undefined {
+  if (!column.allowSorting || column.children) return undefined;
+  const selector = column.dataField ?? column.id;
+  const direction = sortDirectionFor(sortBy, selector);
+  if (direction === 'asc') return 'ascending';
+  if (direction === 'desc') return 'descending';
+  return 'none';
+}
+
+function appendIndicator(
+  button: HTMLElement,
+  column: HeaderColumn,
+  sortBy: readonly SortDescriptor[],
+): void {
+  const selector = column.dataField ?? column.id;
+  const direction = sortDirectionFor(sortBy, selector);
+  if (!direction) return;
+
+  const indicator = createElement('span', {
+    className: 'sui-grid__sort-indicator',
+    text: direction === 'asc' ? '▲' : '▼',
+  });
+  setAttributes(indicator, { 'aria-hidden': 'true' });
+
+  const order = sortIndexFor(sortBy, selector);
+  if (order > 1) {
+    const badge = createElement('span', {
+      className: 'sui-grid__sort-order',
+      text: String(order),
+    });
+    setAttributes(badge, { 'aria-hidden': 'true' });
+    indicator.append(badge);
+  }
+
+  button.append(indicator);
+}
+
+function createSortButton(
+  column: HeaderColumn,
+  context: HeaderRenderContext,
+): HTMLElement {
+  const button = createElement('button', {
+    className: 'sui-grid__header-button',
+  });
+  setAttributes(button, { type: 'button' });
+  button.textContent = column.caption;
+  appendIndicator(button, column, context.sortBy);
+
+  button.addEventListener('click', (event) => {
+    if (!context.onSortRequest) return;
+    context.onSortRequest(column.id, (event as MouseEvent).shiftKey);
+  });
+
+  return button;
+}
+
+function appendFilterMarker(cell: HTMLElement, columnId: string): void {
+  const marker = createElement('span', {
+    className: 'sui-grid__filter-indicator',
+    text: '●',
+  });
+  setAttributes(marker, {
+    'aria-label': 'Filter aktif',
+    role: 'img',
+    'data-column-id': columnId,
+  });
+  cell.append(marker);
+}
+
+export function createHeaderRow<T extends object>(
+  columns: readonly ColumnState<T>[],
+  context: HeaderRenderContext,
+): HTMLElement {
+  const row = createElement('div', {
+    className: 'sui-grid__row sui-grid__row--header',
+  });
+  setAttributes(row, { role: 'row' });
+
+  columns.forEach((column, index) => {
+    const cell = createElement('div', { className: 'sui-grid__header-cell' });
+    setAttributes(cell, { role: 'columnheader', 'aria-colindex': index + 1 });
+    setAttributes(cell, { 'data-column-id': column.id });
+    setStyle(cell, 'flex-basis', `${cellWidth(column)}px`);
+    setStyle(cell, 'justify-content', alignmentStyle(column.alignment));
+
+    const ariaSort = ariaSortFor(column, context.sortBy);
+    if (ariaSort) setAttributes(cell, { 'aria-sort': ariaSort });
+
+    if (column.allowSorting && !column.children) {
+      cell.append(createSortButton(column, context));
+    } else {
+      const label = createElement('span', { text: column.caption });
+      cell.append(label);
+    }
+
+    if (context.filteredColumns.has(column.id))
+      appendFilterMarker(cell, column.id);
+
+    row.append(cell);
+  });
+
+  return row;
+}
