@@ -25,6 +25,11 @@ export {
   type ColumnResizeOptions,
 } from './view/column-resize.js';
 export {
+  createHeaderFilter,
+  type HeaderFilter,
+  type HeaderFilterOptions,
+} from './view/header-filter.js';
+export {
   createFilterRow,
   type FilterRow,
   type FilterRowOptions,

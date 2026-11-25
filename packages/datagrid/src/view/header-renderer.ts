@@ -23,6 +23,10 @@ export interface HeaderRenderContext {
     column: HeaderColumn,
     index: number,
   ) => void;
+  readonly openHeaderFilter?: (
+    column: HeaderColumn,
+    anchor: HTMLElement,
+  ) => void;
   readonly attachResize?: (
     handle: HTMLElement,
     column: HeaderColumn,
@@ -49,6 +53,7 @@ interface HeaderColumn {
   readonly maxWidth: number | undefined;
   readonly allowResizing: boolean;
   readonly allowReordering: boolean;
+  readonly allowFiltering: boolean;
 }
 
 function alignmentStyle(alignment: ColumnState['alignment']): string {
@@ -171,6 +176,27 @@ function attachReorder(
   });
 }
 
+function createFilterButton(
+  column: HeaderColumn,
+  context: HeaderRenderContext,
+): HTMLButtonElement | null {
+  if (!column.allowFiltering || !context.openHeaderFilter) return null;
+  // Ikon dirender via CSS agar tidak mengotori teks caption header.
+  const button = createElement('button', {
+    className: 'sui-grid__header-filter',
+  });
+  setAttributes(button, {
+    type: 'button',
+    'aria-label': `Filter ${column.caption}`,
+    'aria-haspopup': 'dialog',
+    'aria-expanded': 'false',
+  });
+  button.addEventListener('click', () => {
+    context.openHeaderFilter?.(column, button);
+  });
+  return button;
+}
+
 function createResizeHandle(
   column: HeaderColumn,
   context: HeaderRenderContext,
@@ -249,6 +275,8 @@ export function createHeaderRow<T extends object>(
       appendFilterMarker(cell, column.id);
 
     attachReorder(cell, column, context);
+    const filterButton = createFilterButton(column, context);
+    if (filterButton) cell.append(filterButton);
     const resizeHandle = createResizeHandle(column, context, entry.width);
     if (resizeHandle) cell.append(resizeHandle);
 
