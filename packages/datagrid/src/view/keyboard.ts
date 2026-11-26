@@ -14,6 +14,7 @@ export interface GridKeyboardOptions {
   readonly getRowKeys: () => readonly Key[];
   readonly rowHeight?: number;
   readonly liveElement?: HTMLElement | undefined;
+  readonly rtl?: boolean | undefined;
 }
 
 const DEFAULT_ROW_HEIGHT = 40;
@@ -168,8 +169,8 @@ class GridKeyboard {
         else this.#move('up');
       },
       ArrowDown: () => this.#move('down'),
-      ArrowLeft: () => this.#move('left'),
-      ArrowRight: () => this.#move('right'),
+      ArrowLeft: () => this.#move(this.#options.rtl ? 'right' : 'left'),
+      ArrowRight: () => this.#move(this.#options.rtl ? 'left' : 'right'),
       Home: (event) => {
         this.#focus.moveTo('start', gridJump(event) ? 'grid' : 'row');
         this.#focusCell();

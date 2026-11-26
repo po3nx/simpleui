@@ -36,6 +36,7 @@ export interface VanillaDataGridOptions {
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
   readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly rtl?: boolean | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -104,6 +105,7 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       isSelected: (row) => this.#view.isSelectedKey(this.#keyOf(row)),
       selectionChanges: (listener) => this.#view.subscribeSelection(listener),
       liveElement: this.#view.liveElement,
+      rtl: this.#options.rtl === true,
       focus: createFocusModel<RowRecord>({
         state: this.#state,
         columns: this.#columns,
@@ -129,6 +131,7 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       container,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      rtl: options.rtl === true,
       ...(options.viewOptions ?? {}),
       ...(options.rowHeight !== undefined
         ? { rowHeight: options.rowHeight }

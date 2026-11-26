@@ -126,3 +126,28 @@ test('filter row dan header filter dapat dioperasikan keyboard', async ({
   await expect(panel).toBeHidden();
   await expect(trigger).toBeFocused();
 });
+
+test('RTL: layout, scroll, dan navigasi kolom', async ({ page }) => {
+  await page.goto(`${GRID_URL}?rtl=1`);
+  await expect(page.locator('[role="grid"]')).toBeVisible();
+  await expect(page.locator('.sui-grid')).toHaveAttribute('dir', 'rtl');
+
+  const sizes = await page.evaluate(() => {
+    const viewport = document.querySelector<HTMLElement>('.sui-grid__viewport');
+    return {
+      client: viewport?.clientWidth ?? 0,
+      scroll: viewport?.scrollWidth ?? 0,
+    };
+  });
+  expect(sizes.scroll).toBeLessThanOrEqual(sizes.client + 1);
+  await expectAligned(page);
+
+  const grid = page.locator('[role="grid"]');
+  await grid.focus();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowLeft');
+  const colIndex = await page.evaluate(() =>
+    document.activeElement?.getAttribute('aria-colindex'),
+  );
+  expect(colIndex).toBe('3');
+});

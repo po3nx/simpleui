@@ -246,7 +246,9 @@ class HeaderFilterImpl implements HeaderFilter {
     document.body.append(panel);
 
     const rect = anchor.getBoundingClientRect();
-    panel.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - PANEL_WIDTH - 8))}px`;
+    const rtl = getComputedStyle(anchor).direction === 'rtl';
+    const anchorLeft = rtl ? rect.right - PANEL_WIDTH : rect.left;
+    panel.style.left = `${Math.max(8, Math.min(anchorLeft, window.innerWidth - PANEL_WIDTH - 8))}px`;
     const top = Math.min(
       rect.bottom + 4,
       window.innerHeight - panel.offsetHeight - 8,

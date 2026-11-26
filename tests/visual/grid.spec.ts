@@ -46,3 +46,10 @@ test('grid layout sempit dengan scroll', async ({ page }) => {
   });
   await expect(page.locator('.sui-grid')).toHaveScreenshot('grid-narrow.png');
 });
+
+test('grid RTL', async ({ page }) => {
+  await page.goto(`${GRID_URL}?rtl=1`);
+  await expect(page.locator('.sui-grid')).toBeVisible();
+  await expect(page.locator('.sui-grid')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('.sui-grid')).toHaveScreenshot('grid-rtl.png');
+});

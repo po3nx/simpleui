@@ -98,6 +98,7 @@ export function createHeader<T extends object>(
     element: dom.element,
     headerElement: dom.headerElement,
     viewportElement: dom.viewportElement,
+    rtl: options.rtl,
     columns,
     sortBy: options.sortBy,
     filteredColumns: options.filteredColumns,

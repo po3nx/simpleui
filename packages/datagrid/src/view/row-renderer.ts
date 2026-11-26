@@ -34,6 +34,7 @@ export interface RowRendererOptions<T extends object> {
   ) => void;
   readonly focus?: FocusModel | undefined;
   readonly liveElement?: HTMLElement | undefined;
+  readonly rtl?: boolean | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
     ((listener: () => void) => () => void) | undefined;
@@ -168,6 +169,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
       getRowKeys: () => this.#rows.map((row) => this.#options.keyOf(row)),
       rowHeight: this.#rowHeight,
       liveElement: this.#options.liveElement,
+      rtl: this.#options.rtl,
     });
   }
 

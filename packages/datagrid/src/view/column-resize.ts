@@ -12,6 +12,7 @@ export interface ColumnResizeOptions {
   readonly onPreview: (width: number) => void;
   readonly onCommit: (width: number) => void;
   readonly step?: number;
+  readonly rtl?: boolean | undefined;
 }
 
 export function clampColumnWidth(
@@ -31,6 +32,7 @@ export function attachColumnResize(options: ColumnResizeOptions): () => void {
   let startX = 0;
   let startWidth = current;
   let dragging = false;
+  const direction = options.rtl ? -1 : 1;
 
   const moveTo = (width: number): void => {
     current = clampColumnWidth(width, min, max);
@@ -54,7 +56,7 @@ export function attachColumnResize(options: ColumnResizeOptions): () => void {
 
   const onPointerMove = (event: PointerEvent): void => {
     if (!dragging) return;
-    moveTo(startWidth + (event.clientX - startX));
+    moveTo(startWidth + direction * (event.clientX - startX));
   };
 
   const onPointerUp = (): void => {
@@ -68,7 +70,7 @@ export function attachColumnResize(options: ColumnResizeOptions): () => void {
   const onKeyDown = (event: KeyboardEvent): void => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
-    const delta = event.key === 'ArrowRight' ? step : -step;
+    const delta = (event.key === 'ArrowRight' ? step : -step) * direction;
     moveTo(current + delta);
     options.onCommit(current);
   };

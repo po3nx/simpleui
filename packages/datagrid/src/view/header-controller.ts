@@ -46,6 +46,7 @@ export interface HeaderControllerOptions<T extends object> {
   readonly element: HTMLElement;
   readonly headerElement: HTMLElement;
   readonly viewportElement: HTMLElement;
+  readonly rtl?: boolean | undefined;
   readonly columns: readonly ColumnState<T>[];
   readonly sortBy?: readonly SortDescriptor[] | undefined;
   readonly filteredColumns?: readonly string[] | undefined;
@@ -129,6 +130,7 @@ function createResizeAttacher<T extends object>(
       initialWidth: width,
       minWidth: column.minWidth,
       maxWidth: column.maxWidth,
+      rtl: options.rtl === true,
       onPreview: (next) => {
         handle.setAttribute('aria-valuenow', String(next));
         previewColumnWidth(options.element, column.id, next);
@@ -178,7 +180,8 @@ function createReorderHandlers<T extends object>(
       }
     },
     onKeyMove(columnId, delta) {
-      apply(moveColumn(order(), columnId, delta), columnId);
+      const nextDelta = options.rtl ? (-delta as -1 | 1) : delta;
+      apply(moveColumn(order(), columnId, nextDelta), columnId);
     },
   };
 }

@@ -46,6 +46,9 @@
         active: index % 2 === 0,
       }));
 
+      const rtl = new URLSearchParams(location.search).get('rtl') === '1';
+      if (rtl) document.documentElement.dir = 'rtl';
+
       let query = '';
       let filter = null;
       let sortBy = [];
@@ -144,6 +147,7 @@
           rows,
           keyExpr: 'id',
           selectionMode: 'multiple',
+          rtl,
           pageIndex,
           pageSize,
           totalCount,
@@ -186,6 +190,7 @@
         rows: baseRows.slice(0, pageSize),
         keyExpr: 'id',
         selectionMode: 'multiple',
+        rtl,
         pageIndex,
         pageSize,
         totalCount: baseRows.length,

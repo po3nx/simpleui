@@ -99,9 +99,16 @@ class ColumnChooserImpl implements ColumnChooser {
 
     panel.append(list, showAll);
     document.body.append(panel);
+    const width = 260;
     const rect = anchor.getBoundingClientRect();
-    panel.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - 260))}px`;
-    panel.style.top = `${rect.bottom + 4}px`;
+    const rtl = getComputedStyle(anchor).direction === 'rtl';
+    const anchorLeft = rtl ? rect.right - width : rect.left;
+    panel.style.left = `${Math.max(8, Math.min(anchorLeft, window.innerWidth - width - 8))}px`;
+    const top = Math.min(
+      rect.bottom + 4,
+      window.innerHeight - panel.offsetHeight - 8,
+    );
+    panel.style.top = `${Math.max(8, top)}px`;
 
     this.#panel = panel;
     this.#renderList();
