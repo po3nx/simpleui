@@ -1,5 +1,6 @@
 import { act, createElement, StrictMode, type ComponentType } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
+import { createLeakTracker } from '@simpleui/testing';
 import { describe, expect, it, vi } from 'vitest';
 import '../../../datagrid/src/styles/grid.css';
 import { DataGrid, type DataGridProps } from '../../src/index.js';
@@ -221,5 +222,41 @@ describe('React adapter — controlled props', () => {
     ).toBe(true);
 
     await harness.unmount();
+  });
+});
+
+describe('React adapter — dispose 100x StrictMode', () => {
+  it('tidak menyisakan DOM, listener global, atau timer', async () => {
+    const tracker = createLeakTracker();
+    const baseline = tracker.snapshot();
+    for (let index = 0; index < 100; index += 1) {
+      const harness = render({
+        columns: COLUMNS,
+        rows: ROWS,
+        viewOptions: {
+          searchPanel: true,
+          filterRow: true,
+          headerFilter: true,
+          getUniqueValues: () => ['Ani', 'Budi'],
+          contextMenu: true,
+          columnChooser: true,
+        },
+      });
+      await harness.mount();
+      const input = harness.container.querySelector<HTMLInputElement>(
+        '.sui-grid__search-input',
+      );
+      if (input) {
+        input.value = 'Ani';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      await harness.unmount();
+      expect(harness.container.childElementCount).toBe(0);
+    }
+    const after = tracker.snapshot();
+    expect(after.documentListeners).toBe(baseline.documentListeners);
+    expect(after.windowListeners).toBe(baseline.windowListeners);
+    expect(after.timers).toBe(baseline.timers);
+    tracker.dispose();
   });
 });

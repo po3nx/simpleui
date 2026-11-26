@@ -10,6 +10,7 @@ coverage.exclude = [
   ...(coverage.exclude ?? []),
   'src/grid-parity.ts',
   'src/aria-snapshot.ts',
+  'src/leak-tracker.ts',
 ];
 
 /** Paket harness test; gate memakai ambang adapter (80/75). */

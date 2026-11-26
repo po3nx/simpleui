@@ -1,4 +1,5 @@
 import '@angular/compiler';
+import { createLeakTracker } from '@simpleui/testing';
 import {
   ApplicationRef,
   createComponent,
@@ -211,5 +212,62 @@ describe('Angular adapter — output controlled', () => {
     ).toBe(true);
 
     harness.destroy();
+  });
+});
+
+describe('Angular adapter — dispose 100x', () => {
+  it('tidak menyisakan DOM, listener global, atau timer', async () => {
+    const app = await createApplication({
+      providers: [provideZonelessChangeDetection()],
+    });
+    const appRef = app.injector.get(ApplicationRef);
+    const cycle = (): void => {
+      const host = document.createElement('div');
+      host.style.width = '700px';
+      host.style.height = '320px';
+      document.body.append(host);
+      const ref: ComponentRef<DataGridComponent> = createComponent(
+        DataGridComponent,
+        { environmentInjector: app.injector, hostElement: host },
+      );
+      appRef.attachView(ref.hostView);
+      ref.setInput('columns', COLUMNS);
+      ref.setInput('rows', ROWS);
+      ref.setInput('keyExpr', 'id');
+      ref.setInput('viewOptions', {
+        searchPanel: true,
+        filterRow: true,
+        headerFilter: true,
+        getUniqueValues: () => ['Ani', 'Budi'],
+        contextMenu: true,
+        columnChooser: true,
+      });
+      ref.changeDetectorRef.detectChanges();
+      const input = host.querySelector<HTMLInputElement>(
+        '.sui-grid__search-input',
+      );
+      if (input) {
+        input.value = 'Ani';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      ref.destroy();
+      appRef.detachView(ref.hostView);
+      expect(host.querySelector('.sui-grid')).toBeNull();
+      host.remove();
+    };
+
+    // Satu siklus pemanasan: listener level aplikasi Angular (jika ada) masuk
+    // baseline, sehingga yang diukur hanya kebocoran per-komponen.
+    cycle();
+    const tracker = createLeakTracker();
+    const baseline = tracker.snapshot();
+    for (let index = 0; index < 100; index += 1) cycle();
+
+    const after = tracker.snapshot();
+    expect(after.documentListeners).toBe(baseline.documentListeners);
+    expect(after.windowListeners).toBe(baseline.windowListeners);
+    expect(after.timers).toBe(baseline.timers);
+    app.destroy();
+    tracker.dispose();
   });
 });

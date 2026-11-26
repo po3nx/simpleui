@@ -20,3 +20,5 @@ export {
 } from './fixtures.js';
 
 export { captureAriaSnapshot } from './aria-snapshot.js';
+
+export { createLeakTracker, type LeakSnapshot } from './leak-tracker.js';
