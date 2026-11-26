@@ -35,6 +35,7 @@ class SearchPanelImpl implements SearchPanel {
     this.element = document.createElement('div');
     this.element.className = 'sui-grid__search';
     this.element.setAttribute('role', 'search');
+    this.element.setAttribute('aria-label', 'Pencarian data');
 
     this.#input = document.createElement('input');
     this.#input.type = 'search';

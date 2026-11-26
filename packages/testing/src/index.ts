@@ -18,3 +18,5 @@ export {
   type FixtureOptions,
   type PersonRow,
 } from './fixtures.js';
+
+export { captureAriaSnapshot } from './aria-snapshot.js';

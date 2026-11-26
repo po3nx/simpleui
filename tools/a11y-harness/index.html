@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataGrid — harness uji screen reader</title>
+    <link rel="stylesheet" href="../../packages/theme/dist/index.css" />
+    <link rel="stylesheet" href="../../packages/datagrid/dist/styles.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: system-ui, sans-serif;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      .harness-grid {
+        height: 420px;
+      }
+    </style>
+  </head>
+  <body class="sui-theme" data-theme="light">
+    <main>
+      <h1>DataGrid — harness uji screen reader</h1>
+      <p>
+        Gunakan halaman ini untuk skenario NVDA/VoiceOver (DG-057). Grid berisi
+        selector, sort, filter row, pencarian, pager, summary, dan context menu.
+      </p>
+      <div id="grid" class="harness-grid"></div>
+    </main>
+    <script src="../../packages/adapter-vanilla/dist/simpleui-vanilla.umd.js"></script>
+    <script>
+      const rows = Array.from({ length: 42 }, (_, index) => ({
+        id: index + 1,
+        name: `Karyawan ${String(index + 1).padStart(2, '0')}`,
+        city: ['Jakarta', 'Bandung', 'Surabaya'][index % 3],
+        total: (index + 1) * 37,
+        active: index % 2 === 0,
+      }));
+
+      SimpleUI.createDataGrid(document.getElementById('grid'), {
+        columns: [
+          { dataField: 'name', caption: 'Nama' },
+          { dataField: 'city', caption: 'Kota' },
+          { dataField: 'total', caption: 'Total', dataType: 'number' },
+          { dataField: 'active', caption: 'Aktif', dataType: 'boolean' },
+        ],
+        rows,
+        keyExpr: 'id',
+        selectionMode: 'multiple',
+        pageIndex: 0,
+        pageSize: 10,
+        totalCount: rows.length,
+        viewOptions: {
+          filterRow: true,
+          searchPanel: true,
+          contextMenu: true,
+          summaryItems: [
+            { column: 'total', summaryType: 'sum' },
+            { column: 'name', summaryType: 'count' },
+          ],
+          summaryRows: rows,
+        },
+      });
+    </script>
+  </body>
+</html>

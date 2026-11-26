@@ -42,7 +42,9 @@
     "bench": "pnpm --filter @simpleui/benchmarks bench",
     "test:visual": "playwright test --project=visual",
     "test:visual:update": "playwright test --project=visual --update-snapshots",
-    "release:smoke": "node tools/release-smoke.mjs"
+    "release:smoke": "node tools/release-smoke.mjs",
+    "check:ssr": "node tools/check-ssr.mjs",
+    "a11y:harness": "STATIC_ROOT=. PORT=4176 node tools/serve-static.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",

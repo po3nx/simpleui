@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`a11y snapshot grid (DG-057) > struktur role/nama/atribut stabil 1`] = `
+"search "Pencarian data"
+  textbox "Cari data"
+grid "Data grid" aria-rowcount="2" aria-colcount="3" aria-multiselectable="true"
+  rowgroup
+    row
+      columnheader aria-colindex="1"
+        checkbox "Pilih semua baris"
+      columnheader "Nama" aria-sort="ascending" aria-colindex="2"
+        button "Nama"
+        button "Filter Nama" aria-expanded="false"
+        separator "Ubah lebar Nama"
+      columnheader "Total" aria-sort="none" aria-colindex="3"
+        button "Total"
+        button "Filter Total" aria-expanded="false"
+        separator "Ubah lebar Total"
+    row
+      gridcell "mengandung tidak mengandung diawali diakhiri sama dengan ..."
+        combobox "Operator filter Nama"
+        textbox "Filter Nama"
+      gridcell "sama dengan tidak sama lebih kecil lebih kecil sama lebih..."
+        combobox "Operator filter Total"
+        textbox "Filter Total"
+  row aria-selected="false" aria-rowindex="1"
+    gridcell aria-colindex="1"
+      checkbox "Pilih baris"
+    gridcell "Ani" aria-colindex="2"
+    gridcell "10" aria-colindex="3"
+  row aria-selected="false" aria-rowindex="2"
+    gridcell aria-colindex="1"
+      checkbox "Pilih baris"
+    gridcell "Budi" aria-colindex="2"
+    gridcell "20" aria-colindex="3"
+  rowgroup
+    row
+      gridcell aria-colindex="1"
+      gridcell "Total: 30" aria-colindex="2"
+navigation "Navigasi halaman"
+  button "Halaman sebelumnya"
+  button "Halaman berikutnya"
+  combobox "Ukuran halaman""
+`;

@@ -36,6 +36,7 @@
     "@simpleui/core": "workspace:*"
   },
   "devDependencies": {
+    "@simpleui/testing": "workspace:*",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
