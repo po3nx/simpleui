@@ -31,6 +31,7 @@ export interface DataGridProps<T extends object> {
   readonly onSortChange?: (
     sortBy: readonly { selector: string; desc?: boolean }[],
   ) => void;
+  readonly onSearchChange?: (query: string) => void;
   readonly onPageChange?: (state: {
     pageIndex: number;
     pageSize: number;
@@ -116,6 +117,12 @@ class ReactGridController<T extends object> {
         if (props.sortBy) this.#view?.setSorting(props.sortBy);
       },
       onPageChange: (state) => props.onPageChange?.(state),
+      ...(this.#props.onSearchChange !== undefined
+        ? {
+            onSearchChange: (query: string) =>
+              this.#props.onSearchChange?.(query),
+          }
+        : {}),
       onSelectionChange: (keys) => {
         props.onSelectionChange?.(keys);
         if (props.selectedKeys) {
@@ -125,27 +132,7 @@ class ReactGridController<T extends object> {
       },
     });
 
-    const focus = createFocusModel<Record<string, unknown>>({
-      state: this.#state,
-      columns: this.#columns as never,
-      getRowKeys: () => this.#rows.map(keyOf),
-    });
-    this.#renderer = createRowRenderer<T>({
-      gridElement: this.#view.element,
-      viewportElement: this.#view.viewportElement,
-      spacerElement: this.#view.spacerElement,
-      rowsElement: this.#view.rowsElement,
-      columns: this.#rendererColumns(),
-      rows: this.#rows,
-      keyOf,
-      ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
-      ...(props.locale !== undefined ? { locale: props.locale } : {}),
-      isSelected: (row) => this.#view?.isSelectedKey(keyOf(row)) ?? false,
-      selectionChanges: (listener) =>
-        this.#view?.subscribeSelection(listener) ?? (() => {}),
-      focus: focus as never,
-      liveElement: this.#view?.liveElement,
-    });
+    this.#renderer = this.#createRenderer(keyOf);
     this.#applyStatus();
   }
 
@@ -163,6 +150,36 @@ class ReactGridController<T extends object> {
     return selection
       ? [selection as ColumnState<T>, ...this.#columns]
       : this.#columns;
+  }
+
+  #createRenderer(keyOf: (row: T) => Key): RowRenderer<T> {
+    const view = this.#view;
+    if (!view) throw new Error('view belum dibuat');
+    const focus = createFocusModel<Record<string, unknown>>({
+      state: this.#state,
+      columns: this.#columns as never,
+      getRowKeys: () => this.#rows.map(keyOf),
+    });
+    return createRowRenderer<T>({
+      gridElement: view.element,
+      viewportElement: view.viewportElement,
+      spacerElement: view.spacerElement,
+      rowsElement: view.rowsElement,
+      columns: this.#rendererColumns(),
+      rows: this.#rows,
+      keyOf,
+      ...(this.#props.rowHeight !== undefined
+        ? { rowHeight: this.#props.rowHeight }
+        : {}),
+      ...(this.#props.locale !== undefined
+        ? { locale: this.#props.locale }
+        : {}),
+      isSelected: (row) => view.isSelectedKey(keyOf(row)) ?? false,
+      selectionChanges: (listener) =>
+        view.subscribeSelection(listener) ?? (() => {}),
+      focus: focus as never,
+      liveElement: view.liveElement,
+    });
   }
 
   update(props: DataGridProps<T>): void {

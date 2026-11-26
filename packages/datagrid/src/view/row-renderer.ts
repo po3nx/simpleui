@@ -97,6 +97,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #rows: readonly T[];
   #columns: readonly ColumnState<T>[];
   #locale: string | undefined;
+  readonly #widths = new Map<string, number>();
   #layoutSignature = '';
   #disposed = false;
   readonly #templates: TemplateManager;
@@ -121,11 +122,32 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     options.viewportElement.addEventListener('scroll', this.#onScroll, {
       passive: true,
     });
+    options.gridElement.addEventListener(
+      'simpleui:column-resize',
+      this.#onColumnResize as EventListener,
+    );
     this.#updateSpacer();
     this.#render();
   }
 
   readonly #onScroll = (): void => this.#render();
+
+  readonly #onColumnResize = (
+    event: CustomEvent<{ columnId: string; width: number }>,
+  ): void => {
+    const detail = event.detail;
+    if (!detail) return;
+    this.#widths.set(detail.columnId, detail.width);
+    this.#render();
+  };
+
+  #effectiveColumns(): readonly ColumnState<T>[] {
+    if (this.#widths.size === 0) return this.#columns;
+    return this.#columns.map((column) => {
+      const width = this.#widths.get(column.id);
+      return width === undefined ? column : { ...column, width };
+    });
+  }
 
   #createVirtualizer(): Virtualizer {
     return new Virtualizer({
@@ -191,7 +213,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     totalWidth: number;
   } {
     const layout = computeColumnLayout(
-      this.#columns,
+      this.#effectiveColumns(),
       this.#options.viewportElement.clientWidth,
       this.#options.viewportElement.scrollLeft,
     );
@@ -339,6 +361,10 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#options.viewportElement.removeEventListener('scroll', this.#onScroll);
     this.#detachKeyboard?.();
     this.#unsubscribeSelection?.();
+    this.#options.gridElement.removeEventListener(
+      'simpleui:column-resize',
+      this.#onColumnResize as EventListener,
+    );
     this.#templates.dispose();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;

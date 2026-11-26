@@ -43,6 +43,7 @@ export interface VueDataGridProps {
   readonly sortBy?: readonly SortDescriptor[];
   readonly selectionMode?: 'none' | 'single' | 'multiple';
   readonly selectedKeys?: readonly Key[];
+  readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
@@ -191,6 +192,12 @@ class VueGridController {
         this.#emit('update:pageSize', state.pageSize);
         this.#emit('pageChange', state);
       },
+      ...(this.#props.onSearchChange !== undefined
+        ? {
+            onSearchChange: (query: string) =>
+              this.#props.onSearchChange?.(query),
+          }
+        : {}),
       onSelectionChange: (keys) => {
         this.#emit('update:selectedKeys', keys);
         this.#emit('selectionChange', keys);

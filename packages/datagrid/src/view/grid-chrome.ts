@@ -104,6 +104,13 @@ export function createHeader<T extends object>(
     onSortChange: options.onSortChange,
     onTemplateError: options.onTemplateError,
     onColumnResize: options.onColumnResize,
+    onColumnResizePreview: (columnId, width) => {
+      dom.element.dispatchEvent(
+        new CustomEvent('simpleui:column-resize', {
+          detail: { columnId, width },
+        }),
+      );
+    },
     onColumnReorder: options.onColumnReorder,
     liveElement: dom.liveElement,
     extraHeaderElement: filterRow?.element,
