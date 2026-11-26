@@ -38,6 +38,7 @@ export interface DataGridProps<T extends object> {
   }) => void;
   readonly onSelectionChange?: (keys: readonly Key[]) => void;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly rtl?: boolean | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -96,6 +97,7 @@ class ReactGridController<T extends object> {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      rtl: props.rtl === true,
       ...(props.viewOptions ?? {}),
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
       ...(props.sortBy !== undefined ? { sortBy: props.sortBy } : {}),
@@ -179,6 +181,7 @@ class ReactGridController<T extends object> {
         view.subscribeSelection(listener) ?? (() => {}),
       focus: focus as never,
       liveElement: view.liveElement,
+      rtl: this.#props.rtl === true,
     });
   }
 

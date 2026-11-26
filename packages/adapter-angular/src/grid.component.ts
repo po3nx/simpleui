@@ -57,6 +57,7 @@ interface GridInputs {
   readonly selectedKeys?: readonly Key[] | undefined;
   readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly rtl?: boolean | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -121,6 +122,7 @@ class AngularGridController {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      rtl: inputs.rtl === true,
       ...(inputs.viewOptions ?? {}),
       ...(inputs.rowHeight !== undefined
         ? { rowHeight: inputs.rowHeight }
@@ -184,6 +186,7 @@ class AngularGridController {
         view.subscribeSelection(listener) ?? (() => {}),
       focus,
       liveElement: view.liveElement,
+      rtl: this.#inputs.rtl === true,
     });
   }
 
@@ -254,6 +257,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() selectedKeys: readonly Key[] | undefined;
   @Input() onSearchChange: ((query: string) => void) | undefined;
   @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
+  @Input() rtl = false;
   @Input() locale: string | undefined;
   @Input() status: 'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
   @Input() statusMessage: string | undefined;
@@ -286,6 +290,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       selectedKeys: this.selectedKeys,
       onSearchChange: this.onSearchChange,
       viewOptions: this.viewOptions,
+      rtl: this.rtl,
       locale: this.locale,
       status: this.status,
       statusMessage: this.statusMessage,

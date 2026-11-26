@@ -45,6 +45,7 @@ export interface VueDataGridProps {
   readonly selectedKeys?: readonly Key[];
   readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly rtl?: boolean | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -167,6 +168,7 @@ class VueGridController {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      rtl: props.rtl === true,
       ...(props.viewOptions ?? {}),
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
       ...(props.sortBy !== undefined ? { sortBy: props.sortBy } : {}),
@@ -247,6 +249,7 @@ class VueGridController {
         view.subscribeSelection(listener) ?? (() => {}),
       focus,
       liveElement: view.liveElement,
+      rtl: this.#props.rtl === true,
     });
   }
 
@@ -322,6 +325,7 @@ export const DataGrid = defineComponent({
       type: Object as PropType<Readonly<Record<string, unknown>>>,
       default: undefined,
     },
+    rtl: { type: Boolean, default: false },
     locale: { type: String, default: undefined },
     status: {
       type: String as PropType<
