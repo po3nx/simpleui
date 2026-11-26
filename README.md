@@ -46,6 +46,7 @@ Isi repositori saat ini:
   context menu, template bridge, dan persistensi state.
 - `packages/adapter-react` — komponen `DataGrid` React (StrictMode-safe,
   controlled props, update tanpa re-mount).
+- `packages/adapter-vue` — komponen `DataGrid` Vue (`v-model`, slot cell/header).
 - `packages/icons`, `pivotgrid`, `charts` — placeholder.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
 - `apps/benchmarks` — harness benchmark + baseline per lingkungan (`pnpm bench`).

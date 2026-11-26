@@ -44,3 +44,5 @@ export function createVueBridge(): AdapterBridge {
     },
   };
 }
+
+export { DataGrid, type VueDataGridProps } from './grid.js';
