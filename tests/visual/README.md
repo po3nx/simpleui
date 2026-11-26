@@ -15,5 +15,6 @@ pnpm test:visual:update                # tulis baseline (wajib di-review!)
   font berbeda antar OS; jangan salin baseline antar platform.
 - **DILARANG** menerima update baseline otomatis tanpa inspeksi. Setiap
   perubahan baseline harus dijelaskan di PR (apa yang berubah dan mengapa).
-- Skenario bertambah bersama komponen: saat ini theme light/dark/high-contrast
-  dan keadaan scroll pada demo 10.000 baris.
+- Skenario bertambah bersama komponen: demo 10.000 baris (light/dark/
+  high-contrast, scroll) dan DataGrid (`grid.spec.ts`: light/dark/high-contrast,
+  hasil search, layout sempit+scroll horizontal).

@@ -94,5 +94,13 @@ export default defineConfig({
       reuseExistingServer: !isCI,
       timeout: 30_000,
     },
+    {
+      // Harness DataGrid nyata (UMD) untuk E2E cross-browser dan visual (DG-058).
+      command: 'node tools/serve-static.mjs',
+      env: { STATIC_ROOT: '.', PORT: '4176', A11Y_HARNESS: '1' },
+      url: 'http://127.0.0.1:4176/tools/a11y-harness/',
+      reuseExistingServer: !isCI,
+      timeout: 30_000,
+    },
   ],
 });
