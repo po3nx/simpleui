@@ -84,3 +84,5 @@ export function createAngularBridge(): AdapterBridge {
     },
   };
 }
+
+export { DataGridComponent, isBrowserEnvironment } from './grid.component.js';

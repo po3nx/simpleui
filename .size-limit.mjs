@@ -85,6 +85,7 @@ export default [
       '@angular/core',
       '@angular/platform-browser',
       '@angular/compiler',
+      '@simpleui/datagrid',
       'rxjs',
       'tslib',
     ],
