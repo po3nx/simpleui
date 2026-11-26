@@ -44,7 +44,7 @@
     "test:visual:update": "playwright test --project=visual --update-snapshots",
     "release:smoke": "node tools/release-smoke.mjs",
     "check:ssr": "node tools/check-ssr.mjs",
-    "a11y:harness": "STATIC_ROOT=. PORT=4176 node tools/serve-static.mjs"
+    "a11y:harness": "A11Y_HARNESS=1 STATIC_ROOT=. PORT=4176 node tools/serve-static.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
