@@ -146,7 +146,11 @@ class AngularGridController {
       ...(inputs.rowHeight !== undefined
         ? { rowHeight: inputs.rowHeight }
         : {}),
+      isSelected: (row) => this.#view?.isSelectedKey(keyOf(row)) ?? false,
+      selectionChanges: (listener) =>
+        this.#view?.subscribeSelection(listener) ?? (() => {}),
       focus,
+      liveElement: this.#view?.liveElement,
     });
   }
 

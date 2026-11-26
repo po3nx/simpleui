@@ -33,6 +33,10 @@ export interface RowRendererOptions<T extends object> {
     phase: 'render' | 'update' | 'dispose',
   ) => void;
   readonly focus?: FocusModel | undefined;
+  readonly liveElement?: HTMLElement | undefined;
+  readonly isSelected?: ((row: T) => boolean) | undefined;
+  readonly selectionChanges?:
+    ((listener: () => void) => () => void) | undefined;
 }
 
 export interface RowRenderer<T extends object> {
@@ -95,6 +99,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #disposed = false;
   readonly #templates: TemplateManager;
   readonly #detachKeyboard: (() => void) | undefined;
+  readonly #unsubscribeSelection: (() => void) | undefined;
 
   constructor(options: RowRendererOptions<T>) {
     this.#options = options;
@@ -105,22 +110,11 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#templates = new TemplateManager(
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
-    this.#detachKeyboard = options.focus
-      ? attachGridKeyboard({
-          element: options.gridElement,
-          viewportElement: options.viewportElement,
-          focus: options.focus,
-          getRowKeys: () => this.#rows.map((row) => options.keyOf(row)),
-          rowHeight: this.#rowHeight,
-        })
-      : undefined;
-    this.#virtualizer = new Virtualizer({
-      itemCount: this.#rows.length,
-      itemSize: this.#rowHeight,
-      viewportSize: FALLBACK_VIEWPORT,
-      overscan: this.#overscan,
-    });
-
+    this.#detachKeyboard = this.#attachKeyboard();
+    this.#unsubscribeSelection = options.selectionChanges?.(() =>
+      this.#render(),
+    );
+    this.#virtualizer = this.#createVirtualizer();
     options.viewportElement.addEventListener('scroll', this.#onScroll, {
       passive: true,
     });
@@ -129,6 +123,28 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   }
 
   readonly #onScroll = (): void => this.#render();
+
+  #createVirtualizer(): Virtualizer {
+    return new Virtualizer({
+      itemCount: this.#rows.length,
+      itemSize: this.#rowHeight,
+      viewportSize: FALLBACK_VIEWPORT,
+      overscan: this.#overscan,
+    });
+  }
+
+  #attachKeyboard(): (() => void) | undefined {
+    const focus = this.#options.focus;
+    if (!focus) return undefined;
+    return attachGridKeyboard({
+      element: this.#options.gridElement,
+      viewportElement: this.#options.viewportElement,
+      focus,
+      getRowKeys: () => this.#rows.map((row) => this.#options.keyOf(row)),
+      rowHeight: this.#rowHeight,
+      liveElement: this.#options.liveElement,
+    });
+  }
 
   #viewportSize(): number {
     const size = this.#options.viewportElement.clientHeight;
@@ -238,6 +254,12 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     const rowKey = this.#options.keyOf(row);
     rowElement.setAttribute('data-row-key', String(rowKey));
     rowElement.classList.toggle('sui-grid__row--even', index % 2 === 1);
+    if (this.#options.isSelected) {
+      rowElement.setAttribute(
+        'aria-selected',
+        String(this.#options.isSelected(row)),
+      );
+    }
 
     entries.forEach((entry, cellIndex) => {
       const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
@@ -308,6 +330,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#disposed = true;
     this.#options.viewportElement.removeEventListener('scroll', this.#onScroll);
     this.#detachKeyboard?.();
+    this.#unsubscribeSelection?.();
     this.#templates.dispose();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;

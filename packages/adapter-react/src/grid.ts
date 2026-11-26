@@ -119,7 +119,11 @@ class ReactGridController<T extends object> {
       rows: this.#rows,
       keyOf,
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
+      isSelected: (row) => this.#view?.isSelectedKey(keyOf(row)) ?? false,
+      selectionChanges: (listener) =>
+        this.#view?.subscribeSelection(listener) ?? (() => {}),
       focus: focus as never,
+      liveElement: this.#view?.liveElement,
     });
   }
 

@@ -180,21 +180,33 @@ class VueGridController {
       },
     });
 
+    this.#renderer = this.#createRenderer(keyOf);
+  }
+
+  #createRenderer(keyOf: (row: RowRecord) => Key): RowRenderer<RowRecord> {
+    const view = this.#view;
+    if (!view) throw new Error('view belum dibuat');
     const focus = createFocusModel<RowRecord>({
       state: this.#state,
       columns: this.#columns,
       getRowKeys: () => this.#rows.map(keyOf),
     });
-    this.#renderer = createRowRenderer<RowRecord>({
-      gridElement: this.#view.element,
-      viewportElement: this.#view.viewportElement,
-      spacerElement: this.#view.spacerElement,
-      rowsElement: this.#view.rowsElement,
+    return createRowRenderer<RowRecord>({
+      gridElement: view.element,
+      viewportElement: view.viewportElement,
+      spacerElement: view.spacerElement,
+      rowsElement: view.rowsElement,
       columns: this.#rendererColumns(),
       rows: this.#rows,
       keyOf,
-      ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
+      ...(this.#props.rowHeight !== undefined
+        ? { rowHeight: this.#props.rowHeight }
+        : {}),
+      isSelected: (row) => view.isSelectedKey(keyOf(row)) ?? false,
+      selectionChanges: (listener) =>
+        view.subscribeSelection(listener) ?? (() => {}),
       focus,
+      liveElement: view.liveElement,
     });
   }
 

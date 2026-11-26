@@ -79,6 +79,9 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       ...(options.rowHeight !== undefined
         ? { rowHeight: options.rowHeight }
         : {}),
+      isSelected: (row) => this.#view.isSelectedKey(this.#keyOf(row)),
+      selectionChanges: (listener) => this.#view.subscribeSelection(listener),
+      liveElement: this.#view.liveElement,
       focus: createFocusModel<RowRecord>({
         state: this.#state,
         columns: this.#columns,
