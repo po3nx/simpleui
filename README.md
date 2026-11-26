@@ -49,6 +49,9 @@ Isi repositori saat ini:
 - `packages/adapter-vue` — komponen `DataGrid` Vue (`v-model`, slot cell/header).
 - `packages/adapter-angular` — `DataGridComponent` standalone (OnPush, NgZone,
   guard SSR).
+- `packages/adapter-vanilla` — `createDataGrid(container, options)`, UMD
+  (`SimpleUI.createDataGrid`), dan plugin jQuery opsional
+  `$(el).simpleuiDataGrid(options)`.
 - `packages/icons`, `pivotgrid`, `charts` — placeholder.
 - `apps/docs` — situs dokumentasi Vite (Markdown tersanitasi + demo virtual list).
 - `apps/benchmarks` — harness benchmark + baseline per lingkungan (`pnpm bench`).

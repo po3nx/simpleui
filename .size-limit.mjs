@@ -95,5 +95,6 @@ export default [
     path: 'packages/adapter-vanilla/dist/index.js',
     limit: '5 kB',
     gzip: true,
+    ignore: ['@simpleui/datagrid'],
   },
 ];
