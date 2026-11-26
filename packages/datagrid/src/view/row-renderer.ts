@@ -43,6 +43,7 @@ export interface RowRenderer<T extends object> {
   setRows(rows: readonly T[]): void;
   setColumns(columns: readonly ColumnState<T>[]): void;
   getRenderedCount(): number;
+  setLocale(locale: string | undefined): void;
   dispose(): void;
 }
 
@@ -95,6 +96,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   readonly #pool: HTMLElement[] = [];
   #rows: readonly T[];
   #columns: readonly ColumnState<T>[];
+  #locale: string | undefined;
   #layoutSignature = '';
   #disposed = false;
   readonly #templates: TemplateManager;
@@ -107,6 +109,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#overscan = options.overscan ?? 5;
     this.#rows = options.rows;
     this.#columns = getVisibleColumns(options.columns);
+    this.#locale = options.locale;
     this.#templates = new TemplateManager(
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
@@ -284,7 +287,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
 
       this.#templates.unmount(cell);
       const text = formatRowCell(row, entry.column, {
-        locale: this.#options.locale,
+        locale: this.#locale,
         placeholder: this.#options.emptyText,
       });
       if (cell.textContent !== text) cell.textContent = text;
@@ -323,6 +326,11 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
 
   getRenderedCount(): number {
     return this.#pool.filter((row) => !row.hidden).length;
+  }
+
+  setLocale(locale: string | undefined): void {
+    this.#locale = locale;
+    this.#render();
   }
 
   dispose(): void {

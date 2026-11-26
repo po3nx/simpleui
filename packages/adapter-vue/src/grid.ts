@@ -44,6 +44,10 @@ export interface VueDataGridProps {
   readonly selectionMode?: 'none' | 'single' | 'multiple';
   readonly selectedKeys?: readonly Key[];
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly locale?: string | undefined;
+  readonly status?:
+    'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
+  readonly statusMessage?: string | undefined;
 }
 
 function keyResolver(
@@ -103,6 +107,22 @@ function decorateColumns(
 
 type EmitFn = (event: string, ...args: unknown[]) => void;
 
+function syncLocale(
+  next: string | undefined,
+  previous: string | undefined,
+  renderer: { setLocale(locale: string | undefined): void } | undefined,
+): void {
+  if (next !== previous) renderer?.setLocale(next);
+}
+
+function syncStatus(
+  next: string | null | undefined,
+  previous: string | null | undefined,
+  apply: () => void,
+): void {
+  if (next !== previous) apply();
+}
+
 class VueGridController {
   readonly #host: HTMLElement;
   readonly #slots: Slots;
@@ -129,6 +149,7 @@ class VueGridController {
     this.#rows = props.rows;
     this.#keyOf = keyResolver(props.keyExpr);
     this.#mount();
+    this.#applyStatus();
   }
 
   #rendererColumns(): readonly ColumnState<RowRecord>[] {
@@ -183,6 +204,15 @@ class VueGridController {
     this.#renderer = this.#createRenderer(keyOf);
   }
 
+  #applyStatus(): void {
+    this.#view?.setStatus(this.#props.status ?? null, {
+      ...(this.#props.statusMessage !== undefined
+        ? { message: this.#props.statusMessage }
+        : {}),
+      retryable: false,
+    });
+  }
+
   #createRenderer(keyOf: (row: RowRecord) => Key): RowRenderer<RowRecord> {
     const view = this.#view;
     if (!view) throw new Error('view belum dibuat');
@@ -201,6 +231,9 @@ class VueGridController {
       keyOf,
       ...(this.#props.rowHeight !== undefined
         ? { rowHeight: this.#props.rowHeight }
+        : {}),
+      ...(this.#props.locale !== undefined
+        ? { locale: this.#props.locale }
         : {}),
       isSelected: (row) => view.isSelectedKey(keyOf(row)) ?? false,
       selectionChanges: (listener) =>
@@ -236,7 +269,10 @@ class VueGridController {
       totalCount: props.totalCount ?? this.#rows.length,
       itemCount: this.#rows.length,
     });
+    const previous = this.#props;
     this.#props = { ...props };
+    syncLocale(props.locale, previous.locale, this.#renderer);
+    syncStatus(props.status, previous.status, () => this.#applyStatus());
   }
 
   dispose(): void {
@@ -279,6 +315,14 @@ export const DataGrid = defineComponent({
       type: Object as PropType<Readonly<Record<string, unknown>>>,
       default: undefined,
     },
+    locale: { type: String, default: undefined },
+    status: {
+      type: String as PropType<
+        'loading' | 'empty' | 'no-data' | 'error' | null
+      >,
+      default: undefined,
+    },
+    statusMessage: { type: String, default: undefined },
   },
   emits: [
     'update:sortBy',

@@ -1,3 +1,4 @@
+import '../../../theme/src/index.css';
 import '../../../datagrid/src/styles/grid.css';
 import { createApp, defineComponent, h, nextTick, reactive } from 'vue';
 import {
@@ -22,6 +23,9 @@ function toProps(options: ParityOptions) {
     onSelectionChange: options.onSelectionChange,
     onPageChange: options.onPageChange,
     viewOptions: options.viewOptions,
+    locale: options.locale,
+    status: options.status,
+    statusMessage: options.statusMessage,
   };
 }
 

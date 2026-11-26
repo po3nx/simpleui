@@ -56,12 +56,32 @@ interface GridInputs {
   readonly selectionMode?: 'none' | 'single' | 'multiple' | undefined;
   readonly selectedKeys?: readonly Key[] | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly locale?: string | undefined;
+  readonly status?:
+    'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
+  readonly statusMessage?: string | undefined;
 }
 
 interface GridEmit {
   readonly sortBy: (sortBy: readonly SortDescriptor[]) => void;
   readonly page: (pageIndex: number, pageSize: number) => void;
   readonly selection: (keys: readonly Key[]) => void;
+}
+
+function syncLocale(
+  next: string | undefined,
+  previous: string | undefined,
+  renderer: { setLocale(locale: string | undefined): void } | undefined,
+): void {
+  if (next !== previous) renderer?.setLocale(next);
+}
+
+function syncStatus(
+  next: string | null | undefined,
+  previous: string | null | undefined,
+  apply: () => void,
+): void {
+  if (next !== previous) apply();
 }
 
 class AngularGridController {
@@ -83,6 +103,7 @@ class AngularGridController {
     this.#rows = inputs.rows;
     this.#keyOf = keyResolver(inputs.keyExpr);
     this.#mount();
+    this.#applyStatus();
   }
 
   #rendererColumns(): readonly ColumnState<RowRecord>[] {
@@ -154,6 +175,15 @@ class AngularGridController {
     });
   }
 
+  #applyStatus(): void {
+    this.#view?.setStatus(this.#inputs.status ?? null, {
+      ...(this.#inputs.statusMessage !== undefined
+        ? { message: this.#inputs.statusMessage }
+        : {}),
+      retryable: false,
+    });
+  }
+
   update(inputs: GridInputs): void {
     const view = this.#view;
     if (!view) return;
@@ -178,7 +208,10 @@ class AngularGridController {
       totalCount: inputs.totalCount ?? this.#rows.length,
       itemCount: this.#rows.length,
     });
+    const previous = this.#inputs;
     this.#inputs = inputs;
+    syncLocale(inputs.locale, previous.locale, this.#renderer);
+    syncStatus(inputs.status, previous.status, () => this.#applyStatus());
   }
 
   dispose(): void {
@@ -208,6 +241,9 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() selectionMode: 'none' | 'single' | 'multiple' | undefined;
   @Input() selectedKeys: readonly Key[] | undefined;
   @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
+  @Input() locale: string | undefined;
+  @Input() status: 'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
+  @Input() statusMessage: string | undefined;
 
   @Output() readonly sortByChange = new EventEmitter<
     readonly SortDescriptor[]
@@ -236,6 +272,9 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       selectionMode: this.selectionMode,
       selectedKeys: this.selectedKeys,
       viewOptions: this.viewOptions,
+      locale: this.locale,
+      status: this.status,
+      statusMessage: this.statusMessage,
     };
   }
 

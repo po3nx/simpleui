@@ -35,6 +35,10 @@ export interface VanillaDataGridOptions {
     ((state: { pageIndex: number; pageSize: number }) => void) | undefined;
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly locale?: string | undefined;
+  readonly status?:
+    'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
+  readonly statusMessage?: string | undefined;
 }
 
 export interface VanillaDataGrid {
@@ -49,6 +53,22 @@ function keyResolver(
   if (typeof keyExpr === 'function') return keyExpr;
   if (typeof keyExpr === 'string') return (row) => row[keyExpr] as Key;
   return (row) => row['id'] as Key;
+}
+
+function syncLocale(
+  next: string | undefined,
+  previous: string | undefined,
+  renderer: { setLocale(locale: string | undefined): void } | undefined,
+): void {
+  if (next !== previous) renderer?.setLocale(next);
+}
+
+function syncStatus(
+  next: string | null | undefined,
+  previous: string | null | undefined,
+  apply: () => void,
+): void {
+  if (next !== previous) apply();
 }
 
 class VanillaDataGridImpl implements VanillaDataGrid {
@@ -79,6 +99,7 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       ...(options.rowHeight !== undefined
         ? { rowHeight: options.rowHeight }
         : {}),
+      ...(options.locale !== undefined ? { locale: options.locale } : {}),
       isSelected: (row) => this.#view.isSelectedKey(this.#keyOf(row)),
       selectionChanges: (listener) => this.#view.subscribeSelection(listener),
       liveElement: this.#view.liveElement,
@@ -87,6 +108,16 @@ class VanillaDataGridImpl implements VanillaDataGrid {
         columns: this.#columns,
         getRowKeys: () => this.#rows.map(this.#keyOf),
       }),
+    });
+    this.#applyStatus();
+  }
+
+  #applyStatus(): void {
+    this.#view.setStatus(this.#options.status ?? null, {
+      ...(this.#options.statusMessage !== undefined
+        ? { message: this.#options.statusMessage }
+        : {}),
+      retryable: false,
     });
   }
 
@@ -158,7 +189,10 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       totalCount: options.totalCount ?? this.#rows.length,
       itemCount: this.#rows.length,
     });
+    const previous = this.#options;
     this.#options = options;
+    syncLocale(options.locale, previous.locale, this.#renderer);
+    syncStatus(options.status, previous.status, () => this.#applyStatus());
   }
 
   destroy(): void {

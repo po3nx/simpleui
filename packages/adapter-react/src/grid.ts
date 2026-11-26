@@ -37,6 +37,10 @@ export interface DataGridProps<T extends object> {
   }) => void;
   readonly onSelectionChange?: (keys: readonly Key[]) => void;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
+  readonly locale?: string | undefined;
+  readonly status?:
+    'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
+  readonly statusMessage?: string | undefined;
 }
 
 function keyResolver<T extends object>(
@@ -47,6 +51,22 @@ function keyResolver<T extends object>(
     return (row) => (row as Record<string, unknown>)[keyExpr] as Key;
   }
   return (row) => (row as Record<string, unknown>)['id'] as Key;
+}
+
+function syncLocale(
+  next: string | undefined,
+  previous: string | undefined,
+  renderer: { setLocale(locale: string | undefined): void } | undefined,
+): void {
+  if (next !== previous) renderer?.setLocale(next);
+}
+
+function syncStatus(
+  next: string | null | undefined,
+  previous: string | null | undefined,
+  apply: () => void,
+): void {
+  if (next !== previous) apply();
 }
 
 class ReactGridController<T extends object> {
@@ -119,11 +139,22 @@ class ReactGridController<T extends object> {
       rows: this.#rows,
       keyOf,
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
+      ...(props.locale !== undefined ? { locale: props.locale } : {}),
       isSelected: (row) => this.#view?.isSelectedKey(keyOf(row)) ?? false,
       selectionChanges: (listener) =>
         this.#view?.subscribeSelection(listener) ?? (() => {}),
       focus: focus as never,
       liveElement: this.#view?.liveElement,
+    });
+    this.#applyStatus();
+  }
+
+  #applyStatus(): void {
+    this.#view?.setStatus(this.#props.status ?? null, {
+      ...(this.#props.statusMessage !== undefined
+        ? { message: this.#props.statusMessage }
+        : {}),
+      retryable: false,
     });
   }
 
@@ -161,7 +192,10 @@ class ReactGridController<T extends object> {
       totalCount: props.totalCount ?? this.#rows.length,
       itemCount: this.#rows.length,
     });
+    const previous = this.#props;
     this.#props = props;
+    syncLocale(props.locale, previous.locale, this.#renderer);
+    syncStatus(props.status, previous.status, () => this.#applyStatus());
   }
 
   dispose(): void {
