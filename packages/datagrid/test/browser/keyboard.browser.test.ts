@@ -123,7 +123,11 @@ describe('keyboard — navigasi sel', () => {
     press('ArrowDown', grid.element);
 
     press('PageDown', document.activeElement as HTMLElement);
-    expect(focusedId()).toBe(focus.cellDomId(5, 'name'));
+    const page = Math.max(
+      1,
+      Math.floor(grid.viewportElement.clientHeight / 40) - 1,
+    );
+    expect(focusedId()).toBe(focus.cellDomId(1 + page, 'name'));
 
     press('PageUp', document.activeElement as HTMLElement);
     expect(focusedId()).toBe(focus.cellDomId(1, 'name'));

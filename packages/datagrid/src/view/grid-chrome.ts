@@ -130,10 +130,13 @@ export function createScrollHandler<T extends object>(
 ): () => void {
   let lastScrollLeft = dom.viewportElement.scrollLeft;
   const handler = (): void => {
-    if (dom.viewportElement.scrollLeft !== lastScrollLeft) {
-      lastScrollLeft = dom.viewportElement.scrollLeft;
+    const left = dom.viewportElement.scrollLeft;
+    if (left !== lastScrollLeft) {
+      lastScrollLeft = left;
       header.render(options.columns);
     }
+    dom.headerElement.scrollLeft = left;
+    dom.footerElement.scrollLeft = left;
     options.onScroll?.(dom.viewportElement.scrollTop);
   };
   dom.viewportElement.addEventListener('scroll', handler, { passive: true });

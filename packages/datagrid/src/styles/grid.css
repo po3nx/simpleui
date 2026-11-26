@@ -18,23 +18,22 @@
 
 .sui-grid__header,
 .sui-grid__footer {
-  position: sticky;
+  position: relative;
   z-index: var(--sui-z-sticky);
   display: flex;
+  flex: none;
   flex-direction: column;
   align-items: stretch;
-  inline-size: max-content;
-  min-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: hidden;
   background: var(--sui-color-bg-subtle);
 }
 
 .sui-grid__header {
-  inset-block-start: 0;
   border-block-end: var(--sui-border-width) solid var(--sui-color-border-strong);
 }
 
 .sui-grid__footer {
-  inset-block-end: 0;
   border-block-start: var(--sui-border-width) solid
     var(--sui-color-border-strong);
 }
@@ -187,11 +186,6 @@
 .sui-grid__cell--shadow-end {
   box-shadow: inset var(--sui-border-width-thick) 0 0
     var(--sui-color-border-strong);
-}
-
-.sui-grid__header {
-  inline-size: max-content;
-  min-inline-size: 100%;
 }
 
 .sui-grid {
