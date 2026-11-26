@@ -211,3 +211,43 @@ describe('header filter — apply', () => {
     cleanup(grid, container);
   });
 });
+
+describe('header filter — keyboard', () => {
+  it('Escape menutup panel dan mengembalikan fokus ke tombol', () => {
+    const { container, grid, trigger, panel } = setup();
+    const button = trigger();
+    button.focus();
+    button.click();
+    expect(panel()).not.toBeNull();
+    expect(document.activeElement?.getAttribute('placeholder')).toContain(
+      'Cari',
+    );
+
+    const search = document.activeElement as HTMLElement;
+    search.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+    );
+    expect(panel()?.contains(document.activeElement)).toBe(true);
+
+    const buttons = [
+      ...(panel()?.querySelectorAll<HTMLElement>('button') ?? []),
+    ];
+    const last = buttons.at(-1) as HTMLElement;
+    last.focus();
+    last.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+    );
+    expect(document.activeElement?.getAttribute('placeholder')).toContain(
+      'Cari',
+    );
+
+    panel()?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    expect(panel()).toBeNull();
+    expect(document.activeElement).toBe(button);
+
+    grid.dispose();
+    container.remove();
+  });
+});

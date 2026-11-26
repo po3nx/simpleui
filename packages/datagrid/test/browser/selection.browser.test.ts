@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import '../../src/styles/grid.css';
 import { normalizeColumnModel } from '../../src/model/columns.js';
+import { createFocusModel } from '../../src/model/focus.js';
+import { createGridStateStore } from '../../src/model/state.js';
 import { createGridView } from '../../src/view/grid-view.js';
 import { createRowRenderer } from '../../src/view/row-renderer.js';
 
@@ -34,14 +36,21 @@ function setup(mode: 'single' | 'multiple' = 'multiple') {
     getVisibleKeys: () => ROWS.map((row) => row.id),
     onSelectionChange,
   });
+  const columns = [grid.selectionColumn as never, ...COLUMNS];
+  const focus = createFocusModel<Row>({
+    state: createGridStateStore(),
+    columns,
+    getRowKeys: () => ROWS.map((row) => row.id),
+  });
   const renderer = createRowRenderer<Row>({
     gridElement: grid.element,
     viewportElement: grid.viewportElement,
     spacerElement: grid.spacerElement,
     rowsElement: grid.rowsElement,
-    columns: [grid.selectionColumn as never, ...COLUMNS],
+    columns,
     rows: ROWS,
     keyOf: (row) => row.id,
+    focus,
   });
   const headerCheckbox = (): HTMLInputElement | null =>
     grid.headerElement.querySelector('input[type="checkbox"]');
@@ -98,6 +107,7 @@ describe('selection — checkbox baris', () => {
   it('klik dan shift-klik memilih serta membuat range', () => {
     const { container, grid, renderer, onSelectionChange, rowCheckboxes } =
       setup();
+    expect(rowCheckboxes()[0]?.tabIndex).toBe(0);
 
     expect(rowCheckboxes()[0]?.getAttribute('aria-label')).toBe('Pilih baris');
     rowCheckboxes()[0]?.click();
@@ -138,6 +148,28 @@ describe('selection — checkbox baris', () => {
     expect(onSelectionChange).toHaveBeenLastCalledWith([2]);
     rowCheckboxes()[1]?.click();
     expect(onSelectionChange).toHaveBeenLastCalledWith([]);
+
+    renderer.dispose();
+    grid.dispose();
+    container.remove();
+  });
+});
+
+describe('selection — keyboard', () => {
+  it('Space pada sel seleksi mencentang checkbox baris', () => {
+    const { container, grid, renderer, onSelectionChange, rowCheckboxes } =
+      setup();
+    expect(rowCheckboxes()[0]?.tabIndex).toBe(0);
+
+    const cell = grid.rowsElement.querySelector<HTMLElement>('.sui-grid__cell');
+    if (!cell) throw new Error('sel tidak ditemukan');
+    cell.focus();
+    cell.dispatchEvent(
+      new KeyboardEvent('keydown', { key: ' ', bubbles: true }),
+    );
+
+    expect(rowCheckboxes()[0]?.checked).toBe(true);
+    expect(onSelectionChange).toHaveBeenLastCalledWith([1]);
 
     renderer.dispose();
     grid.dispose();
