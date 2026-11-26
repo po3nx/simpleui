@@ -73,6 +73,12 @@ describe('header filter — panel', () => {
 
     expect(panel()).not.toBeNull();
     expect(panel()?.getAttribute('role')).toBe('dialog');
+    const panelElement = panel() as HTMLElement;
+    expect(getComputedStyle(panelElement).position).toBe('fixed');
+    const rect = panelElement.getBoundingClientRect();
+    expect(rect.left).toBeGreaterThanOrEqual(0);
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+    expect(rect.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
     expect(trigger().getAttribute('aria-expanded')).toBe('true');
     expect(options().map((option) => option.textContent)).toEqual([
       'A',

@@ -577,3 +577,74 @@
   background: var(--sui-color-bg-subtle);
   outline: none;
 }
+
+.sui-grid__filter-panel {
+  position: fixed;
+  z-index: var(--sui-z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sui-space-1);
+  inline-size: 280px;
+  max-block-size: 380px;
+  padding: var(--sui-space-2);
+  overflow: auto;
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  box-shadow: var(--sui-shadow-md);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__filter-search {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+}
+
+.sui-grid__filter-list {
+  display: flex;
+  flex-direction: column;
+  max-block-size: 200px;
+  overflow: auto;
+}
+
+.sui-grid__filter-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sui-space-1);
+  padding: var(--sui-space-1);
+}
+
+.sui-grid__filter-actions,
+.sui-grid__filter-footer {
+  display: flex;
+  gap: var(--sui-space-1);
+  justify-content: flex-end;
+}
+
+.sui-grid__filter-actions button,
+.sui-grid__filter-footer button {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__filter-apply {
+  background: var(--sui-color-accent-default) !important;
+  color: var(--sui-color-text-inverse) !important;
+  border-color: var(--sui-color-accent-default) !important;
+}
+
+.sui-grid__filter-panel button:focus-visible,
+.sui-grid__filter-search:focus-visible,
+.sui-grid__filter-option input:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
