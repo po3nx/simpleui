@@ -159,3 +159,26 @@ describe('column resize — pointer', () => {
     container.remove();
   });
 });
+
+describe('column resize — persistensi', () => {
+  it('lebar header tidak reset setelah sorting', () => {
+    const { container, grid, renderer, handles, widthOf, rowWidthOf } = setup();
+    const handle = handles()[0] as HTMLElement;
+    handle.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    expect(widthOf('id')).toBe('110px');
+
+    grid.headerElement
+      .querySelector<HTMLElement>(
+        '[data-column-id="id"] .sui-grid__header-button',
+      )
+      ?.click();
+
+    expect(widthOf('id')).toBe('110px');
+    expect(rowWidthOf('id')).toBe('110px');
+    renderer.dispose();
+    grid.dispose();
+    container.remove();
+  });
+});

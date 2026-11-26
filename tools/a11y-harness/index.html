@@ -49,6 +49,8 @@
       let query = '';
       let filter = null;
       let sortBy = [];
+      let pageIndex = 0;
+      let pageSize = 10;
 
       function matchCondition(row, condition) {
         if (condition[0] === 'and') {
@@ -97,9 +99,15 @@
         }
       }
 
+      function handlePage(state) {
+        pageIndex = state.pageIndex;
+        pageSize = state.pageSize;
+        refresh();
+      }
+
       function refresh() {
         const needle = query.trim().toLowerCase();
-        const rows = baseRows.filter((row) => {
+        const filtered = baseRows.filter((row) => {
           if (
             needle &&
             !`${row.name} ${row.city}`.toLowerCase().includes(needle)
@@ -109,7 +117,7 @@
           return filter ? matchCondition(row, filter) : true;
         });
         if (sortBy.length > 0) {
-          rows.sort((left, right) => {
+          filtered.sort((left, right) => {
             for (const descriptor of sortBy) {
               const a = left[descriptor.selector];
               const b = right[descriptor.selector];
@@ -123,24 +131,34 @@
             return 0;
           });
         }
+        const totalCount = filtered.length;
+        const lastPage = Math.max(0, Math.ceil(totalCount / pageSize) - 1);
+        pageIndex = Math.min(pageIndex, lastPage);
+        const rows = filtered.slice(
+          pageIndex * pageSize,
+          (pageIndex + 1) * pageSize,
+        );
 
         grid.update({
           columns,
           rows,
           keyExpr: 'id',
           selectionMode: 'multiple',
-          pageIndex: 0,
-          pageSize: 10,
-          totalCount: rows.length,
+          pageIndex,
+          pageSize,
+          totalCount,
           sortBy,
           onSearchChange: (next) => {
             query = next;
+            pageIndex = 0;
             refresh();
           },
           onSortChange: (next) => {
             sortBy = next;
+            pageIndex = 0;
             refresh();
           },
+          onPageChange: handlePage,
           viewOptions: {
             filterRow: true,
             searchPanel: true,
@@ -148,6 +166,7 @@
             contextMenu: true,
             onFilterChange: (next) => {
               filter = next;
+              pageIndex = 0;
               refresh();
             },
             getUniqueValues: (columnId) => [
@@ -157,27 +176,30 @@
               { column: 'total', summaryType: 'sum' },
               { column: 'name', summaryType: 'count' },
             ],
-            summaryRows: rows,
+            summaryRows: filtered,
           },
         });
       }
 
       const grid = SimpleUI.createDataGrid(document.getElementById('grid'), {
         columns,
-        rows: baseRows,
+        rows: baseRows.slice(0, pageSize),
         keyExpr: 'id',
         selectionMode: 'multiple',
-        pageIndex: 0,
-        pageSize: 10,
+        pageIndex,
+        pageSize,
         totalCount: baseRows.length,
         onSearchChange: (next) => {
           query = next;
+          pageIndex = 0;
           refresh();
         },
         onSortChange: (next) => {
           sortBy = next;
+          pageIndex = 0;
           refresh();
         },
+        onPageChange: handlePage,
         viewOptions: {
           filterRow: true,
           searchPanel: true,
@@ -185,6 +207,7 @@
           contextMenu: true,
           onFilterChange: (next) => {
             filter = next;
+            pageIndex = 0;
             refresh();
           },
           getUniqueValues: (columnId) => [
