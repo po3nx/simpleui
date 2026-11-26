@@ -485,6 +485,9 @@ importers:
       '@simpleui/testing':
         specifier: workspace:*
         version: link:../testing
+      '@vue/server-renderer':
+        specifier: 3.5.46
+        version: 3.5.46
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -523,6 +526,9 @@ importers:
         specifier: workspace:*
         version: link:../core
     devDependencies:
+      '@simpleui/testing':
+        specifier: workspace:*
+        version: link:../testing
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
