@@ -70,11 +70,12 @@ describe('GridView — struktur DOM dan ARIA', () => {
     expect((headers[0] as HTMLElement).style.flexBasis).toBe('80px');
   });
 
-  it('header dan footer sticky, live region sopan', () => {
+  it('header/footer di luar viewport, live region sopan', () => {
     const { view } = mount();
 
-    expect(getComputedStyle(view.headerElement).position).toBe('sticky');
-    expect(getComputedStyle(view.footerElement).position).toBe('sticky');
+    expect(view.headerElement.parentElement).toBe(view.element);
+    expect(view.footerElement.parentElement).toBe(view.element);
+    expect(view.viewportElement.contains(view.headerElement)).toBe(false);
     expect(view.footerElement.hidden).toBe(false);
     expect(view.liveElement.getAttribute('aria-live')).toBe('polite');
     expect(view.liveElement.getAttribute('aria-atomic')).toBe('true');

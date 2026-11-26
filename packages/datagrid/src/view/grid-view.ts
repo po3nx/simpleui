@@ -157,7 +157,7 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   const viewportElement = createElement('div', {
     className: 'sui-grid__viewport',
   });
-  setAttributes(viewportElement, { role: 'presentation' });
+  setAttributes(viewportElement, { role: 'rowgroup', tabindex: '0' });
   const spacerElement = createElement('div', { className: 'sui-grid__spacer' });
   setAttributes(spacerElement, { role: 'presentation' });
   const rowsElement = createElement('div', { className: 'sui-grid__rows' });
@@ -177,8 +177,8 @@ function createSkeleton(config: SkeletonConfig): Skeleton {
   const liveElement = createElement('div', { className: 'sui-grid__live' });
   setAttributes(liveElement, { 'aria-live': 'polite', 'aria-atomic': 'true' });
 
-  viewportElement.append(headerElement, spacerElement, footerElement);
-  element.append(viewportElement);
+  viewportElement.append(spacerElement);
+  element.append(headerElement, viewportElement, footerElement);
   host.append(element, liveElement);
 
   return {
