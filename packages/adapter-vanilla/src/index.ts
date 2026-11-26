@@ -50,3 +50,10 @@ export function createVanillaBridge(): AdapterBridge {
     },
   };
 }
+
+export {
+  createDataGrid,
+  type VanillaDataGrid,
+  type VanillaDataGridOptions,
+} from './grid.js';
+export { getDataGridInstance, registerJQueryPlugin } from './jquery.js';
