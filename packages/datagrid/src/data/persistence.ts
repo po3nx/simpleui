@@ -7,7 +7,7 @@ import type { GridStateStore } from '../model/state.js';
  * debounce, dan penanganan storage korup tanpa merusak grid.
  */
 
-export const CURRENT_SNAPSHOT_VERSION = 1;
+export const CURRENT_SNAPSHOT_VERSION = 2;
 export const DEFAULT_MAX_SNAPSHOT_SIZE = 100_000;
 
 export interface StatePersistenceOptions {
@@ -42,6 +42,11 @@ const MIGRATIONS: Readonly<Record<number, Migration>> = {
     columnOrder: input['columnOrder'] ?? [],
     hiddenColumns: input['hiddenColumns'] ?? [],
     groupBy: input['groupBy'] ?? [],
+  }),
+  1: (input) => ({
+    ...input,
+    version: 2,
+    expandedGroups: input['expandedGroups'] ?? [],
   }),
 };
 
