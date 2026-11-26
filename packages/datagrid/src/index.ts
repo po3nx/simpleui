@@ -104,6 +104,8 @@ export {
   createDataController,
   type DataController,
   type DataControllerOptions,
+  type RemoteOperationsConfig,
+  type RemoteOperationsOption,
 } from './data/data-controller.js';
 export {
   clampPageIndex,
