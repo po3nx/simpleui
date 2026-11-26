@@ -48,7 +48,13 @@ function setup(onColumnResize?: (id: string, width: number) => void) {
         `[data-column-id="${columnId}"]`,
       ) as HTMLElement | null
     )?.style.flexBasis ?? '';
-  return { container, grid, renderer, handles, widthOf };
+  const rowWidthOf = (columnId: string): string =>
+    (
+      grid.rowsElement.querySelector(
+        `[data-column-id="${columnId}"]`,
+      ) as HTMLElement | null
+    )?.style.flexBasis ?? '';
+  return { container, grid, renderer, handles, widthOf, rowWidthOf };
 }
 
 describe('column resize — handle dan ARIA', () => {
@@ -76,7 +82,8 @@ describe('column resize — handle dan ARIA', () => {
 describe('column resize — keyboard', () => {
   it('ArrowRight/ArrowLeft mengubah lebar dan commit', () => {
     const onResize = vi.fn();
-    const { container, grid, renderer, handles, widthOf } = setup(onResize);
+    const { container, grid, renderer, handles, widthOf, rowWidthOf } =
+      setup(onResize);
     const handle = handles()[0] as HTMLElement;
 
     handle.dispatchEvent(
@@ -85,6 +92,8 @@ describe('column resize — keyboard', () => {
     expect(onResize).toHaveBeenLastCalledWith('id', 110);
     expect(handle.getAttribute('aria-valuenow')).toBe('110');
     expect(widthOf('id')).toBe('110px');
+    expect(rowWidthOf('id')).toBe('110px');
+    expect(grid.spacerElement.style.inlineSize).toBe('260px');
 
     handle.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }),

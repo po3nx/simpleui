@@ -34,6 +34,7 @@ export interface VanillaDataGridOptions {
   readonly onPageChange?:
     ((state: { pageIndex: number; pageSize: number }) => void) | undefined;
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
+  readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
@@ -157,6 +158,9 @@ class VanillaDataGridImpl implements VanillaDataGrid {
           this.#renderer.setRows(this.#rows);
         }
       },
+      ...(options.onSearchChange !== undefined
+        ? { onSearchChange: (query: string) => options.onSearchChange?.(query) }
+        : {}),
     });
   }
 

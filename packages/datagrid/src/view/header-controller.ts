@@ -53,6 +53,8 @@ export interface HeaderControllerOptions<T extends object> {
     ((sortBy: readonly SortDescriptor[]) => void) | undefined;
   readonly onColumnResize?:
     ((columnId: string, width: number) => void) | undefined;
+  readonly onColumnResizePreview?:
+    ((columnId: string, width: number) => void) | undefined;
   readonly onColumnReorder?: ((order: readonly string[]) => void) | undefined;
   readonly onTemplateError?:
     | ((error: unknown, phase: 'render' | 'update' | 'dispose') => void)
@@ -129,6 +131,7 @@ function createResizeAttacher<T extends object>(
       onPreview: (next) => {
         handle.setAttribute('aria-valuenow', String(next));
         previewColumnWidth(options.element, column.id, next);
+        options.onColumnResizePreview?.(column.id, next);
       },
       onCommit: (next) => options.onColumnResize?.(column.id, next),
     });

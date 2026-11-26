@@ -55,6 +55,7 @@ interface GridInputs {
   readonly sortBy?: readonly SortDescriptor[] | undefined;
   readonly selectionMode?: 'none' | 'single' | 'multiple' | undefined;
   readonly selectedKeys?: readonly Key[] | undefined;
+  readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
@@ -142,6 +143,12 @@ class AngularGridController {
         if (inputs.sortBy) this.#view?.setSorting(inputs.sortBy);
       },
       onPageChange: (state) => this.#emit.page(state.pageIndex, state.pageSize),
+      ...(this.#inputs.onSearchChange !== undefined
+        ? {
+            onSearchChange: (query: string) =>
+              this.#inputs.onSearchChange?.(query),
+          }
+        : {}),
       onSelectionChange: (keys) => {
         this.#emit.selection(keys);
         if (inputs.selectedKeys) {
@@ -150,28 +157,33 @@ class AngularGridController {
         }
       },
     });
+    this.#renderer = this.#createRenderer(keyOf);
+  }
 
+  #createRenderer(keyOf: (row: RowRecord) => Key): RowRenderer<RowRecord> {
+    const view = this.#view;
+    if (!view) throw new Error('view belum dibuat');
     const focus = createFocusModel<RowRecord>({
       state: this.#state,
       columns: this.#columns,
       getRowKeys: () => this.#rows.map(keyOf),
     });
-    this.#renderer = createRowRenderer<RowRecord>({
-      gridElement: this.#view.element,
-      viewportElement: this.#view.viewportElement,
-      spacerElement: this.#view.spacerElement,
-      rowsElement: this.#view.rowsElement,
+    return createRowRenderer<RowRecord>({
+      gridElement: view.element,
+      viewportElement: view.viewportElement,
+      spacerElement: view.spacerElement,
+      rowsElement: view.rowsElement,
       columns: this.#rendererColumns(),
       rows: this.#rows,
       keyOf,
-      ...(inputs.rowHeight !== undefined
-        ? { rowHeight: inputs.rowHeight }
+      ...(this.#inputs.rowHeight !== undefined
+        ? { rowHeight: this.#inputs.rowHeight }
         : {}),
-      isSelected: (row) => this.#view?.isSelectedKey(keyOf(row)) ?? false,
+      isSelected: (row) => view.isSelectedKey(keyOf(row)) ?? false,
       selectionChanges: (listener) =>
-        this.#view?.subscribeSelection(listener) ?? (() => {}),
+        view.subscribeSelection(listener) ?? (() => {}),
       focus,
-      liveElement: this.#view?.liveElement,
+      liveElement: view.liveElement,
     });
   }
 
@@ -240,6 +252,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() sortBy: readonly SortDescriptor[] | undefined;
   @Input() selectionMode: 'none' | 'single' | 'multiple' | undefined;
   @Input() selectedKeys: readonly Key[] | undefined;
+  @Input() onSearchChange: ((query: string) => void) | undefined;
   @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
   @Input() locale: string | undefined;
   @Input() status: 'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -271,6 +284,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       sortBy: this.sortBy,
       selectionMode: this.selectionMode,
       selectedKeys: this.selectedKeys,
+      onSearchChange: this.onSearchChange,
       viewOptions: this.viewOptions,
       locale: this.locale,
       status: this.status,

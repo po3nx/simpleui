@@ -192,3 +192,23 @@ describe('RowRenderer — pembaruan dan anchoring', () => {
     container.remove();
   });
 });
+
+describe('setRows — penyusutan data', () => {
+  it('menyembunyikan baris pool yang tidak terpakai secara visual', () => {
+    const { container, grid, renderer } = setup(makeRows(50));
+    renderer.setRows(makeRows(1));
+    grid.setRowCount(1);
+
+    const rows = [
+      ...grid.rowsElement.querySelectorAll<HTMLElement>('.sui-grid__row'),
+    ];
+    expect(rows.filter((row) => !row.hidden)).toHaveLength(1);
+    const hidden = rows.find((row) => row.hidden);
+    expect(hidden).toBeDefined();
+    expect(getComputedStyle(hidden as HTMLElement).display).toBe('none');
+
+    renderer.dispose();
+    grid.dispose();
+    container.remove();
+  });
+});

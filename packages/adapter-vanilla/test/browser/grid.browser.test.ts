@@ -159,3 +159,33 @@ describe('jQuery bridge opsional', () => {
     expect(registerJQueryPlugin()).toBe(false);
   });
 });
+
+describe('vanilla adapter — search callback', () => {
+  it('meneruskan onSearchChange dari search panel', async () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const calls: string[] = [];
+    const grid = createDataGrid(host, {
+      columns: [{ dataField: 'name', caption: 'Nama' }],
+      rows: [
+        { id: 1, name: 'Ani' },
+        { id: 2, name: 'Budi' },
+      ],
+      keyExpr: 'id',
+      onSearchChange: (query) => calls.push(query),
+      viewOptions: { searchPanel: true, searchDebounceMs: 0 },
+    });
+
+    const input = host.querySelector<HTMLInputElement>(
+      '.sui-grid__search-input',
+    );
+    if (!input) throw new Error('input pencarian tidak ditemukan');
+    input.value = 'ani';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    expect(calls.at(-1)).toBe('ani');
+    grid.destroy();
+    host.remove();
+  });
+});
