@@ -1,3 +1,4 @@
+import '../../../theme/src/index.css';
 import '../../../datagrid/src/styles/grid.css';
 import '@angular/compiler';
 import {
@@ -26,6 +27,9 @@ function inputs(options: ParityOptions): Record<string, unknown> {
     totalCount: options.totalCount,
     selectionMode: options.selectionMode,
     viewOptions: options.viewOptions,
+    locale: options.locale,
+    status: options.status,
+    statusMessage: options.statusMessage,
   };
 }
 

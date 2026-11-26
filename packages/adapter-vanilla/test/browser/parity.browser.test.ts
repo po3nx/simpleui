@@ -1,3 +1,4 @@
+import '../../../theme/src/index.css';
 import '../../../datagrid/src/styles/grid.css';
 import {
   describeGridParity,
