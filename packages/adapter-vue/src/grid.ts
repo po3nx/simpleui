@@ -121,7 +121,7 @@ class VueGridController {
     emit: EmitFn,
   ) {
     this.#host = host;
-    this.#props = props;
+    this.#props = { ...props };
     this.#slots = slots;
     this.#emit = emit;
     this.#columns = normalizeColumnModel(decorateColumns(props.columns, slots));
@@ -222,7 +222,7 @@ class VueGridController {
       totalCount: props.totalCount ?? this.#rows.length,
       itemCount: this.#rows.length,
     });
-    this.#props = props;
+    this.#props = { ...props };
   }
 
   dispose(): void {
