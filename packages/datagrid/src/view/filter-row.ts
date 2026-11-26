@@ -223,8 +223,20 @@ class FilterRowImpl implements FilterRow {
     this.#entries = [];
     this.element.replaceChildren();
     for (const column of columns) {
-      if (!column.visible || !column.allowFiltering || column.children)
+      if (!column.visible || column.children) continue;
+      if (!column.allowFiltering) {
+        const spacer = createElement('div', {
+          className: 'sui-grid__filter-cell',
+        });
+        setAttributes(spacer, {
+          'data-column-id': column.id,
+          'aria-hidden': 'true',
+        });
+        const width = column.width === 'auto' ? column.minWidth : column.width;
+        spacer.style.flexBasis = `${width}px`;
+        this.element.append(spacer);
         continue;
+      }
       const entry = createEntry(column, this.#onChangeFor(column.id));
       this.#entries.push(entry);
       this.element.append(entry.cell);

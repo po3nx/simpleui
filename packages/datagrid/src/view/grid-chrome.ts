@@ -37,10 +37,11 @@ export function createSearch<T extends object>(
 
 export function createFilter<T extends object>(
   options: GridViewOptions<T>,
+  columns: readonly ColumnState<T>[],
 ): FilterRow | undefined {
   if (!options.filterRow) return undefined;
   const row = createFilterRow({
-    columns: options.columns as never,
+    columns: columns as never,
     filterValue: options.filterValue,
     onFilterChange: options.onFilterChange,
   });
