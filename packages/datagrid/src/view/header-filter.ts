@@ -17,7 +17,7 @@ export interface HeaderFilterOptions {
 
 export interface HeaderFilter {
   open(column: ColumnState<unknown>, anchor: HTMLElement): void;
-  close(): void;
+  close(restoreFocus?: boolean): void;
   dispose(): void;
 }
 
@@ -154,11 +154,13 @@ class HeaderFilterImpl implements HeaderFilter {
     this.#options = options;
   }
 
-  close(): void {
+  close(restoreFocus = false): void {
+    const anchor = this.#anchor;
     if (this.#panel) this.#panel.remove();
-    if (this.#anchor) this.#anchor.setAttribute('aria-expanded', 'false');
+    if (anchor) anchor.setAttribute('aria-expanded', 'false');
     this.#panel = null;
     this.#anchor = null;
+    if (restoreFocus) anchor?.focus({ preventScroll: true });
     if (this.#onOutside) {
       document.removeEventListener('pointerdown', this.#onOutside);
     }
@@ -172,7 +174,7 @@ class HeaderFilterImpl implements HeaderFilter {
         ? `Filter ${column.caption} diterapkan.`
         : `Filter ${column.caption} dihapus.`;
     }
-    this.close();
+    this.close(true);
   }
 
   #buildPanel(column: ColumnState<unknown>, values: ValueEntry[]): HTMLElement {
@@ -205,6 +207,29 @@ class HeaderFilterImpl implements HeaderFilter {
     );
     panel.dataset['search'] = 'true';
     (panel as HTMLElement & { _search?: HTMLInputElement })._search = search;
+    panel.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        this.close(true);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusables = [
+        ...panel.querySelectorAll<HTMLElement>(
+          'button, input, [tabindex]:not([tabindex="-1"])',
+        ),
+      ];
+      if (focusables.length === 0) return;
+      const first = focusables[0] as HTMLElement;
+      const last = focusables[focusables.length - 1] as HTMLElement;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
     return panel;
   }
 

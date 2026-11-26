@@ -186,6 +186,19 @@ class GridKeyboard {
   readonly #onKeyDown = (event: KeyboardEvent): void => {
     if (isEditable(event.target)) return;
     if (this.#handleHeader(event) || this.#handleNoFocus(event)) return;
+    if (event.key === ' ' || event.key === 'Enter') {
+      const cell = (document.activeElement as HTMLElement | null)?.closest(
+        '.sui-grid__cell',
+      );
+      const checkbox = cell?.querySelector<HTMLInputElement>(
+        'input[type="checkbox"]',
+      );
+      if (checkbox) {
+        event.preventDefault();
+        checkbox.click();
+        return;
+      }
+    }
     const handler = this.#handlers()[event.key];
     if (!handler) return;
     event.preventDefault();
