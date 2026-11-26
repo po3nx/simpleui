@@ -222,7 +222,11 @@ class HeaderFilterImpl implements HeaderFilter {
 
     const rect = anchor.getBoundingClientRect();
     panel.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - PANEL_WIDTH - 8))}px`;
-    panel.style.top = `${rect.bottom + 4}px`;
+    const top = Math.min(
+      rect.bottom + 4,
+      window.innerHeight - panel.offsetHeight - 8,
+    );
+    panel.style.top = `${Math.max(8, top)}px`;
 
     this.#panel = panel;
     const search = (panel as HTMLElement & { _search?: HTMLInputElement })

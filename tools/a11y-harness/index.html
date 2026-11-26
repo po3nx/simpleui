@@ -32,7 +32,13 @@
     </main>
     <script src="../../packages/adapter-vanilla/dist/simpleui-vanilla.umd.js"></script>
     <script>
-      const rows = Array.from({ length: 42 }, (_, index) => ({
+      const columns = [
+        { dataField: 'name', caption: 'Nama' },
+        { dataField: 'city', caption: 'Kota' },
+        { dataField: 'total', caption: 'Total', dataType: 'number' },
+        { dataField: 'active', caption: 'Aktif', dataType: 'boolean' },
+      ];
+      const baseRows = Array.from({ length: 42 }, (_, index) => ({
         id: index + 1,
         name: `Karyawan ${String(index + 1).padStart(2, '0')}`,
         city: ['Jakarta', 'Bandung', 'Surabaya'][index % 3],
@@ -40,28 +46,153 @@
         active: index % 2 === 0,
       }));
 
-      SimpleUI.createDataGrid(document.getElementById('grid'), {
-        columns: [
-          { dataField: 'name', caption: 'Nama' },
-          { dataField: 'city', caption: 'Kota' },
-          { dataField: 'total', caption: 'Total', dataType: 'number' },
-          { dataField: 'active', caption: 'Aktif', dataType: 'boolean' },
-        ],
-        rows,
+      let query = '';
+      let filter = null;
+      let sortBy = [];
+
+      function matchCondition(row, condition) {
+        if (condition[0] === 'and') {
+          return condition
+            .slice(1)
+            .every((entry) => matchCondition(row, entry));
+        }
+        if (condition[0] === 'or') {
+          return condition.slice(1).some((entry) => matchCondition(row, entry));
+        }
+        const [field, operator, value] = condition;
+        const cell = row[field];
+        switch (operator) {
+          case 'contains':
+            return String(cell ?? '')
+              .toLowerCase()
+              .includes(String(value).toLowerCase());
+          case 'notContains':
+            return !String(cell ?? '')
+              .toLowerCase()
+              .includes(String(value).toLowerCase());
+          case 'startsWith':
+            return String(cell ?? '')
+              .toLowerCase()
+              .startsWith(String(value).toLowerCase());
+          case 'endsWith':
+            return String(cell ?? '')
+              .toLowerCase()
+              .endsWith(String(value).toLowerCase());
+          case 'eq':
+            return cell === value;
+          case 'neq':
+            return cell !== value;
+          case 'gt':
+            return Number(cell) > Number(value);
+          case 'gte':
+            return Number(cell) >= Number(value);
+          case 'lt':
+            return Number(cell) < Number(value);
+          case 'lte':
+            return Number(cell) <= Number(value);
+          case 'in':
+            return Array.isArray(value) && value.includes(cell);
+          default:
+            return true;
+        }
+      }
+
+      function refresh() {
+        const needle = query.trim().toLowerCase();
+        const rows = baseRows.filter((row) => {
+          if (
+            needle &&
+            !`${row.name} ${row.city}`.toLowerCase().includes(needle)
+          ) {
+            return false;
+          }
+          return filter ? matchCondition(row, filter) : true;
+        });
+        if (sortBy.length > 0) {
+          rows.sort((left, right) => {
+            for (const descriptor of sortBy) {
+              const a = left[descriptor.selector];
+              const b = right[descriptor.selector];
+              if (a === b) continue;
+              const result =
+                typeof a === 'number' && typeof b === 'number'
+                  ? a - b
+                  : String(a ?? '').localeCompare(String(b ?? ''));
+              return descriptor.desc ? -result : result;
+            }
+            return 0;
+          });
+        }
+
+        grid.update({
+          columns,
+          rows,
+          keyExpr: 'id',
+          selectionMode: 'multiple',
+          pageIndex: 0,
+          pageSize: 10,
+          totalCount: rows.length,
+          sortBy,
+          onSearchChange: (next) => {
+            query = next;
+            refresh();
+          },
+          onSortChange: (next) => {
+            sortBy = next;
+            refresh();
+          },
+          viewOptions: {
+            filterRow: true,
+            searchPanel: true,
+            contextMenu: true,
+            onFilterChange: (next) => {
+              filter = next;
+              refresh();
+            },
+            getUniqueValues: (columnId) => [
+              ...new Set(baseRows.map((row) => row[columnId])),
+            ],
+            summaryItems: [
+              { column: 'total', summaryType: 'sum' },
+              { column: 'name', summaryType: 'count' },
+            ],
+            summaryRows: rows,
+          },
+        });
+      }
+
+      const grid = SimpleUI.createDataGrid(document.getElementById('grid'), {
+        columns,
+        rows: baseRows,
         keyExpr: 'id',
         selectionMode: 'multiple',
         pageIndex: 0,
         pageSize: 10,
-        totalCount: rows.length,
+        totalCount: baseRows.length,
+        onSearchChange: (next) => {
+          query = next;
+          refresh();
+        },
+        onSortChange: (next) => {
+          sortBy = next;
+          refresh();
+        },
         viewOptions: {
           filterRow: true,
           searchPanel: true,
           contextMenu: true,
+          onFilterChange: (next) => {
+            filter = next;
+            refresh();
+          },
+          getUniqueValues: (columnId) => [
+            ...new Set(baseRows.map((row) => row[columnId])),
+          ],
           summaryItems: [
             { column: 'total', summaryType: 'sum' },
             { column: 'name', summaryType: 'count' },
           ],
-          summaryRows: rows,
+          summaryRows: baseRows,
         },
       });
     </script>
