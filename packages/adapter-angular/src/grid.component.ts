@@ -55,6 +55,7 @@ interface GridInputs {
   readonly sortBy?: readonly SortDescriptor[] | undefined;
   readonly selectionMode?: 'none' | 'single' | 'multiple' | undefined;
   readonly selectedKeys?: readonly Key[] | undefined;
+  readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
 }
 
 interface GridEmit {
@@ -98,6 +99,7 @@ class AngularGridController {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      ...(inputs.viewOptions ?? {}),
       ...(inputs.rowHeight !== undefined
         ? { rowHeight: inputs.rowHeight }
         : {}),
@@ -186,7 +188,8 @@ class AngularGridController {
 @Component({
   selector: 'sui-data-grid',
   standalone: true,
-  template: '<div #host class="simpleui-angular-grid"></div>',
+  template:
+    '<div #host class="simpleui-angular-grid" style="height: 100%"></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
@@ -200,6 +203,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() sortBy: readonly SortDescriptor[] | undefined;
   @Input() selectionMode: 'none' | 'single' | 'multiple' | undefined;
   @Input() selectedKeys: readonly Key[] | undefined;
+  @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
 
   @Output() readonly sortByChange = new EventEmitter<
     readonly SortDescriptor[]
@@ -227,6 +231,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       sortBy: this.sortBy,
       selectionMode: this.selectionMode,
       selectedKeys: this.selectedKeys,
+      viewOptions: this.viewOptions,
     };
   }
 

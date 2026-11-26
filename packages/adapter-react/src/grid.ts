@@ -36,6 +36,7 @@ export interface DataGridProps<T extends object> {
     pageSize: number;
   }) => void;
   readonly onSelectionChange?: (keys: readonly Key[]) => void;
+  readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
 }
 
 function keyResolver<T extends object>(
@@ -74,6 +75,7 @@ class ReactGridController<T extends object> {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      ...(props.viewOptions ?? {}),
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
       ...(props.sortBy !== undefined ? { sortBy: props.sortBy } : {}),
       pageIndex: props.pageIndex ?? 0,
@@ -192,5 +194,6 @@ export function DataGrid<T extends object>(
   return createElement('div', {
     ref: hostRef,
     className: 'simpleui-react-grid',
+    style: { height: '100%' },
   });
 }

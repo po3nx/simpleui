@@ -34,6 +34,7 @@ export interface VanillaDataGridOptions {
   readonly onPageChange?:
     ((state: { pageIndex: number; pageSize: number }) => void) | undefined;
   readonly onSelectionChange?: ((keys: readonly Key[]) => void) | undefined;
+  readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
 }
 
 export interface VanillaDataGrid {
@@ -93,6 +94,7 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       container,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      ...(options.viewOptions ?? {}),
       ...(options.rowHeight !== undefined
         ? { rowHeight: options.rowHeight }
         : {}),

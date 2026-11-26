@@ -51,6 +51,7 @@ describe('search panel — struktur', () => {
 
     expect(grid.searchPanel).toBeDefined();
     expect(grid.searchPanel?.element.getAttribute('role')).toBe('search');
+    expect(grid.host.querySelector('.sui-grid__search')).not.toBeNull();
     expect(input().getAttribute('aria-label')).toBe('Cari data');
     expect(input().placeholder).toBe('Cari…');
     expect(clear().hidden).toBe(true);

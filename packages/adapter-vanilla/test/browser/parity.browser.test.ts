@@ -1,3 +1,4 @@
+import '../../../datagrid/src/styles/grid.css';
 import {
   describeGridParity,
   type GridHarness,
