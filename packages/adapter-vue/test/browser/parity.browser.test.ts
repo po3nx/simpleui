@@ -1,3 +1,4 @@
+import '../../../datagrid/src/styles/grid.css';
 import { createApp, defineComponent, h, nextTick, reactive } from 'vue';
 import {
   describeGridParity,
@@ -20,6 +21,7 @@ function toProps(options: ParityOptions) {
     onSortChange: options.onSortChange,
     onSelectionChange: options.onSelectionChange,
     onPageChange: options.onPageChange,
+    viewOptions: options.viewOptions,
   };
 }
 

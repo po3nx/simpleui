@@ -1,3 +1,4 @@
+import '../../../datagrid/src/styles/grid.css';
 import { act, createElement, StrictMode, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import {

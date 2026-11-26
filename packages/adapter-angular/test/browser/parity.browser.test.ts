@@ -1,3 +1,4 @@
+import '../../../datagrid/src/styles/grid.css';
 import '@angular/compiler';
 import {
   ApplicationRef,
@@ -24,6 +25,7 @@ function inputs(options: ParityOptions): Record<string, unknown> {
     pageSize: options.pageSize,
     totalCount: options.totalCount,
     selectionMode: options.selectionMode,
+    viewOptions: options.viewOptions,
   };
 }
 

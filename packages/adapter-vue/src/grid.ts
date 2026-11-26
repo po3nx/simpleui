@@ -43,6 +43,7 @@ export interface VueDataGridProps {
   readonly sortBy?: readonly SortDescriptor[];
   readonly selectionMode?: 'none' | 'single' | 'multiple';
   readonly selectedKeys?: readonly Key[];
+  readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
 }
 
 function keyResolver(
@@ -144,6 +145,7 @@ class VueGridController {
       container: this.#host,
       columns: this.#columns,
       rowCount: this.#rows.length,
+      ...(props.viewOptions ?? {}),
       ...(props.rowHeight !== undefined ? { rowHeight: props.rowHeight } : {}),
       ...(props.sortBy !== undefined ? { sortBy: props.sortBy } : {}),
       pageIndex: props.pageIndex ?? 0,
@@ -261,6 +263,10 @@ export const DataGrid = defineComponent({
       type: Array as PropType<readonly Key[]>,
       default: undefined,
     },
+    viewOptions: {
+      type: Object as PropType<Readonly<Record<string, unknown>>>,
+      default: undefined,
+    },
   },
   emits: [
     'update:sortBy',
@@ -302,6 +308,11 @@ export const DataGrid = defineComponent({
       () => controller?.update(props as VueDataGridProps),
     );
 
-    return () => h('div', { ref: host, class: 'simpleui-vue-grid' });
+    return () =>
+      h('div', {
+        ref: host,
+        class: 'simpleui-vue-grid',
+        style: { height: '100%' },
+      });
   },
 });

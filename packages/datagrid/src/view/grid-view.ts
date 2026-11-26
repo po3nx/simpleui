@@ -271,6 +271,7 @@ function createInteractive<T extends object>(
   const filterRow = createFilter(options);
   const summaryFooter = attachSummary(options, dom);
   const pager = attachPager(options, dom);
+  if (searchPanel) dom.host.prepend(searchPanel.element);
   const hidden = new Set(options.hiddenColumns ?? []);
   let refreshSelection = (): void => {};
   const selection = createSelectionState(options, () => refreshSelection());
