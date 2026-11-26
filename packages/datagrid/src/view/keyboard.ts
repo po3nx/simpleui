@@ -13,6 +13,7 @@ export interface GridKeyboardOptions {
   readonly focus: FocusModel;
   readonly getRowKeys: () => readonly Key[];
   readonly rowHeight?: number;
+  readonly liveElement?: HTMLElement | undefined;
 }
 
 const DEFAULT_ROW_HEIGHT = 40;
@@ -98,6 +99,14 @@ class GridKeyboard {
     this.#setRoving(target);
     target.focus({ preventScroll: true });
     target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    const live =
+      this.#options.liveElement ??
+      this.#element.parentElement?.querySelector('.sui-grid__live');
+    if (live) {
+      const rowIndex =
+        target.closest('[role="row"]')?.getAttribute('aria-rowindex') ?? '?';
+      live.textContent = `Baris ${rowIndex}, kolom ${target.getAttribute('aria-colindex') ?? '?'}.`;
+    }
   }
 
   #focusHeader(columnId?: string): void {

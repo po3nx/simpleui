@@ -41,6 +41,7 @@ export interface GridViewOptions<T extends object> {
   readonly rowCount: number;
   readonly rowHeight?: number;
   readonly rtl?: boolean;
+  readonly label?: string;
   readonly footer?: boolean;
   readonly sortBy?: readonly SortDescriptor[];
   readonly filteredColumns?: readonly string[];
@@ -103,6 +104,8 @@ export interface GridView<T extends object> {
   readonly searchPanel: SearchPanel | undefined;
   readonly pager: Pager | undefined;
   readonly selectionColumn: ColumnState<T> | undefined;
+  isSelectedKey(key: Key): boolean;
+  subscribeSelection(listener: () => void): () => void;
   readonly columnChooser: ColumnChooser | undefined;
   readonly summaryFooter: SummaryFooter<T> | undefined;
   setStatus(kind: GridStatusKind | null, options?: GridStatusOptions): void;
@@ -196,6 +199,7 @@ interface Interactive<T extends object> {
   readonly pager: Pager | undefined;
   readonly header: HeaderController<T>;
   readonly selection: SelectionState<T> | undefined;
+  readonly isSelectedKey: (key: Key) => boolean;
   readonly withSelection: (
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
@@ -248,6 +252,18 @@ function mountGrid<T extends object>(
   header.render(columns);
 }
 
+function applyGridAria<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+): string {
+  const label = options.label ?? 'Data grid';
+  setAttributes(dom.element, { 'aria-label': label });
+  if (options.selectionMode === 'multiple') {
+    setAttributes(dom.element, { 'aria-multiselectable': 'true' });
+  }
+  return label;
+}
+
 function applyRowCount(dom: Skeleton, rowHeight: number, count: number): void {
   const next = Math.max(0, Math.floor(count));
   setAttributes(dom.element, { 'aria-rowcount': next });
@@ -255,12 +271,38 @@ function applyRowCount(dom: Skeleton, rowHeight: number, count: number): void {
 }
 
 function applyStatus(
+  element: HTMLElement,
   status: StatusView,
   kind: GridStatusKind | null,
   options?: GridStatusOptions,
 ): void {
+  if (kind === 'loading') setAttributes(element, { 'aria-busy': 'true' });
+  else element.removeAttribute('aria-busy');
   if (kind === null) status.hide();
   else status.show(kind, options);
+}
+
+function contextMenuFor<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+): ContextMenu | undefined {
+  return options.contextMenu ? attachContextMenu(dom.element) : undefined;
+}
+
+function createSelectionFor<T extends object>(
+  options: GridViewOptions<T>,
+  dom: Skeleton,
+  refresh: () => void,
+): SelectionState<T> | undefined {
+  return createSelectionState(
+    {
+      ...options,
+      announce: (message) => {
+        dom.liveElement.textContent = message;
+      },
+    },
+    refresh,
+  );
 }
 
 function createInteractive<T extends object>(
@@ -274,7 +316,7 @@ function createInteractive<T extends object>(
   if (searchPanel) dom.host.prepend(searchPanel.element);
   const hidden = new Set(options.hiddenColumns ?? []);
   let refreshSelection = (): void => {};
-  const selection = createSelectionState(options, () => refreshSelection());
+  const selection = createSelectionFor(options, dom, () => refreshSelection());
   const filterVisible = (
     columns: readonly ColumnState<T>[],
   ): readonly ColumnState<T>[] =>
@@ -292,14 +334,12 @@ function createInteractive<T extends object>(
     withSelection(options.columns),
   );
   refreshSelection = () => header.render(withSelection(options.columns));
-
   function setHidden(columnIds: readonly string[]): void {
     hidden.clear();
     columnIds.forEach((id) => hidden.add(id));
     options.onVisibilityChange?.([...hidden]);
     header.render(withSelection(options.columns));
   }
-
   const columnChooser = options.columnChooser
     ? createColumnChooser({
         getColumns: () => options.columns as readonly ColumnState<unknown>[],
@@ -308,9 +348,7 @@ function createInteractive<T extends object>(
       })
     : undefined;
   if (columnChooser) dom.host.prepend(columnChooser.element);
-  const contextMenu = options.contextMenu
-    ? attachContextMenu(dom.element)
-    : undefined;
+  const contextMenu = contextMenuFor(options, dom);
 
   return {
     searchPanel,
@@ -318,6 +356,7 @@ function createInteractive<T extends object>(
     pager,
     header,
     selection,
+    isSelectedKey: (key) => selection?.isSelected(key) ?? false,
     withSelection,
     columnChooser,
     contextMenu,
@@ -331,6 +370,7 @@ interface GridApiContext<T extends object> {
   readonly options: GridViewOptions<T>;
   readonly dom: Skeleton;
   readonly rowHeight: number;
+  readonly gridLabel: string;
   readonly header: HeaderController<T>;
   readonly filterRow: FilterRow | undefined;
   readonly searchPanel: SearchPanel | undefined;
@@ -338,6 +378,7 @@ interface GridApiContext<T extends object> {
   readonly status: StatusView;
   readonly summaryFooter: SummaryFooter<T> | undefined;
   readonly selection: SelectionState<T> | undefined;
+  readonly isSelectedKey: (key: Key) => boolean;
   readonly withSelection: (
     columns: readonly ColumnState<T>[],
   ) => readonly ColumnState<T>[];
@@ -361,7 +402,7 @@ function createGridApi<T extends object>(ctx: GridApiContext<T>): GridView<T> {
     setFilterValue: (filter) => ctx.filterRow?.setFilterValue(filter),
     setPaging: (state) => ctx.pager?.setState(state),
     setStatus: (kind, statusOptions) =>
-      applyStatus(ctx.status, kind, statusOptions),
+      applyStatus(ctx.dom.element, ctx.status, kind, statusOptions),
     setRowCount: (count) => applyRowCount(ctx.dom, ctx.rowHeight, count),
     setColumns: (next) => {
       ctx.header.render(ctx.withSelection(next));
@@ -372,6 +413,9 @@ function createGridApi<T extends object>(ctx: GridApiContext<T>): GridView<T> {
       }
     },
     selectionColumn: ctx.selection?.column,
+    isSelectedKey: ctx.isSelectedKey,
+    subscribeSelection: (listener) =>
+      ctx.selection?.subscribe(listener) ?? (() => {}),
     columnChooser: ctx.columnChooser,
     setSelection: (keys) => ctx.selection?.setKeys(keys),
     setHiddenColumns: (columnIds) => ctx.setHidden(columnIds),
@@ -417,7 +461,9 @@ export function createGridView<T extends object>(
     setHidden,
     filterVisible,
     summaryFooter,
+    isSelectedKey,
   } = createInteractive(options, dom);
+  const gridLabel = applyGridAria(options, dom);
   mountGrid(options, dom, header, withSelection(options.columns));
 
   const status = createStatus(options, dom.host);
@@ -439,5 +485,7 @@ export function createGridView<T extends object>(
     contextMenu,
     setHidden,
     onScroll,
+    isSelectedKey,
+    gridLabel,
   });
 }
