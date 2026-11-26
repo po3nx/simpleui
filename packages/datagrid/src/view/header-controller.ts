@@ -121,6 +121,7 @@ function mountHeaderTemplate(
 
 function createResizeAttacher<T extends object>(
   options: HeaderControllerOptions<T>,
+  onWidth: (columnId: string, width: number) => void,
 ): (handle: HTMLElement, column: HeaderColumnLike, width: number) => void {
   return (handle, column, width) =>
     attachColumnResize({
@@ -132,8 +133,12 @@ function createResizeAttacher<T extends object>(
         handle.setAttribute('aria-valuenow', String(next));
         previewColumnWidth(options.element, column.id, next);
         options.onColumnResizePreview?.(column.id, next);
+        onWidth(column.id, next);
       },
-      onCommit: (next) => options.onColumnResize?.(column.id, next),
+      onCommit: (next) => {
+        onWidth(column.id, next);
+        options.onColumnResize?.(column.id, next);
+      },
     });
 }
 
@@ -188,6 +193,7 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
   ) => void;
   readonly #reorder: NonNullable<HeaderRenderContext['reorder']>;
   readonly #headerFilter: HeaderFilter | undefined;
+  readonly #widths = new Map<string, number>();
   #sortBy: readonly SortDescriptor[];
   #filtered: Set<string>;
 
@@ -198,7 +204,9 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     this.#templates = new TemplateManager(
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
-    this.#resize = createResizeAttacher(options);
+    this.#resize = createResizeAttacher(options, (columnId, width) => {
+      this.#widths.set(columnId, width);
+    });
     this.#reorder = createReorderHandlers(options);
     this.#headerFilter =
       options.headerFilter === false
@@ -245,8 +253,19 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     this.#announce(sortLabel(next, this.#options.columns));
   }
 
+  #effectiveColumns(
+    columns: readonly ColumnState<T>[],
+  ): readonly ColumnState<T>[] {
+    if (this.#widths.size === 0) return columns;
+    return columns.map((column) => {
+      const width = this.#widths.get(column.id);
+      return width === undefined ? column : { ...column, width };
+    });
+  }
+
   render(columns: readonly ColumnState<T>[]): void {
-    const visible = getVisibleColumns(columns);
+    const effective = this.#effectiveColumns(columns);
+    const visible = getVisibleColumns(effective);
     const selectors = new Set(
       visible.map((column) => column.dataField ?? column.id),
     );
