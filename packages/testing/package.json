@@ -20,6 +20,10 @@
     "./adapter": {
       "types": "./dist/adapter.d.ts",
       "import": "./dist/adapter.js"
+    },
+    "./grid-parity": {
+      "types": "./dist/grid-parity.d.ts",
+      "import": "./dist/grid-parity.js"
     }
   },
   "main": "./dist/index.js",
