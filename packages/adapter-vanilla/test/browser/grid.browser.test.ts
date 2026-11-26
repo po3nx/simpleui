@@ -1,3 +1,4 @@
+import { createLeakTracker } from '@simpleui/testing';
 import { describe, expect, it, vi } from 'vitest';
 import '../../../datagrid/src/styles/grid.css';
 import {
@@ -187,5 +188,46 @@ describe('vanilla adapter — search callback', () => {
     expect(calls.at(-1)).toBe('ani');
     grid.destroy();
     host.remove();
+  });
+});
+
+describe('vanilla adapter — dispose 100x', () => {
+  it('tidak menyisakan DOM, listener global, atau timer', () => {
+    const tracker = createLeakTracker();
+    const baseline = tracker.snapshot();
+    for (let index = 0; index < 100; index += 1) {
+      const host = document.createElement('div');
+      host.style.width = '700px';
+      host.style.height = '320px';
+      document.body.append(host);
+      const grid = createDataGrid(host, {
+        columns: [{ dataField: 'name', caption: 'Nama' }],
+        rows: [{ id: 1, name: 'Ani' }],
+        keyExpr: 'id',
+        viewOptions: {
+          filterRow: true,
+          searchPanel: true,
+          headerFilter: true,
+          getUniqueValues: () => ['Ani'],
+          contextMenu: true,
+          columnChooser: true,
+        },
+      });
+      const input = host.querySelector<HTMLInputElement>(
+        '.sui-grid__search-input',
+      );
+      if (input) {
+        input.value = 'Ani';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      grid.destroy();
+      expect(host.querySelector('.sui-grid')).toBeNull();
+      host.remove();
+    }
+    const after = tracker.snapshot();
+    expect(after.documentListeners).toBe(baseline.documentListeners);
+    expect(after.windowListeners).toBe(baseline.windowListeners);
+    expect(after.timers).toBe(baseline.timers);
+    tracker.dispose();
   });
 });

@@ -1,4 +1,5 @@
 import { createApp, defineComponent, h, nextTick, ref, type Slots } from 'vue';
+import { createLeakTracker } from '@simpleui/testing';
 import { describe, expect, it } from 'vitest';
 import '../../../datagrid/src/styles/grid.css';
 import { DataGrid } from '../../src/index.js';
@@ -225,5 +226,44 @@ describe('Vue adapter — v-model', () => {
     ).toBe(true);
 
     await harness.unmount();
+  });
+});
+
+describe('Vue adapter — dispose 100x', () => {
+  it('tidak menyisakan DOM, listener global, atau timer', async () => {
+    const tracker = createLeakTracker();
+    const baseline = tracker.snapshot();
+    for (let index = 0; index < 100; index += 1) {
+      const harness = mount(() =>
+        h(DataGrid, {
+          columns: COLUMNS,
+          rows: ROWS,
+          keyExpr: 'id',
+          viewOptions: {
+            searchPanel: true,
+            filterRow: true,
+            headerFilter: true,
+            getUniqueValues: () => ['Ani', 'Budi'],
+            contextMenu: true,
+            columnChooser: true,
+          },
+        }),
+      );
+      await nextTick();
+      const input = harness.container.querySelector<HTMLInputElement>(
+        '.sui-grid__search-input',
+      );
+      if (input) {
+        input.value = 'Ani';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      await harness.unmount();
+      expect(harness.container.childElementCount).toBe(0);
+    }
+    const after = tracker.snapshot();
+    expect(after.documentListeners).toBe(baseline.documentListeners);
+    expect(after.windowListeners).toBe(baseline.windowListeners);
+    expect(after.timers).toBe(baseline.timers);
+    tracker.dispose();
   });
 });
