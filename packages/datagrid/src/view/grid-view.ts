@@ -310,7 +310,6 @@ function createInteractive<T extends object>(
   dom: Skeleton,
 ): Interactive<T> {
   const searchPanel = createSearch(options);
-  const filterRow = createFilter(options);
   const summaryFooter = attachSummary(options, dom);
   const pager = attachPager(options, dom);
   if (searchPanel) dom.host.prepend(searchPanel.element);
@@ -327,6 +326,7 @@ function createInteractive<T extends object>(
     const visible = filterVisible(columns);
     return selection ? [selection.column, ...visible] : visible;
   };
+  const filterRow = createFilter(options, withSelection(options.columns));
   const header = createHeader(
     options,
     dom,

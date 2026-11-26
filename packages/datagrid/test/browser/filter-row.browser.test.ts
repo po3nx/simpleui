@@ -50,9 +50,11 @@ describe('filter row — struktur', () => {
 
     expect(row()).not.toBeNull();
     expect(row().getAttribute('role')).toBe('row');
-    expect(row().querySelectorAll('.sui-grid__filter-cell')).toHaveLength(3);
+    expect(row().querySelectorAll('.sui-grid__filter-cell')).toHaveLength(4);
     expect(row().querySelector('[data-column-id="secret"]')).toBeNull();
-    expect(row().querySelector('[data-column-id="id"]')).toBeNull();
+    const idCell = row().querySelector('[data-column-id="id"]');
+    expect(idCell?.getAttribute('aria-hidden')).toBe('true');
+    expect(idCell?.querySelector('input')).toBeNull();
     expect(inputFor('name').getAttribute('aria-label')).toBe('Filter Nama');
 
     grid.dispose();
@@ -149,6 +151,68 @@ describe('filter row — controlled', () => {
 
     expect(inputFor('total').value).toBe('10');
     expect(operatorFor('total').value).toBe('lte');
+
+    grid.dispose();
+    container.remove();
+  });
+});
+
+describe('filter row — layout', () => {
+  it('bertumpuk di bawah header dan sejajar dengan kolom (termasuk selection)', () => {
+    const container = document.createElement('div');
+    container.style.width = '800px';
+    container.style.height = '300px';
+    document.body.append(container);
+    const grid = createGridView<Row>({
+      container,
+      columns: COLUMNS,
+      rowCount: 2,
+      filterRow: true,
+      selectionMode: 'multiple',
+      rowKey: (row) => row.id,
+      getVisibleKeys: () => [1, 2],
+    });
+
+    const headerRow = grid.headerElement.querySelector<HTMLElement>(
+      '.sui-grid__row--header',
+    );
+    const filterRowElement = grid.filterRow?.element as HTMLElement;
+    expect(headerRow).not.toBeNull();
+
+    const headerRect = headerRow?.getBoundingClientRect();
+    const filterRect = filterRowElement.getBoundingClientRect();
+    expect(filterRect.top).toBeGreaterThanOrEqual(
+      (headerRect?.bottom ?? 0) - 1,
+    );
+
+    const cells = [
+      ...filterRowElement.querySelectorAll<HTMLElement>(
+        '.sui-grid__filter-cell',
+      ),
+    ];
+    expect(cells[0]?.getAttribute('data-column-id')).toBe(
+      '__simpleui_selection',
+    );
+    expect(cells[0]?.getAttribute('aria-hidden')).toBe('true');
+    expect(cells[0]?.querySelector('input')).toBeNull();
+
+    const headers = [
+      ...grid.headerElement.querySelectorAll<HTMLElement>(
+        '[role="columnheader"]',
+      ),
+    ];
+    const nameHeader = headers.find(
+      (cell) => cell.getAttribute('data-column-id') === 'name',
+    );
+    const nameFilter = cells.find(
+      (cell) => cell.getAttribute('data-column-id') === 'name',
+    );
+    expect(
+      Math.abs(
+        (nameFilter?.getBoundingClientRect().left ?? 0) -
+          (nameHeader?.getBoundingClientRect().left ?? 0),
+      ),
+    ).toBeLessThan(1);
 
     grid.dispose();
     container.remove();
