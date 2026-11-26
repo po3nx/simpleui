@@ -175,6 +175,7 @@ export interface DataGridStateSnapshot {
   readonly columnOrder?: readonly string[];
   readonly hiddenColumns?: readonly string[];
   readonly groupBy?: readonly string[];
+  readonly expandedGroups?: readonly string[];
 }
 
 export interface ContentReadyEvent {

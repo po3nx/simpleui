@@ -62,7 +62,7 @@ export interface GridStateStore {
   dispose(): void;
 }
 
-const SNAPSHOT_VERSION = 1;
+const SNAPSHOT_VERSION = 2;
 
 const TRANSITIONS: Record<DataStatus, readonly DataStatus[]> = {
   idle: ['loading'],
@@ -241,6 +241,7 @@ function snapshotApi(
         columnOrder: state.columnOrder,
         hiddenColumns: state.hiddenColumns,
         groupBy: state.groupBy,
+        expandedGroups: state.expandedGroups,
       };
     },
     restore(snapshot) {
@@ -259,6 +260,7 @@ function snapshotApi(
         columnOrder: dedupeStrings(snapshot.columnOrder ?? []),
         hiddenColumns: dedupeStrings(snapshot.hiddenColumns ?? []),
         groupBy: dedupeStrings(snapshot.groupBy ?? []),
+        expandedGroups: dedupeStrings(snapshot.expandedGroups ?? []),
         dataStatus: 'idle',
       });
     },

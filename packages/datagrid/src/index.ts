@@ -130,6 +130,17 @@ export {
   type StatePersistenceOptions,
 } from './data/persistence.js';
 export {
+  createLocalStorageAdapter,
+  createMemoryStorage,
+  createSessionStorageAdapter,
+} from './data/persistence-storage.js';
+export {
+  createPersistenceControls,
+  type PersistenceControls,
+  type PersistenceControlsLabels,
+  type PersistenceControlsOptions,
+} from './view/persistence-controls.js';
+export {
   computeGroupSummary,
   computeSummary,
   formatSummary,
