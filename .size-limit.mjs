@@ -73,7 +73,7 @@ export default [
     limit: '5 kB',
     gzip: true,
 
-    ignore: ['vue'],
+    ignore: ['vue', '@simpleui/datagrid'],
   },
   {
     name: '@simpleui/angular',
