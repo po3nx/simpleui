@@ -101,6 +101,12 @@ export {
   type GridViewOptions,
 } from './view/grid-view.js';
 export {
+  createEditingModel,
+  type EditSaveStrategy,
+  type EditingModel,
+  type EditingModelOptions,
+} from './data/editing-model.js';
+export {
   createDataController,
   type DataController,
   type DataControllerOptions,
