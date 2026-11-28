@@ -337,3 +337,10 @@ export {
   type LookupItem,
   type LookupResolver,
 } from './data/lookup.js';
+
+export {
+  type DetailContext,
+  type DetailState,
+  type MasterDetailOptions,
+  type DisplayEntry,
+} from './view/detail-view.js';

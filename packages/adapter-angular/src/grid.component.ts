@@ -25,6 +25,7 @@ import {
   type RowRenderer,
   type EditingUiOptions,
   type SummaryItem,
+  type MasterDetailOptions,
 } from '@simpleui/datagrid';
 
 /**
@@ -62,6 +63,7 @@ interface GridInputs {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<RowRecord> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly masterDetail?: MasterDetailOptions<RowRecord> | undefined;
   readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;
   readonly onGroupToggle?:
@@ -277,6 +279,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() editing: EditingUiOptions<RowRecord> | undefined;
   @Input() groupBy: readonly string[] | undefined;
   @Input() groupSummaryItems: readonly SummaryItem<RowRecord>[] | undefined;
+  @Input() masterDetail: MasterDetailOptions<RowRecord> | undefined;
   @Input() expandedGroups: readonly string[] | undefined;
   @Input() onGroupToggle:
     ((groupKey: string, expanded: boolean) => void) | undefined;
@@ -316,6 +319,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       editing: this.editing,
       groupBy: this.groupBy,
       groupSummaryItems: this.groupSummaryItems,
+      masterDetail: this.masterDetail,
       expandedGroups: this.expandedGroups,
       onGroupToggle: this.onGroupToggle,
       locale: this.locale,

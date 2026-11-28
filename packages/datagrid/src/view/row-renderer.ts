@@ -1,3 +1,4 @@
+/* eslint-disable max-lines -- renderer virtualisasi + grouping + detail; helper dipisah ke modul. */
 import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
@@ -12,8 +13,16 @@ import {
 import { keyToDomId } from '../model/key.js';
 import { attachGridKeyboard } from './keyboard.js';
 import { TemplateManager } from './template-manager.js';
-import { buildGroupEntries, type GroupDisplayEntry } from './group-view.js';
+import { buildGroupEntries } from './group-view.js';
 import { paintGroupRow } from './group-row.js';
+import {
+  expandDetails,
+  paintDetailRow,
+  type DetailState,
+  type DisplayEntry,
+  type MasterDetailOptions,
+} from './detail-view.js';
+import { toggleDetail as toggleDetailState } from './detail-state.js';
 import type { GroupOptions } from '../data/grouping.js';
 import type { SummaryItem } from '../api/types.js';
 import {
@@ -52,6 +61,8 @@ export interface RowRendererOptions<T extends object> {
   readonly onGroupToggle?:
     ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly groupSummaryItems?: readonly SummaryItem<T>[] | undefined;
+  readonly masterDetail?: MasterDetailOptions<T> | undefined;
+  readonly onDetailToggle?: ((key: Key, expanded: boolean) => void) | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
     ((listener: () => void) => () => void) | undefined;
@@ -63,6 +74,8 @@ export interface RowRenderer<T extends object> {
   getRenderedCount(): number;
   setLocale(locale: string | undefined): void;
   setGrouping(groupBy: readonly string[], expanded: Iterable<string>): void;
+  setDetailExpanded(keys: Iterable<Key>): void;
+  toggleDetail(key: Key): void;
   toggleGroup(groupKey: string): void;
   dispose(): void;
 }
@@ -121,7 +134,9 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   readonly #lookupState = createLookupCellState();
   #groupBy: readonly string[];
   readonly #expanded: Set<string>;
-  #entries: readonly GroupDisplayEntry<T>[];
+  #entries: readonly DisplayEntry<T>[];
+  readonly #detailExpanded = new Set<string>();
+  readonly #detailStates = new Map<Key, DetailState>();
 
   #layoutSignature = '';
   #disposed = false;
@@ -333,7 +348,21 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
         rowElement.hidden = true;
         return;
       }
-      if (entry.type === 'group') {
+      if (entry.type === 'detail') {
+        const state = this.#detailStates.get(entry.key);
+        if (state) {
+          paintDetailRow({
+            element: rowElement,
+            row: entry.row,
+            key: entry.key,
+            index: start + poolIndex,
+            totalWidth: layout.totalWidth,
+            columns: this.#columns,
+            state,
+            options: this.#options.masterDetail ?? {},
+          });
+        }
+      } else if (entry.type === 'group') {
         paintGroupRow({
           rowElement,
           entry,
@@ -355,14 +384,20 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     });
   }
 
-  #buildEntries(): readonly GroupDisplayEntry<T>[] {
-    return buildGroupEntries(this.#rows, {
+  #buildEntries(): readonly DisplayEntry<T>[] {
+    const groups = buildGroupEntries(this.#rows, {
       groupBy: this.#groupBy,
       expandedGroups: this.#expanded,
       grouping: this.#options.grouping,
       columns: this.#columns,
       keyOf: this.#options.keyOf,
     });
+    return expandDetails(
+      groups,
+      this.#detailExpanded,
+      this.#detailStates,
+      this.#options.keyOf,
+    );
   }
 
   setGrouping(groupBy: readonly string[], expanded: Iterable<string>): void {
@@ -383,6 +418,33 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#entries = this.#buildEntries();
     this.#updateSpacer();
     this.#render();
+  }
+
+  setDetailExpanded(keys: Iterable<Key>): void {
+    this.#detailExpanded.clear();
+    for (const key of keys) this.#detailExpanded.add(String(key));
+    this.#entries = this.#buildEntries();
+    this.#updateSpacer();
+    this.#render();
+  }
+
+  toggleDetail(key: Key): void {
+    toggleDetailState(
+      {
+        rows: this.#rows,
+        options: this.#options.masterDetail,
+        keyOf: this.#options.keyOf,
+        expanded: this.#detailExpanded,
+        states: this.#detailStates,
+        rowsChanged: () => {
+          this.#entries = this.#buildEntries();
+          this.#updateSpacer();
+          this.#render();
+        },
+      },
+      key,
+    );
+    this.#options.onDetailToggle?.(key, this.#detailExpanded.has(String(key)));
   }
 
   #paintRow(
@@ -456,6 +518,39 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
         placeholder: this.#options.emptyText,
       });
     if (cell.textContent !== text) cell.textContent = text;
+    this.#ensureDetailButton(cell, rowKey, entry.column);
+  }
+
+  #ensureDetailButton(
+    cell: HTMLElement,
+    rowKey: Key,
+    column: ColumnState<T>,
+  ): void {
+    if (!this.#options.masterDetail?.enabled) return;
+    const firstData = this.#columns.find(
+      (entry) => entry.id !== '__simpleui_selection',
+    );
+    if (!firstData || firstData.id !== column.id) return;
+    let button = cell.querySelector<HTMLButtonElement>(
+      '.sui-grid__detail-toggle',
+    );
+    if (!button) {
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sui-grid__detail-toggle';
+      cell.prepend(button);
+    }
+    const expanded = this.#detailExpanded.has(String(rowKey));
+    button.textContent = expanded ? '▾' : '▸';
+    button.setAttribute('aria-expanded', String(expanded));
+    button.setAttribute(
+      'aria-label',
+      expanded ? 'Ciutkan detail' : 'Bentangkan detail',
+    );
+    button.onclick = (event) => {
+      event.stopPropagation();
+      this.toggleDetail(rowKey);
+    };
   }
 
   #ensurePool(size: number): void {
