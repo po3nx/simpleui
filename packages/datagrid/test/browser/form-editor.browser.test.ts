@@ -83,7 +83,7 @@ describe('form editor — dialog dan fokus', () => {
 });
 
 describe('form editor — validasi dan simpan', () => {
-  it('menolak simpan dan menandai field invalid', () => {
+  it('menolak simpan dan menandai field invalid', async () => {
     const onSave = vi.fn();
     const { editor } = openForm({
       onSave,
@@ -97,6 +97,7 @@ describe('form editor — validasi dan simpan', () => {
     editor.dialog
       .querySelector<HTMLButtonElement>('.sui-grid__form-save')
       ?.click();
+    await expect.poll(() => name.getAttribute('aria-invalid')).toBe('true');
 
     expect(onSave).not.toHaveBeenCalled();
     expect(name.getAttribute('aria-invalid')).toBe('true');
@@ -108,7 +109,7 @@ describe('form editor — validasi dan simpan', () => {
     editor.dispose();
   });
 
-  it('menyimpan nilai bertipe dan menutup tanpa onCancel', () => {
+  it('menyimpan nilai bertipe dan menutup tanpa onCancel', async () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
     const { editor, trigger } = openForm({ onSave, onCancel });
@@ -128,6 +129,7 @@ describe('form editor — validasi dan simpan', () => {
     editor.dialog
       .querySelector<HTMLButtonElement>('.sui-grid__form-save')
       ?.click();
+    await expect.poll(() => editor.isOpen()).toBe(false);
 
     expect(onSave).toHaveBeenCalledWith(
       { name: 'Budi', total: 42, active: false },
@@ -136,6 +138,34 @@ describe('form editor — validasi dan simpan', () => {
     expect(onCancel).not.toHaveBeenCalled();
     expect(editor.isOpen()).toBe(false);
     expect(document.activeElement).toBe(trigger);
+    editor.dispose();
+  });
+
+  it('validasi async menandai aria-busy dan menonaktifkan simpan', async () => {
+    let resolveValidation:
+      ((errors: Record<string, string>) => void) | undefined;
+    const { editor } = openForm({
+      validate: () =>
+        new Promise((resolve) => {
+          resolveValidation = resolve;
+        }),
+    });
+    const save = editor.dialog.querySelector<HTMLButtonElement>(
+      '.sui-grid__form-save',
+    );
+    save?.click();
+
+    expect(editor.dialog.getAttribute('aria-busy')).toBe('true');
+    expect(save?.disabled).toBe(true);
+    resolveValidation?.({ name: 'Sedang diperiksa.' });
+    await expect
+      .poll(() => editor.dialog.getAttribute('aria-busy'))
+      .toBe('false');
+    expect(
+      editor.dialog.querySelector('.sui-grid__form-error')?.textContent,
+    ).toContain('Sedang diperiksa');
+    expect(save?.disabled).toBe(false);
+    editor.close();
     editor.dispose();
   });
 

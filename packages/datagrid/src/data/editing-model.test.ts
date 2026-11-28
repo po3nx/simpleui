@@ -208,3 +208,31 @@ describe('editing model — batch dirty tracking', () => {
     expect(model.getChanges().get(1)).toEqual({ name: 'Tetap' });
   });
 });
+
+describe('editing model — validasi', () => {
+  it('memblokir simpan dan menyimpan error per baris', async () => {
+    const onValidationFailed = vi.fn();
+    const onRowUpdated = vi.fn();
+    const { model } = setup({
+      mode: 'batch',
+      onValidationFailed,
+      onRowUpdated,
+      validate: async (values) =>
+        values.name === 'Salah' ? { name: 'Nama tidak valid.' } : {},
+    });
+    model.stage(1, { name: 'Salah' });
+    model.stage(2, { name: 'Benar' });
+
+    await expect(model.save()).resolves.toBe(false);
+    expect(onRowUpdated).not.toHaveBeenCalled();
+    expect(onValidationFailed).toHaveBeenCalledTimes(1);
+    expect(model.getValidationErrors().get(1)).toEqual({
+      name: 'Nama tidak valid.',
+    });
+    expect(model.isDirty()).toBe(true);
+
+    model.stage(1, { name: 'Benar' });
+    expect(model.getValidationErrors().has(1)).toBe(false);
+    await expect(model.save()).resolves.toBe(true);
+  });
+});
