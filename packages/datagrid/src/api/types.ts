@@ -45,6 +45,16 @@ export interface ColumnFormat {
   readonly dateStyle?: 'short' | 'medium' | 'long';
 }
 
+export interface LookupOptions {
+  readonly store: DataStore<Record<string, unknown>>;
+  readonly valueExpr: string;
+  readonly textExpr: string;
+  readonly searchEnabled?: boolean;
+  readonly debounceMs?: number;
+  readonly minSearchLength?: number;
+  readonly pageSize?: number;
+}
+
 export interface ColumnOptions<T = unknown> {
   readonly id?: string;
   readonly dataField?:
@@ -66,6 +76,7 @@ export interface ColumnOptions<T = unknown> {
   readonly fixed?: 'start' | 'end' | boolean;
   readonly columns?: readonly ColumnOptions<T>[];
   readonly calculateCellValue?: (row: T) => unknown;
+  readonly lookup?: LookupOptions;
   readonly cellTemplate?: TemplateRenderer;
   readonly headerCellTemplate?: TemplateRenderer;
 }

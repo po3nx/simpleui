@@ -2,6 +2,7 @@ import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { cellValueFor, formatRowCell } from './cell-renderer.js';
+import { createLookupResolver, type LookupResolver } from '../data/lookup.js';
 import type { FocusModel } from '../model/focus.js';
 import {
   createCellEditor,
@@ -105,6 +106,8 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #columns: readonly ColumnState<T>[];
   #locale: string | undefined;
   readonly #widths = new Map<string, number>();
+  readonly #lookups = new Map<string, LookupResolver>();
+  readonly #lookupRequests = new Set<string>();
   #layoutSignature = '';
   #disposed = false;
   readonly #templates: TemplateManager;
@@ -338,32 +341,75 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
 
     entries.forEach((entry, cellIndex) => {
       const cell = rowElement.children[cellIndex] as HTMLElement | undefined;
-      if (!cell) return;
-      cell.id = `${keyToDomId(rowKey)}-${encodeURIComponent(entry.column.id)}`;
-      if (!cell.hasAttribute('tabindex')) cell.tabIndex = -1;
+      if (cell) this.#paintCell({ row, rowKey, index, entry, cell });
+    });
+  }
 
-      const template = entry.column.cellTemplate;
-      if (template) {
-        this.#templates.mount(cell, template, {
-          data: row,
-          row,
-          column: {
-            field: entry.column.dataField ?? entry.column.id,
-            caption: entry.column.caption,
-          },
-          index,
-          value: cellValueFor(row, entry.column),
-        });
-        return;
-      }
+  #paintCell(context: {
+    readonly row: T;
+    readonly rowKey: Key;
+    readonly index: number;
+    readonly entry: ColumnLayoutEntry<T>;
+    readonly cell: HTMLElement;
+  }): void {
+    const { row, rowKey, index, entry, cell } = context;
+    cell.id = `${keyToDomId(rowKey)}-${encodeURIComponent(entry.column.id)}`;
+    if (!cell.hasAttribute('tabindex')) cell.tabIndex = -1;
 
-      this.#templates.unmount(cell);
-      const text = formatRowCell(row, entry.column, {
+    const template = entry.column.cellTemplate;
+    if (template) {
+      this.#templates.mount(cell, template, {
+        data: row,
+        row,
+        column: {
+          field: entry.column.dataField ?? entry.column.id,
+          caption: entry.column.caption,
+        },
+        index,
+        value: cellValueFor(row, entry.column),
+      });
+      return;
+    }
+
+    this.#templates.unmount(cell);
+    const value = cellValueFor(row, entry.column);
+    const label = entry.column.lookup
+      ? this.#lookupFor(entry.column).getLabel(value)
+      : undefined;
+    const text =
+      label ??
+      formatRowCell(row, entry.column, {
         locale: this.#locale,
         placeholder: this.#options.emptyText,
       });
-      if (cell.textContent !== text) cell.textContent = text;
-    });
+    if (cell.textContent !== text) cell.textContent = text;
+    if (
+      entry.column.lookup &&
+      label === undefined &&
+      value !== null &&
+      value !== undefined
+    ) {
+      this.#requestLookup(entry.column, value);
+    }
+  }
+
+  #requestLookup(column: ColumnState<T>, value: unknown): void {
+    const requestKey = `${column.id}:${String(value)}`;
+    if (this.#lookupRequests.has(requestKey)) return;
+    this.#lookupRequests.add(requestKey);
+    void this.#lookupFor(column)
+      .ensure([value])
+      .then(() => this.#render());
+  }
+
+  #lookupFor(column: ColumnState<T>): LookupResolver {
+    const existing = this.#lookups.get(column.id);
+    if (existing) return existing;
+    const lookup = column.lookup;
+    if (!lookup) throw new Error('lookup tidak tersedia.');
+    const resolver = createLookupResolver(lookup);
+    this.#lookups.set(column.id, resolver);
+    return resolver;
   }
 
   #ensurePool(size: number): void {

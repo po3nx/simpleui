@@ -249,6 +249,7 @@ export type {
   ColumnDataType,
   ColumnFormat,
   ColumnOptions,
+  LookupOptions,
   ContentReadyEvent,
   DataGridApi,
   DataGridErrorCode,
@@ -330,3 +331,9 @@ export {
   type ValidationErrorsByKey,
   type Validator,
 } from './data/validation.js';
+
+export {
+  createLookupResolver,
+  type LookupItem,
+  type LookupResolver,
+} from './data/lookup.js';
