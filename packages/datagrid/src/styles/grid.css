@@ -875,3 +875,16 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__row--band {
+  background: var(--sui-color-bg-subtle);
+  border-block-end: var(--sui-border-width) solid var(--sui-color-border-subtle);
+}
+
+.sui-grid__header-cell--band {
+  justify-content: center;
+  font-size: var(--sui-font-size-xs);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--sui-color-text-secondary);
+}
