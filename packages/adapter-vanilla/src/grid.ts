@@ -10,6 +10,7 @@ import {
   type GridView,
   type RowRenderer,
   type EditingUiOptions,
+  type SummaryItem,
 } from '@simpleui/datagrid';
 
 /**
@@ -40,6 +41,7 @@ export interface VanillaDataGridOptions {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;
   readonly onGroupToggle?:
     ((groupKey: string, expanded: boolean) => void) | undefined;

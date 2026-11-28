@@ -15,6 +15,7 @@ import { TemplateManager } from './template-manager.js';
 import { buildGroupEntries, type GroupDisplayEntry } from './group-view.js';
 import { paintGroupRow } from './group-row.js';
 import type { GroupOptions } from '../data/grouping.js';
+import type { SummaryItem } from '../api/types.js';
 import {
   computeColumnLayout,
   type ColumnLayoutEntry,
@@ -50,6 +51,7 @@ export interface RowRendererOptions<T extends object> {
   readonly grouping?: GroupOptions | undefined;
   readonly onGroupToggle?:
     ((groupKey: string, expanded: boolean) => void) | undefined;
+  readonly groupSummaryItems?: readonly SummaryItem<T>[] | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
     ((listener: () => void) => () => void) | undefined;
@@ -339,6 +341,8 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
           totalWidth: layout.totalWidth,
           columns: this.#columns,
           onToggle: (key) => this.toggleGroup(key),
+          summaryItems: this.#options.groupSummaryItems,
+          locale: this.#locale,
         });
       } else {
         this.#paintRow(
