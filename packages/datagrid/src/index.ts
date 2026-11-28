@@ -314,3 +314,19 @@ export {
   type BatchActionsLabels,
   type BatchActionsOptions,
 } from './view/batch-actions.js';
+
+export {
+  createValidationEngine,
+  email,
+  minLength,
+  numberRange,
+  pattern,
+  required,
+  runValidators,
+  type ValidationContext,
+  type ValidationEngine,
+  type ValidationEngineOptions,
+  type ValidationErrors,
+  type ValidationErrorsByKey,
+  type Validator,
+} from './data/validation.js';

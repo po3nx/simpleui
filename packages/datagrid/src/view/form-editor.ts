@@ -1,6 +1,7 @@
 import type { Key } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
+import type { ValidationErrors } from '../data/validation.js';
 
 /**
  * Popup/form editor DataGrid (DG-062): dialog modal, field dari kolom,
@@ -22,8 +23,8 @@ export interface FormEditorOptions<T extends object> {
   readonly validate?: (
     values: Partial<T>,
     row: T,
-  ) => Readonly<Record<string, string>> | undefined;
-  readonly onSave?: (values: Partial<T>, row: T) => unknown;
+  ) => ValidationErrors | Promise<ValidationErrors>;
+  readonly onSave?: (values: Partial<T>, row: T) => unknown | Promise<unknown>;
   readonly onCancel?: (row: T) => void;
   readonly onClose?: () => void;
   readonly returnFocus?: HTMLElement | null;
@@ -86,7 +87,9 @@ class FormEditorImpl<T extends object> implements FormEditor {
   readonly #fields: Field<T>[] = [];
   readonly #title: HTMLElement;
   readonly #errorSummary: HTMLElement;
+  #saveButton: HTMLButtonElement | null = null;
   #open = false;
+  #busy = false;
 
   constructor(options: FormEditorOptions<T>) {
     this.#options = options;
@@ -165,19 +168,38 @@ class FormEditorImpl<T extends object> implements FormEditor {
     save.type = 'submit';
     save.className = 'sui-grid__form-save';
     save.textContent = this.#options.labels?.save ?? 'Simpan';
+    this.#saveButton = save;
     actions.append(cancel, save);
     return actions;
   }
 
-  readonly #onSubmit = (event: SubmitEvent): void => {
+  readonly #onSubmit = async (event: SubmitEvent): Promise<void> => {
     event.preventDefault();
+    if (this.#busy) return;
     const values = collect(this.#fields);
-    const errors = this.#options.validate?.(values, this.#options.row) ?? {};
-    this.#showErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-    if (this.#options.onSave?.(values, this.#options.row) === false) return;
-    this.#close(false);
+    this.#setBusy(true);
+    try {
+      const errors =
+        (await this.#options.validate?.(values, this.#options.row)) ?? {};
+      this.#showErrors(errors);
+      if (Object.keys(errors).length > 0) return;
+      if ((await this.#options.onSave?.(values, this.#options.row)) === false) {
+        return;
+      }
+      this.#close(false);
+    } catch {
+      this.#errorSummary.hidden = false;
+      this.#errorSummary.textContent = 'Gagal menyimpan perubahan.';
+    } finally {
+      this.#setBusy(false);
+    }
   };
+
+  #setBusy(busy: boolean): void {
+    this.#busy = busy;
+    this.dialog.setAttribute('aria-busy', String(busy));
+    if (this.#saveButton) this.#saveButton.disabled = busy;
+  }
 
   readonly #onKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {

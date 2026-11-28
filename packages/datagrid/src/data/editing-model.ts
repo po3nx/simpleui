@@ -8,6 +8,7 @@ import type {
   RowUpdatingEvent,
   SaveFailedEvent,
 } from '../api/types.js';
+import type { ValidationErrors, ValidationErrorsByKey } from './validation.js';
 
 /**
  * Model editing DataGrid (DG-060): draft per baris, transaksi batch, strategi
@@ -34,6 +35,11 @@ export interface EditingModelOptions<T extends object> {
   readonly onRowUpdated?: (event: RowUpdatedEvent<T>) => void;
   readonly onSaveFailed?: (event: SaveFailedEvent) => void;
   readonly onDirtyChange?: (dirtyKeys: readonly Key[]) => void;
+  readonly validate?: (
+    values: Partial<T>,
+    row: T,
+  ) => ValidationErrors | Promise<ValidationErrors>;
+  readonly onValidationFailed?: (errors: ValidationErrorsByKey) => void;
 }
 
 export interface EditingModel<T extends object> {
@@ -48,6 +54,7 @@ export interface EditingModel<T extends object> {
   getChanges(): ReadonlyMap<Key, Partial<T>>;
   getDirtyKeys(): readonly Key[];
   getDirtyCells(): readonly string[];
+  getValidationErrors(): ValidationErrorsByKey;
   save(): Promise<boolean>;
   add(values: Partial<T>): Promise<T | undefined>;
   remove(key: Key): Promise<boolean>;
@@ -96,6 +103,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
   #draft: Partial<T> | null = null;
   readonly #pending = new Map<Key, Partial<T>>();
   readonly #listeners = new Set<(dirtyKeys: readonly Key[]) => void>();
+  readonly #validation = new Map<Key, ValidationErrors>();
   #disposed = false;
 
   constructor(options: EditingModelOptions<T>) {
@@ -132,6 +140,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#draft = { ...this.#draft, ...values };
     const existing = this.#pending.get(this.#editingKey) ?? {};
     this.#pending.set(this.#editingKey, { ...existing, ...values });
+    this.#validation.delete(this.#editingKey);
     this.#notifyDirty();
   }
 
@@ -141,6 +150,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#editingKey = null;
     this.#draft = null;
     this.#pending.delete(key);
+    this.#validation.delete(key);
     this.#notifyDirty();
     this.#options.onEditingCanceled?.({ rowKey: key });
   }
@@ -216,6 +226,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     }
     const existing = this.#pending.get(key) ?? {};
     this.#pending.set(key, { ...existing, ...values });
+    this.#validation.delete(key);
     this.#notifyDirty();
     return true;
   }
@@ -232,6 +243,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
 
   revertAll(): void {
     this.#pending.clear();
+    this.#validation.clear();
     this.#editingKey = null;
     this.#draft = null;
     this.#notifyDirty();
@@ -255,6 +267,10 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     return cells;
   }
 
+  getValidationErrors(): ValidationErrorsByKey {
+    return this.#validation;
+  }
+
   subscribe(listener: (dirtyKeys: readonly Key[]) => void): () => void {
     this.#listeners.add(listener);
     return () => this.#listeners.delete(listener);
@@ -266,6 +282,25 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#listeners.forEach((listener) => listener(keys));
   }
 
+  async #validateEntries(
+    entries: readonly EditEntry<T>[],
+  ): Promise<Map<Key, ValidationErrors>> {
+    const result = new Map<Key, ValidationErrors>();
+    if (!this.#options.validate) return result;
+    for (const entry of entries) {
+      const row = this.#rows.find((candidate) =>
+        Object.is(this.#keyOf(candidate), entry.key),
+      );
+      if (!row) continue;
+      const errors = await this.#options.validate(
+        { ...row, ...entry.values },
+        row,
+      );
+      if (Object.keys(errors).length > 0) result.set(entry.key, errors);
+    }
+    return result;
+  }
+
   async save(): Promise<boolean> {
     if (this.#disposed || this.#pending.size === 0) return false;
     const entries: EditEntry<T>[] = [...this.#pending].map(([key, values]) => ({
@@ -273,6 +308,15 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
       values,
     }));
     if (!this.#confirmEntries(entries)) return false;
+    if (this.#options.validate) {
+      const validation = await this.#validateEntries(entries);
+      this.#validation.clear();
+      validation.forEach((errors, key) => this.#validation.set(key, errors));
+      if (validation.size > 0) {
+        this.#options.onValidationFailed?.(validation);
+        return false;
+      }
+    }
 
     const snapshot = this.#rows;
     if (this.strategy === 'optimistic') this.#applyLocal(entries);
