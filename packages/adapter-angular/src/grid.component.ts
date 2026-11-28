@@ -23,6 +23,7 @@ import {
   type ColumnState,
   type GridView,
   type RowRenderer,
+  type EditingUiOptions,
 } from '@simpleui/datagrid';
 
 /**
@@ -58,6 +59,7 @@ interface GridInputs {
   readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
+  readonly editing?: EditingUiOptions<RowRecord> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -187,6 +189,7 @@ class AngularGridController {
       focus,
       liveElement: view.liveElement,
       rtl: this.#inputs.rtl === true,
+      ...(this.#inputs.editing ? { editing: this.#inputs.editing } : {}),
     });
   }
 
@@ -258,6 +261,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() onSearchChange: ((query: string) => void) | undefined;
   @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
   @Input() rtl = false;
+  @Input() editing: EditingUiOptions<RowRecord> | undefined;
   @Input() locale: string | undefined;
   @Input() status: 'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
   @Input() statusMessage: string | undefined;
@@ -291,6 +295,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       onSearchChange: this.onSearchChange,
       viewOptions: this.viewOptions,
       rtl: this.rtl,
+      editing: this.editing,
       locale: this.locale,
       status: this.status,
       statusMessage: this.statusMessage,

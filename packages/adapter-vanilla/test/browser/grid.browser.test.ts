@@ -231,3 +231,34 @@ describe('vanilla adapter — dispose 100x', () => {
     tracker.dispose();
   });
 });
+
+describe('vanilla adapter — editing', () => {
+  it('meneruskan editing dan commit sel', () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const onCommit = vi.fn();
+    const grid = createDataGrid(host, {
+      columns: [{ dataField: 'name', caption: 'Nama' }],
+      rows: [{ id: 1, name: 'Ani' }],
+      keyExpr: 'id',
+      editing: { mode: 'cell', onCommit },
+    });
+    const cell = host.querySelector<HTMLElement>(
+      '.sui-grid__rows [data-column-id="name"]',
+    );
+    cell?.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+    const input = host.querySelector<HTMLInputElement>('.sui-grid__editor');
+    if (!input) throw new Error('editor tidak muncul');
+    input.value = 'Budi';
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    expect(onCommit).toHaveBeenCalledWith(
+      1,
+      { name: 'Budi' },
+      expect.objectContaining({ id: 1 }),
+    );
+    grid.destroy();
+    host.remove();
+  });
+});

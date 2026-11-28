@@ -678,3 +678,26 @@
   min-inline-size: 0;
   color: var(--sui-color-text-secondary);
 }
+
+.sui-grid__cell--editing {
+  padding: 0;
+}
+
+.sui-grid__editor {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width-thick) solid var(--sui-color-accent-default);
+  border-radius: var(--sui-radius-sm);
+  outline: none;
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+}
+
+.sui-grid__editor:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: calc(-1 * var(--sui-focus-ring-width));
+}

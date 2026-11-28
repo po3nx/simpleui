@@ -148,6 +148,16 @@
           keyExpr: 'id',
           selectionMode: 'multiple',
           rtl,
+          editing: {
+            mode: 'cell',
+            commitOnBlur: true,
+            onCommit: (key, changes) => {
+              const row = baseRows.find((entry) => entry.id === key);
+              if (row) Object.assign(row, changes);
+              refresh();
+            },
+          },
+
           pageIndex,
           pageSize,
           totalCount,
@@ -191,6 +201,16 @@
         keyExpr: 'id',
         selectionMode: 'multiple',
         rtl,
+        editing: {
+          mode: 'cell',
+          commitOnBlur: true,
+          onCommit: (key, changes) => {
+            const row = baseRows.find((entry) => entry.id === key);
+            if (row) Object.assign(row, changes);
+            refresh();
+          },
+        },
+
         pageIndex,
         pageSize,
         totalCount: baseRows.length,

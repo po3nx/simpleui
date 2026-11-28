@@ -23,6 +23,7 @@ import {
   type ColumnState,
   type GridView,
   type RowRenderer,
+  type EditingUiOptions,
 } from '@simpleui/datagrid';
 
 /**
@@ -46,6 +47,7 @@ export interface VueDataGridProps {
   readonly onSearchChange?: ((query: string) => void) | undefined;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
+  readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -250,6 +252,7 @@ class VueGridController {
       focus,
       liveElement: view.liveElement,
       rtl: this.#props.rtl === true,
+      ...(this.#props.editing ? { editing: this.#props.editing } : {}),
     });
   }
 

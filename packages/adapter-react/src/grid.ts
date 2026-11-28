@@ -10,6 +10,7 @@ import {
   type ColumnState,
   type GridView,
   type RowRenderer,
+  type EditingUiOptions,
 } from '@simpleui/datagrid';
 
 /**
@@ -39,6 +40,7 @@ export interface DataGridProps<T extends object> {
   readonly onSelectionChange?: (keys: readonly Key[]) => void;
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
+  readonly editing?: EditingUiOptions<T> | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -179,6 +181,7 @@ class ReactGridController<T extends object> {
       isSelected: (row) => view.isSelectedKey(keyOf(row)) ?? false,
       selectionChanges: (listener) =>
         view.subscribeSelection(listener) ?? (() => {}),
+      ...(this.#props.editing ? { editing: this.#props.editing } : {}),
       focus: focus as never,
       liveElement: view.liveElement,
       rtl: this.#props.rtl === true,
