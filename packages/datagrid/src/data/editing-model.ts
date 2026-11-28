@@ -33,6 +33,7 @@ export interface EditingModelOptions<T extends object> {
   readonly onRowUpdating?: (event: RowUpdatingEvent<T>) => void;
   readonly onRowUpdated?: (event: RowUpdatedEvent<T>) => void;
   readonly onSaveFailed?: (event: SaveFailedEvent) => void;
+  readonly onDirtyChange?: (dirtyKeys: readonly Key[]) => void;
 }
 
 export interface EditingModel<T extends object> {
@@ -41,6 +42,12 @@ export interface EditingModel<T extends object> {
   beginEdit(key: Key, columnId?: string | null): boolean;
   update(values: Partial<T>): void;
   cancel(): void;
+  stage(key: Key, values: Partial<T>): boolean;
+  revert(key: Key): boolean;
+  revertAll(): void;
+  getChanges(): ReadonlyMap<Key, Partial<T>>;
+  getDirtyKeys(): readonly Key[];
+  getDirtyCells(): readonly string[];
   save(): Promise<boolean>;
   add(values: Partial<T>): Promise<T | undefined>;
   remove(key: Key): Promise<boolean>;
@@ -48,7 +55,8 @@ export interface EditingModel<T extends object> {
   getEditingKey(): Key | null;
   getDraft(): Readonly<Partial<T>> | null;
   getPending(): ReadonlyMap<Key, Partial<T>>;
-  isDirty(): boolean;
+  isDirty(key?: Key): boolean;
+  subscribe(listener: (dirtyKeys: readonly Key[]) => void): () => void;
   dispose(): void;
 }
 
@@ -87,6 +95,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
   #editingKey: Key | null = null;
   #draft: Partial<T> | null = null;
   readonly #pending = new Map<Key, Partial<T>>();
+  readonly #listeners = new Set<(dirtyKeys: readonly Key[]) => void>();
   #disposed = false;
 
   constructor(options: EditingModelOptions<T>) {
@@ -123,6 +132,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#draft = { ...this.#draft, ...values };
     const existing = this.#pending.get(this.#editingKey) ?? {};
     this.#pending.set(this.#editingKey, { ...existing, ...values });
+    this.#notifyDirty();
   }
 
   cancel(): void {
@@ -131,6 +141,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#editingKey = null;
     this.#draft = null;
     this.#pending.delete(key);
+    this.#notifyDirty();
     this.#options.onEditingCanceled?.({ rowKey: key });
   }
 
@@ -150,8 +161,8 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     return this.#pending;
   }
 
-  isDirty(): boolean {
-    return this.#pending.size > 0;
+  isDirty(key?: Key): boolean {
+    return key === undefined ? this.#pending.size > 0 : this.#pending.has(key);
   }
 
   #confirmEntries(entries: readonly EditEntry<T>[]): boolean {
@@ -198,6 +209,63 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     }
   }
 
+  stage(key: Key, values: Partial<T>): boolean {
+    if (this.#disposed || this.#options.allowUpdating === false) return false;
+    if (!this.#rows.some((row) => Object.is(this.#keyOf(row), key))) {
+      return false;
+    }
+    const existing = this.#pending.get(key) ?? {};
+    this.#pending.set(key, { ...existing, ...values });
+    this.#notifyDirty();
+    return true;
+  }
+
+  revert(key: Key): boolean {
+    if (!this.#pending.delete(key)) return false;
+    if (this.#editingKey !== null && Object.is(this.#editingKey, key)) {
+      this.#editingKey = null;
+      this.#draft = null;
+    }
+    this.#notifyDirty();
+    return true;
+  }
+
+  revertAll(): void {
+    this.#pending.clear();
+    this.#editingKey = null;
+    this.#draft = null;
+    this.#notifyDirty();
+  }
+
+  getChanges(): ReadonlyMap<Key, Partial<T>> {
+    return this.#pending;
+  }
+
+  getDirtyKeys(): readonly Key[] {
+    return [...this.#pending.keys()];
+  }
+
+  getDirtyCells(): readonly string[] {
+    const cells: string[] = [];
+    for (const [key, values] of this.#pending) {
+      for (const field of Object.keys(values)) {
+        cells.push(`${String(key)}\u0000${field}`);
+      }
+    }
+    return cells;
+  }
+
+  subscribe(listener: (dirtyKeys: readonly Key[]) => void): () => void {
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  #notifyDirty(): void {
+    const keys = this.getDirtyKeys();
+    this.#options.onDirtyChange?.(keys);
+    this.#listeners.forEach((listener) => listener(keys));
+  }
+
   async save(): Promise<boolean> {
     if (this.#disposed || this.#pending.size === 0) return false;
     const entries: EditEntry<T>[] = [...this.#pending].map(([key, values]) => ({
@@ -217,6 +285,7 @@ class EditingModelImpl<T extends object> implements EditingModel<T> {
     this.#pending.clear();
     this.#editingKey = null;
     this.#draft = null;
+    this.#notifyDirty();
     this.#options.onChange?.(this.#rows);
     return true;
   }
