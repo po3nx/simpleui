@@ -130,8 +130,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Build paket (subpath @simpleui/testing/adapter)
         run: pnpm build
-      - name: Browser mode test
-        run: pnpm test:browser
+      - name: Browser mode test + component coverage
+        run: pnpm test:browser:coverage
 
   e2e:
     name: E2E Chromium (shard ${{ matrix.shard }}/2)

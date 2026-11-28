@@ -46,9 +46,24 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      reportsDirectory: 'coverage',
-      include: ['packages/*/src/**/*.ts'],
+      reportsDirectory:
+        process.env['BROWSER_COVERAGE'] === '1'
+          ? 'coverage/browser'
+          : 'coverage',
+      include:
+        process.env['BROWSER_COVERAGE'] === '1'
+          ? [
+              'packages/datagrid/src/view/**/*.ts',
+              'packages/adapter-react/src/grid.ts',
+              'packages/adapter-vue/src/grid.ts',
+              'packages/adapter-angular/src/grid.component.ts',
+              'packages/adapter-vanilla/src/grid.ts',
+            ]
+          : ['packages/*/src/**/*.ts'],
       exclude: ['**/*.test.ts', '**/*.d.ts', '**/dist/**'],
+      ...(process.env['BROWSER_COVERAGE'] === '1'
+        ? { thresholds: { lines: 85, branches: 80 } }
+        : {}),
       // Gate keseluruhan (85% line / 80% branch, docs/00-rule-umum.md §7.2)
       // belum diaktifkan: baru `core` yang punya test, sehingga angka agregat
       // akan selalu gagal karena paket lain 0%. Diaktifkan di FND-007 saat
