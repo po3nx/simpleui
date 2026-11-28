@@ -350,3 +350,10 @@ export {
   type ExcelExportOptions,
   type ExcelExportResult,
 } from './data/excel-export.js';
+
+export {
+  createPrintView,
+  printGrid,
+  type PrintGridOptions,
+  type PrintView,
+} from './view/print.js';
