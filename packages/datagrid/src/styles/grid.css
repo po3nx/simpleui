@@ -822,3 +822,27 @@
   min-inline-size: 0;
   color: var(--sui-color-text-secondary);
 }
+
+.sui-grid__row--group {
+  background: var(--sui-color-bg-subtle);
+  font-weight: var(--sui-font-weight-semibold);
+}
+
+.sui-grid__cell--group {
+  gap: var(--sui-space-1);
+  justify-content: flex-start;
+}
+
+.sui-grid__group-toggle {
+  padding: 0 var(--sui-space-1);
+  border: 0;
+  background: transparent;
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__group-toggle:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}

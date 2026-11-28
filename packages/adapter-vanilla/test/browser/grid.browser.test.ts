@@ -262,3 +262,43 @@ describe('vanilla adapter — editing', () => {
     host.remove();
   });
 });
+
+describe('vanilla adapter — grouping', () => {
+  it('meneruskan groupBy dan toggle grup', () => {
+    const host = document.createElement('div');
+    host.style.width = '600px';
+    host.style.height = '300px';
+    document.body.append(host);
+    const onGroupToggle = vi.fn();
+    const grid = createDataGrid(host, {
+      columns: [
+        { dataField: 'city', caption: 'Kota' },
+        { dataField: 'name', caption: 'Nama' },
+      ],
+      rows: [
+        { id: 1, city: 'Jakarta', name: 'Ani' },
+        { id: 2, city: 'Jakarta', name: 'Budi' },
+      ],
+      keyExpr: 'id',
+      groupBy: ['city'],
+      expandedGroups: [],
+      onGroupToggle,
+    });
+    const group = host.querySelector<HTMLElement>('.sui-grid__row--group');
+    expect(group).not.toBeNull();
+    group?.querySelector<HTMLButtonElement>('.sui-grid__group-toggle')?.click();
+    expect(onGroupToggle).toHaveBeenCalled();
+    const dataRows = [
+      ...host.querySelectorAll<HTMLElement>(
+        '.sui-grid__rows .sui-grid__row[data-row-key]:not([hidden])',
+      ),
+    ];
+    expect(dataRows).toHaveLength(2);
+    expect(dataRows.map((row) => row.textContent)).toEqual([
+      'JakartaAni',
+      'JakartaBudi',
+    ]);
+    grid.destroy();
+    host.remove();
+  });
+});

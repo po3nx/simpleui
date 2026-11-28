@@ -60,6 +60,10 @@ interface GridInputs {
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<RowRecord> | undefined;
+  readonly groupBy?: readonly string[] | undefined;
+  readonly expandedGroups?: readonly string[] | undefined;
+  readonly onGroupToggle?:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -190,6 +194,13 @@ class AngularGridController {
       liveElement: view.liveElement,
       rtl: this.#inputs.rtl === true,
       ...(this.#inputs.editing ? { editing: this.#inputs.editing } : {}),
+      ...(this.#inputs.groupBy ? { groupBy: this.#inputs.groupBy } : {}),
+      ...(this.#inputs.expandedGroups
+        ? { expandedGroups: this.#inputs.expandedGroups }
+        : {}),
+      ...(this.#inputs.onGroupToggle
+        ? { onGroupToggle: this.#inputs.onGroupToggle }
+        : {}),
     });
   }
 
@@ -262,6 +273,10 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() viewOptions: Readonly<Record<string, unknown>> | undefined;
   @Input() rtl = false;
   @Input() editing: EditingUiOptions<RowRecord> | undefined;
+  @Input() groupBy: readonly string[] | undefined;
+  @Input() expandedGroups: readonly string[] | undefined;
+  @Input() onGroupToggle:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   @Input() locale: string | undefined;
   @Input() status: 'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
   @Input() statusMessage: string | undefined;
@@ -296,6 +311,9 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       viewOptions: this.viewOptions,
       rtl: this.rtl,
       editing: this.editing,
+      groupBy: this.groupBy,
+      expandedGroups: this.expandedGroups,
+      onGroupToggle: this.onGroupToggle,
       locale: this.locale,
       status: this.status,
       statusMessage: this.statusMessage,

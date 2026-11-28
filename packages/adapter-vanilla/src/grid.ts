@@ -39,6 +39,10 @@ export interface VanillaDataGridOptions {
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
+  readonly groupBy?: readonly string[] | undefined;
+  readonly expandedGroups?: readonly string[] | undefined;
+  readonly onGroupToggle?:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -109,6 +113,13 @@ class VanillaDataGridImpl implements VanillaDataGrid {
       liveElement: this.#view.liveElement,
       rtl: this.#options.rtl === true,
       ...(this.#options.editing ? { editing: this.#options.editing } : {}),
+      ...(this.#options.groupBy ? { groupBy: this.#options.groupBy } : {}),
+      ...(this.#options.expandedGroups
+        ? { expandedGroups: this.#options.expandedGroups }
+        : {}),
+      ...(this.#options.onGroupToggle
+        ? { onGroupToggle: this.#options.onGroupToggle }
+        : {}),
       focus: createFocusModel<RowRecord>({
         state: this.#state,
         columns: this.#columns,
@@ -203,6 +214,15 @@ class VanillaDataGridImpl implements VanillaDataGrid {
     this.#options = options;
     syncLocale(options.locale, previous.locale, this.#renderer);
     syncStatus(options.status, previous.status, () => this.#applyStatus());
+    if (
+      options.groupBy !== previous.groupBy ||
+      options.expandedGroups !== previous.expandedGroups
+    ) {
+      this.#renderer.setGrouping(
+        options.groupBy ?? [],
+        options.expandedGroups ?? [],
+      );
+    }
   }
 
   destroy(): void {
