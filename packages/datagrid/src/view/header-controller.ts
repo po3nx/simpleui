@@ -9,6 +9,7 @@ import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { toggleSort } from '../data/sort.js';
 import { computeColumnLayout } from './column-virtualizer.js';
 import {
+  createBandRow,
   createHeaderRow,
   type HeaderRenderContext,
 } from './header-renderer.js';
@@ -292,11 +293,16 @@ class HeaderControllerImpl<T extends object> implements HeaderController<T> {
     );
 
     this.#templates.clear();
+    const bandRow = createBandRow(columns, layout.columns);
     const row = createHeaderRow<T>(layout.columns, this.#context());
     row.style.minInlineSize = `${layout.totalWidth}px`;
     const extra = this.#options.extraHeaderElement;
     if (extra) extra.style.minInlineSize = `${layout.totalWidth}px`;
-    this.#options.headerElement.replaceChildren(row, ...(extra ? [extra] : []));
+    this.#options.headerElement.replaceChildren(
+      ...(bandRow ? [bandRow] : []),
+      row,
+      ...(extra ? [extra] : []),
+    );
   }
 
   setSorting(next: readonly SortDescriptor[]): void {

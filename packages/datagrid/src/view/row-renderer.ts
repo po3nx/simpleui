@@ -327,6 +327,23 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     return true;
   }
 
+  #applyShadows(entries: readonly ColumnLayoutEntry<T>[]): void {
+    this.#pool.forEach((rowElement) => {
+      [...rowElement.children].forEach((cell, index) => {
+        const entry = entries[index];
+        if (!(cell instanceof HTMLElement) || !entry) return;
+        cell.classList.toggle(
+          'sui-grid__cell--shadow-start',
+          entry.shadow === 'start',
+        );
+        cell.classList.toggle(
+          'sui-grid__cell--shadow-end',
+          entry.shadow === 'end',
+        );
+      });
+    });
+  }
+
   #render(): void {
     if (this.#disposed) return;
     const layout = this.#layout();
@@ -338,6 +355,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     const count = Math.max(0, end - start);
     this.#ensurePool(count);
     this.#syncCells(layout.entries);
+    this.#applyShadows(layout.entries);
     this.#options.rowsElement.style.transform = `translateY(${offsetTop}px)`;
     this.#options.rowsElement.style.minInlineSize = `${layout.totalWidth}px`;
     this.#options.spacerElement.style.inlineSize = `${layout.totalWidth}px`;

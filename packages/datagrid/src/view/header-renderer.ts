@@ -1,7 +1,7 @@
 import { createElement, setAttributes, setStyle } from '@simpleui/core';
 import type { SortDescriptor, TemplateRenderer } from '@simpleui/core';
 
-import type { ColumnState } from '../model/columns.js';
+import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { sortDirectionFor, sortIndexFor } from '../data/sort.js';
 import type { ColumnLayoutEntry } from './column-virtualizer.js';
 
@@ -245,7 +245,10 @@ function applyColumnPosition<T extends object>(
     setStyle(cell, 'z-index', '1');
   }
   if (entry.shadow) {
-    cell.classList.add(`sui-grid__cell--shadow-${entry.shadow}`);
+    cell.classList.add(
+      `sui-grid__header-cell--shadow-${entry.shadow}`,
+      `sui-grid__cell--shadow-${entry.shadow}`,
+    );
   }
 }
 
@@ -300,5 +303,40 @@ export function createHeaderRow<T extends object>(
     row.append(createHeaderCell(entry, index, context));
   });
 
+  return row;
+}
+
+/** Baris header band (DG-069) untuk satu level band teratas. */
+export function createBandRow<T extends object>(
+  columns: readonly ColumnState<T>[],
+  entries: readonly ColumnLayoutEntry<T>[],
+): HTMLElement | null {
+  const top = columns.filter((column) => column.visible);
+  if (top.length === 0 || top.some((column) => !column.children)) return null;
+  const widths = new Map(
+    entries.map((entry) => [entry.column.id, entry.width]),
+  );
+  const row = createElement('div', {
+    className: 'sui-grid__row sui-grid__row--band',
+  });
+  setAttributes(row, { role: 'row' });
+  for (const band of top) {
+    const leaves = getVisibleColumns(band.children ?? []);
+    const width = leaves.reduce(
+      (sum, leaf) => sum + (widths.get(leaf.id) ?? 0),
+      0,
+    );
+    const cell = createElement('div', {
+      className: 'sui-grid__header-cell sui-grid__header-cell--band',
+    });
+    setAttributes(cell, {
+      role: 'columnheader',
+      'aria-colspan': String(leaves.length),
+      'aria-label': band.caption,
+    });
+    cell.style.flexBasis = `${width}px`;
+    cell.textContent = band.caption;
+    row.append(cell);
+  }
   return row;
 }
