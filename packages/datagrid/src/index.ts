@@ -344,3 +344,9 @@ export {
   type MasterDetailOptions,
   type DisplayEntry,
 } from './view/detail-view.js';
+
+export {
+  downloadExcel,
+  type ExcelExportOptions,
+  type ExcelExportResult,
+} from './data/excel-export.js';

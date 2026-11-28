@@ -46,7 +46,7 @@ export function sanitizeFilename(
   return `${guarded.slice(0, 80)}.csv`;
 }
 
-function valueForExport<T extends object>(
+export function valueForExport<T extends object>(
   row: T,
   column: ColumnState<T>,
 ): unknown {
@@ -55,7 +55,7 @@ function valueForExport<T extends object>(
   return value;
 }
 
-function exportColumns<T extends object>(
+export function exportColumns<T extends object>(
   columns: readonly ColumnState<T>[],
 ): readonly ColumnState<T>[] {
   return columns.filter(
