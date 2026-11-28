@@ -24,6 +24,7 @@ import {
   type GridView,
   type RowRenderer,
   type EditingUiOptions,
+  type SummaryItem,
 } from '@simpleui/datagrid';
 
 /**
@@ -61,6 +62,7 @@ interface GridInputs {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<RowRecord> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;
   readonly onGroupToggle?:
     ((groupKey: string, expanded: boolean) => void) | undefined;
@@ -274,6 +276,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() rtl = false;
   @Input() editing: EditingUiOptions<RowRecord> | undefined;
   @Input() groupBy: readonly string[] | undefined;
+  @Input() groupSummaryItems: readonly SummaryItem<RowRecord>[] | undefined;
   @Input() expandedGroups: readonly string[] | undefined;
   @Input() onGroupToggle:
     ((groupKey: string, expanded: boolean) => void) | undefined;
@@ -312,6 +315,7 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       rtl: this.rtl,
       editing: this.editing,
       groupBy: this.groupBy,
+      groupSummaryItems: this.groupSummaryItems,
       expandedGroups: this.expandedGroups,
       onGroupToggle: this.onGroupToggle,
       locale: this.locale,

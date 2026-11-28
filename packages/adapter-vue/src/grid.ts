@@ -24,6 +24,7 @@ import {
   type GridView,
   type RowRenderer,
   type EditingUiOptions,
+  type SummaryItem,
 } from '@simpleui/datagrid';
 
 /**
@@ -49,6 +50,7 @@ export interface VueDataGridProps {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;
   readonly onGroupToggle?:
     ((groupKey: string, expanded: boolean) => void) | undefined;
@@ -342,6 +344,10 @@ export const DataGrid = defineComponent({
     rtl: { type: Boolean, default: false },
     groupBy: {
       type: Array as PropType<readonly string[]>,
+      default: undefined,
+    },
+    groupSummaryItems: {
+      type: Array as PropType<readonly SummaryItem<RowRecord>[]>,
       default: undefined,
     },
     expandedGroups: {

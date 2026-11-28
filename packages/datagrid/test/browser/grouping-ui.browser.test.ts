@@ -11,6 +11,7 @@ interface Row {
 }
 
 const COLUMNS = normalizeColumnModel<Row>([
+  { dataField: 'id', caption: 'ID', width: 60 },
   { dataField: 'city', caption: 'Kota', width: 140 },
   { dataField: 'name', caption: 'Nama', width: 140 },
 ]);
@@ -21,7 +22,14 @@ const ROWS: Row[] = [
   { id: 4, city: 'Bandung', name: 'Dewi' },
 ];
 
-function setup(expanded: readonly string[] = []) {
+function setup(
+  expanded: readonly string[] = [],
+  summaryItems?: readonly {
+    column: string;
+    summaryType: 'count' | 'sum';
+    customizeText?: (item: { value: unknown; data: readonly Row[] }) => string;
+  }[],
+) {
   const container = document.createElement('div');
   container.style.width = '600px';
   container.style.height = '400px';
@@ -44,6 +52,7 @@ function setup(expanded: readonly string[] = []) {
     groupBy: ['city'],
     expandedGroups: expanded,
     onGroupToggle,
+    ...(summaryItems ? { groupSummaryItems: summaryItems } : {}),
   });
   const groups = (): HTMLElement[] => [
     ...grid.rowsElement.querySelectorAll<HTMLElement>('.sui-grid__row--group'),
@@ -114,6 +123,28 @@ describe('grouping UI — group row', () => {
     ).toBe(true);
     expect(rows).toHaveLength(4);
 
+    renderer.dispose();
+    grid.dispose();
+    container.remove();
+  });
+});
+
+describe('grouping UI — summary', () => {
+  it('menampilkan summary grup dan custom summary', () => {
+    const { container, grid, renderer, groups } = setup(
+      [],
+      [
+        { column: 'name', summaryType: 'count' },
+        {
+          column: 'id',
+          summaryType: 'sum',
+          customizeText: ({ value }) => `Rp ${String(value)}`,
+        },
+      ],
+    );
+    const text = groups()[0]?.textContent ?? '';
+    expect(text).toContain('Nama: 2');
+    expect(text).toContain('Rp 3');
     renderer.dispose();
     grid.dispose();
     container.remove();
