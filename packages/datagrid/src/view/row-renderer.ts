@@ -23,7 +23,7 @@ import {
   type MasterDetailOptions,
 } from './detail-view.js';
 import { toggleDetail as toggleDetailState } from './detail-state.js';
-import type { GroupOptions } from '../data/grouping.js';
+import type { GroupNode, GroupOptions } from '../data/grouping.js';
 import type { SummaryItem } from '../api/types.js';
 import {
   computeColumnLayout,
@@ -62,6 +62,18 @@ export interface RowRendererOptions<T extends object> {
     ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly groupSummaryItems?: readonly SummaryItem<T>[] | undefined;
   readonly masterDetail?: MasterDetailOptions<T> | undefined;
+  readonly rowTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { row: T; key: Key; index: number },
+      ) => void)
+    | undefined;
+  readonly groupTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { node: GroupNode<T>; expanded: boolean },
+      ) => void)
+    | undefined;
   readonly onDetailToggle?: ((key: Key, expanded: boolean) => void) | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
@@ -390,6 +402,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
           onToggle: (key) => this.toggleGroup(key),
           summaryItems: this.#options.groupSummaryItems,
           locale: this.#locale,
+          groupTemplate: this.#options.groupTemplate,
         });
       } else {
         this.#paintRow(
@@ -490,6 +503,17 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
         'aria-selected',
         String(this.#options.isSelected(row)),
       );
+    }
+
+    if (this.#options.rowTemplate) {
+      const cell = document.createElement('div');
+      cell.className = 'sui-grid__cell sui-grid__cell--row-template';
+      cell.setAttribute('role', 'gridcell');
+      cell.setAttribute('aria-colindex', '1');
+      cell.setAttribute('aria-colspan', String(entries.length));
+      this.#options.rowTemplate(cell, { row, key: rowKey, index });
+      rowElement.replaceChildren(cell);
+      return;
     }
 
     entries.forEach((entry, cellIndex) => {
