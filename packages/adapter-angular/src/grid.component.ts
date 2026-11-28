@@ -26,6 +26,7 @@ import {
   type EditingUiOptions,
   type SummaryItem,
   type MasterDetailOptions,
+  type GroupNode,
 } from '@simpleui/datagrid';
 
 /**
@@ -63,6 +64,18 @@ interface GridInputs {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<RowRecord> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly rowTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { row: RowRecord; key: Key; index: number },
+      ) => void)
+    | undefined;
+  readonly groupTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { node: GroupNode<RowRecord>; expanded: boolean },
+      ) => void)
+    | undefined;
   readonly masterDetail?: MasterDetailOptions<RowRecord> | undefined;
   readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;
@@ -280,6 +293,18 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() groupBy: readonly string[] | undefined;
   @Input() groupSummaryItems: readonly SummaryItem<RowRecord>[] | undefined;
   @Input() masterDetail: MasterDetailOptions<RowRecord> | undefined;
+  @Input() rowTemplate:
+    | ((
+        container: HTMLElement,
+        context: { row: RowRecord; key: Key; index: number },
+      ) => void)
+    | undefined;
+  @Input() groupTemplate:
+    | ((
+        container: HTMLElement,
+        context: { node: GroupNode<RowRecord>; expanded: boolean },
+      ) => void)
+    | undefined;
   @Input() expandedGroups: readonly string[] | undefined;
   @Input() onGroupToggle:
     ((groupKey: string, expanded: boolean) => void) | undefined;
@@ -320,6 +345,8 @@ export class DataGridComponent implements AfterViewInit, OnChanges, OnDestroy {
       groupBy: this.groupBy,
       groupSummaryItems: this.groupSummaryItems,
       masterDetail: this.masterDetail,
+      rowTemplate: this.rowTemplate,
+      groupTemplate: this.groupTemplate,
       expandedGroups: this.expandedGroups,
       onGroupToggle: this.onGroupToggle,
       locale: this.locale,

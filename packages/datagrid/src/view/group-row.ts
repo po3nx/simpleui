@@ -2,6 +2,7 @@ import type { ColumnState } from '../model/columns.js';
 import { groupLabel, type GroupDisplayEntry } from './group-view.js';
 import { computeSummary, formatSummary } from '../data/summary.js';
 import type { SummaryItem } from '../api/types.js';
+import type { GroupNode } from '../data/grouping.js';
 
 /** Render satu baris grup (DG-066) dengan toggle expand/collapse. */
 export interface GroupRowContext<T extends object> {
@@ -13,6 +14,12 @@ export interface GroupRowContext<T extends object> {
   readonly onToggle: (groupKey: string) => void;
   readonly summaryItems?: readonly SummaryItem<T>[] | undefined;
   readonly locale?: string | undefined;
+  readonly groupTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { node: GroupNode<T>; expanded: boolean },
+      ) => void)
+    | undefined;
 }
 
 export function paintGroupRow<T extends object>(
@@ -44,7 +51,14 @@ export function paintGroupRow<T extends object>(
   button.addEventListener('click', () => onToggle(entry.node.key));
   const label = document.createElement('span');
   label.className = 'sui-grid__group-label';
-  label.textContent = groupText(context);
+  if (context.groupTemplate) {
+    context.groupTemplate(label, {
+      node: context.entry.node,
+      expanded: context.entry.expanded,
+    });
+  } else {
+    label.textContent = groupText(context);
+  }
   cell.append(button, label);
   rowElement.replaceChildren(cell);
 }

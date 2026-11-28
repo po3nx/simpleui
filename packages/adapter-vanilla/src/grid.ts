@@ -12,6 +12,7 @@ import {
   type EditingUiOptions,
   type SummaryItem,
   type MasterDetailOptions,
+  type GroupNode,
 } from '@simpleui/datagrid';
 
 /**
@@ -42,6 +43,18 @@ export interface VanillaDataGridOptions {
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
   readonly groupBy?: readonly string[] | undefined;
+  readonly rowTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { row: RowRecord; key: Key; index: number },
+      ) => void)
+    | undefined;
+  readonly groupTemplate?:
+    | ((
+        container: HTMLElement,
+        context: { node: GroupNode<RowRecord>; expanded: boolean },
+      ) => void)
+    | undefined;
   readonly masterDetail?: MasterDetailOptions<RowRecord> | undefined;
   readonly groupSummaryItems?: readonly SummaryItem<RowRecord>[] | undefined;
   readonly expandedGroups?: readonly string[] | undefined;

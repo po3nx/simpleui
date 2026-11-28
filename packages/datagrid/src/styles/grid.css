@@ -888,3 +888,9 @@
   text-transform: uppercase;
   color: var(--sui-color-text-secondary);
 }
+
+.sui-grid__cell--row-template {
+  justify-content: flex-start;
+  min-inline-size: 100%;
+  white-space: normal;
+}
