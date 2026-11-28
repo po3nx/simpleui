@@ -164,3 +164,47 @@ describe('editing model — add/remove', () => {
     await expect(model.remove(1)).resolves.toBe(false);
   });
 });
+
+describe('editing model — batch dirty tracking', () => {
+  it('melacak perubahan per baris/sel dan revert parsial', () => {
+    const onDirtyChange = vi.fn();
+    const { model } = setup({ mode: 'batch', onDirtyChange });
+
+    expect(model.stage(1, { name: 'Satu', total: 11 })).toBe(true);
+    expect(model.stage(2, { name: 'Dua' })).toBe(true);
+    expect(model.getDirtyKeys()).toEqual([1, 2]);
+    expect(model.getDirtyCells()).toHaveLength(3);
+    expect(model.isDirty(1)).toBe(true);
+
+    expect(model.revert(1)).toBe(true);
+    expect(model.getDirtyKeys()).toEqual([2]);
+    expect(onDirtyChange).toHaveBeenLastCalledWith([2]);
+
+    model.revertAll();
+    expect(model.isDirty()).toBe(false);
+    expect(model.getChanges().size).toBe(0);
+  });
+
+  it('menyimpan semua perubahan batch dan membersihkan dirty', async () => {
+    const { store, model } = setup({ mode: 'batch' });
+    const update = vi.spyOn(store, 'update');
+    model.stage(1, { name: 'Satu' });
+    model.stage(2, { name: 'Dua' });
+
+    await expect(model.save()).resolves.toBe(true);
+    expect(update).toHaveBeenCalledTimes(2);
+    expect(model.isDirty()).toBe(false);
+    expect(model.getRows().map((row) => row.name)).toEqual(['Satu', 'Dua']);
+  });
+
+  it('mempertahankan dirty saat simpan gagal', async () => {
+    const store = new ArrayStore<Row>(ROWS, { key: 'id' });
+    vi.spyOn(store, 'update').mockRejectedValue(new Error('gagal'));
+    const { model } = setup({ store, mode: 'batch' });
+    model.stage(1, { name: 'Tetap' });
+
+    await expect(model.save()).resolves.toBe(false);
+    expect(model.isDirty()).toBe(true);
+    expect(model.getChanges().get(1)).toEqual({ name: 'Tetap' });
+  });
+});

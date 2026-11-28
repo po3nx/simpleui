@@ -307,3 +307,10 @@ export {
   type FormEditorLabels,
   type FormEditorOptions,
 } from './view/form-editor.js';
+
+export {
+  createBatchActions,
+  type BatchActions,
+  type BatchActionsLabels,
+  type BatchActionsOptions,
+} from './view/batch-actions.js';

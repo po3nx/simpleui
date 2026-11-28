@@ -789,3 +789,36 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__batch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sui-space-1);
+  align-items: center;
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border-block-start: var(--sui-border-width) solid
+    var(--sui-color-border-subtle);
+  background: var(--sui-color-bg-surface);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__batch-actions button {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__batch-actions button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sui-grid__batch-status {
+  flex: 1;
+  min-inline-size: 0;
+  color: var(--sui-color-text-secondary);
+}
