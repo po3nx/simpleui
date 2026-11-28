@@ -15,6 +15,7 @@ export interface EditingUiOptions<T extends object> {
   readonly onStart?: (rowKey: Key, columnId: string | null, row: T) => unknown;
   readonly onCommit?: (rowKey: Key, changes: Partial<T>, row: T) => void;
   readonly onCancel?: (rowKey: Key) => void;
+  readonly onFormRequest?: (row: T, rowKey: Key) => void;
 }
 
 export interface CellEditor<T extends object> {
@@ -108,9 +109,21 @@ class CellEditorImpl<T extends object> implements CellEditor<T> {
   begin(rowElement: HTMLElement, row: T, columnId: string | null): boolean {
     if (this.#disposed) return false;
     const mode = this.#options.mode ?? 'none';
+    if (mode === 'form') {
+      this.#options.onFormRequest?.(row, this.#keyOf(row));
+      return true;
+    }
     if (mode !== 'cell' && mode !== 'row') return false;
-    this.commit();
+    return this.#beginDom(rowElement, row, columnId, mode);
+  }
 
+  #beginDom(
+    rowElement: HTMLElement,
+    row: T,
+    columnId: string | null,
+    mode: EditorUiMode,
+  ): boolean {
+    this.commit();
     const rowKey = this.#keyOf(row);
     if (this.#options.onStart?.(rowKey, columnId, row) === false) {
       return false;
