@@ -151,3 +151,17 @@ test('RTL: layout, scroll, dan navigasi kolom', async ({ page }) => {
   );
   expect(colIndex).toBe('3');
 });
+
+test('editing sel: dblclick, ubah, Enter commit', async ({ page }) => {
+  await openGrid(page);
+  const cell = page
+    .locator('.sui-grid__rows [role="gridcell"][data-column-id="name"]')
+    .first();
+  await cell.dblclick();
+  const editor = page.locator('.sui-grid__editor');
+  await expect(editor).toBeVisible();
+  await editor.fill('Karyawan 99');
+  await editor.press('Enter');
+  await expect(editor).toHaveCount(0);
+  await expect(cell).toContainText('Karyawan 99');
+});

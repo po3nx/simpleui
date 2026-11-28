@@ -294,3 +294,9 @@ export type {
   NormalizedFiltering,
   VisibleRow,
 } from './api/types.js';
+
+export {
+  createCellEditor,
+  type CellEditor,
+  type EditingUiOptions,
+} from './view/cell-editor.js';

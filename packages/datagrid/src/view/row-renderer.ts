@@ -3,6 +3,11 @@ import { Virtualizer, type Key } from '@simpleui/core';
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { cellValueFor, formatRowCell } from './cell-renderer.js';
 import type { FocusModel } from '../model/focus.js';
+import {
+  createCellEditor,
+  type CellEditor,
+  type EditingUiOptions,
+} from './cell-editor.js';
 import { keyToDomId } from '../model/key.js';
 import { attachGridKeyboard } from './keyboard.js';
 import { TemplateManager } from './template-manager.js';
@@ -35,6 +40,7 @@ export interface RowRendererOptions<T extends object> {
   readonly focus?: FocusModel | undefined;
   readonly liveElement?: HTMLElement | undefined;
   readonly rtl?: boolean | undefined;
+  readonly editing?: EditingUiOptions<T> | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
     ((listener: () => void) => () => void) | undefined;
@@ -104,6 +110,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   readonly #templates: TemplateManager;
   readonly #detachKeyboard: (() => void) | undefined;
   readonly #unsubscribeSelection: (() => void) | undefined;
+  readonly #editor: CellEditor<T> | undefined;
 
   constructor(options: RowRendererOptions<T>) {
     this.#options = options;
@@ -116,10 +123,17 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
     this.#detachKeyboard = this.#attachKeyboard();
+    this.#editor = options.editing
+      ? createCellEditor(options.editing, this.#columns)
+      : undefined;
     this.#unsubscribeSelection = options.selectionChanges?.(() =>
       this.#render(),
     );
     this.#virtualizer = this.#createVirtualizer();
+    if (this.#editor) {
+      options.rowsElement.addEventListener('dblclick', this.#onDblClick);
+      options.gridElement.addEventListener('keydown', this.#onEditorKeyDown);
+    }
     options.viewportElement.addEventListener('scroll', this.#onScroll, {
       passive: true,
     });
@@ -132,6 +146,40 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   }
 
   readonly #onScroll = (): void => this.#render();
+
+  readonly #onDblClick = (event: MouseEvent): void => {
+    const cell = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+      '.sui-grid__cell',
+    );
+    const rowElement = cell?.closest<HTMLElement>('.sui-grid__row');
+    if (!cell || !rowElement) return;
+    this.#beginEdit(rowElement, cell);
+  };
+
+  readonly #onEditorKeyDown = (event: KeyboardEvent): void => {
+    if (event.key !== 'F2' && event.key !== 'Enter') return;
+    const active = document.activeElement as HTMLElement | null;
+    if (active?.closest('.sui-grid__editor')) return;
+    const cell = active?.closest<HTMLElement>('.sui-grid__cell');
+    const rowElement = cell?.closest<HTMLElement>('.sui-grid__row');
+    if (!cell || !rowElement) return;
+    if (this.#beginEdit(rowElement, cell)) event.preventDefault();
+  };
+
+  #beginEdit(rowElement: HTMLElement, cell: HTMLElement): boolean {
+    const key = rowElement.getAttribute('data-row-key');
+    const row = this.#rows.find(
+      (entry) => String(this.#options.keyOf(entry)) === key,
+    );
+    if (!row) return false;
+    return (
+      this.#editor?.begin(
+        rowElement,
+        row,
+        cell.getAttribute('data-column-id'),
+      ) ?? false
+    );
+  }
 
   readonly #onColumnResize = (
     event: CustomEvent<{ columnId: string; width: number }>,
@@ -330,6 +378,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
 
   setRows(next: readonly T[]): void {
     if (this.#disposed) return;
+    this.#editor?.cancel();
     const anchor = this.#captureAnchor();
     this.#rows = next;
     this.#updateSpacer();
@@ -367,6 +416,12 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
       'simpleui:column-resize',
       this.#onColumnResize as EventListener,
     );
+    this.#options.rowsElement.removeEventListener('dblclick', this.#onDblClick);
+    this.#options.gridElement.removeEventListener(
+      'keydown',
+      this.#onEditorKeyDown,
+    );
+    this.#editor?.dispose();
     this.#templates.dispose();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;
