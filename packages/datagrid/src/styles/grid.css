@@ -701,3 +701,91 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: calc(-1 * var(--sui-focus-ring-width));
 }
+
+.sui-grid__form-overlay {
+  position: fixed;
+  z-index: var(--sui-z-toast);
+  display: grid;
+  place-items: center;
+  inset: 0;
+  padding: var(--sui-space-4);
+  background: color-mix(in srgb, #000 45%, transparent);
+}
+
+.sui-grid__form-dialog {
+  inline-size: min(520px, 100%);
+  max-block-size: 90vh;
+  overflow: auto;
+  padding: var(--sui-space-4);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-md);
+  background: var(--sui-color-bg-surface);
+  box-shadow: var(--sui-shadow-lg);
+}
+
+.sui-grid__form-title {
+  margin: 0 0 var(--sui-space-3);
+  font-size: var(--sui-font-size-lg);
+}
+
+.sui-grid__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sui-space-2);
+}
+
+.sui-grid__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sui-space-1);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__form-field input {
+  padding: var(--sui-space-1) var(--sui-space-2);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+}
+
+.sui-grid__form-field input[aria-invalid='true'] {
+  border-color: var(--sui-color-danger-default);
+}
+
+.sui-grid__form-error,
+.sui-grid__form-error-summary {
+  margin: 0;
+  color: var(--sui-color-danger-default);
+  font-size: var(--sui-font-size-sm);
+}
+
+.sui-grid__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sui-space-1);
+  margin-block-start: var(--sui-space-2);
+}
+
+.sui-grid__form-actions button {
+  padding: var(--sui-space-1) var(--sui-space-3);
+  border: var(--sui-border-width) solid var(--sui-color-border-strong);
+  border-radius: var(--sui-radius-sm);
+  background: var(--sui-color-bg-surface);
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__form-save {
+  background: var(--sui-color-accent-default) !important;
+  color: var(--sui-color-text-inverse) !important;
+  border-color: var(--sui-color-accent-default) !important;
+}
+
+.sui-grid__form-dialog input:focus-visible,
+.sui-grid__form-dialog button:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}

@@ -300,3 +300,10 @@ export {
   type CellEditor,
   type EditingUiOptions,
 } from './view/cell-editor.js';
+
+export {
+  createFormEditor,
+  type FormEditor,
+  type FormEditorLabels,
+  type FormEditorOptions,
+} from './view/form-editor.js';
