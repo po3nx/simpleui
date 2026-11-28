@@ -128,6 +128,7 @@ export function createSelectionColumn<T extends object>(
     headerCellTemplate:
       options.mode === 'multiple' ? headerTemplate(options) : undefined,
     calculateCellValue: undefined,
+    lookup: undefined,
     bandId: undefined,
     depth: 0,
     children: undefined,

@@ -5,6 +5,7 @@ import type {
   ColumnDataType,
   ColumnFormat,
   ColumnOptions,
+  LookupOptions,
 } from '../api/types.js';
 import { DataGridError } from '../errors.js';
 
@@ -36,6 +37,7 @@ export interface ColumnState<T = unknown> {
   readonly cellTemplate: TemplateRenderer | undefined;
   readonly headerCellTemplate: TemplateRenderer | undefined;
   readonly calculateCellValue: ((row: T) => unknown) | undefined;
+  readonly lookup: LookupOptions | undefined;
   readonly bandId: string | undefined;
   readonly depth: number;
   readonly children: readonly ColumnState<T>[] | undefined;
@@ -237,6 +239,7 @@ function buildColumn<T>(
     cellTemplate: column.cellTemplate,
     headerCellTemplate: column.headerCellTemplate,
     calculateCellValue: column.calculateCellValue,
+    lookup: column.lookup,
     bandId: build.bandId,
     depth: build.depth,
     children,

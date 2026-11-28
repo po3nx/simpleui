@@ -1,6 +1,12 @@
 import type { Key } from '@simpleui/core';
 
 import type { ColumnState } from '../model/columns.js';
+import {
+  createLookupResolver,
+  type LookupItem,
+  type LookupOptions,
+  type LookupResolver,
+} from '../data/lookup.js';
 
 /**
  * Editor sel/baris DataGrid (DG-061): lifecycle input, commit/cancel,
@@ -26,12 +32,21 @@ export interface CellEditor<T extends object> {
   dispose(): void;
 }
 
+interface LookupState {
+  readonly resolver: LookupResolver;
+  readonly byLabel: Map<string, unknown>;
+  readonly original: unknown;
+  timer: ReturnType<typeof setTimeout> | null;
+  cleanup: () => void;
+}
+
 interface EditorEntry<T extends object> {
   readonly column: ColumnState<T>;
   readonly input: HTMLInputElement;
   readonly cell: HTMLElement;
   readonly previousTabIndex: string | null;
   readonly previousText: string;
+  readonly lookup?: LookupState;
 }
 
 interface EditorSession<T extends object> {
@@ -73,12 +88,67 @@ function inputFor<T extends object>(
 }
 
 function readInput<T extends object>(entry: EditorEntry<T>): unknown {
-  const { input, column } = entry;
+  const { input, column, lookup } = entry;
+  if (lookup) return lookup.byLabel.get(input.value) ?? lookup.original;
   if (column.dataType === 'boolean') return input.checked;
   if (column.dataType === 'number') {
     return input.value === '' ? null : Number(input.value);
   }
   return input.value;
+}
+
+function displayValue<T extends object>(entry: EditorEntry<T>): string {
+  const value = readInput(entry);
+  if (entry.lookup) {
+    if (entry.lookup.byLabel.has(entry.input.value)) {
+      return entry.input.value;
+    }
+    return entry.lookup.resolver.getLabel(value) ?? String(value ?? '');
+  }
+  return String(value ?? '');
+}
+
+function attachLookupControls(
+  input: HTMLInputElement,
+  list: HTMLDataListElement,
+  state: LookupState,
+  lookup: LookupOptions,
+): () => void {
+  const renderOptions = (items: readonly LookupItem[]): void => {
+    state.byLabel.clear();
+    for (const item of items) {
+      const option = document.createElement('option');
+      option.value = item.text;
+      state.byLabel.set(item.text, item.value);
+      list.append(option);
+    }
+  };
+  const load = (query: string): void => {
+    list.replaceChildren();
+    void state.resolver.search(query).then(renderOptions);
+  };
+  const onInput = (): void => {
+    if (state.timer !== null) clearTimeout(state.timer);
+    state.timer = setTimeout(() => {
+      state.timer = null;
+      load(input.value);
+    }, lookup.debounceMs ?? 200);
+  };
+  const onFocus = (): void => load(input.value);
+  input.addEventListener('input', onInput);
+  input.addEventListener('focus', onFocus);
+  void state.resolver.ensure([state.original]).then(() => {
+    if (input.value === '') {
+      input.value =
+        state.resolver.getLabel(state.original) ?? String(state.original ?? '');
+    }
+  });
+  return () => {
+    if (state.timer !== null) clearTimeout(state.timer);
+    state.timer = null;
+    input.removeEventListener('input', onInput);
+    input.removeEventListener('focus', onFocus);
+  };
 }
 
 function entryFor<T extends object>(
@@ -154,6 +224,12 @@ class CellEditorImpl<T extends object> implements CellEditor<T> {
       if (!cell) continue;
       const previousText = cell.textContent ?? '';
       const previousTabIndex = cell.getAttribute('tabindex');
+      const lookupEntry = this.#lookupEntry(row, column, cell);
+      if (lookupEntry) {
+        cell.classList.add('sui-grid__cell--editing');
+        entries.push({ ...lookupEntry, previousTabIndex, previousText });
+        continue;
+      }
       const input = inputFor(row, column);
       cell.replaceChildren(input);
       cell.classList.add('sui-grid__cell--editing');
@@ -166,6 +242,33 @@ class CellEditorImpl<T extends object> implements CellEditor<T> {
       });
     }
     return entries;
+  }
+
+  #lookupEntry(
+    row: T,
+    column: ColumnState<T>,
+    cell: HTMLElement,
+  ): Omit<EditorEntry<T>, 'previousTabIndex' | 'previousText'> | undefined {
+    const lookup = column.lookup;
+    if (!lookup) return undefined;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = `${EDITOR_CLASS} sui-grid__editor--lookup`;
+    input.setAttribute('aria-label', `Edit ${column.caption}`);
+    const listId = `sui-lookup-${column.id}`;
+    input.setAttribute('list', listId);
+    const list = document.createElement('datalist');
+    list.id = listId;
+    const state: LookupState = {
+      resolver: createLookupResolver(lookup),
+      byLabel: new Map<string, unknown>(),
+      original: rawValue(row, column),
+      timer: null,
+      cleanup: () => {},
+    };
+    state.cleanup = attachLookupControls(input, list, state, lookup);
+    cell.replaceChildren(input, list);
+    return { column, input, cell, lookup: state };
   }
 
   #keyOf(row: T): Key {
@@ -270,13 +373,14 @@ class CellEditorImpl<T extends object> implements CellEditor<T> {
     if (!session) return;
     this.#unbind();
     for (const entry of session.entries) {
+      entry.lookup?.cleanup();
       entry.cell.classList.remove('sui-grid__cell--editing');
       if (entry.previousTabIndex === null)
         entry.cell.removeAttribute('tabindex');
       else entry.cell.setAttribute('tabindex', entry.previousTabIndex);
       entry.cell.textContent = restore
         ? entry.previousText
-        : String(readInput(entry) ?? '');
+        : displayValue(entry);
     }
     this.#session = null;
   }
