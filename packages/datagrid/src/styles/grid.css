@@ -846,3 +846,32 @@
   outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
   outline-offset: var(--sui-focus-ring-offset);
 }
+
+.sui-grid__row--detail {
+  background: var(--sui-color-bg-subtle);
+}
+
+.sui-grid__cell--detail {
+  padding: 0;
+  overflow: auto;
+}
+
+.sui-grid__detail-content {
+  padding: var(--sui-space-2);
+  font-size: var(--sui-font-size-sm);
+  white-space: normal;
+}
+
+.sui-grid__detail-toggle {
+  padding: 0 var(--sui-space-1);
+  border: 0;
+  background: transparent;
+  color: var(--sui-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sui-grid__detail-toggle:focus-visible {
+  outline: var(--sui-focus-ring-width) solid var(--sui-focus-ring-color);
+  outline-offset: var(--sui-focus-ring-offset);
+}
