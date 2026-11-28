@@ -2,7 +2,7 @@ import { Virtualizer, type Key } from '@simpleui/core';
 
 import { getVisibleColumns, type ColumnState } from '../model/columns.js';
 import { cellValueFor, formatRowCell } from './cell-renderer.js';
-import { createLookupResolver, type LookupResolver } from '../data/lookup.js';
+import { createLookupCellState, lookupText } from './lookup-cell.js';
 import type { FocusModel } from '../model/focus.js';
 import {
   createCellEditor,
@@ -12,6 +12,9 @@ import {
 import { keyToDomId } from '../model/key.js';
 import { attachGridKeyboard } from './keyboard.js';
 import { TemplateManager } from './template-manager.js';
+import { buildGroupEntries, type GroupDisplayEntry } from './group-view.js';
+import { paintGroupRow } from './group-row.js';
+import type { GroupOptions } from '../data/grouping.js';
 import {
   computeColumnLayout,
   type ColumnLayoutEntry,
@@ -42,6 +45,11 @@ export interface RowRendererOptions<T extends object> {
   readonly liveElement?: HTMLElement | undefined;
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<T> | undefined;
+  readonly groupBy?: readonly string[] | undefined;
+  readonly expandedGroups?: Iterable<string> | undefined;
+  readonly grouping?: GroupOptions | undefined;
+  readonly onGroupToggle?:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly isSelected?: ((row: T) => boolean) | undefined;
   readonly selectionChanges?:
     ((listener: () => void) => () => void) | undefined;
@@ -52,6 +60,8 @@ export interface RowRenderer<T extends object> {
   setColumns(columns: readonly ColumnState<T>[]): void;
   getRenderedCount(): number;
   setLocale(locale: string | undefined): void;
+  setGrouping(groupBy: readonly string[], expanded: Iterable<string>): void;
+  toggleGroup(groupKey: string): void;
   dispose(): void;
 }
 
@@ -106,8 +116,11 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   #columns: readonly ColumnState<T>[];
   #locale: string | undefined;
   readonly #widths = new Map<string, number>();
-  readonly #lookups = new Map<string, LookupResolver>();
-  readonly #lookupRequests = new Set<string>();
+  readonly #lookupState = createLookupCellState();
+  #groupBy: readonly string[];
+  readonly #expanded: Set<string>;
+  #entries: readonly GroupDisplayEntry<T>[];
+
   #layoutSignature = '';
   #disposed = false;
   readonly #templates: TemplateManager;
@@ -122,6 +135,9 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#rows = options.rows;
     this.#columns = getVisibleColumns(options.columns);
     this.#locale = options.locale;
+    this.#groupBy = options.groupBy ?? [];
+    this.#expanded = new Set(options.expandedGroups ?? []);
+    this.#entries = this.#buildEntries();
     this.#templates = new TemplateManager(
       options.onTemplateError ? { onError: options.onTemplateError } : {},
     );
@@ -147,9 +163,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#updateSpacer();
     this.#render();
   }
-
   readonly #onScroll = (): void => this.#render();
-
   readonly #onDblClick = (event: MouseEvent): void => {
     const cell = (event.target as HTMLElement | null)?.closest<HTMLElement>(
       '.sui-grid__cell',
@@ -233,12 +247,12 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#options.spacerElement.style.blockSize = `${this.#rows.length * this.#rowHeight}px`;
     this.#options.gridElement.setAttribute(
       'aria-rowcount',
-      String(this.#rows.length),
+      String(this.#entries.length),
     );
   }
 
   #captureAnchor(): Anchor | null {
-    if (this.#rows.length === 0) return null;
+    if (this.#rows.length === 0 || this.#groupBy.length > 0) return null;
     const scrollTop = this.#options.viewportElement.scrollTop;
     const index = Math.min(
       Math.floor(scrollTop / this.#rowHeight),
@@ -300,7 +314,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     if (this.#disposed) return;
     const layout = this.#layout();
     this.#virtualizer.setViewportSize(this.#viewportSize());
-    this.#virtualizer.setItemCount(this.#rows.length);
+    this.#virtualizer.setItemCount(this.#entries.length);
     this.#virtualizer.setScrollOffset(this.#options.viewportElement.scrollTop);
 
     const { start, end, offsetTop } = this.#virtualizer.range;
@@ -312,13 +326,59 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#options.spacerElement.style.inlineSize = `${layout.totalWidth}px`;
 
     this.#pool.forEach((rowElement, poolIndex) => {
-      const row = this.#rows[start + poolIndex];
-      if (poolIndex >= count || !row) {
+      const entry = this.#entries[start + poolIndex];
+      if (poolIndex >= count || !entry) {
         rowElement.hidden = true;
         return;
       }
-      this.#paintRow(rowElement, row, start + poolIndex, layout.entries);
+      if (entry.type === 'group') {
+        paintGroupRow({
+          rowElement,
+          entry,
+          index: start + poolIndex,
+          totalWidth: layout.totalWidth,
+          columns: this.#columns,
+          onToggle: (key) => this.toggleGroup(key),
+        });
+      } else {
+        this.#paintRow(
+          rowElement,
+          entry.row,
+          start + poolIndex,
+          layout.entries,
+        );
+      }
     });
+  }
+
+  #buildEntries(): readonly GroupDisplayEntry<T>[] {
+    return buildGroupEntries(this.#rows, {
+      groupBy: this.#groupBy,
+      expandedGroups: this.#expanded,
+      grouping: this.#options.grouping,
+      columns: this.#columns,
+      keyOf: this.#options.keyOf,
+    });
+  }
+
+  setGrouping(groupBy: readonly string[], expanded: Iterable<string>): void {
+    this.#groupBy = groupBy;
+    this.#expanded.clear();
+    for (const key of expanded) this.#expanded.add(key);
+    this.#entries = this.#buildEntries();
+    this.#updateSpacer();
+    this.#render();
+  }
+
+  toggleGroup(groupKey: string): void {
+    const expanded = !this.#expanded.has(groupKey);
+    if (expanded) this.#expanded.add(groupKey);
+    else this.#expanded.delete(groupKey);
+    this.#options.onGroupToggle?.(groupKey, expanded);
+    if (this.#groupBy.length === 0) return;
+    this.#entries = this.#buildEntries();
+    this.#updateSpacer();
+    this.#render();
   }
 
   #paintRow(
@@ -327,7 +387,16 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     index: number,
     entries: readonly ColumnLayoutEntry<T>[],
   ): void {
+    if (rowElement.children.length !== entries.length) {
+      rowElement.replaceChildren();
+      entries.forEach((entry) => {
+        rowElement.append(
+          createCell(entry, this.#columnIndex(entry.column.id)),
+        );
+      });
+    }
     rowElement.hidden = false;
+    rowElement.className = 'sui-grid__row';
     rowElement.setAttribute('aria-rowindex', String(index + 1));
     const rowKey = this.#options.keyOf(row);
     rowElement.setAttribute('data-row-key', String(rowKey));
@@ -374,7 +443,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#templates.unmount(cell);
     const value = cellValueFor(row, entry.column);
     const label = entry.column.lookup
-      ? this.#lookupFor(entry.column).getLabel(value)
+      ? lookupText(entry.column, value, this.#lookupState, () => this.#render())
       : undefined;
     const text =
       label ??
@@ -383,33 +452,6 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
         placeholder: this.#options.emptyText,
       });
     if (cell.textContent !== text) cell.textContent = text;
-    if (
-      entry.column.lookup &&
-      label === undefined &&
-      value !== null &&
-      value !== undefined
-    ) {
-      this.#requestLookup(entry.column, value);
-    }
-  }
-
-  #requestLookup(column: ColumnState<T>, value: unknown): void {
-    const requestKey = `${column.id}:${String(value)}`;
-    if (this.#lookupRequests.has(requestKey)) return;
-    this.#lookupRequests.add(requestKey);
-    void this.#lookupFor(column)
-      .ensure([value])
-      .then(() => this.#render());
-  }
-
-  #lookupFor(column: ColumnState<T>): LookupResolver {
-    const existing = this.#lookups.get(column.id);
-    if (existing) return existing;
-    const lookup = column.lookup;
-    if (!lookup) throw new Error('lookup tidak tersedia.');
-    const resolver = createLookupResolver(lookup);
-    this.#lookups.set(column.id, resolver);
-    return resolver;
   }
 
   #ensurePool(size: number): void {
@@ -427,6 +469,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
     this.#editor?.cancel();
     const anchor = this.#captureAnchor();
     this.#rows = next;
+    this.#entries = this.#buildEntries();
     this.#updateSpacer();
     if (anchor) this.#restoreAnchor(anchor);
     this.#render();
@@ -435,7 +478,7 @@ class VirtualRowRenderer<T extends object> implements RowRenderer<T> {
   setColumns(next: readonly ColumnState<T>[]): void {
     if (this.#disposed) return;
     this.#columns = getVisibleColumns(next);
-    // Lepas template lama sebelum node dibuang, lalu bangun ulang struktur sel.
+    this.#entries = this.#buildEntries();
     this.#templates.clear();
     this.#pool.forEach((rowElement) => rowElement.remove());
     this.#pool.length = 0;

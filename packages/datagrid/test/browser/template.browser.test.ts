@@ -102,12 +102,16 @@ describe('template sel', () => {
 
   it('mendaur ulang handle saat scroll (update, bukan mount baru)', () => {
     const { container, grid, renderer } = setup(columns(), makeRows(100));
-    const mountsBefore = template.mounts.length;
+    grid.viewportElement.scrollTop = 400;
+    grid.viewportElement.dispatchEvent(new Event('scroll'));
+    const mountsAfterWarmup = template.mounts.length;
 
     grid.viewportElement.scrollTop = 800;
     grid.viewportElement.dispatchEvent(new Event('scroll'));
 
-    expect(template.mounts.length).toBe(mountsBefore);
+    // Scroll pertama boleh menambah satu baris pool baru; scroll berikutnya
+    // wajib mendaur ulang handle, bukan mount baru.
+    expect(template.mounts.length).toBe(mountsAfterWarmup);
     expect(template.updates.length).toBeGreaterThan(0);
 
     renderer.dispose();

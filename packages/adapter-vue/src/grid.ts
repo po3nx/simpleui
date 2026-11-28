@@ -48,6 +48,10 @@ export interface VueDataGridProps {
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<Record<string, unknown>> | undefined;
+  readonly groupBy?: readonly string[] | undefined;
+  readonly expandedGroups?: readonly string[] | undefined;
+  readonly onGroupToggle?:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -253,6 +257,13 @@ class VueGridController {
       liveElement: view.liveElement,
       rtl: this.#props.rtl === true,
       ...(this.#props.editing ? { editing: this.#props.editing } : {}),
+      ...(this.#props.groupBy ? { groupBy: this.#props.groupBy } : {}),
+      ...(this.#props.expandedGroups
+        ? { expandedGroups: this.#props.expandedGroups }
+        : {}),
+      ...(this.#props.onGroupToggle
+        ? { onGroupToggle: this.#props.onGroupToggle }
+        : {}),
     });
   }
 
@@ -329,6 +340,15 @@ export const DataGrid = defineComponent({
       default: undefined,
     },
     rtl: { type: Boolean, default: false },
+    groupBy: {
+      type: Array as PropType<readonly string[]>,
+      default: undefined,
+    },
+    expandedGroups: {
+      type: Array as PropType<readonly string[]>,
+      default: undefined,
+    },
+    onGroupToggle: { type: Function, default: undefined },
     locale: { type: String, default: undefined },
     status: {
       type: String as PropType<

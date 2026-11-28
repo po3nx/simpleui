@@ -41,6 +41,10 @@ export interface DataGridProps<T extends object> {
   readonly viewOptions?: Readonly<Record<string, unknown>> | undefined;
   readonly rtl?: boolean | undefined;
   readonly editing?: EditingUiOptions<T> | undefined;
+  readonly groupBy?: readonly string[] | undefined;
+  readonly expandedGroups?: readonly string[] | undefined;
+  readonly onGroupToggle?:
+    ((groupKey: string, expanded: boolean) => void) | undefined;
   readonly locale?: string | undefined;
   readonly status?:
     'loading' | 'empty' | 'no-data' | 'error' | null | undefined;
@@ -182,6 +186,13 @@ class ReactGridController<T extends object> {
       selectionChanges: (listener) =>
         view.subscribeSelection(listener) ?? (() => {}),
       ...(this.#props.editing ? { editing: this.#props.editing } : {}),
+      ...(this.#props.groupBy ? { groupBy: this.#props.groupBy } : {}),
+      ...(this.#props.expandedGroups
+        ? { expandedGroups: this.#props.expandedGroups }
+        : {}),
+      ...(this.#props.onGroupToggle
+        ? { onGroupToggle: this.#props.onGroupToggle }
+        : {}),
       focus: focus as never,
       liveElement: view.liveElement,
       rtl: this.#props.rtl === true,
